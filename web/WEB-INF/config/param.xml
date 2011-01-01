@@ -52,16 +52,33 @@
             </xsql>
         </xhandle>
         <xhandle desc="" id="insert" rtnype="JSON">
-            <xsql id="a1" para="day,power" tpe="DDL" tpl="insert into t_planpower(day,power) values(':day',':power') " var="rs">
+            <xsql id="a1" para="day,power" tpe="DDL" tpl="insert into t_planpower(day,power,warnpower) values(':day',':power',':warnpower') " var="rs">
             </xsql>
         </xhandle>
         <xhandle desc="" id="update" rtnype="JSON">
-            <xsql id="a1" para="power" tpe="DDL" tpl="update t_planpower set power=':power' where @CONDITION " var="rs">
-                <xflt id="CONDITION" nrp="" tpl="@id ">
-                    <xfltpara id="id" nrp="1=1" para="id" sql="id=:id">
+            <xsql id="a1" para="power,warnpower" tpe="DDL" tpl="update t_planpower set power=':power',warnpower=':warnpower' where @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@year AND @month ">
+                    <xfltpara id="year" nrp="1=2" para="year" sql="year(day)=:year">
+                    </xfltpara>
+                    <xfltpara id="month" nrp="1=2" para="month" sql="month(day)=:month">
                     </xfltpara>
                 </xflt>
             </xsql>
         </xhandle>
     </xform>
-</xforms>
+ <xform desc="报表模块" id="report">
+               <xhandle desc="查询历史数据报表" id="queryRecord" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select  CONVERT(Nvarchar, day, 23) as dayalis,day,voltage,electric,activepower,powerfactor,powerfactor,power from t_records where @CONDITION group by day,voltage,electric,activepower,powerfactor,power  " var="bootstrap">
+                <xflt id="CONDITION" nrp="" tpl="@day AND @comaddr">
+                    <xfltpara id="day" nrp="1=2" para="day" sql="day = ':day'"> 
+                    </xfltpara>
+                             <xfltpara id="comaddr" nrp="1=2" para="comaddr" sql="comaddr = ':comaddr'">
+                    </xfltpara>
+                </xflt>
+            </xsql>
+        </xhandle>  
+
+ </xform>
+
+
+</xforms>  

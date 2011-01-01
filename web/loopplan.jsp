@@ -26,6 +26,7 @@
         <script type="text/javascript" src="js/getdate.js"></script>
         <script>
             var u_name = parent.parent.getusername();
+            var o_pid =  parent.parent.getpojectId();
             function layerAler(str) {
                 layer.alert(str, {
                     icon: 6,
@@ -54,20 +55,7 @@
                     success: function (data) {
                         var arrlist = data.rs;
                         if (arrlist.length == 1) {
-
-//                            var nobj2 = {};
-//                            nobj2.name = u_name;
-//                            var day = getNowFormatDate2();
-//                            nobj2.time = day;
-//                            nobj2.comment = "对方案编号为：" + code + "进行修改";
-//                            $.ajax({async: false, url: "login.oplog.addoplog.action", type: "get", datatype: "JSON", data: nobj2,
-//                                success: function (data) {
-//                                    var arrlist = data.rs;
-//                                    if (arrlist.length > 0) {
-//
-//                                    }
-//                                }
-//                            });
+                            addlogon(u_name, "修改", o_pid, "回路策略", "修改回路方案");
                             var url = "loop.planForm.getLoopPlan.action";
                             var obj1 = {p_type: obj.p_type, pid: "${param.pid}"};
                             var opt = {url: url, silent: true, query: obj1};
@@ -138,19 +126,7 @@
                         success: function (data) {
                             var arrlist = data.rs;
                             if (arrlist.length == 1) {
-                                var nobj2 = {};
-                                nobj2.name = u_name;
-                                var day = getNowFormatDate2();
-                                nobj2.time = day;
-                                nobj2.comment = "删除方案编号为：" + code + "的回路方案";
-                                $.ajax({async: false, url: "login.oplog.addoplog.action", type: "get", datatype: "JSON", data: nobj2,
-                                    success: function (data) {
-                                        var arrlist = data.rs;
-                                        if (arrlist.length > 0) {
-
-                                        }
-                                    }
-                                });
+                                addlogon(u_name, "删除", o_pid, "回路策略", "删除回路方案");
                                 $('#table_loop').bootstrapTable('refresh');
                             }
 
@@ -189,27 +165,11 @@
                 }
                 console.log("表单对象", obj);
                 var ret = false;
-
+                addlogon(u_name, "添加", o_pid, "回路策略", "添加回路方案");
                 $.ajax({async: false, url: url, type: "get", datatype: "JSON", data: obj,
                     success: function (data) {
                         var arrlist = data.rs;
                         if (arrlist.length == 1) {
-
-
-
-//                            var nobj2 = {};
-//                            nobj2.name = u_name;
-//                            var day = getNowFormatDate2();
-//                            nobj2.time = day;
-//                            nobj2.comment = "添加回路方案：" + obj.p_name;
-//                            $.ajax({async: false, url: "login.oplog.addoplog.action", type: "get", datatype: "JSON", data: nobj2,
-//                                success: function (data) {
-//                                    var arrlist = data.rs;
-//                                    if (arrlist.length > 0) {
-//
-//                                    }
-//                                }
-//                            });
                             ret = false;
                         }
                     },
@@ -385,19 +345,21 @@
                             width: 25,
                             align: 'center',
                             valign: 'middle'
-                        }, {
-                            field: 'p_Longitude',
-                            title: '经度',
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
-                            field: 'p_latitude',
-                            title: '纬度',
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
+                        }, 
+//                        {
+//                            field: 'p_Longitude',
+//                            title: '经度',
+//                            width: 25,
+//                            align: 'center',
+//                            valign: 'middle'
+//                        }, {
+//                            field: 'p_latitude',
+//                            title: '纬度',
+//                            width: 25,
+//                            align: 'center',
+//                            valign: 'middle'
+//                        }
+                         {
                             field: 'p_attr',
                             title: '方案类型',
                             width: 25,
@@ -467,7 +429,7 @@
 
                 <select class="easyui-combobox" data-options="editable:false" id="p_type_query" name="p_type_query" style="width:150px; height: 30px">
                     <option value="0">时间</option>
-                    <option value="1">经纬度</option>           
+                    <!--<option value="1">经纬度</option>-->           
                 </select>
 
                 <!--                <select name="p_type_query" id="p_type_query" class="input-sm" style="width:150px;">

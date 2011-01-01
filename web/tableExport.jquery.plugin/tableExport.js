@@ -793,21 +793,25 @@
 
         // Data
         $rows = collectRows ($table);
+
         $($rows).each(function () {
           var $row = $(this);
           trData   = "";
           ForEachVisibleCell(this, 'td,th', rowIndex, $hrows.length + $rows.length,
                              function (cell, row, col) {
                                if ( cell !== null ) {
+
                                  var tdvalue = parseString(cell, row, col);
                                  var tdstyle = '';
                                  var tdcss   = $(cell).data("tableexport-msonumberformat");
 
                                  if ( typeof tdcss === 'undefined' && typeof defaults.mso.onMsoNumberFormat === 'function' )
                                    tdcss = defaults.mso.onMsoNumberFormat(cell, row, col);
+                                 else tdcss='\\@';
 
-                                 if ( typeof tdcss !== 'undefined' && tdcss !== '' )
+                                 if ( typeof tdcss !== 'undefined' && tdcss !== '' ){
                                    tdstyle = 'style="mso-number-format:\'' + tdcss + '\'';
+                                 }
 
                                  for ( var cssStyle in defaults.mso.styles ) {
                                    if ( defaults.mso.styles.hasOwnProperty(cssStyle) ) {

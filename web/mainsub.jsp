@@ -265,7 +265,6 @@
             var myChart, myChart2, myChart3, myChart4, myChart5;
             var echarts;
             $(function () {
-                console.log("${param.pid}");
                 var truevalmap = "";
                 var status1 = "";
                 var planvalue = "";
@@ -298,7 +297,7 @@
                 
                 $("#differenceConsumption").html(diffpower.toString());
                 var status = diffpower < 0 ? "异常" : "正常";
-                $("#status").html("正常");
+                $("#status").html(status);
 
                 var jnl = 1 - fatualpower / fplanpower
                   jnl=  isNaN(jnl)==true?0:jnl;

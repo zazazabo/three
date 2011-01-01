@@ -21,6 +21,26 @@
                         + seperator2 + date.getSeconds();
                 return currentdate;
             }
+            
+            
+            function  addlogon(name,type,pid,page,comment){
+                var nobj = {};
+                                nobj.name = name;
+                                nobj.time = getNowFormatDate2();
+                                nobj.type = type;
+                                nobj.comment = comment;
+                                nobj.page = page;
+                                nobj.pid = pid;
+                                $.ajax({async: false, url: "login.oplog.addoplog.action", type: "get", datatype: "JSON", data: nobj,
+                                    success: function (data) {
+                                        var arrlist = data.rs;
+                                        if (arrlist.length > 0) {
+                                            
+                                        }
+                                    }
+                                });
+                
+            }
 
 
 

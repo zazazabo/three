@@ -45,12 +45,17 @@
             }
             $(function () {
 
+                for (var i = 0; i < 12; i++) {
+                    var s = (i + 1).toString();
+                    $("#warning_value" + s).attr('readonly', true);
+                }
 
 
             })
 
             function  saveplan() {
                 var f1 = $("#form3").serializeObject();
+                console.log(f1);
                 var vday = $("#formyear").serializeObject();
 
                 if (vday.day == "") {
@@ -63,9 +68,12 @@
                     var t = k.indexOf("plan_value");
                     if (t != -1) {
                         var a = k.substring(t + len1);
-                        console.log(a);
+                        var warningstr = "warning_value" + a;
+                        //var warningval=f1[warningstr];
+                        var warnbl = $("#warning_ration").val();
+                        var warningval = parseInt(f1[k]) * parseInt(warnbl)/100;
                         var obj = {"day": vday.day, "m": a};
-                        var oo = {"day": vday.day + "-" + a + "-01", "power": f1[k]};
+                        var oo = {"day": vday.day + "-" + a + "-01", "power": f1[k], "warnpower": warningval, "year": vday.day, "month": a};
                         console.log(oo);
                         $.ajax({async: false, url: "param.power.anylize1.action", type: "get", datatype: "JSON", data: obj,
                             success: function (data) {
@@ -74,27 +82,19 @@
                                 if (arr.length == 0) {
                                     $.ajax({async: false, url: "param.power.insert.action", type: "get", datatype: "JSON", data: oo,
                                         success: function (data) {
-                                            var arr = data.rs;
-                                            if (arr.length == 1) {
 
-                                            }
                                         },
                                         error: function () {
                                             alert("提交插入失败！");
                                         }
                                     });
 
-                                } else if (arr.length == 1) {
+                                } else if (arr.length > 0) {
 
-                                    var o = {"id": arr[0].id, "power": f1[k]};
-                                    console.log(o);
-                                    $.ajax({async: false, url: "param.power.update.action", type: "get", datatype: "JSON", data: o,
+
+                                    $.ajax({async: false, url: "param.power.update.action", type: "get", datatype: "JSON", data: oo,
                                         success: function (data1) {
-                                            var a = data1.rs;
 
-                                            if (a.length == 1) {
-                                                console.log("更改", o.id, "成功");
-                                            }
                                         },
                                         error: function () {
                                             alert("提交插入失败！");
@@ -132,22 +132,36 @@
 
                         }
 
+
+
                         for (var i = 0; i < arrbefor.length; i++) {
                             var v1 = arrbefor[i];
                             console.log(v1);
                             var id = "#plan_valueto" + v1.m;
                             $(id).val(v1.power);
-                            $("#warning_valueto" + v1.m).val(v1.warnpower);
+
+                            // $("#warning_valueto" + v1.m).val(v1.warnpower);
                         }
 
+
+                        var s1 = 0;
+                        var s2 = 0;
                         var arrnow = data.now;
                         for (var i = 0; i < arrnow.length; i++) {
                             var v1 = arrnow[i];
                             console.log(v1);
                             var id = "#plan_value" + v1.m;
                             $(id).val(v1.power);
+                            s1 = s1 + parseInt(v1.power);
+                            s2 = s2 + parseInt(v1.warnpower);
                             $("#warning_value" + v1.m).val(v1.warnpower);
                         }
+                        console.log(s1);
+
+                        $("#annual_plan_value").html(s1.toString());
+                        var s3 = s2 / s1 * 100;
+                        $("#warning_ration").val(s3.toString());
+
                     },
                     error: function () {
                         alert("提交失败！");
@@ -163,23 +177,8 @@
 
         <div id="big" style="height:auto;width:100%;border:1px solid #CECECE;border-bottom:none;">
             <div id="condition" style="height:60px;width:100%;padding-top: 12px">
-                <span style="margin-left:15px;font-size:16px;">区划</span>
-                <select name="area" id="area" class="input-sm" data-done-button="true" style="width:120px;">
-                    <option value="59cc85f31d41ec7d6c34ad39" selected="selected">广东</option>
-                </select>
-
-                <span style="margin-left:15px;font-size:16px;">机构</span>
-                <select name="org" id="org" class="input-sm" data-done-button="true" style="width:120px;">
-                    <option value="5aa7ac921d41ec61a04f152e" selected="selected">广东华铭光电科技有限公司</option>
-                </select>
-
-                <span style="margin-left:15px;font-size:16px;">项目</span>
-                <select name="proj" id="proj" class="input-sm" data-done-button="true" style="width:120px;">
-                    <option value="5aa7aca81d41ec61a04f152f" longitude="" latitude="" selected="selected">华铭光电</option>
-                </select>
-
-                <span style="margin-left:15px;font-size:16px;">时间(年)</span>
-                <form action="" id="formyear" class="form-horizontal" role="form" style="float:left;position:absolute;top:21px;left:635px;width: 166px;">
+                <span style="margin-left:360px;font-size:16px; ">时间(年)</span>
+                <form action="" id="formyear" class="form-horizontal" role="form" style="float:left;position:absolute;top:21px;left:450px;width: 166px;">
                     <label for="dtp_input2" class="control-label" style="float: left;"></label>
                     <input id="dtp_input2" value="" type="hidden">
                     <span class="input-group date form_date col-md-2" style="float:initial;" data-date="" data-date-format="yyyy" data-link-field="dtp_input2" data-link-format="yyyy">
@@ -214,7 +213,7 @@
                             预警比例：
                         </td>
                         <td width="24%" align="left">
-                            <input id="warning_ration" runat="server" cssclass="tdfont" font-size="20px" style="width: 150px; font-size: 26px; font-weight: bold; color: #009933; height: 30px;
+                            <input id="warning_ration" runat="server" name="warning_ration" cssclass="tdfont" font-size="20px" style="width: 150px; font-size: 26px; font-weight: bold; color: #009933; height: 30px;
                                    border: 0px; text-align: center; border-bottom: 1px solid #ddd;" value="0" type="text">
                             <span style="font-size: 33px;">%</span>&nbsp;
                         </td>

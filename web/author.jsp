@@ -13,7 +13,7 @@
         <script type="text/javascript" src="ztree/js/jquery.ztree.core.js"></script>
         <script type="text/javascript" src="ztree/js/jquery.ztree.excheck.js"></script>
         <script type="text/javascript" src="ztree/js/jquery.ztree.exedit.js"></script> 
-
+        <script type="text/javascript"  src="js/getdate.js"></script>
         <title>JSP Page</title>
 
         <style>* { margin: 0; padding: 0; } body, html { width: 100%; height: 100%; } .zuheanniu { margin-top: 2px; margin-left: 10px; } table { font-size: 14px; } .modal-body input[type="text"], .modal-body select, .modal-body input[type="radio"] { height: 30px; } .modal-body table td { line-height: 40px; } .menuBox { position: relative; background: skyblue; } .getMenu { z-index: 1000; display: none; background: white; list-style: none; border: 1px solid skyblue; width: 150px; height: auto; max-height: 200px; position: absolute; left: 0; top: 25px; overflow: auto; } .getMenu li { width: 148px; padding-left: 10px; line-height: 22px; font-size: 14px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; } .getMenu li:hover { background: #eee; cursor: pointer; } .a-upload { padding: 4px 10px; height: 30px; line-height: 20px; position: relative; cursor: pointer; color: #888; background: #fafafa; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; display: inline-block; *display: inline; *zoom: 1 } .a-upload input { position: absolute; font-size: 100px; right: 0; top: 0; opacity: 0; filter: alpha(opacity = 0); cursor: pointer } .a-upload:hover { color: #444; background: #eee; border-color: #ccc; text-decoration: none } .pagination-info { float: left; margin-top: -4px; } .modal-body { text-align: -webkit-center; text-align: -moz-center; width: 600px; margin: auto; } .btn-primary { color: #fff; background-color: #0099CC; border-color: #0099CC; }
@@ -32,8 +32,11 @@
 
 
         <script>
+            var u_name = parent.parent.getusername();
+            var o_pid = parent.parent.getpojectId();
             //添加角色
             function addrole() {
+                addlogon(u_name, "添加", o_pid, "角色权限管理", "添加角色");
                 var name = $("#rolename").val();
                 if (name == "") {
                     layerAler("角色名不能为空");
@@ -140,6 +143,7 @@
                                     layerAler("请选择要取消权限的角色");
                                     return;
                                 }
+                                addlogon(u_name, "取消权限", o_pid, "角色权限管理", "取消角色权限");
                                 var iscodeobj = {};
                                 iscodeobj.code = id;
                                 iscodeobj.roletype = role;
@@ -231,7 +235,7 @@
                     btn: ['确定', '取消']//按钮
                 }, function (index) {
 
-
+                    addlogon(u_name, "分配权限权限", o_pid, "角色权限管理", "分配权限");
                     for (var i = 0; i < nodes.length; i++) {
                         if (nodes[i].id == "0") {
                             continue;
@@ -368,24 +372,18 @@
 
                                 <button class="btn btn-success" onclick="addauthor()" style="  margin-top: 20px">分配权限</button>
 
-                                <!--                                <button class="btn btn-success" style=" margin-top: 20px"></button>       -->
                             </div>
 
                         </div>
 
-                        <div class="col-xs-3">
-                            <span class="label label-success label-lg ">角色列表1</span>
-                            <input id="role" class="easyui-combobox" name="role" style="width:150px; height: 34px" data-options="editable:true,valueField:'id', textField:'text',url:'login.usermanage.rolemenu.action?parent_id=${param.role}'" />
-
-
-                            <!--                            <table id="gravidaTable" style="width:100%;" class="text-nowrap table table-hover table-striped">
-                                                        </table> -->
-
+                        <div class="col-xs-3" style=" width: 20%;">
+                            <span class="label label-success label-lg " style=" width: 30%;">角色列表</span>
+                            <input id="role" class="easyui-combobox" name="role" style="width:60%; height: 34px" data-options="editable:true,valueField:'id', textField:'text',url:'login.usermanage.rolemenu.action?parent_id=${param.role}'" />
                         </div>
-                        <div class="col-xs-4">
-                            <span style="margin-left:20px;">角色名称</span>&nbsp;
-                            <input id="rolename" class="form-control" name="rolename" style="width:150px;display: inline;" placeholder="请输入角色名称" type="text">
-                            <button id="btnrole" onclick="addrole()" class="btn btn-success">生成角色</button>
+                        <div class="col-xs-4" style=" width: 33%; margin-left: 5%;">
+                            <span style=" width: 30%;">角色名称</span>&nbsp;
+                            <input id="rolename" class="form-control" name="rolename" style="width:40%;display: inline;" placeholder="请输入角色名称" type="text">
+                            <button id="btnrole" onclick="addrole()" class="btn btn-success" style=" width: 30%;">生成角色</button>
                         </div>
                     </div>
                 </div>

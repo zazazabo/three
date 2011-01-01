@@ -14,24 +14,37 @@
         <script type="text/javascript" src="js/getdate.js"></script>
         <script>
             $(function(){
+                 var pid  = parent.parent.getpojectId();
                  $('#oplogtabel').bootstrapTable({
-                    url: 'login.oplog.oplogInfo.action',
+                    url: 'login.oplog.oplogInfo.action?pid='+pid,
                     columns: [
-                        {
-                            field: 'o_name',
-                            title: '用户名',
+                         {
+                            field: 'o_type',
+                            title: '操作类型',
                             width: 25,
                             align: 'center',
                             valign: 'middle'
-                        }, {
+                        },{
+                            field: 'o_page',
+                            title: '操作页面',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        },{
+                            field: 'o_comment',
+                            title: '详细内容',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        },{
                             field: 'o_time',
                             title: '时间',
                             width: 25,
                             align: 'center',
                             valign: 'middle'
-                        }, {
-                            field: 'o_comment',
-                            title: '操作内容',
+                        },{
+                            field: 'o_name',
+                            title: '操作人',
                             width: 25,
                             align: 'center',
                             valign: 'middle'

@@ -107,7 +107,7 @@
             <xsql id="a1" para="p_name,p_type,p_scene1,p_scene2,p_scene3,p_scene4,p_scene5,p_scene6,p_scene7,p_scene8" tpe="DDL" tpl="insert into t_plan(p_attr,p_type,p_name,p_scene1,p_scene2,p_scene3,p_scene4,p_scene5,p_scene6,p_scene7,p_scene8) values(1,:p_type,':p_name',':p_scene1',':p_scene2',':p_scene3',':p_scene4',':p_scene5',':p_scene6',':p_scene7',':p_scene8') " var="rs">
             </xsql>
         </xhandle> -->
-        <xhandle desc="修改灯具方案时间" id="editlamp" rtn="rs" rtnype="JSON">
+<!--         <xhandle desc="修改灯具方案时间" id="editlamp" rtn="rs" rtnype="JSON">
             <xsql id="a1" para="p_name,p_time1,p_time2,p_time3,p_time4,p_time5,p_time6" tpe="DDL" tpl="update t_plan set p_name=':p_name',p_time1=':p_time1',p_time2=':p_time2',p_time3=':p_time3',p_time4=':p_time4',p_time5=':p_time5',p_time6=':p_time6' where @CONDITION " var="rs">
                 <xflt id="CONDITION" nrp="" tpl="@id AND @p_code">
                     <xfltpara id="id" nrp="1=1" para="id" sql="id=:id">
@@ -116,15 +116,15 @@
                     </xfltpara>
                 </xflt>
             </xsql>
-        </xhandle>
-        <xhandle desc="修改灯具方案场景" id="editlampscene" rtn="rs" rtnype="JSON">
+        </xhandle> -->
+<!--         <xhandle desc="修改灯具方案场景" id="editlampscene" rtn="rs" rtnype="JSON">
             <xsql id="a1" para="p_name,p_scene1,p_scene2,p_scene3,p_scene4,p_scene5,p_scene6,p_scene7,p_scene8" tpe="DDL" tpl="update t_plan set p_name=':p_name',p_scene1=':p_scene1',p_scene2=':p_scene2',p_scene3=':p_scene3',p_scene4=':p_scene4',p_scene5=':p_scene5',p_scene6=':p_scene6',p_scene7=':p_scene7',p_scene8=':p_scene8' where @CONDITION " var="rs">
                 <xflt id="CONDITION" nrp="" tpl="@id ">
                     <xfltpara id="id" nrp="1=1" para="id" sql="id=:id">
                     </xfltpara>
                 </xflt>
             </xsql>
-        </xhandle>
+        </xhandle> -->
 <!--         <xhandle desc="" id="getPlanlist" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT   tl.p_code as id,tl.p_code as text,p_outtime,p_intime,p_Longitude,p_latitude,p_type,* FROM t_plan tl where  @CONDITION " var="list">
                 <xflt id="CONDITION" nrp="" tpl="@attr ">
@@ -227,7 +227,7 @@
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT   tl.l_comaddr as id,tl.l_comaddr as text,tl.l_comaddr as comaddr FROM t_lamp tl" var="list">
             </xsql>
         </xhandle>
-        <xhandle desc="" id="getGroupe" rtnype="JSON">
+<!--         <xhandle desc="" id="getGroupe" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT   tl.l_groupe as id,tl.l_groupe as text,tl.l_groupe as l_groupe FROM t_lamp tl where @CONDITION " var="list">
                 <xflt id="CONDITION" nrp="" tpl="@l_comaddr AND @l_deplayment">
                     <xfltpara id="l_comaddr" nrp="1=1" para="l_comaddr" sql="l_comaddr = ':l_comaddr'">
@@ -236,7 +236,7 @@
                     </xfltpara>
                 </xflt>
             </xsql>
-        </xhandle>
+        </xhandle> -->
         <xhandle desc="" id="Groupe" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT tl.l_groupe,tl.l_comaddr,l_value FROM  t_lamp tl WHERE @CONDITION  GROUP BY l_groupe,l_comaddr,l_value" var="bootstrap">
                 <xflt id="CONDITION" nrp="" tpl="@l_comaddr AND @l_factorycode AND @l_groupe AND @l_deplayment">
@@ -316,14 +316,14 @@
                 </xflt>
             </xsql>
         </xhandle> -->
-        <xhandle desc="修改回路部署方案" id="modifySwitch" rtnype="JSON">
+<!--        <xhandle desc="修改回路部署方案" id="modifySwitch" rtnype="JSON">
             <xsql id="a1" para="l_switch" tpe="DDL" tpl="update t_loop set l_switch=:l_switch where @CONDITION " var="rs">
                 <xflt id="CONDITION" nrp="" tpl="@id ">
                     <xfltpara id="id" nrp="1=1" para="id" sql="id=:id">
                     </xfltpara>
                 </xflt>
             </xsql>
-        </xhandle>
+        </xhandle>-->
 
     </xform>
     <xform dese="bootstrattable" id="f5">

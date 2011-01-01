@@ -11,13 +11,15 @@
         <%@include  file="js.jspf" %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script type="text/javascript" src="js/genel.js"></script>
+        <script type="text/javascript" src="js/getdate.js"></script>
         <style>
             .btn { margin-left: 10px;} 
 
         </style>
         <script>
 
-
+            var u_name = parent.parent.getusername();
+            var o_pid = parent.parent.getpojectId();
 
             function deployloopCB(obj) {
                 var param = obj.param;
@@ -68,7 +70,7 @@
                     layerAler("请勾选表格数据");
                     return;
                 }
-
+                addlogon(u_name, "部署", o_pid, "回路部署", "部署回路");
                 var vv = [];
 
                 var ele = selects[0];
@@ -111,7 +113,7 @@
                     return;
                 }
 
-
+                addlogon(u_name, "移除", o_pid, "回路部署", "移除回路");
                 var vv = [];
                 var ele = selects[0];
                 var comaddr = ele.l_comaddr;
@@ -165,6 +167,7 @@
                     layerAler("请勾选列表读取");
                     return;
                 }
+                addlogon(u_name, "部署", o_pid, "回路部署", "部署回路方案");
                 var obj = $("#form1").serializeObject();
                 console.log(obj);
 
@@ -237,6 +240,7 @@
                     layerAler("请勾选列表读取");
                     return;
                 }
+                addlogon(u_name, "读取", o_pid, "回路部署", "读取回路时间表");
                 var obj = $("#form1").serializeObject();
                 console.log(obj);
                 var v = obj.p_type;
@@ -426,6 +430,7 @@
                         $('#type' + v.toString()).hide();
 //                      
                         $("#p_type").val(record.p_type);
+                        console.log(record);
                         if (record.p_type == "1") {
                             var strArr1 = record.p_Longitude.split(".");
                             var strArr2 = record.p_latitude.split(".");
@@ -456,6 +461,7 @@
     </head>
     <body>
         <form id="form1">
+
             <div class="row">
 
 
@@ -481,54 +487,6 @@
             </div>
 
 
-            <!--                <div class="col-xs-6">
-                                <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; ">
-                                    <tr>
-                                        <td colspan="4" align="center">
-                                            <span >方案列表&nbsp;</span>
-                                            <span class="menuBox">
-            
-                                                <input id="p_plan" class="easyui-combobox" name="p_plan" style="width:150px; height: 30px" 
-                                                       data-options="editable:false,valueField:'id', textField:'text' " />
-                                        </td>
-                                    </tr>
-                                    <input type="hidden" id="p_type" name="p_type" />
-                                    <tr id="type0">
-                                        <td>
-                                            <span style="margin-left:20px;">闭合时间</span>&nbsp;
-                                        </td>
-                                        <td> <input id="intime" name="intime" style=" height: 30px; width: 150px;  "  class="easyui-timespinner">
-                                        </td>
-                                        <td>
-                                            <span style="margin-left:20px;">断开时间&nbsp;</span>
-                                        </td>
-                                        <td>
-                                            <input id="outtime" name="outtime" style=" height: 30px; width: 150px;  "  class="easyui-timespinner">
-                                        </td>
-                                    </tr>
-            
-                                    <tr id="type1" style=" display: none" >
-                                        <td>
-                                            <span style="margin-left:20px;">区域经度</span>&nbsp;
-                                        </td>
-                                        <td>
-                                            <input id="longitudem26d" class="form-control" name="longitudem26d" style="width:51px;display: inline;" type="text">&nbsp;°
-                                            <input id="longitudem26m" class="form-control" name="longitudem26m" style="width:45px;display: inline;" type="text">&nbsp;'
-                                            <input id="longitudem26s" class="form-control" name="longitudem26s" style="width:45px;display: inline;" type="text">&nbsp;"
-                                        </td>
-                                        <td>
-                                            <span style="margin-left:20px;">区域纬度&nbsp;</span>
-            
-                                        </td>
-                                        <td>
-                                            <input id="latitudem26d" class="form-control" name="latitudem26d" style="width:51px;display: inline;" type="text">&nbsp;°
-                                            <input id="latitudem26m" class="form-control" name="latitudem26m" style="width:45px;display: inline;" type="text">&nbsp;'
-                                            <input id="latitudem26s" class="form-control" name="latitudem26s" style="width:45px;display: inline;" type="text">&nbsp;"
-                                        </td>
-                                    </tr>
-                                </table>
-            
-                            </div>-->
         </div>
 
 

@@ -495,7 +495,8 @@
                                 nobj.name = name;
                                 var day =getNowFormatDate2();
                                 nobj.time = day;
-                                nobj.comment = "登陆";
+                                nobj.type = "登陆";
+                                nobj.pid = arrlist1[0].pid;
                                 $.ajax({async: false, url: "login.oplog.addoplog.action", type: "get", datatype: "JSON", data: nobj,
                                     success: function (data) {
                                         var arrlist = data.rs;
@@ -523,11 +524,6 @@
                     if (pwd == "" || username == "") {
                         $("#cc").prop("checked", false);
                     } else if ($("#cc").is(":checked")) {
-
-                        //var pass = $("#password").val();
-                        // var name = $("#username").val();               
-                        //var password = hex_md5(pass);
-                        //  var obj = $("#myfrom").serializeObject();
                         //记住密码前先清除原先记住的密码
                         addCookie("rmbUser", "false", -1);
                         addCookie("username", "", -1);
@@ -600,11 +596,7 @@
             <canvas id="demo-canvas" width="1398" height="914"></canvas>
         </div>
 
-        <img src="./img/huaming.jpg" style="position:absolute;top:0;left:0;z-index:-1;width:100%;height:100%;">
-        <!--        <div class="logo animated bounceInDown" style="display: block;">
-                     <img src="imgs/login/sz.png"/> 
-                    <img src="./img/sz-tit.png" class="phoneTit">
-                </div> -->
+        <img src="./img/hm2.jpg" style="position:absolute;top:0;left:0;z-index:-1;width:100%;height:100%;">
 
         <div class="changeLanguage">
             <div language="zh_CN" class="Zh" id="chinese">中文</div>

@@ -16,12 +16,15 @@
         <script type="text/javascript" src="select2/js/select2.min.js"></script>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+        <script type="text/javascript"  src="js/getdate.js"></script>
         <title>用户管理页面</title>
 
         <style>* { margin: 0; padding: 0; } body, html { width: 100%; height: 100%; } .zuheanniu { margin-top: 2px; margin-left: 10px; } table { font-size: 14px; } .modal-body input[type="text"], .modal-body select, .modal-body input[type="radio"] { height: 30px; } .modal-body table td { line-height: 40px; } .menuBox { position: relative; background: skyblue; } .getMenu { z-index: 1000; display: none; background: white; list-style: none; border: 1px solid skyblue; width: 150px; height: auto; max-height: 200px; position: absolute; left: 0; top: 25px; overflow: auto; } .getMenu li { width: 148px; padding-left: 10px; line-height: 22px; font-size: 14px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; } .getMenu li:hover { background: #eee; cursor: pointer; } .a-upload { padding: 4px 10px; height: 30px; line-height: 20px; position: relative; cursor: pointer; color: #888; background: #fafafa; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; display: inline-block; *display: inline; *zoom: 1 } .a-upload input { position: absolute; font-size: 100px; right: 0; top: 0; opacity: 0; filter: alpha(opacity = 0); cursor: pointer } .a-upload:hover { color: #444; background: #eee; border-color: #ccc; text-decoration: none } .pagination-info { float: left; margin-top: - 4px; } .modal-body { text-align:-webkit-center; text-align:-moz-center; width: 600px; margin: auto; } .btn-primary { color: #fff; background-color: #0099CC; border-color: #0099CC; }</style>
 
 
         <script>
+            var u_name = parent.parent.getusername();
+            var o_pid = parent.parent.getpojectId();
             $(function () {
                 $("#sel_menu2").select2();
                 $("#sel_menu1").select2();
@@ -58,19 +61,51 @@
                     }
                 });
                 //获取所有项目
-                $.ajax({async: false, url: "login.usermanage.getProject.action", type: "get", datatype: "JSON",
+                var pid;
+                var id = parent.parent.getuserId();
+                $.ajax({url: "login.project.getuserProject.action", async: false, type: "get", datatype: "JSON", data:{id:id},
                     success: function (data) {
-                        $("#sel_menu2").empty();//清空下拉框
-                        $.each(data, function (i, item) {
-                            $("#sel_menu2").append("<option value='" + item.id + "'>&nbsp;" + item.text + "</option>");
-                            $("#sel_menu1").append("<option value='" + item.id + "'>&nbsp;" + item.text + "</option>");
-                        });
-
+                        pid = data.rs[0].pid;
                     },
                     error: function () {
-                        alert("提交失败！");
+                        alert("出现异常！");
                     }
                 });
+                var pids = pid.split(",");   //项目编号
+                // $("#pojects").val(pids[0]);
+                var pname = [];   //项目名称
+                for (var i = 0; i < pids.length; i++) {
+                    var obj = {};
+                    obj.code = pids[i];
+                    $.ajax({url: "login.main.getpojcetname.action", async: false, type: "get", datatype: "JSON", data: obj,
+                        success: function (data) {
+                            pname.push(data.rs[0].name);
+                        },
+                        error: function () {
+                            alert("出现异常！");
+                        }
+                    });
+                }
+
+                for (var i = 0; i < pids.length; i++) {
+                    var options;
+                    options += "<option value=\"" + pids[i] + "\">" + pname[i] + "</option>";
+                    $("#sel_menu2").html(options);
+                    $("#sel_menu1").html(options);
+                }
+//                $.ajax({async: false, url: "login.usermanage.getProject.action", type: "get", datatype: "JSON",
+//                    success: function (data) {
+//                        $("#sel_menu2").empty();//清空下拉框
+//                        $.each(data, function (i, item) {
+//                            $("#sel_menu2").append("<option value='" + item.id + "'>&nbsp;" + item.text + "</option>");
+//                            $("#sel_menu1").append("<option value='" + item.id + "'>&nbsp;" + item.text + "</option>");
+//                        });
+//
+//                    },
+//                    error: function () {
+//                        alert("提交失败！");
+//                    }
+//                });
 
                 var userid = parent.parent.getuserId();
                 $('#gravidaTable').bootstrapTable({
@@ -152,6 +187,7 @@
                 });
                 //添加用户
                 $("#tianjia1").click(function () {
+                    addlogon(u_name, "添加", o_pid, "用户管理", "添加用户");
                     var userid = parent.parent.getuserId();  //调用首页的getuserId方法
                     //alert( $("#userid").val());
                     var obj = $("#Form_User").serializeObject();
@@ -161,11 +197,10 @@
                     }
                     var nobj = {};
                     nobj.name = obj.name;
-                    var  isok = true;
+                    var isok = true;
                     $.ajax({async: false, url: "login.usermanage.isusername.action", type: "POST", datatype: "JSON", data: nobj,
                         success: function (data) {
                             var arrlist = data.rs;
-                            console.log(arrlist);
                             if (arrlist.length > 0) {
                                 alert("该用户名已存在，请输入新的用户名");
                                 isok = false;
@@ -175,7 +210,7 @@
                             alert("提交失败！");
                         }
                     });
-                    if (isok){
+                    if (isok) {
                         var pid = $("#sel_menu2").val(); //项目
                         var pids = "";
                         for (var i = 0; i < pid.length; i++) {
@@ -195,8 +230,8 @@
                                 var arrlist = data.rs;
                                 if (arrlist.length == 1) {
                                     layerAler("添加成功！");
-                                     $("#gravidaTable").bootstrapTable('refresh');
-                                     $("#pjj").modal('hide'); //手动关闭
+                                    $("#gravidaTable").bootstrapTable('refresh');
+                                    $("#pjj").modal('hide'); //手动关闭
                                 }
                             },
                             error: function () {
@@ -244,8 +279,9 @@
                 var pid2 = pid.split(",");
                 $('#sel_menu1').val(pid2).trigger('change');
             }
-
+            //修改
             function editaction() {
+                addlogon(u_name, "修改", o_pid, "用户管理", "修改用户信息");
                 var pid = $("#sel_menu1").val(); //项目
                 var pids = "";
                 for (var i = 0; i < pid.length; i++) {
@@ -289,7 +325,7 @@
                 layer.confirm('确认要删除吗？', {
                     btn: ['确定', '取消']//按钮
                 }, function (index) {
-
+                    addlogon(u_name, "删除", o_pid, "用户管理", "删除用户");
                     for (var i = 0; i < num; i++) {
                         var select = selects[i];
                         $.ajax({async: false, url: "formuser.user.deleteUser.action", type: "POST", datatype: "JSON", data: {id: select.id},
@@ -310,14 +346,15 @@
                 });
             }
             //重置密码
-            function  chongzhimima(){
+            function  chongzhimima() {
+                addlogon(u_name, "重置密码", o_pid, "用户管理>编辑", "重置用户密码");
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
                 var select = selects[0];
                 var id = select.id;
                 var pwd = hex_md5("123");
                 var pwdobj = {};
                 pwdobj.id = id;
-                pwdobj.password =pwd ;
+                pwdobj.password = pwd;
                 $.ajax({url: "login.usermanage.updatePwd.action", async: false, type: "get", datatype: "JSON", data: pwdobj,
                     success: function (data) {
                         var arrlist = data.rs;
@@ -455,7 +492,7 @@
                                     <tr>
                                         <td>
                                             <span style="margin-left:20px;">名字</span>&nbsp;
-                                            <input id="name_edit" readonly="true"   class="form-control"  name="name_edit" style="width:150px;display: inline;" placeholder="请输入名字" type="text" readonly="readonly"></td>
+                                            <input id="name_edit" readonly="true"   class="form-control"  name="name_edit" style="width:150px;display: inline;"  type="text" readonly="readonly"></td>
                                         <td></td>
                                         <td>
                                             <span style="margin-left:10px;">姓别&nbsp;</span>

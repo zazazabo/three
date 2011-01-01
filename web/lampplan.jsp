@@ -28,6 +28,7 @@
         <script type="text/javascript" src="js/getdate.js"></script>
         <script>
             var u_name = parent.parent.getusername();
+            var o_pid = parent.parent.getpojectId();
             function layerAler(str) {
                 layer.alert(str, {
                     icon: 6,
@@ -52,7 +53,7 @@
             function checkPlanLampAdd() {
 
                 var a = $("#formadd").serializeObject();
-
+                addlogon(u_name, "添加", o_pid, "灯具策略", "添加灯具方案");
                 if (a.p_type == "0") {
                     var obj1 = {"time": a.time1, "value": parseInt(a.val1)};
                     var obj2 = {"time": a.time2, "value": parseInt(a.val2)};
@@ -73,19 +74,6 @@
                             var arrlist = data.rs;
                             if (arrlist.length == 1) {
                                 ret = true;
-                                var nobj2 = {};
-                                nobj2.name = u_name;
-                                var day = getNowFormatDate2();
-                                nobj2.time = day;
-                                nobj2.comment = "添加时间类型的灯具方案";
-                                $.ajax({async: false, url: "login.oplog.addoplog.action", type: "get", datatype: "JSON", data: nobj2,
-                                    success: function (data) {
-                                        var arrlist = data.rs;
-                                        if (arrlist.length > 0) {
-
-                                        }
-                                    }
-                                });
                                 $("#table_lamp").bootstrapTable('refresh');
                             }
                         },
@@ -117,19 +105,6 @@
                             var arrlist = data.rs;
                             if (arrlist.length == 1) {
                                 ret = true;
-                                var nobj2 = {};
-                                nobj2.name = u_name;
-                                var day = getNowFormatDate2();
-                                nobj2.time = day;
-                                nobj2.comment = "添加场景类型的灯具方案";
-                                $.ajax({async: false, url: "login.oplog.addoplog.action", type: "get", datatype: "JSON", data: nobj2,
-                                    success: function (data) {
-                                        var arrlist = data.rs;
-                                        if (arrlist.length > 0) {
-
-                                        }
-                                    }
-                                });
                                 $("#tablescene").bootstrapTable('refresh');
                             }
                         },
@@ -147,10 +122,8 @@
 
 
             function editlampplan_finish() {
-                var lamp_code = $("#lampcode").val();
-//                $("#select_type_edit").attr("disabled", false);
                 var a = $("#form2").serializeObject();
-
+                addlogon(u_name, "修改", o_pid, "灯具策略", "修改灯具方案");
                 if (a.p_type == "0") {
                     var obj1 = {"time": a.time1, "value": parseInt(a.val1)};
                     var obj2 = {"time": a.time2, "value": parseInt(a.val2)};
@@ -167,24 +140,11 @@
                     a.p_time6 = JSON.stringify(obj6);
 
                     var ret = false;
-                    $.ajax({async: false, url: "test1.plan.editlamp.action", type: "get", datatype: "JSON", data: a,
+                    $.ajax({async: false, url: "lamp.planForm.editlamp1.action", type: "get", datatype: "JSON", data: a,
                         success: function (data) {
                             var arrlist = data.rs;
                             if (arrlist.length == 1) {
-                                ret = true;
-                                var nobj2 = {};
-                                nobj2.name = u_name;
-                                var day = getNowFormatDate2();
-                                nobj2.time = day;
-                                nobj2.comment = "修改灯具方案编码为：" + lamp_code + "的灯具方案";
-                                $.ajax({async: false, url: "login.oplog.addoplog.action", type: "get", datatype: "JSON", data: nobj2,
-                                    success: function (data) {
-                                        var arrlist = data.rs;
-                                        if (arrlist.length > 0) {
-
-                                        }
-                                    }
-                                });
+                                ret = true;                            
                                 $("#table_lamp").bootstrapTable('refresh');
                             }
                         },
@@ -205,26 +165,13 @@
                     }
                     o.p_name = a.p_name;
                     o.p_type = a.p_type;
-
+                    o.id=a.id;
                     var ret = false;
-                    $.ajax({async: false, url: "test1.plan.editlampscene.action", type: "get", datatype: "JSON", data: o,
+                    $.ajax({async: false, url: "lamp.planForm.editlampscene.action", type: "get", datatype: "JSON", data: o,
                         success: function (data) {
                             var arrlist = data.rs;
                             if (arrlist.length == 1) {
                                 ret = true;
-                                var nobj2 = {};
-                                nobj2.name = u_name;
-                                var day = getNowFormatDate2();
-                                nobj2.time = day;
-                                nobj2.comment = "修改灯具方案编码为：" + lamp_code + "的灯具方案";
-                                $.ajax({async: false, url: "login.oplog.addoplog.action", type: "get", datatype: "JSON", data: nobj2,
-                                    success: function (data) {
-                                        var arrlist = data.rs;
-                                        if (arrlist.length > 0) {
-
-                                        }
-                                    }
-                                });
                                 $("#tablescene").bootstrapTable('refresh');
                             }
                         },
@@ -341,25 +288,13 @@
                     offset: 'center',
                     title: '提示'
                 }, function (index) {
+                    addlogon(u_name, "删除", o_pid, "灯具策略", "删除灯具方案");
                     for (var i = 0; i < selects.length; i++) {
                         var select = selects[i];
                         $.ajax({async: false, url: "loop.planForm.deleteloop.action", type: "get", datatype: "JSON", data: {id: select.id},
                             success: function (data) {
                                 var arrlist = data.rs;
                                 if (arrlist.length == 1) {
-                                    var nobj2 = {};
-                                    nobj2.name = u_name;
-                                    var day = getNowFormatDate2();
-                                    nobj2.time = day;
-                                    nobj2.comment = "删除灯具方案编码为：" + select.p_code + "的灯具方案";
-                                    $.ajax({async: false, url: "login.oplog.addoplog.action", type: "get", datatype: "JSON", data: nobj2,
-                                        success: function (data) {
-                                            var arrlist = data.rs;
-                                            if (arrlist.length > 0) {
-
-                                            }
-                                        }
-                                    });
                                     $(b).bootstrapTable('refresh');
                                 }
 
@@ -408,7 +343,7 @@
                     }
                 });
 
-                $("#p_type").combobox(
+                $("#p_type1").combobox(
                         {
                             onSelect: function (record) {
                                 if (record.value == "0") {
@@ -493,9 +428,8 @@
                     }
                 });
 
-                $("#modal_add").on("hidden.bs.modal", function () {
-                    $(this).removeData("bs.modal");
-                });
+
+
 
                 $('#table_lamp').bootstrapTable({
                     url: 'lamp.planForm.getLampPlan.action',

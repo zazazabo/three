@@ -12,13 +12,94 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
         <script type="text/javascript" src="js/genel.js"></script>
+        <script type="text/javascript" src="js/getdate.js"></script>
         <script>
+            var u_name = parent.parent.getusername();
+            var o_pid = parent.parent.getpojectId();
             function layerAler(str) {
                 layer.alert(str, {
                     icon: 6,
                     offset: 'center'
                 });
             }
+            function  readlampCB(obj) {
+
+                if (obj.status == "success") {
+                    var data = Str2BytesH(obj.data);
+                    var v = "";
+                    for (var i = 0; i < data.length; i++) {
+
+                        v = v + sprintf("%02x", data[i]) + " ";
+                    }
+                    console.log("读取的数据:", v);
+                    var set1 = data[21] * 256 + data[20];
+                    var set2 = data[23] * 256 + data[22];
+
+                    var l_factory = "";
+                    for (var i = 29; i > 23; i--) {
+                        l_factory = l_factory + sprintf("%02x", data[i]) + "";
+                    }
+                    var worktype = data[30];
+                    var l_groupe = data[31];
+                    var o = ["时间", "经纬度", "场景"];
+                    var str = "装置号：" + set1.toString() + "<br>测量点号:" + set1.toString() + "<br>通信地址:" + l_factory + "<br>工作方式:" + o[worktype] + "<br>组号:" + l_groupe.toString();
+
+ 
+                    layerAler(str);
+
+//                    if (obj.fn == 320) {
+//                        var m = sprintf("%02x", data[21]);
+//                        var h = sprintf("%02x", data[22]);
+//                        var m1 = sprintf("%02x", data[23]);
+//                        var h1 = sprintf("%02x", data[24]);
+//                        var intime1 = sprintf("%s:%s", h, m);
+//                        var outtime1 = sprintf("%s:%s", h1, m1);
+//
+//                        $('#intime').timespinner('setValue', intime1);
+//                        $('#outtime').timespinner('setValue', outtime1);
+//                    }
+
+                }
+
+
+
+
+
+
+                console.log(obj);
+            }
+            function readlamp() {
+                var selects = $('#gravidaTable').bootstrapTable('getSelections');
+                var o = $("#form1").serializeObject();
+                var vv = new Array();
+                if (selects.length == 0) {
+                    layerAler("请勾选表格数据");
+                    return;
+                }
+                addlogon(u_name, "读取", o_pid, "回路部署", "读取灯具信息");
+                var len = selects.length;
+                var h = len >> 8 & 0x00FF;
+                var l = len & 0x00ff;
+                vv.push(l);
+                vv.push(h);
+                var ele = selects[0];
+                if (ele.l_comaddr != o.l_comaddr) {
+                    layerAler("列表的网关要和下拉的网关不一致");
+                    return;
+                }
+                var setcode = ele.l_code;
+                var l_code = parseInt(setcode);
+                var a = l_code >> 8 & 0x00FF;
+                var b = l_code & 0x00ff;
+                vv.push(b);//装置序号  2字节            
+                vv.push(a);//装置序号  2字节     
+
+                var comaddr = o.l_comaddr;
+                var num = randnum(0, 9) + 0x70;
+                var data = buicode(o.l_comaddr, 0x04, 0xAA, num, 0, 380, vv);
+                dealsend2("AA", data, 380, "readlampCB", comaddr, 0, 0, 0);
+            }
+
             function deploylampCB(obj) {
                 var param = obj.param;
                 if (obj.status == "fail") {
@@ -73,6 +154,7 @@
                     layerAler("请勾选表格数据");
                     return;
                 }
+                addlogon(u_name, "部署", o_pid, "灯具部署", "部署灯具");
                 var len = selects.length;
                 var h = len >> 8 & 0x00FF;
                 var l = len & 0x00ff;
@@ -109,7 +191,6 @@
                 var comaddr = o.l_comaddr;
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(o.l_comaddr, 0x04, 0xA4, num, 0, 102, vv);
-                var num = randnum(0, 9) + 0x70; //随机帧序列号
                 dealsend2("A4", data, 102, "deploylampCB", comaddr, 1, param, 1);
             }
 
@@ -121,6 +202,7 @@
                     layerAler("请勾选表格数据");
                     return;
                 }
+                addlogon(u_name, "移除", o_pid, "灯具部署", "移除灯具");
                 var len = selects.length;
                 var h = len >> 8 & 0x00FF;
                 var l = len & 0x00ff;
@@ -141,6 +223,10 @@
                 vv.push(0);//测量点号  2字节  
                 var factorycode = ele.l_factorycode;
                 var factor = Str2BytesH(factorycode);
+                if (factor.length != 6) {
+                    layerAler("灯具通信地址应该是六位字节");
+                    return;
+                }
                 vv.push(factor[5]); //通信地址
                 vv.push(factor[4]); //通信地址
                 vv.push(factor[3]); //通信地址
@@ -154,10 +240,15 @@
                 var igroupe = parseInt(ele.l_groupe); //组号
                 vv.push(igroupe); //组号
                 var param = {row: ele.index, id: ele.id};
+
                 var comaddr = o.l_comaddr;
+
                 var num = randnum(0, 9) + 0x70;
+                console.log("aaa");
                 var data = buicode(o.l_comaddr, 0x04, 0xA4, num, 0, 102, vv);
+                console.log("bbb");
                 var num = randnum(0, 9) + 0x70; //随机帧序列号
+
                 dealsend2("A4", data, 102, "deploylampCB", comaddr, 0, param, 0);
             }
 
@@ -230,10 +321,13 @@
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
                                 if (value == 0) {
-                                    value = "0(时间)";
+                                    value = "(时间)";
                                     return value;
                                 } else if (value == 1) {
-                                    value = "1 ";
+                                    value = "(经纬度)";
+                                    return value;
+                                } else if (value == 2) {
+                                    value = "场景";
                                     return value;
                                 }
                             }
@@ -289,6 +383,16 @@
                         return temp;  
                     },
                 });
+
+
+                $('#gravidaTable').on("check.bs.table", function (field, value, row, element) {
+                    var index = row.data('index');
+                    value.index = index;
+                });
+
+
+
+
             })
         </script>
     </head>
@@ -308,13 +412,16 @@
 
 
                                     <input  style="margin-left:10px;" id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:100px; height: 30px" 
-                                           data-options="editable:false,valueField:'id', textField:'text' " />
+                                            data-options="editable:false,valueField:'id', textField:'text' " />
                                 </td>
                                 <td>
                                     <button style="margin-left:10px;" id="btndeploylamp" onclick="deploylamp()" type="button" class="btn btn-success btn-sm">部署灯具</button>
                                 </td>
                                 <td>
                                     <button style="margin-left:10px;" id="btnremovelamp" type="button" onclick="removelamp()" class="btn btn-success btn-sm">移除灯具</button>
+                                </td>
+                                <td>
+                                    <button style="margin-left:10px;"  type="button" onclick="readlamp()" class="btn btn-success btn-sm">读取灯具信息</button>
                                 </td>
                             </tr>
                         </tbody>

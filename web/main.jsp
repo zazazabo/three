@@ -22,13 +22,17 @@
             var websocket = null;
 
             function sendData(obj) {
-                console.log(websocket.readyState);
+           
+                console.log("通信状态:",websocket.readyState);
                 if (websocket.readyState == 3) {
 //                    layerAler("通迅已断开");
                 }
                 if (websocket != null && websocket.readyState == 1) {
-                    console.log(obj);
+                   
+                    //delete obj.msg;
+                     console.log(obj);
                     var datajson = JSON.stringify(obj);
+
                     websocket.send(datajson);
                 }
             }
@@ -47,6 +51,11 @@
                 var name = $("#u_name").text();
                 return name;
             }
+            
+            function  getupid(){
+                var upid = $("#upid").val();
+                return upid;
+            }
 
             //退出
             function getout() {
@@ -57,7 +66,9 @@
                     nobj.name = name;
                     var day = getNowFormatDate2();
                     nobj.time = day;
-                    nobj.comment = "退出系统";
+                    nobj.type = "退出系统";
+                    nobj.pid = $("#upid").val();
+                    nobj.page = "首页";
                     $.ajax({async: false, url: "login.oplog.addoplog.action", type: "get", datatype: "JSON", data: nobj,
                         success: function (data) {
                             var arrlist = data.rs;
@@ -232,7 +243,7 @@
             $(function () {
 
                 if ('WebSocket' in window) {
-                    //websocket = new WebSocket("ws://zhizhichun.eicp.net:18414/");
+                   // websocket = new WebSocket("ws://zhizhichun.eicp.net:18414/");
                     websocket = new WebSocket("ws://localhost:5050/");
                 } else {
                     alert('当前浏览器不支持websocket')
@@ -278,27 +289,6 @@
                     websocket.close();
                 };
 
-                var pid = $("#upid").val();
-                var pids = pid.split(",");   //项目编号
-                var pname = [];   //项目名称
-                for (var i = 0; i < pids.length; i++) {
-                    var obj = {};
-                    obj.code = pids[i];
-                    $.ajax({url: "login.main.getpojcetname.action", async: false, type: "get", datatype: "JSON", data: obj,
-                        success: function (data) {
-                            pname.push(data.rs[0].name);
-                        },
-                        error: function () {
-                            alert("出现异常！");
-                        }
-                    });
-                }
-
-                for (var i = 0; i < pids.length; i++) {
-                    var options;
-                    options += "<option value=\"" + pids[i] + "\">" + pname[i] + "</option>";
-                    $("#pojects").html(options);
-                }
                 //查看警异常信息总数
                 fualtCount();
             });
@@ -309,7 +299,7 @@
         <div class="wraper"> 
             <div class="bodyLeft" style="background: rgb(14, 98, 199) none repeat scroll 0% 0%;">
                 <div class="bodyLeftTop listdisplayNone" style="background: rgb(92, 183, 92) none repeat scroll 0% 0%">
-                    <span class="menuMessage" style="width:80px;margin-left:30px;">智慧照明</span>
+                    <span class="menuMessage" style="width:80px;margin-left:30px;">智慧城市照明管理系统</span>
                 </div>
                 <ul class="layui-nav layui-nav-tree layui-nav-side MenuBox ">
                 </ul>
@@ -320,18 +310,10 @@
                     <div class="CCIOT-logo" style="display:none;height:60px;float:left;padding-top:7px;padding-left:15px;box-sizing:border-box;">
                         <img src="abc.action_files/sz-tit.png" style="min-width:50px;height:50px;float:left;" id="logoImg">
                     </div>
-                    <ul class="navTop" style="left: 200px; display: none;">
-                        <!-- 首页顶部导航 -->
-                        <li title="照明" name="abc/device.action" style="background:url(&quot;imgs/indexNav/2.png&quot;)"></li>
-                        <li title="地图" name="abc/map.action" style="background:url(&quot;imgs/indexNav/3.png&quot;)"></li>
-                    </ul>
                     <ul class="controlMessage animated fadeInRight">
-                        <!--                        <li class="one imgM Home" style="display: none;">
-                                                    <img alt="" src="abc.action_files/home_s.png" style="height:21px;width:21px;margin-top:2px;">
-                                                </li>-->
                         <li class="one">
                             <span>项目&nbsp;&nbsp;</span>
-                            <select style="width: 100px; height: 30px; margin-top:0px; font-size: 16px; border: 1px solid;" id="pojects">
+                            <select style="width: 200px; height: 30px; margin-top:0px; font-size: 16px; border: 1px solid;" id="pojects">
 
                             </select>
                         </li>
@@ -342,8 +324,8 @@
 
                         <li class="one" style="width:74px;">
 
-                            <i class="layui-icon indexIcon"></i>   
-                            <!--<span class="glyphicon glyphicon-tags indexIcon"/>-->
+                            <i class="layui-icon  indexIcon"></i>   
+<!--                            <span class="glyphicon glyphicon-tags indexIcon"/>-->
                             <span class="Till" style="width: 74px; text-align: center; color: rgb(255, 255, 255);">语言</span>
 
 
@@ -353,10 +335,10 @@
                                 <li language="en_US" id="english">英文</li>
                             </ul>
                         </li>
-                        <li class="one" style="width:140px;">
+                        <li class="one" style=" margin-right: 10px;">
                             <i class="layui-icon indexIcon"></i>  
                             <!--<span class="glyphicon glyphicon-user"></span>-->
-                            <span class="Till" style="width: 140px; padding-left: 24px; box-sizing: border-box; color: rgb(255, 255, 255);">
+                            <span class="Till" style=" padding-left: 24px; box-sizing: border-box; color: rgb(255, 255, 255);">
                                 <span id="u_name" class="admin" style="color: rgb(255, 255, 255);">${rs[0].name}</span>
                                 <input id="m_code" type="hidden" value="${rs[0].m_code}"/>
                                 <input id="pwd" type="hidden" value="${rs[0].password}"/>
@@ -396,13 +378,13 @@
                                 <tr>
                                     <td>
                                         <span style="margin-left:35px;">新密码：</span>&nbsp;
-                                        <input id="newPwd" class="form-control" style="width:150px;display: inline;" placeholder="请输入原密码" type="password">
+                                        <input id="newPwd" class="form-control" style="width:150px;display: inline;" placeholder="请输入新密码" type="password">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <span style="margin-left:20px;">确定密码：</span>&nbsp;
-                                        <input id="okPwd" class="form-control" style="width:150px;display: inline;" placeholder="请输入原密码" type="password">
+                                        <input id="okPwd" class="form-control" style="width:150px;display: inline;" placeholder="请确认密码" type="password">
                                     </td>
                                 </tr>
                             </tbody>
@@ -462,6 +444,32 @@
 //                    $("#alarmTable").css("display", "block");
 //                    document.getElementById('alarmTable').contentWindow.document.location.reload();
 //                });
+                var pid = '${rs[0].pid}';
+                var pids = pid.split(",");   //项目编号
+               // $("#pojects").val(pids[0]);
+                var pname = [];   //项目名称
+                for (var i = 0; i < pids.length; i++) {
+                    var obj = {};
+                    obj.code = pids[i];
+                    $.ajax({url: "login.main.getpojcetname.action", async: false, type: "get", datatype: "JSON", data: obj,
+                        success: function (data) {
+                            pname.push(data.rs[0].name);
+                        },
+                        error: function () {
+                            alert("出现异常！");
+                        }
+                    });
+                }
+
+                for (var i = 0; i < pids.length; i++) {
+                    var options;
+                    options += "<option value=\"" + pids[i] + "\">" + pname[i] + "</option>";
+                    $("#pojects").html(options);
+                }
+                
+                
+                
+                
 
                 $("body").delegate(".list", "click", function () {
                     if ($(this).siblings(".secondMenu").length != 0) {
@@ -522,7 +530,7 @@
                 })
                 /* 加载左边菜单 */
                 //传角色权限 获取菜单 
-                var rotype = 1;// $("#m_code").val(); //角色id
+                var rotype = $("#m_code").val(); //角色id
                 var objrole = {role: rotype};
                 var u_id = $("#userid").val(); //用户id
                 var objrole = {role: rotype, uid: u_id};
@@ -561,6 +569,7 @@
                         $(".MenuBox").html(htmls);
                         $(".list:eq(0)").addClass("active");
                         var ifrsrc = $(".list:eq(0)").attr("name");
+                         ifrsrc = ifrsrc + "?pid=" + getpojectId(); 
                         $("#iframe").attr("src", ifrsrc);
                     }
 

@@ -10,9 +10,91 @@
     <head>
         <%@include  file="js.jspf" %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script type="text/javascript" src="SheetJS-js-xlsx/dist/xlsx.core.min.js"></script>
         <script type="text/javascript" src="js/genel.js"></script>
+        <script type="text/javascript" src="js/getdate.js"></script>
         <script>
+            var u_name = parent.parent.getusername();
+            var o_pid =  parent.parent.getpojectId();
+            function excel() {
+                $('#dialog-excel').dialog('open');
+                return false;
 
+            }
+            //导入excel的添加按钮事件
+            function addexcel() {
+                var selects = $('#warningtable').bootstrapTable('getSelections');
+                var num = selects.length;
+                if (num == 0) {
+                    layerAler("请选择您要保存的数据");
+                    return;
+                }
+                addlogon(u_name, "添加", o_pid, "灯具管理", "导入Excel");
+                var pid = parent.parent.getpojectId();
+                for (var i = 0; i <= selects.length - 1; i++) {
+                    var comaddr = selects[i].网关地址;
+                    var lampid = selects[i].灯具编号;
+                    var obj = {};
+                    obj.pid = pid;
+                    obj.comaddr = comaddr;
+                    $.ajax({async: false, url: "login.lampmanage.getpid.action", type: "POST", datatype: "JSON", data: obj,
+                        success: function (data) {
+                            console.log("1");
+                            var arrlist = data.rs;
+                            if (arrlist.length > 0) {
+                                console.log("w:" + arrlist.length);
+                                $.ajax({async: false, url: "login.lampmanage.getfactorycode.action", type: "POST", datatype: "JSON", data: {l_factorycode: lampid},
+                                    success: function (data) {
+                                        var arrlist = data.rs;
+                                        if (arrlist.length == 0) {
+                                            console.log("d:" + arrlist.length);
+                                            var comname = selects[i].网关名称;
+                                            var lampname = selects[i].灯具名称;
+                                            var zh = selects[i].组号;
+                                            var kzfs = selects[i].控制方式;
+                                            var lng = selects[i].经度;
+                                            var lat = selects[i].纬度;
+                                            var adobj = {};
+                                            adobj.l_name = lampname;
+                                            adobj.l_worktype = kzfs;
+                                            adobj.l_comaddr = comaddr;
+                                            adobj.l_deplayment = 0;
+                                            adobj.l_factorycode = lampid;
+                                            adobj.l_groupe = zh;
+                                            adobj.lng = lng;
+                                            adobj.lat = lat;
+                                            adobj.wname = comname;
+                                            $.ajax({url: "login.lampmanage.addlamp.action", async: false, type: "get", datatype: "JSON", data: adobj,
+                                                success: function (data) {
+                                                    var arrlist = data.rs;
+                                                    if (arrlist.length == 1) {
+                                                        var ids = [];//定义一个数组
+                                                        var xh = selects[i].序号;
+                                                        console.log("xh:"+xh);
+                                                        ids.push(xh);//将要删除的id存入数组
+                                                        $("#warningtable").bootstrapTable('remove', {field: '序号', values: ids});
+                                                    }
+                                                },
+                                                error: function () {
+                                                    alert("提交添加失败！");
+                                                }
+                                            });
+                                        }
+                                    },
+                                    error: function () {
+                                        layerAler("提交失败");
+                                    }
+                                });
+
+                            }
+                        },
+                        error: function () {
+                            layerAler("提交失败");
+                        }
+                    });
+
+                }
+            }
             function showDialog() {
 
                 $('#dialog-add').dialog('open');
@@ -40,6 +122,7 @@
                 layer.confirm('确认要删除吗？', {
                     btn: ['确定', '取消']//按钮
                 }, function (index) {
+                    addlogon(u_name, "删除", o_pid, "灯具管理", "删除灯具");
                     $.ajax({url: "lamp.lampform.deleteLamp.action", type: "POST", datatype: "JSON", data: {id: select.id},
                         success: function (data) {
                             var arrlist = data.rs;
@@ -59,6 +142,7 @@
             }
 
             function  editlamp() {
+                addlogon(u_name, "修改", o_pid, "灯具管理", "修改灯具");
                 var o = $("#form2").serializeObject();
                 $.ajax({async: false, url: "lamp.lampform.modifylamp.action", type: "get", datatype: "JSON", data: o,
                     success: function (data) {
@@ -128,7 +212,7 @@
                     layerAler("灯具编号是12位的十六进制");
                     return false;
                 }
-
+                addlogon(u_name, "添加", o_pid, "灯具管理", "添加灯具");
                 var isflesh = false;
                 $.ajax({url: "lamp.lampform.existlamp.action", async: false, type: "get", datatype: "JSON", data: o,
                     success: function (data) {
@@ -264,40 +348,134 @@
                     oldlgroupe = o.l_groupe;
                 }
 
-
 //                vv.push(3);  //灯控器组号  1 所有灯控器  2 按组   3 个个灯控器
-
                 vv.push(parseInt(o.l_groupe2)); //新组号  1字节            
                 var comaddr = o.l_comaddr;
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA4, num, 0, 110, vv); //01 03 F24    
 
                 dealsend2("A4", data, 110, "resetGroupeCB", comaddr, o.type, oldlgroupe, o.l_groupe2);
-
             }
 
-            function dealsend2(msg, data, fn, func, comaddr, type, param, val) {
-                var user = new Object();
-                user.begin = '6A';
-                user.res = 1;
-                user.status = "";
-                user.comaddr = comaddr;
-                user.fn = fn;
-                user.function = func;
-                user.param = param;
-                user.page = 2;
-                user.msg = msg;
-                user.val = val;
-                user.type = type;
-                user.addr = getComAddr(comaddr); //"02170101";
-                user.data = data;
-                user.len = data.length;
-                user.end = '6A';
-                console.log(user);
-                parent.parent.sendData(user);
-            }
 
             $(function () {
+                $('#warningtable').bootstrapTable({
+                    columns: [
+                        {
+                            title: '单选',
+                            field: 'select',
+                            //复选框
+                            checkbox: true,
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            title: '序号',
+                            field: '序号',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: '网关名称',
+                            title: '网关名称',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: '网关地址',
+                            title: '网关地址',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: '灯具名称',
+                            title: '灯具名称',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: '灯具编号',
+                            title: '灯具编号',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: '组号',
+                            title: '组号',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: '控制方式',
+                            title: '控制方式',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: '经度',
+                            title: '经度',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: '纬度',
+                            title: '纬度',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }
+                    ],
+                    singleSelect: false,
+                    locale: 'zh-CN', //中文支持,
+                    pagination: true,
+                    pageNumber: 1,
+                    pageSize: 40,
+                    pageList: [20, 40, 80, 160]
+
+                });
+
+                $('#excel-file').change(function (e) {
+                    var files = e.target.files;
+                    var fileReader = new FileReader();
+                    fileReader.onload = function (ev) {
+                        try {
+                            var data = ev.target.result,
+                                    workbook = XLSX.read(data, {
+                                        type: 'binary'
+                                    }), // 以二进制流方式读取得到整份excel表格对象
+                                    persons = []; // 存储获取到的数据
+                        } catch (e) {
+                            alert('文件类型不正确');
+                            return;
+                        }
+                        // 表格的表格范围，可用于判断表头是否数量是否正确
+                        var fromTo = '';
+                        // 遍历每张表读取
+                        for (var sheet in workbook.Sheets) {
+                            if (workbook.Sheets.hasOwnProperty(sheet)) {
+                                fromTo = workbook.Sheets[sheet]['!ref'];
+                                console.log(fromTo);
+                                persons = persons.concat(XLSX.utils.sheet_to_json(workbook.Sheets[sheet]));
+                                // break; // 如果只取第一张表，就取消注释这行
+                            }
+                        }
+                        var headStr = '序号,网关名称,网关地址,灯具名称,灯具编号,组号,控制方式,经度,纬度';
+                        for (var i = 0; i < persons.length; i++) {
+                            if (Object.keys(persons[i]).join(',') !== headStr) {
+                                alert("导入文件格式不正确");
+                                persons = [];
+                            }
+                        }
+                        console.log("p2:" + persons.length);
+                        $("#warningtable").bootstrapTable('load', []);
+                        if (persons.length > 0) {
+                            $('#warningtable').bootstrapTable('load', persons);
+
+                        }
+                    };
+                    // 以二进制方式打开文件
+                    fileReader.readAsBinaryString(files[0]);
+                });
 
                 $("#dialog-add").dialog({
                     autoOpen: false,
@@ -330,9 +508,25 @@
                     }
                 });
 
+                $("#dialog-excel").dialog({
+                    autoOpen: false,
+                    modal: true,
+                    width: 750,
+                    height: 500,
+                    position: "top",
+                    buttons: {
+                        保存: function () {
+                            addexcel();
+                        }, 关闭: function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
+
                 $("#add").attr("disabled", true);
                 $("#xiugai1").attr("disabled", true);
                 $("#shanchu").attr("disabled", true);
+                $("#addexcel").attr("disabled", true);
                 var obj = {};
                 obj.code = ${param.m_parent};
                 obj.roletype = ${param.role};
@@ -344,6 +538,7 @@
 
                                 if (rs[i].code == "600301" && rs[i].enable != 0) {
                                     $("#add").attr("disabled", false);
+                                    $("#addexcel").attr("disabled", false);
                                     continue;
                                 }
                                 if (rs[i].code == "600302" && rs[i].enable != 0) {
@@ -524,108 +719,6 @@
                 });
 
             });
-            var idTmr;
-            function  getExplorer() {
-                var explorer = window.navigator.userAgent;
-                //ie  
-                if (explorer.indexOf("MSIE") >= 0) {
-                    return 'ie';
-                }
-                //firefox  
-                else if (explorer.indexOf("Firefox") >= 0) {
-                    return 'Firefox';
-                }
-                //Chrome  
-                else if (explorer.indexOf("Chrome") >= 0) {
-                    return 'Chrome';
-                }
-                //Opera  
-                else if (explorer.indexOf("Opera") >= 0) {
-                    return 'Opera';
-                }
-                //Safari  
-                else if (explorer.indexOf("Safari") >= 0) {
-                    return 'Safari';
-                }
-            }
-            function method5(tableid) {
-                if (getExplorer() == 'ie')
-                {
-                    var curTbl = document.getElementById(tableid);
-                    var oXL = new ActiveXObject("Excel.Application");
-                    var oWB = oXL.Workbooks.Add();
-                    var xlsheet = oWB.Worksheets(1);
-                    var sel = document.body.createTextRange();
-                    sel.moveToElementText(curTbl);
-                    sel.select();
-                    sel.execCommand("Copy");
-                    xlsheet.Paste();
-                    oXL.Visible = true;
-
-                    try {
-                        var fname = oXL.Application.GetSaveAsFilename("Excel.xls", "Excel Spreadsheets (*.xls), *.xls");
-                    } catch (e) {
-                        print("Nested catch caught " + e);
-                    } finally {
-                        oWB.SaveAs(fname);
-                        oWB.Close(savechanges = false);
-                        oXL.Quit();
-                        oXL = null;
-                        idTmr = window.setInterval("Cleanup();", 1);
-                    }
-
-                } else
-                {
-                    tableToExcel(tableid);
-                }
-            }
-            function Cleanup() {
-                window.clearInterval(idTmr);
-                CollectGarbage();
-            }
-            var tableToExcel = (function () {
-                var uri = 'data:application/vnd.ms-excel;base64,',
-                        template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"' +
-                        'xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet>'
-                        + '<x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets>'
-                        + '</x:ExcelWorkbook></xml><![endif]-->' +
-                        ' <style type="text/css">' +
-                        '.excelTable  {' +
-                        'border-collapse:collapse;' +
-                        ' border:thin solid #999; ' +
-                        '}' +
-                        '   .excelTable  th {' +
-                        '   border: thin solid #999;' +
-                        '  padding:20px;' +
-                        '  text-align: center;' +
-                        '  border-top: thin solid #999;' +
-                        ' background-color: #E6E6E6;' +
-                        ' }' +
-                        ' .excelTable  td{' +
-                        ' border:thin solid #999;' +
-                        '  padding:2px 5px;' +
-                        '  text-align: center;' +
-                        ' }</style>' +
-                        '</head><body ><table class="excelTable">{table}</table></body></html>',
-                        base64 = function (s) {
-                            return window.btoa(unescape(encodeURIComponent(s)));
-                        },
-                        format = function (s, c) {
-                            return s.replace(/{(\w+)}/g,
-                                    function (m, p) {
-                                        return c[p];
-                                    });
-                        };
-                return function (table, name) {
-                    if (!table.nodeType)
-                        table = document.getElementById(table);
-                    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML};
-                    window.location.href = uri + base64(format(template, ctx));
-                };
-            })()
-
-
-
         </script>
 
         <style>
@@ -655,17 +748,11 @@
             <button class="btn btn-danger ctrol" onclick="deleteLamp();" id="shanchu">
                 <span class="glyphicon glyphicon-trash"></span>&nbsp;删除
             </button>
+            <button class="btn btn-success ctrol" onclick="excel()" id="addexcel" >
+                <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;导入Excel
+            </button>
         </div>
-        <form id="importForm" action="importGateway.action" method="post" enctype="multipart/form-data" onsubmit="return check()">
-            <div style="float:left;margin:12px 0 0 10px;border-radius:5px 0 0 5px;position:relative;z-index:100;width:230px;height:30px;">
-                <a href="javascript:;" class="a-upload" style="width:130px;">
-                    <input name="excel" id="excel" type="file">
-                    <div class="filess">点击这里选择文件</div></a>
-                <input style="float:right;" class="btn btn-default" value="导入Excel" type="submit"></div>
-        </form>
-        <form id="exportForm" action="exportGateway.action" method="post" style="display: inline;">
-            <input id="daochu" class="btn btn-default" style="float:left;margin:12px 0 0 20px;" value="导出Excel" type="button" onclick="method5('gravidaTable')">
-        </form>
+
 
 
 
@@ -839,24 +926,18 @@
                             </td>
                         </tr> 
                         <tr id="trlamp1">
-                            <!--                            <td colspan="4">
-                                                            <label class="radio-inline">
-                                                                <input type="radio"  value="1" name="type">集中器下的所有灯具
-                                                            </label>
-                                                            <label class="radio-inline">
-                                                                <input type="radio"  value="2" name="type">集中器下以组为单位的灯具
-                                                            </label>
-                                                            <label class="radio-inline">
-                                                                <input type="radio"  value="3" checked="true" name="type">灯控器为单位
-                                                            </label>
-                                                        </td>-->
-
                         </tr> 
 
                     </tbody>
                 </table>   
             </form>
         </div>  
+
+        <div id="dialog-excel"  class="bodycenter"  style=" display: none" title="导入Excel">
+            <input type="file" id="excel-file" style=" height: 40px;">
+            <table id="warningtable"></table>
+
+        </div>
 
 
 

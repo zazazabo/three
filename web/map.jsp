@@ -23,18 +23,57 @@
                 height: 50px;
                 font-size: 20px;
             }
-
+            #fdiv{
+                width: 70%;
+                margin-left: -20%;
+            }
             .bodycenter { text-align: -webkit-center; text-align: -moz-center; width: 600px; margin: auto; } 
 
+            #up-map-div{
+                width:300px;
+                top:10%;
+                left:60%;
+                position:absolute;
+                z-index:9999;
+                border:1px solid blue;
+                background-color:#FFFFFF;
+            }
         </style>
         <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=Uppxai1CT7jTHF9bjKFx0WGTs7nCyHMr"></script>
         <script type="text/javascript" src="js/genel.js"></script>
         <script type="text/javascript" src="js/getdate.js"></script>
+        <script type="text/javascript" src="bootstrap-table/dist/bootstrap-table.js"></script>
+        <script type="text/javascript" src="bootstrap-table/dist/locale/bootstrap-table-zh-CN.min.js"></script>
+        <script type="text/javascript" src="bootstrap-table/dist/locale/bootstrap-table-zh-CN.js"></script>
 
     </head>
     <body>
         <div id="allmap">
 
+        </div>
+        <div id="up-map-div" style=" display: none">
+            <table style=" margin-left: 10%; width: 80%;">
+                <tr style=" border-bottom:1px solid green">
+                    <th >状态</th>
+                     <th></th>
+                    <th>标识</th>
+                </tr>
+                <tr>
+                    <td>在线:</td>
+                    <td style=" color: green;">-----------------</td>
+                    <td><img src="img/green2.png"></td>
+                </tr>
+                <tr>
+                    <td>离线:</td>
+                    <td style=" color: blue;">-----------------</td>
+                    <td><img src="img/blue.png"></td>
+                </tr>
+                <tr>
+                    <td>异常:</td>
+                    <td style=" color: yellow;">-----------------</td>
+                    <td><img src="img/yellow.png"></td>
+                </tr>
+            </table>
         </div>
         <!-- 添加 网关-->
         <div  id="addwanguang" class="bodycenter"  style=" display: none" title="添加网关">
@@ -44,11 +83,8 @@
                         <tbody class="search">
                             <tr>
                                 <td>
-                                    <span style="margin-left:50px;">所属区划</span>&nbsp;
-                                    <select name="qh" id="qh"  style="width:150px; height: 30px;">
-                                        <option value="1">广东</option>
-                                        <option value="2">福建</option>
-                                    </select>
+                                    <span style="margin-left:50px;">所属区域</span>&nbsp;
+                                    <input type="text" id ="area" style="width:150px; height: 30px;">
                                 </td>
                                 <td></td>
                                 <td>
@@ -76,12 +112,14 @@
                             <tbody class="search">
                                 <tr>
                                     <td>
-                                        <span style="margin-left:50px;">灯具名称</span>&nbsp;
+                                        <span style="margin-left:30px;">灯具名称</span>&nbsp;
                                         <input type='text' id='lampname'>
-                                    <td></td>
                                     <td>
-                                        <span style="margin-left:70px;">所属网关&nbsp;</span>
+                                        <span style="margin-left:50px;">所属网关&nbsp;</span>
                                         <input id="lampcomaddrlist" data-options='editable:false,valueField:"id", textField:"text"' class="easyui-combobox"/>
+                                    </td>
+                                    <td>
+                                        <input type="button" class="btn btn-sm btn-success" onclick="selectlamp()" value="搜索" style="margin-left:10px;">
                                     </td>
                                 </tr>                                   
                             </tbody>
@@ -98,6 +136,18 @@
         </div>
 
         <script type="text/javascript">
+            //创建离线图标
+            var huiicon = new BMap.Icon('./img/blue.png', new BMap.Size(27, 28), {//20，30是图片大小
+                // anchor: new BMap.Size(0, 0)      //这个是信息窗口位置（可以改改看看效果）
+            });
+            //创建在线图标
+            var greenicon = new BMap.Icon('./img/green2.png', new BMap.Size(27, 28), {//20，30是图片大小
+                //anchor: new BMap.Size(0, 0)      //这个是信息窗口位置（可以改改看看效果）
+            });
+            //异常
+             var yellow = new BMap.Icon('./img/yellow.png', new BMap.Size(27, 28), {//20，30是图片大小
+                //anchor: new BMap.Size(0, 0)      //这个是信息窗口位置（可以改改看看效果）
+            });
             //调用父页面的方法获取用户名
             var u_name = parent.getusername();
             //加载所有灯具信息
@@ -147,7 +197,23 @@
                             width: 25,
                             align: 'center',
                             valign: 'middle'
+                        }, {
+                            field: 'presence',
+                            title: '在线状态',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle',
+                            formatter: function (value, row, index) {
+                                if (value == 1) {
+                                    return "<img  src='img/online1.png'/>";
+                                } else {
+                                    return "<img  src='img/off.png'/>";
+                                }
+
+                            }
                         }],
+                    method: "post",
+                    contentType: "application/x-www-form-urlencoded",
                     singleSelect: false, //设置单选还是多选，true为单选 false为多选
                     sortName: 'id',
                     locale: 'zh-CN', //中文支持,
@@ -158,7 +224,7 @@
                     sidePagination: 'server',
                     pageNumber: 1,
                     pageSize: 5,
-                    showRefresh: true,
+                    showRefresh: false,
                     showToggle: true,
                     // 设置默认分页为 50
                     pageList: [5, 10, 15, 20, 25],
@@ -178,7 +244,8 @@
                 });
             }
             //加载所有所属网关信息
-            function getAllInfo(pid) {
+            function getAllInfo() {
+                var pid = parent.getpojectId();
                 $("#wgtable").bootstrapTable({
                     url: 'login.map.map.action?pid=' + pid,
                     columns: [
@@ -221,27 +288,31 @@
                             align: 'center',
                             valign: 'middle'
                         }, {
-                            field: 'online',
+                            field: 'presence',
                             title: '在线状态',
                             width: 25,
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index) {
-                                return "<img  src='img/off.png'/>"; //onclick='hello()'
+                                if (value == 1) {
+                                    return "<img  src='img/online1.png'/>";
+                                } else {
+                                    return "<img  src='img/off.png'/>";
+                                }
 
                             }
                         }],
                     singleSelect: true,
                     sortName: 'id',
                     locale: 'zh-CN', //中文支持,
-                    minimumCountColumns: 7, //最少显示多少列
+                    // minimumCountColumns: 7, //最少显示多少列
                     showColumns: true,
                     sortOrder: 'desc',
                     pagination: true,
                     sidePagination: 'server',
                     pageNumber: 1,
                     pageSize: 5,
-                    showRefresh: true,
+                    showRefresh: false, //是否显示刷新
                     showToggle: true,
                     // 设置默认分页为 50
                     pageList: [5, 10, 15, 20, 25],
@@ -265,9 +336,14 @@
             function getInfoByComaddr() {
 
                 var comaddr = $("#comaddrlist").val();
+                var area = $("#area").val();
                 var obj = {};
+                obj.type = "ALL";
                 if (comaddr != "") {
                     obj.comaddr = comaddr;
+                }
+                if (area != "") {
+                    obj.area = encodeURI(area);
                 }
                 var pid = parent.getpojectId();
                 obj.pid = pid;
@@ -363,6 +439,14 @@
                 button4.setAttribute("id", "dj");
                 div.appendChild(button4);
 
+                var button5 = document.createElement("input");
+                button5.setAttribute("type", "button");
+                button5.setAttribute("value", "状态标识");
+                button5.setAttribute("style", "margin-left: 5px");
+                button5.setAttribute("id", "zt");
+                div.appendChild(button5);
+
+
                 //网关单击事件
                 button3.onclick = function (e) {
                     var allOver = map.getOverlays(); //获取全部标注
@@ -386,10 +470,23 @@
                                 var Longitude = obj.Longitude;
                                 var latitude = obj.latitude;
                                 var comaddr = obj.comaddr;
+                                var Iszx = "离线";
+                                if (obj.presence == 1) {
+                                    Iszx = "在线";
+                                }
                                 if (Longitude != "" && latitude != "") {
                                     var point = new BMap.Point(Longitude, latitude);
-                                    var marker1 = new BMap.Marker(point);
-                                    marker1.setTitle(comaddr);   //这里设置maker的title (鼠标放到marker点上,会出现它的title,所以我这里把name,放到title里)
+                                    var marker1;
+                                    if (obj.presence == 1) {
+                                        marker1 = new BMap.Marker(point, {
+                                            icon: greenicon
+                                        });
+                                    } else {
+                                        marker1 = new BMap.Marker(point, {
+                                            icon: huiicon
+                                        });
+                                    }
+                                    marker1.setTitle(comaddr + "," + Iszx);   //这里设置maker的title (鼠标放到marker点上,会出现它的title,所以我这里把name,放到title里)
                                     map.addOverlay(marker1);
                                     map.panTo(point);
                                 }
@@ -415,7 +512,7 @@
                     }
                     var obj = {};
                     var comaddr = $("#seartxt").val();
-                    if(comaddr!=""){
+                    if (comaddr != "") {
                         obj.comaddr = comaddr;
                     }
                     obj.pid = pid;
@@ -428,10 +525,24 @@
                                     var obj = arrlist[i];
                                     var Longitude = obj.Longitude;
                                     var latitude = obj.latitude;
+                                    var Iszx = "离线";
+                                    if (obj.presence == 1) {
+                                        Iszx = "在线";
+                                    }
                                     if (Longitude != "" && latitude != "") {
                                         var point = new BMap.Point(Longitude, latitude);
-                                        var marker1 = new BMap.Marker(point);
-                                        marker1.setTitle(obj.comaddr);   //这里设置maker的title (鼠标放到marker点上,会出现它的title,所以我这里把name,放到title里)
+                                        var marker1;
+                                        var marker1;
+                                        if (obj.presence == 1) {
+                                            marker1 = new BMap.Marker(point, {
+                                                icon: greenicon
+                                            });
+                                        } else {
+                                            marker1 = new BMap.Marker(point, {
+                                                icon: huiicon
+                                            });
+                                        }
+                                        marker1.setTitle(obj.comaddr + "," + Iszx);   //这里设置maker的title (鼠标放到marker点上,会出现它的title,所以我这里把name,放到title里)
                                         map.addOverlay(marker1);
                                         map.panTo(point);
                                     }
@@ -458,23 +569,35 @@
                             map.removeOverlay(allOver[j]);
                         }
                     }
-                   var pid = parent.getpojectId();
-                    $.ajax({async: false, url: "login.map.queryLamp.action", type: "get", datatype: "JSON", data: {pid:pid},
+                    var pid = parent.getpojectId();
+                    $.ajax({async: false, url: "login.map.queryLamp.action", type: "get", datatype: "JSON", data: {pid: pid},
                         success: function (data) {
 
                             var arrlist = data.rs;
+                            var flist = data.rs2;
                             for (var i = 0; i < arrlist.length; i++) {
                                 (function (x) {
                                     var obj = arrlist[i];
                                     var Longitude = obj.Longitude;
                                     var latitude = obj.latitude;
-                                    var s = obj.l_name;
+                                    //var s = obj.l_name;
+                                    var Iszx = "离线";    //是否离线
+                                    var Isfault = "正常"; //是否有故障
+                                    for (var j = 0; j < flist.length; j++) {
+                                        if (arrlist[i].l_code == flist[j].f_lampset) {
+                                            Isfault = "异常";
+                                            break;
+                                        }
+                                    }
+                                    if (obj.presence == 1) {
+                                        Iszx = "在线";
+                                    }
                                     var textvalue = "<div style='line-height:1.8em;font-size:12px;'>\n\
                                    \n\
                                     <table style='text-align:center'>\n\
                                         <tr>\n\
                                             <td>亮度:</td>\n\
-                                            <td>" + arrlist[i].l_code + "</td>\n\
+                                            <td>" + arrlist[i].l_value + "</td>\n\
                                             <td></td>\n\
                                             <td>名称:</td>\n\
                                             <td>" + arrlist[i].l_name + "</td>\n\
@@ -488,15 +611,28 @@
                                         </tr>\n\ \n\
                                         <tr>\n\
                                             <td>在线情况:</td>\n\
-                                            <td>--</td>\n\
+                                            <td>" + Iszx + "</td>\n\
                                              <td>&nbsp&nbsp</td>\n\
                                             <td>状态:</td>\n\
-                                            <td>--</td>\n\
+                                            <td>" + Isfault + "</td>\n\
                                         </tr>\n\ \n\
                                     </table></div>";
-                                    if (Longitude != "" && latitude != "") {
+                                    if ((Longitude != "" && latitude != "") && (Longitude != null && latitude != null)) {
                                         var point = new BMap.Point(Longitude, latitude);
-                                        var marker1 = new BMap.Marker(point);
+                                        var marker1;
+                                        if (Isfault == "异常") {
+                                            marker1 = new BMap.Marker(point, {
+                                                icon: yellow
+                                            });
+                                        } else if (obj.presence == 1) {
+                                            marker1 = new BMap.Marker(point, {
+                                                icon: greenicon
+                                            });
+                                        } else {
+                                            marker1 = new BMap.Marker(point, {
+                                                icon: huiicon
+                                            });
+                                        }
                                         var opts = {title: '<span style="font-size:14px;color:#0A8021">信息说明</span>', width: 300, height: 120, };//设置信息框
                                         var infoWindow = new BMap.InfoWindow(textvalue, opts); // 创建信息窗口对象，引号里可以书写任意的html语句。
                                         marker1.addEventListener("mouseover", function () {
@@ -513,6 +649,18 @@
                         }
                     });
                 };
+                var ij = 0;
+                button5.onclick = function (e){
+                    if(ij ==0){
+                        $("#up-map-div").show();
+                        ij = 1;
+                    }else{
+                        $("#up-map-div").hide();
+                        ij = 0;
+                    }
+                };
+             
+        
                 // 添加DOM元素到地图中
                 map.getContainer().appendChild(div);
                 // 将DOM元素返回
@@ -536,9 +684,10 @@
                         //加载所有灯具信息
                         var porjectId = parent.getpojectId();
                         var obj = {};
-                        obj.l_plan = porjectId;
+                        obj.pid = porjectId;
                         var opt = {
-                            //method: "post",
+                            method: "post",
+                            contentType: "application/x-www-form-urlencoded",
                             url: "login.map.lamp.action",
                             silent: true,
                             query: obj
@@ -570,7 +719,8 @@
                         obj.pid = porjectId;
                         //加载所有网关信息
                         var opt = {
-                            //method: "post",
+                            method: "post",
+                            contentType: "application/x-www-form-urlencoded",
                             url: "login.map.map.action",
                             silent: true,
                             query: obj
@@ -610,13 +760,13 @@
                 var lampname = $("#lampname").val();
                 var l_commadr = $("#lampcomaddrlist").val();
                 var obj = {};
+                obj.type = "ALL";
                 if (lampname != "") {
-                    obj.l_name = lampname;
+                    obj.l_name = encodeURI(lampname);
                 }
                 obj.l_comaddr = l_commadr;
-                obj.l_plan = porjectId;
+                obj.pid = porjectId;
                 var opt = {
-                    //method: "post",
                     url: "login.map.lamp.action",
                     silent: true,
                     query: obj
@@ -624,10 +774,10 @@
                 $("#lamptable").bootstrapTable('refresh', opt);
             }
             $(function () {
-
+        
                 var porjectId = parent.getpojectId();
                 //加载所有网关信息
-                getAllInfo(porjectId);
+                getAllInfo();
                 //加载灯具信息
                 getAllLampInfo(porjectId);
                 $("#addwanguang").dialog({
@@ -654,8 +804,6 @@
                     buttons: {
                         选点绘线: function () {
                             Drawing();
-                        }, 搜索: function () {
-                            selectlamp();
                         }, 关闭: function () {
                             $(this).dialog("close");
                         }
@@ -681,6 +829,22 @@
                 //修改网关经纬度
                 function updatelnglat(lng, lat, comaddr) {
                     var porjectId = parent.getpojectId();
+                    var nobj = {};
+                    nobj.name = u_name;
+                    var day = getNowFormatDate2();
+                    nobj.time = day;
+                    nobj.type = "修改";
+                    nobj.comment = "修改网关经纬度";
+                    nobj.pid = porjectId;
+                    nobj.page = "地图导航";
+                    $.ajax({async: false, url: "login.oplog.addoplog.action", type: "get", datatype: "JSON", data: nobj,
+                        success: function (data) {
+                            var arrlist = data.rs;
+                            if (arrlist.length > 0) {
+
+                            }
+                        }
+                    });
                     var obj = {};
                     obj.Longitude = lng;
                     obj.latitude = lat;
@@ -689,19 +853,6 @@
                         success: function (data) {
                             var arrlist = data.rs;
                             if (arrlist.length == 1) {
-                                var nobj = {};
-                                nobj.name = u_name;
-                                var day = getNowFormatDate2();
-                                nobj.time = day;
-                                nobj.comment = "修改网关" + obj.comaddr + "的经纬度";
-                                $.ajax({async: false, url: "login.oplog.addoplog.action", type: "get", datatype: "JSON", data: nobj,
-                                    success: function (data) {
-                                        var arrlist = data.rs;
-                                        if (arrlist.length > 0) {
-
-                                        }
-                                    }
-                                });
                                 var obj = {};
                                 obj.pid = porjectId;
                                 //加载所有网关信息
@@ -781,6 +932,20 @@
                 }
                 //修改单个灯具经纬度
                 function updateLamplnglat(lng, lat, id) {
+                    var porjectId = parent.getpojectId();
+                    var nobj2 = {};
+                    nobj2.name = u_name;
+                    var day = getNowFormatDate2();
+                    nobj2.time = day;
+                    nobj2.type = "修改";
+                    nobj2.comment = "修改灯具经纬度";
+                    nobj2.page = "地图导航";
+                    nobj2.pid = porjectId;
+                    $.ajax({async: false, url: "login.oplog.addoplog.action", type: "get", datatype: "JSON", data: nobj2,
+                        success: function (data) {
+                            var arrlist = data.rs;
+                        }
+                    });
                     var obj = {};
                     obj.Longitude = lng;
                     obj.latitude = lat;
@@ -789,22 +954,8 @@
                         success: function (data) {
                             var arrlist = data.rs;
                             if (arrlist.length == 1) {
-                                var nobj2 = {};
-                                nobj2.name = u_name;
-                                var day = getNowFormatDate2();
-                                nobj2.time = day;
-                                nobj2.comment = "批量单灯具的经纬度";
-                                $.ajax({async: false, url: "login.oplog.addoplog.action", type: "get", datatype: "JSON", data: nobj2,
-                                    success: function (data) {
-                                        var arrlist = data.rs;
-                                        if (arrlist.length > 0) {
-
-                                        }
-                                    }
-                                });
-                                var porjectId = parent.getpojectId();
                                 var obj = {};
-                                obj.l_plan = porjectId;
+                                obj.pid = porjectId;
                                 var opt = {
                                     //method: "post",
                                     url: "login.map.lamp.action",
@@ -833,7 +984,7 @@
                                                 var arrlist = data.rs;
                                                 if (arrlist.length == 1) {
                                                     var obj = {};
-                                                    obj.l_plan = porjectId;
+                                                    obj.pid = porjectId;
                                                     var opt = {
                                                         //method: "post",
                                                         url: "login.map.lamp.action",
@@ -871,9 +1022,10 @@
                     //网关的修改
                     $("#wgtable input:checkbox").each(function () {
                         if ($(this).is(":checked")) {
-                            comaddr = $(this).parent().next().next().next().text();
-                            lng = $(this).parent().next().next().next().next().text();
-                            lat = $(this).parent().next().next().next().next().next().text();
+                            var select = $("#wgtable").bootstrapTable('getSelections');
+                            comaddr = select[0].comaddr;
+                            lng = select[0].Longitude;
+                            lat = select[0].latitude;
                             isboole = true;
                         }
                     });
@@ -951,7 +1103,10 @@
                                 nobj.name = u_name;
                                 var day = getNowFormatDate2();
                                 nobj.time = day;
+                                nobj.type = "修改";
+                                nobj.pid = porjectId;
                                 nobj.comment = "批量修改灯具的经纬度";
+                                nobj.page = "地图导航";
                                 $.ajax({async: false, url: "login.oplog.addoplog.action", type: "get", datatype: "JSON", data: nobj,
                                     success: function (data) {
                                         var arrlist = data.rs;
