@@ -215,6 +215,8 @@
                         $("#timezone").val(str1);
                         var str = timezone1 >> 4 & 0xf;
                         $("#areazone").combobox("select", str);
+                    }else if(obj.msg=="FF"){
+                        layerAler("success");
                     }
 
                 }
@@ -235,14 +237,71 @@
             function setjwd() {
                 var o = $("#form1").serializeObject();
                 var obj = $("#form2").serializeObject();
-                console.log(obj);
-                //obj.split(obj.)
-//                var longrg = /^(\-|\+)?(((\d|[1-9]\d|1[0-7]\d|0{1,3})\.\d{0,6})|(\d|[1-9]\d|1[0-7]\d|0{1,3})|180\.0{0,6}|180)$/;
-//
-//                if (!longrg.test(o.Longitude)) {
-//                    layerAler('经度整数部分为0-180,小数部分为0到6位!');
-//                }
+                var long = obj.Longitude;
+                var lati = obj.latitude;
+                var longarr = long.split(".");
+                var latiarr = lati.split(".");
+                console.log(longarr.length);
+                if (longarr.length != 2 || latiarr.length !=2 ) {
+                    layerAler("经纬度错误输入格式");
+                    return;
+                }
+                if (longarr[0].length != 4 || longarr[1].length != 4) {
+                    layerAler("经度4位十进制数字");
+                    return;
+                }
+                if (latiarr[0].length != 4 || latiarr[1].length != 4) {
+                    layerAler("纬度应是4位十进制数字");
+                    return;
+                }
+                if (isNumber(longarr[0]) == false || isNumber(longarr[1]) == false) {
+                    layerAler("经度应是4位十进制数字");
+                    return;
+                }
+                if (isNumber(latiarr[0]) == false || isNumber(latiarr[1]) == false) {
+                    layerAler("纬度应是4位十进制数字");
+                    return;
+                }
+                if (isNumber(obj.timezone) == false) {
+                    layerAler("时区应是数字");
+                    return;
+                }
+                if (isNumber(obj.outoffset) == false) {
+                    layerAler("日出偏移应是数字");
+                    return;
+                }
+                if (isNumber(obj.inoffset) == false) {
+                    layerAler("日落偏移应是数字");
+                    return;
+                }
+                var o = $("#form1").serializeObject();
+                var obj = $("#form2").serializeObject();
 
+                var vv = [];
+                var longh = Str2BytesH(longarr[0]);
+                var longl = Str2BytesH(longarr[1]);
+                
+                var latih = Str2BytesH(latiarr[0]);
+                var latil = Str2BytesH(latiarr[1]);
+                vv.push(longl[1]);
+                vv.push(longl[0]);
+                vv.push(longh[1]);
+                vv.push(longh[0]);
+
+                vv.push(latil[1]);
+                vv.push(latil[0]);
+                vv.push(latih[1]);  
+                vv.push(latih[0]);
+
+                vv.push(parseInt(obj.inoffset)); //新组号  1字节      
+                vv.push(parseInt(obj.outoffset)); //新组号  1字节    
+                vv.push(parseInt(obj.areazone));
+                vv.push(parseInt(obj.timezone));
+
+                var comaddr = o.l_comaddr;
+                var num = randnum(0, 9) + 0x70;
+                var data = buicode(comaddr, 0x04, 0xff, num, 0, 10, vv); //01 03 F24   
+                dealsend2("FF", data, 10, "allCallBack", comaddr, 0, 0, obj.l_groupe);
             }
 
             function setGroupe() {
@@ -864,7 +923,7 @@
                                                         <option value="5">网关行政区划码</option> 
                                                         <option value="6">设置灯具</option> 
                                                         <option value="7">设置回路</option> 
-                                                        <option value="8">读取经纬度</option> 
+                                                        <option value="8">设置经纬度</option> 
                                                     </select>
                                                 </span>  
                                             </td>
@@ -1151,11 +1210,6 @@
                                             <td>
                                                 <input id="inoffset"  name="inoffset" value="" style="width:100px;" placeholder="日落偏移" type="text">
                                             </td> 
-
-
-                                        </tr>
-
-                                        <tr>
                                             <td >
                                                 <button  type="button" onclick="readjwd()" class="btn btn-success btn-sm"><span id="205" name="xxx">读取</span> </button>
                                             </td>
@@ -1164,6 +1218,11 @@
 
                                                 &nbsp;
                                             </td>
+
+                                        </tr>
+
+                                        <tr>
+
                                         </tr>
                                     </tbody>
                                 </table>

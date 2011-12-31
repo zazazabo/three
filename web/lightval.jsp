@@ -335,14 +335,14 @@
                     return;
                 }
                 addlogon(u_name, "灯具调光", o_pid, "灯具调光", "单灯立即调光");
-                var vv = new Array();
+      
                 var l_comaddr = $("#l_comaddr").combobox('getValue');
                 var select = selects[0];
                 console.log(select);
                 var l_comaddr = select.l_comaddr;
                 var lampval = $("#val").val();
 
-
+                var vv = new Array();
                 var c = parseInt(select.l_code);
                 var h = c >> 8 & 0x00ff;
                 var l = c & 0x00ff;
