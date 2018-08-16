@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html><head>
+	 	<!-- base href="http://slighting.shuncom.com.cn/CloudPlatform/" -->
+		
+
+
+<!-- 公共head -->
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache"> 
+		<title>首页</title>
+		
+		<link rel="stylesheet" type="text/css" href="warningToday_data/bootstrap.css">
+		<link rel="stylesheet" type="text/css" href="warningToday_data/layui.css">
+		<link rel="stylesheet" type="text/css" href="home_data/home.css">
+
+		<script type="text/javascript" src="warningToday_data/jquery.js"></script>
+	    <script type="text/javascript" src="warningToday_data/bootstrap.js"></script>
+	    <script type="text/javascript" src="warningToday_data/layui.js"></script><link id="layuicss-laydate" rel="stylesheet" href="laydate.css" media="all"><link id="layuicss-layer" rel="stylesheet" href="layer.css" media="all"><link id="layuicss-skincodecss" rel="stylesheet" href="code.css" media="all">
+		<script type="text/javascript" src="home_data/echarts.js"></script>
+		<script type="text/javascript" src="home_data/home.js"></script>
+		<style>
+			.topCenter2 {
+			    overflow: hidden;
+			    float: left;
+			    display: inline;
+			    width: 40%;
+			    height: 90%;
+			    margin-top: 20px;
+			}
+			.topCenter4 {
+			    overflow: hidden;
+			    float: left;
+			    display: inline;
+			    width: 22%;
+			    height: 400px;
+			}
+			.topCenter1 {
+			    overflow: hidden;
+			    float: left;
+			    display: inline;
+			    width: 50%;
+			    height: 90%;
+			    margin-left: 5%;
+			    margin-top: 20px; 
+			}
+			.echarts3 {
+			    width: 46%;
+			    height: 95%;
+			    float: right;
+			    display: inline;
+			    margin-top: 40px;
+			    margin-left: 0;
+			}
+			.topCenter3Mess {
+			    position: relative;
+			    width: 11%;
+			    float: left;
+			    display: inline;
+			    height: 90%;
+			    margin-top: 20px;
+			}
+			.bottom{
+				height:53%;	
+			}
+			.topLeftOneBox {
+			    overflow: hidden;
+			    width: 100%;
+			    height: 31%;
+			    margin-top: 0;
+			}
+			.echarts4 {
+			    height: 85%;
+			}
+			.echarts5 {
+				float:left;
+				margin-left:20px;
+			    height: 85%;
+			}
+			.top{
+				background:#fff;
+			}
+			.bottom{
+				height:480px;
+				background:#fff;
+			}
+			.subPara{
+				color:#999;
+				font-size:14px;
+			}
+			.paraValue{
+				font-size:16px;
+				color:#666;
+			}
+            .nenghao {
+                height: 29%;
+            }
+		</style>
+	</head>
+	<body>
+		 <div class="top" style="width:100%;height:450px;position:relative;">
+			<div class="topTitle" style="position:absolute;top:2%;left:2%;color:#000;font-size:20px;font-weight:600;">设备分析</div>
+			<div class="topLeft" style="height:400px;padding-top:60px;">
+				<div class="topLeftOneBox">
+					<span class="redius" style="background:#fdd237;">
+						<img src="home_data/dp.png"></span>
+					<div class="Mess lightingRate">
+						<span>0%</span>
+						<span>亮灯率</span>
+					</div>
+				</div>
+				<div class="topLeftOneBox">
+					<span class="redius" style="background:#42bcec;"><img src="home_data/jien.png"></span>
+					<div class="Mess energySavingRate">
+						<span>100%</span>
+						<span>节能率</span>
+					</div>
+				</div>
+				<div class="topLeftOneBox">
+					<span class="redius" style="background:#68b928;"><img src="home_data/online.png"></span>
+					<div class="Mess AlarmTimes">
+						<span>0%</span>
+						<span>在线率</span>
+					</div>
+				</div>
+			</div>
+			
+			<!--用能计划-->
+			<div class="topTitle" style="position:absolute;top:2%;left:24%;color:#000;font-size:20px;font-weight:600;">用能计划<br><br><span style="color:#777;font-size:18px;font-weight:500;">单位：kW·h&nbsp;&nbsp;</span></div>
+			<div class="topCenter3" id="echarts2" style="height: 400px; -moz-user-select: none; position: relative;" _echarts_instance_="ec_1533549374384"><div style="position: relative; overflow: hidden; width: 278px; height: 400px; padding: 0px; margin: 0px; border-width: 0px; cursor: default;"><canvas style="position: absolute; left: 0px; top: 0px; width: 278px; height: 400px; -moz-user-select: none; padding: 0px; margin: 0px; border-width: 0px;" data-zr-dom-id="zr_0" width="278" height="400"></canvas></div><div style="position: absolute; display: none; border-style: solid; white-space: nowrap; z-index: 9999999; transition: left 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s, top 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s; background-color: rgba(50, 50, 50, 0.7); border-width: 0px; border-color: rgb(51, 51, 51); border-radius: 4px; color: rgb(255, 255, 255); font: 14px/21px Microsoft YaHei; padding: 5px; left: -134px; top: 162px;">访问来源 <br>计划能耗 : 10 kW·h (100%)</div></div>
+			<div class="topCenter3Mess" style="height:400px;">
+				
+				<div class="topCenter3MessMM" style="margin-top:40%;">
+					<div class="first"><span class="subPara">计划能耗：</span><span class="paraValue" id="planConsumption">10</span></div>
+					<!-- <div class="second"></div> -->
+					<div class="first"><span class="subPara">实际能耗：</span><span class="paraValue" id="actualConsumption">0</span></div>
+					<!-- <div class="second">1000</div> -->
+					<div class="first"><span class="subPara">差值：</span><span class="paraValue" id="differenceConsumption">10</span></div>
+					<!-- <div class="second">250</div> -->
+					<div class="first"><span class="subPara">状态：</span></div>
+					<div class="second"><span class="subPara" id="status">正常</span></div>
+				</div>
+			</div>
+			
+			<!--横向对比分析-->
+			<div class="topTitle" style="position:absolute;top:2%;left:61%;color:#000;font-size:20px;font-weight:600;">横向对比分析</div>
+			<div class="echarts3" id="echarts3" style="height: 430px; -moz-user-select: none; position: relative;" _echarts_instance_="ec_1533549374385"><div style="position: relative; overflow: hidden; width: 712px; height: 430px; padding: 0px; margin: 0px; border-width: 0px; cursor: default;"><canvas style="position: absolute; left: 0px; top: 0px; width: 712px; height: 430px; -moz-user-select: none; padding: 0px; margin: 0px; border-width: 0px;" data-zr-dom-id="zr_0" width="712" height="430"></canvas></div><div></div></div>
+		</div>
+		<div class="bottom">
+			<div class="echarts4" id="echarts4" style="width: 35%; float: left; margin: 20px 0px 20px 30px; -moz-user-select: none; position: relative;" _echarts_instance_="ec_1533549374386"><div style="position: relative; overflow: hidden; width: 541px; height: 408px; padding: 0px; margin: 0px; border-width: 0px; cursor: default;"><canvas style="position: absolute; left: 0px; top: 0px; width: 541px; height: 408px; -moz-user-select: none; padding: 0px; margin: 0px; border-width: 0px;" data-zr-dom-id="zr_0" width="541" height="408"></canvas></div><div style="position: absolute; display: none; border-style: solid; white-space: nowrap; z-index: 9999999; transition: left 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s, top 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s; background-color: rgba(50, 50, 50, 0.7); border-width: 0px; border-color: rgb(51, 51, 51); border-radius: 4px; color: rgb(255, 255, 255); font: 14px/21px Microsoft YaHei; padding: 5px; left: 347px; top: 84px;">能耗<br>2018 : 8.18 kW·h</div></div>
+			<div class="topCenter4" style="width:10%;height:85%;float:right;">
+				<div class="topCenter2Mess">	
+					<div class="nenghao"><span class="subPara">本月能耗:</span>&nbsp;<br><span id="benyue" class="paraValue">0</span>&nbsp;kW·h</div>
+					<div class="nenghao"><span class="subPara">上月能耗:</span>&nbsp;<br><span id="shangyue" class="paraValue">4.5</span>&nbsp;kW·h<br><span>环比：</span>&nbsp;<span class="tongbi" id="lastMonth">-100%</span></div>
+					<div class="nenghao"><span class="subPara">去年同期:</span>&nbsp;<br><span id="qunian" class="paraValue">0</span>&nbsp;kW·h<br><span>同比：</span>&nbsp;<span class="tongbi" id="lastYearSameMonth">0%</span></div>
+					<div class="nenghao"><span class="subPara">每盏灯平均能耗:</span>&nbsp;<br><span id="pingjun" class="paraValue">0</span>&nbsp;kW·h</div>
+				</div>
+			</div>
+			
+			<div class="topCenter1" id="echarts1" style="width: 45%; height: 85%; float: left; -moz-user-select: none; position: relative;" _echarts_instance_="ec_1533549374383"><div style="position: relative; overflow: hidden; width: 696px; height: 408px; padding: 0px; margin: 0px; border-width: 0px; cursor: default;"><canvas style="position: absolute; left: 0px; top: 0px; width: 696px; height: 408px; -moz-user-select: none; padding: 0px; margin: 0px; border-width: 0px;" data-zr-dom-id="zr_0" width="696" height="408"></canvas></div><div></div></div>
+		</div>			
+		<!--子项分析-->
+		<div style="width: 100%; overflow: hidden; height: 480px; display: none;" id="sub">
+			<div class="echarts5" id="echarts5" style="width: 85%; height: 450px; -moz-user-select: none; position: relative;" _echarts_instance_="ec_1533549374387"><div style="position: relative; overflow: hidden; width: 85px; height: 450px; padding: 0px; margin: 0px; border-width: 0px;"><canvas style="position: absolute; left: 0px; top: 0px; width: 85px; height: 450px; -moz-user-select: none; padding: 0px; margin: 0px; border-width: 0px;" data-zr-dom-id="zr_0" width="85" height="450"></canvas></div><div></div></div>
+		</div>	
+	
+	<script>
+	window.onresize = function () {
+			myChart.resize();
+			myChart2.resize();
+			myChart3.resize();
+			myChart4.resize();
+			myChart5.resize();
+		}
+	$(function(){
+	       var role = 2;
+            
+           if(role == 2) {
+               $("#sub").css('display', "none");
+           } else {
+               $("#sub").css('display', "");
+           }
+
+		$.ajax({
+             cache:false,
+			 url:"energyConsumptionAnalysis.action",
+			 type:"POST",
+			 data:{
+				 
+			 },
+			 //dataType:"json",
+			 success:function(data) {
+			     $(".lightingRate:eq(0) span:eq(0)").html(data.on + "%");
+			     $(".AlarmTimes:eq(0) span:eq(0)").html(data.online + "%");
+             },
+             error:function() {
+                 layer.alert('系统错误，刷新后重试',{icon: 6,offset: 'center'});
+             }
+		 });
+         
+		/* $.ajax({
+			async:false,
+            cache:false,
+			url:"lampOnlineStatusAnalysis.action",
+			type:"POST",
+			data:{
+				 
+			},
+			 //dataType:"json",
+			success:function(data) {
+            },
+            error:function() {
+                layer.alert('系统错误，刷新后重试',{icon: 6,offset: 'center'});
+            }
+		}); */
+		
+		/* $.ajax({
+			 async:false,
+           cache:false,
+			 url:"energySavingRate1.action",
+			 type:"POST",
+			 data:{
+				 
+			 },
+			 //dataType:"json",
+			 success:function(data) {
+			     $(" .energySavingRate:eq(0) span:eq(0)").html(data+"%");  
+            },
+            error:function() {
+             layer.alert('系统错误，刷新后重试',{icon: 6,offset: 'center'});
+            }
+		 }); */
+		
+		/* $.ajax({
+			 async:false,
+             cache:false,
+			 url:"energyConsumptionOfTheMonth.action",
+			 type:"POST",
+			 data:{
+				 
+			 },
+			 //dataType:"json",
+			  success:function(data) {
+			     
+            },
+            error:function() {
+             layer.alert('系统错误，刷新后重试',{icon: 6,offset: 'center'});
+            }
+		 }); */
+		
+		/* $.ajax({
+			async:false,
+			cache:false,
+			url:"queryEveryMonth.action",
+			type:"POST",
+			data:{
+				
+			},
+			success:function(data){
+				
+			},
+			error:function(){
+			   layer.alert('系统错误，刷新后重试',{icon: 6,offset: 'center'});
+			}
+		}); */
+	});
+	</script>
+	
+
+</body></html>

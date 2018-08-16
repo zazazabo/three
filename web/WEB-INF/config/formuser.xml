@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xforms>
+    <xform desc="告警模块" id="warn">
+        <xhandle desc="告警列表" id="queryData" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_people WHERE   @CONDITION  " var="bootstrap">
+                <xflt id="CONDITION" nrp="" tpl="@u_phone AND @u_name ">
+                    <xfltpara id="u_phone" nrp="1=1" para="u_phone" sql="u_phone = ':u_phone'">
+                    </xfltpara>
+                    <xfltpara id="u_name" nrp="1=1" para="u_name" sql="u_name = ':u_name'">
+                    </xfltpara>            
+                </xflt>      
+            </xsql>               
+        </xhandle>                 
+    </xform>
+    
+    <xform desc="菜单模块" id="mainmenu">
+        <xhandle desc="获取菜单列表" id="query" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select *  from  t_menu   WHERE   @CONDITION  ORDER BY m_code ASC  " var="list">
+                <xflt id="CONDITION" nrp="" tpl="@u_phone AND @u_name ">
+                    <xfltpara id="u_phone" nrp="1=1" para="u_phone" sql="u_phone = ':u_phone'">
+                    </xfltpara>
+                    <xfltpara id="u_name" nrp="1=1" para="u_name" sql="u_name = ':u_name'">
+                    </xfltpara>             
+                </xflt>        
+            </xsql>               
+        </xhandle>  
+        <!--{id: 1, pId: 0, name: "[core] 基本功能 演示", open: true},-->
+        <xhandle desc="获取菜单列表" id="queryZtree" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select m_code AS id,m_parent as pId,m_title as name,m_icon as icon  from  t_menu   WHERE   @CONDITION  ORDER BY m_code ASC  " var="list">
+                <xflt id="CONDITION" nrp="" tpl="@u_phone AND @u_name ">
+                    <xfltpara id="u_phone" nrp="1=1" para="u_phone" sql="u_phone = ':u_phone'">
+                    </xfltpara>
+                    <xfltpara id="u_name" nrp="1=1" para="u_name" sql="u_name = ':u_name'">
+                    </xfltpara>             
+                </xflt>        
+            </xsql>               
+        </xhandle>                   
+                                                     
+    </xform>
+    
+    
+
+    
+    
+    <xform desc="人员表" id="user">
+        
+        
+        
+        <xhandle desc="获取人员列表" id="query" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from  t_user    WHERE   @CONDITION   " var="bootstrap">
+                <xflt id="CONDITION" nrp="" tpl="@u_phone AND @u_name ">
+                    <xfltpara id="u_phone" nrp="1=1" para="u_phone" sql="u_phone = ':u_phone'"> 
+                    </xfltpara>
+                    <xfltpara id="u_name" nrp="1=1" para="u_name" sql="u_name = ':u_name'">
+                    </xfltpara>             
+                </xflt>        
+            </xsql>               
+        </xhandle>  
+        
+        <xhandle desc="删除用户表" id="deleteUser" rtn="rs" rtnype="JSON">
+            <xsql id="a1" tpe="DDL" tpl="delete from t_user where @CONDITION " var="rs">
+                <xflt id="CONDITION" tpl="@id ">
+                    <xfltpara id="id" nrp="1=1" para="id" sql="id =  :id ">
+                    </xfltpara>
+                </xflt>
+            </xsql>
+        </xhandle>     
+       
+        <xhandle desc="添加用户" id="addUser" rtn="rs" rtnype="JSON">
+            <xsql id="a1" para="name,sex,phone,department,email,password" tpe="DDL" tpl="insert into t_user(name,sex,phone,department,email,password) values(':name',':sex',':phone',':department',':email',':password') " var="rs">
+            </xsql>
+        </xhandle>         
+            
+        <xhandle desc="修改用户" id="editUser" rtn="rs" rtnype="JSON">
+            <xsql id="a1" para="department,sex,email,phone" tpe="DDL" tpl="update t_user set department=':department',sex=':sex',email=':email',phone=':phone' where @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@id ">
+                    <xfltpara id="id" nrp="1=1" para="id" sql="id=:id">
+                    </xfltpara>
+                </xflt>
+            </xsql>
+        </xhandle>  
+              
+        <xhandle desc="修改用户权限" id="editUserAuthor" rtn="rs" rtnype="JSON">
+            <xsql id="a1" para="author" tpe="DDL" tpl="update t_user set author=':author' where @CONDITION " var="rs">
+                <xflt id="CONDITION"  tpl="@id ">
+                    <xfltpara id="id"  para="id" sql="id=:id">
+                    </xfltpara>
+                </xflt>
+            </xsql>
+        </xhandle>                                                                                                                                                                                   
+                                                                                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+    </xform>
+    
+</xforms>
