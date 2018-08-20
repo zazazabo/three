@@ -11,32 +11,7 @@
     <head>
          <%@include  file="js.jspf" %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    
-        <!--select muti-->
 
-
-<!--        <script src="select2-developr/dist/js/select2.js"></script>
-        <link href="select2-develop/dist/css/select2.css" rel="stylesheet" />
-
-
-        <link rel="stylesheet" type="text/css" href="gatewayconfig_files/bootstrap.css">
-        <link rel="stylesheet" type="text/css" href="gatewayconfig_files/bootstrap-table.css">
-        <script type="text/javascript" src="gatewayconfig_files/jquery.js"></script>
-        <script type="text/javascript" src="gatewayconfig_files/bootstrap.js"></script>
-        <script type="text/javascript" src="gatewayconfig_files/bootstrap-table.js"></script>
-        <script type="text/javascript" src="gatewayconfig_files/bootstrap-table-zh-CN.js"></script>
-        <link type="text/css" href="gatewayconfig_files/basicInformation.css" rel="stylesheet">
-         easyui 
-        <link href="gatewayconfig_files/easyui.css" rel="stylesheet" type="text/css" switch="switch-style">
-        <link href="gatewayconfig_files/icon.css" rel="stylesheet" type="text/css">
-        <script src="gatewayconfig_files/jquery_002.js" type="text/javascript"></script>
-        <script src="gatewayconfig_files/easyui-lang-zh_CN.js" type="text/javascript"></script>
-        <script type="text/javascript" src="gatewayconfig_files/selectAjaxFunction.js"></script>
-        <script type="text/javascript" src="gatewayconfig_files/bootstrap-multiselect.js"></script>
-        <link rel="stylesheet" href="gatewayconfig_files/bootstrap-multiselect.css" type="text/css">
-        <link rel="stylesheet" type="text/css" href="gatewayconfig_files/layer.css">
-        <script type="text/javascript" src="gatewayconfig_files/layer.js"></script>
-        <link rel="stylesheet" href="gatewayconfig_files/layer.css" id="layui_layer_skinlayercss" style="">-->
         
         <style>* { margin: 0; padding: 0; } body, html { width: 100%; height: 100%; } .zuheanniu { margin-top: 2px; margin-left: 10px; } table { font-size: 14px; } .modal-body input[type="text"], .modal-body select, .modal-body input[type="radio"] { height: 30px; } .modal-body table td { line-height: 40px; } .menuBox { position: relative; background: skyblue; } .getMenu { z-index: 1000; display: none; background: white; list-style: none; border: 1px solid skyblue; width: 150px; height: auto; max-height: 200px; position: absolute; left: 0; top: 25px; overflow: auto; } .getMenu li { width: 148px; padding-left: 10px; line-height: 22px; font-size: 14px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; } .getMenu li:hover { background: #eee; cursor: pointer; } .a-upload { padding: 4px 10px; height: 30px; line-height: 20px; position: relative; cursor: pointer; color: #888; background: #fafafa; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; display: inline-block; *display: inline; *zoom: 1 } .a-upload input { position: absolute; font-size: 100px; right: 0; top: 0; opacity: 0; filter: alpha(opacity = 0); cursor: pointer } .a-upload:hover { color: #444; background: #eee; border-color: #ccc; text-decoration: none } .pagination-info { float: left; margin-top: -4px; } .modal-body { text-align: -webkit-center; text-align: -moz-center; width: 600px; margin: auto; } .btn-primary { color: #fff; background-color: #0099CC; border-color: #0099CC; }</style></head>
 
@@ -141,7 +116,7 @@
                         search: params.search,
                         skip: params.offset,
                         limit: params.limit,
-                        type_id: "1"    
+                        type_id: "1"   
                     };      
                     return temp;  
                 },
@@ -167,7 +142,7 @@
             });
             $("#gravidaTable").on('click-cell.bs.table', function (field, value, row, element) {
                 if (value == "online") {
-
+                    
 //                    console.log(field);
 //                    console.log(value);
 //                    console.log(row);
@@ -308,6 +283,7 @@
 
 
             $("#xiugai1").click(function () {
+                
                 var selectRow1 = $("#gravidaTable").bootstrapTable("getSelections");
                 if (selectRow1.length > 1) {
                     layer.alert('只能选择一行进行修改', {
@@ -445,7 +421,7 @@
 
 
     </div>
-    <form id="importForm" action="importGateway.action" method="post" enctype="multipart/form-data" onsubmit="return check()">
+<!--    <form id="importForm" action="importGateway.action" method="post" enctype="multipart/form-data" onsubmit="return check()">
         <div style="float:left;margin:12px 0 0 10px;border-radius:5px 0 0 5px;position:relative;z-index:100;width:230px;height:30px;">
             <a href="javascript:;" class="a-upload" style="width:130px;">
                 <input name="excel" id="excel" type="file">
@@ -454,7 +430,7 @@
     </form>
     <form id="exportForm" action="exportGateway.action" method="post" style="display: inline;">
         <input id="daochu" class="btn btn-default" style="float:left;margin:12px 0 0 20px;" value="导出Excel" type="button">
-    </form>
+    </form>-->
     <div style="width:100%;">
         <div class="bootstrap-table">
             <div class="fixed-table-container" style="height: 214px; padding-bottom: 0px;">
@@ -573,7 +549,7 @@
                         <span style="font-size:20px ">×</span></button>
                     <span class="glyphicon glyphicon-floppy-disk" style="font-size: 20px"></span>
                     <h4 class="modal-title" style="display: inline;">修改网关配置</h4></div>
-                <form action="" method="POST" id="modifyTypeForm" onsubmit="return checkModify()">   
+                <form action="" method="POST" id="modifyTypeForm" onsubmit="return checkcheckModifyModify()">   
                     <div class="modal-body">
                         <table>
                             <tbody>

@@ -57,7 +57,7 @@ public class ControlServlet extends HttpServlet {
         if (info1.rtnype.equals("PGE")) {
             String url = dealpage(request, response, info1);
             request.getRequestDispatcher(url).forward(request, response);
-        } else if (info1.rtnype.equals("ACTION")) {
+        }else if (info1.rtnype.equals("ACTION")) {
             try {
                 dealAction(request, response, info1);
             } catch (ClassNotFoundException ex) {

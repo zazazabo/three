@@ -292,7 +292,7 @@
                         var Measuringpoint = $("#Measuringpoint").val();
                         var workgroupe = $("#workgroupe").val();
                         var workmode = $("#workmode").find("option:selected").val();
-                         var mail_addr = $("#mail_addr").val();
+                        var mail_addr = $("#mail_addr").val();
 
 
                         for (var i = 0; i < nodes.length; i++) {
@@ -319,16 +319,16 @@
                                 hexData[15] = 0  //    DA2
                                 hexData[16] = 0x20  //  DT1
                                 hexData[17] = 0x03  //   DT2
-                                hexData[18] = parseInt(mount,10);  
-                                hexData[19] = parseInt(backsetindex,10);
-                                hexData[20]=0x0;
-                                hexData[21]=parseInt(Measuringpoint,10);
-                                hexData[22]=0x0;
-                                hexData[23]=parseInt(mail_addr,10);  
-                                hexData[24]= parseInt(workmode,10);  
-                                hexData[25]= parseInt(workgroupe,10);  
-                                
-                                var len1 = 18 - 6 + 1 + 2 + 2 + 1+ 1 + 1//18是固定长度  判断是否有长度
+                                hexData[18] = parseInt(mount, 10);
+                                hexData[19] = parseInt(backsetindex, 10);
+                                hexData[20] = 0x0;
+                                hexData[21] = parseInt(Measuringpoint, 10);
+                                hexData[22] = 0x0;
+                                hexData[23] = parseInt(mail_addr, 10);
+                                hexData[24] = parseInt(workmode, 10);
+                                hexData[25] = parseInt(workgroupe, 10);
+
+                                var len1 = 18 - 6 + 1 + 2 + 2 + 1 + 1 + 1//18是固定长度  判断是否有长度
                                 hexData[1] = len1 << 2 | 2;
                                 hexData[2] = 0;
                                 hexData[3] = len1 << 2 | 2;

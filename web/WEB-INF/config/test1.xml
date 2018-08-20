@@ -332,6 +332,7 @@
             </xsql>
         </xhandle>
     </xform>
+    
     <xform dese="bootstrattable" id="f5">
         <xhandle desc="" id="h1" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_baseinfo" var="bootstrap">

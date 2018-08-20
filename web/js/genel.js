@@ -244,6 +244,8 @@ function checkModify()
     var model = $('#model_').combobox('getValue');
     var namesss = false;
     var jsondata = $("#modifyTypeForm").serializeObject();
+//    console.log(jsondata);
+//    return  false;
     var latitudemstr = jsondata.latitudem26d_ + "." + jsondata.latitudem26m_ + "." + jsondata.latitudem26s_;
     jsondata.latitude = latitudemstr;
     var longitudemstr = jsondata.longitudem26d_ + "." + jsondata.longitudem26m_ + "." + jsondata.longitudem26s_;
