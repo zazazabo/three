@@ -97,7 +97,7 @@
     </head>
     <body>
         <div class="wraper"> 
-            <div class="bodyLeft" style="background: rgb(51, 122, 183) none repeat scroll 0% 0%">
+            <div class="bodyLeft" style="background: rgb(14, 98, 199) none repeat scroll 0% 0%;">
                 <div class="bodyLeftTop listdisplayNone" style="background: rgb(92, 183, 92) none repeat scroll 0% 0%">
                     <span class="menuMessage" style="width:80px;margin-left:30px;">智慧照明</span>
                 </div>
@@ -154,7 +154,7 @@
                             <img src="abc.action_files/alarm_s.png" class="alarmLi">
                             <div class="alarmNub alarmLi" id="alarmNumber">0</div>
                         </li>
-                        <li class="one setName" style="width: 74px; display: block;">
+<!--                        <li class="one setName" style="width: 74px; display: block;">
                             <i class="layui-icon indexIcon"></i>   
                             <span class="Till" style="width: 74px; text-align: center; color: rgb(255, 255, 255);">配置</span>
                             <ul class="two animated fadeInDown language setMenu" style="background: rgb(57, 61, 73) none repeat scroll 0% 0%; color: rgb(255, 255, 255);">
@@ -162,7 +162,7 @@
                                 <li action="config/paramConfig.action">参数配置</li><li action="config/gateway.action">网关配置</li>
                                 <li action="config/alarmConfig.action">项目配置</li>
                             </ul>
-                        </li>
+                        </li>-->
                         <li class="one" style="width:74px;">
                             <i class="layui-icon indexIcon"></i>   
                             <span class="Till" style="width: 74px; text-align: center; color: rgb(255, 255, 255);">语言</span>
@@ -171,7 +171,7 @@
                                 <li language="en_US">英文</li>
                             </ul>
                         </li>
-                        <li class="one themeItem" style="width:74px;">
+<!--                        <li class="one themeItem" style="width:74px;">
                             <i class="layui-icon indexIcon"></i>   
                             <span class="Till" style="width: 74px; text-align: center; color: rgb(255, 255, 255);">主题</span>
                             <ul class="two animated fadeInDown abcStyle" style="background: rgb(57, 61, 73) none repeat scroll 0% 0%; color: rgb(255, 255, 255);">
@@ -179,7 +179,7 @@
                                 <li class="ocean">海洋</li>
                                 <li class="green">翡翠</li>
                             </ul>
-                        </li>
+                        </li>-->
                         <li class="one" style="width:140px;">
                             <i class="layui-icon indexIcon"></i>  
                             <span class="Till" style="width: 140px; padding-left: 24px; box-sizing: border-box; color: rgb(255, 255, 255);">

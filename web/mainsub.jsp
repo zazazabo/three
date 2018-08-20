@@ -5,6 +5,11 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="/WEB-INF/fn.tld" prefix="fn" %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -158,7 +163,7 @@
                 line-height: 30px;
                 color: gray;
             }
-                        .nenghao1 {
+            .nenghao1 {
                 width: 100%;
                 height: 30%;
                 line-height: 30px;
@@ -266,7 +271,6 @@
             var echarts;
             $(function () {
 
-
                 var aa = new Array();
                 var obj = new Object();
                 obj.Month = 3;
@@ -283,8 +287,6 @@
                 var quanquanData = [{value: data[0].plan_value, name: '计划能耗'}, {value: data[0].Month, name: '实际能耗'}];
                 console.log(quanquanData);
                 quanquan("echarts2", "用能计划", quanquanData, "");
-
-
                 var a3 = new Array();
                 var o3 = new Object();
                 o3.thisYear3 = [0, 0, 0.56, 0.04, 0, 3.08, 4.5, 0, 0, 0, 0, 0];
@@ -302,12 +304,10 @@
                 var numberY2 = data[0].thisYear3;
                 //dataTitleArray=["2015","2016","2017"];
                 echarts3("echarts3", "横向对比分析", dataTitleArray, echarts3DataX, dataTitleArray[0], numberY0, dataTitleArray[1], numberY1, dataTitleArray[2], numberY2, "kW·h");
-
 //
 
                 var a4 = new Array();
                 var o4 = new Object();
-
                 o4.thisYear3 = 8.18;
                 o4.thisYear2 = 0;
                 o4.thisYear1 = 0;
@@ -319,17 +319,11 @@
                 var echarts4DataX = [data[0].date1, data[0].date2, data[0].date3];
                 var echarts4DataY = [data[0].thisYear1, data[0].thisYear2, data[0].thisYear3];
                 ech4('echarts4', '数据趋势', '能耗', echarts4DataX, echarts4DataY, 'bar', 'kW·h', "#0e62c7");
-
                 var a5 = [0.0, 4.5, 0.0, -100.0, 0.0];
                 var data = a5;
                 var dataX = ["当月能耗", "上月能耗", "去年同期"];
                 var dataY = [data[0], data[1], data[2]];
                 ech('echarts1', '能耗分析', '能耗', dataX, dataY, 'bar', 'kW·h', "#68b928");
-
-
-
-
-
                 window.onresize = function () {
                     myChart.resize();
                     myChart2.resize();
@@ -466,7 +460,6 @@
 //折线图
             function echarts3(id, title, dataTitle, dataX, title0, number0, title1, number1, title2, number2, danwei) {
                 myChart3 = echarts.init(document.getElementById(id));
-
                 var option = {
                     title: {
                         text: ""
@@ -648,7 +641,76 @@
                 myChart5.setOption(option);
             }
 
+            function getCount(obj) {
+                console.log(obj)
+                var count = obj.count;
+                var a = count /${rs5[0].count} * 100;
+                var str = a.toString() + '%';
+                $('#online').html(str);
+            }
+            var websocket = null;
+            $(function () {
 
+
+                if ('WebSocket' in window) {
+                    websocket = new WebSocket("ws://zhizhichun.eicp.net:18414/");
+                } else {
+                    alert('当前浏览器不支持websocket')
+                }
+//                // 连接成功建立的回调方法
+                websocket.onopen = function (e) {
+                    var user = new Object();
+                    user.count = 0;
+                    var ele = {count: user.count};
+                    user.res = 1;
+                    user.afn = 0;
+                    user.status = "";
+                    user.function = "getCount";
+                    user.errcode = 0;
+                    user.frame = 0;
+                    user.parama = ele;
+                    user.msg = "Online";
+                    user.res = 1;
+                    num = 0x71;
+                    $datajson = JSON.stringify(user);
+                    console.log("websocket readystate:" + websocket.readyState);
+                    console.log(user);
+                    websocket.send($datajson)
+                }
+
+                //接收到消息的回调方法
+                websocket.onmessage = function (e) {
+                    console.log("onmessage");
+                    var jsoninfo = JSON.parse(e.data);
+                    console.log(jsoninfo);
+                    if (jsoninfo.hasOwnProperty("function")) {
+                        var vvv = jsoninfo.function;
+                        var obj = jsoninfo.parama;
+                        obj.status = jsoninfo.status;
+                        obj.errcode = jsoninfo.errcode;
+                        obj.frame = jsoninfo.frame;
+                        obj.count = jsoninfo.count;
+                        window[vvv](obj);
+                    }
+
+                }
+                //连接关闭的回调方法
+                websocket.onclose = function () {
+                    console.log("websocket close");
+                    websocket.close();
+                }
+
+                //连接发生错误的回调方法
+                websocket.onerror = function () {
+                    console.log("Webscoket连接发生错误");
+                }
+
+                //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+                window.onbeforeunload = function () {
+                    websocket.close();
+                }
+
+            })
 
         </script>
 
@@ -657,6 +719,10 @@
 
 
     <body>
+
+
+
+        <br>
         <div class="top" style="width:100%;height:450px;position:relative;">
             <div class="topTitle" style="position:absolute;top:2%;left:2%;color:#000;font-size:20px;font-weight:600;">设备分析</div>
             <div class="topLeft" style="height:400px;padding-top:60px;">
@@ -664,21 +730,72 @@
                     <span class="redius" style="background:#fdd237;">
                         <img src="img/dp.png"></span>
                     <div class="Mess lightingRate">
-                        <span>0%</span>
+                        <span>${(rs1[0].count-rs2[0].count)/rs1[0].count * 100}%</span>
                         <span>亮灯率</span>
                     </div>
                 </div>
                 <div class="topLeftOneBox">
                     <span class="redius" style="background:#42bcec;"><img src="img/jien.png"></span>
                     <div class="Mess energySavingRate">
-                        <span>69.2%</span>
+                        <span>
+
+
+                            <c:if test="${fn:length(rs3)==0 }">  
+                                ${0/rs4[0].power*100}%
+                            </c:if>
+                            <c:if test="${fn:length(rs3)==1 }">  
+                                <script>
+                                    var power =${rs3[0].power};
+                                    var powerArr = power.A.split("|");
+                                    var val = powerArr[power.len - 1];
+                                    console.log(val);
+                                    var power2 = parseFloat(${rs4[0].power});
+                                    console.log(power2);
+                                    var trueval = parseFloat(val) / power2 * 100;
+                                    var str = trueval.toString() + "%";
+                                    document.write(str);
+                                </script>
+                            </c:if> 
+                            <c:if test="${fn:length(rs3)>1 }">  
+                                <script>
+
+                                    console.log("abcdefg");
+
+                                    var power1 =${rs3[0].power}; //最近一日
+                                    var power2 =${rs3[fn:length(rs3)-1].power}; //最远一日
+                                    var a1 = power1.A.split("|");
+                                    var a2 = power2.A.split("|");
+                                    console.log(a1);
+                                    console.log(a2);
+                                    var p1 = a1[power1.len - 1];
+                                    var p2 = a2[0];
+                                    console.log(p1);
+                                    console.log(typeof p1);
+                                    console.log(p2);
+                                    if (p1 == p2) {
+                                        var truepower = parseFloat(p1);
+
+                                        var planpower = parseFloat(${rs4[0].power});
+                                        var trueval = truepower / planpower * 100;
+                                  
+                                        $("#actualConsumption").html("aa");
+                                        var diff = planpower - truepower;
+//                                        $("#differenceConsumption").html(diff.toString());
+                                        var str = trueval.toString() + "%";
+                                        document.write(str);
+                                    }
+
+                                </script>
+                            </c:if> 
+
+                        </span>
                         <span>节能率</span>
                     </div>
                 </div>
                 <div class="topLeftOneBox">
                     <span class="redius" style="background:#68b928;"><img src="img/online.png"></span>
                     <div class="Mess AlarmTimes">
-                        <span>0%</span>
+                        <span id="online">10%</span>
                         <span>在线率</span>
                     </div>
                 </div>
@@ -697,11 +814,22 @@
             <div class="topCenter3Mess" style="height:400px;">
 
                 <div class="topCenter3MessMM" style="margin-top:40%;">
-                    <div class="first"><span class="subPara">计划能耗：</span><span class="paraValue" id="planConsumption">10</span></div>
+                    <div class="first">
+                        <span class="subPara">计划能耗：</span>
+                        <span class="paraValue" id="planConsumption">${rs4[0].power}</span>
+                    </div>
                     <!-- <div class="second"></div> -->
-                    <div class="first"><span class="subPara">实际能耗：</span><span class="paraValue" id="actualConsumption">0</span></div>
+                    <div class="first">
+                        <span class="subPara">实际能耗：</span>
+                        <span class="paraValue" id="actualConsumption">
+                            
+                        </span>
+                    </div>
                     <!-- <div class="second">1000</div> -->
-                    <div class="first"><span class="subPara">差值：</span><span class="paraValue" id="differenceConsumption">10</span></div>
+                    <div class="first">
+                        <span class="subPara">差值：</span>
+                        <span class="paraValue" id="differenceConsumption"></span>
+                    </div>
                     <!-- <div class="second">250</div> -->
                     <div class="first"><span class="subPara">状态：</span></div>
                     <div class="second"><span class="subPara" id="status">正常</span></div>

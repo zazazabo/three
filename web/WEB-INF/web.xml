@@ -19,4 +19,5 @@
         <servlet-name>controlServlet</servlet-name>
         <url-pattern>*.action</url-pattern>
     </servlet-mapping>
+    
 </web-app>

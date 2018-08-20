@@ -1,5 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xforms>
+    
+    <xform desc="主页" id="mainsub">
+        <xhand id="home" rtn="mainsub.jsp" rtnype="PGE">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT COUNT(l_code) AS count FROM t_lamp WHERE l_deplayment = 1  " var="rs1">    
+            </xsql>           
+            
+            <xsql id="a2" list="true" page="true" tpe="SQL" tpl=" SELECT COUNT(f_lampset) AS count FROM t_fault WHERE f_type='ERC44' AND f_wanning=1 AND CONVERT(Nvarchar, f_day, 23) = CONVERT(Nvarchar, GETDATE(), 23)  " var="rs2">    
+            </xsql> 
+
+            <xsql id="a3" list="true" page="true" tpe="SQL" tpl=" SELECT power FROM t_records AS tr ORDER BY tr.[day] DESC " var="rs3">    
+            </xsql> 
+
+            <xsql id="a4" list="true" page="true" tpe="SQL" tpl=" SELECT * FROM t_planpower  " var="rs4">    
+            </xsql> 
+           
+            <xsql id="a4" list="true" page="true" tpe="SQL" tpl=" SELECT COUNT(DISTINCT tb.comaddr) AS count FROM t_baseinfo AS tb " var="rs5">    
+            </xsql>         
+           
+           
+        </xhand>
+    </xform>
+    
     <xform desc="告警模块" id="warn">
         <xhandle desc="告警列表" id="queryData" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_people WHERE   @CONDITION  " var="bootstrap">
@@ -43,9 +65,6 @@
     
     
     <xform desc="人员表" id="user">
-        
-        
-        
         <xhandle desc="获取人员列表" id="query" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from  t_user    WHERE   @CONDITION   " var="bootstrap">
                 <xflt id="CONDITION" nrp="" tpl="@u_phone AND @u_name ">
