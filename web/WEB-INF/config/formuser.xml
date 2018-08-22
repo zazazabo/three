@@ -9,19 +9,22 @@
             <xsql id="a2" list="true" page="true" tpe="SQL" tpl=" SELECT COUNT(f_lampset) AS count FROM t_fault WHERE f_type='ERC44' AND f_wanning=1 AND CONVERT(Nvarchar, f_day, 23) = CONVERT(Nvarchar, GETDATE(), 23)  " var="rs2">    
             </xsql> 
 
-            <xsql id="a3" list="true" page="true" tpe="SQL" tpl=" SELECT power FROM t_records AS tr ORDER BY tr.[day] DESC " var="rs3">    
+            <xsql id="a3" list="true" page="true" tpe="SQL" tpl=" SELECT power,month(day) AS month FROM t_records AS tr where datediff(month,day,getdate())=0     ORDER BY tr.[day] DESC " var="rs3">    
             </xsql> 
 
             <xsql id="a4" list="true" page="true" tpe="SQL" tpl=" SELECT * FROM t_planpower  " var="rs4">    
             </xsql> 
            
-            <xsql id="a4" list="true" page="true" tpe="SQL" tpl=" SELECT COUNT(DISTINCT tb.comaddr) AS count FROM t_baseinfo AS tb " var="rs5">    
+            <xsql id="a5" list="true" page="true" tpe="SQL" tpl=" SELECT COUNT(DISTINCT tb.comaddr) AS count FROM t_baseinfo AS tb " var="rs5">    
             </xsql>         
-           
-           
+            
+            <xsql id="a6" list="true" page="true" tpe="SQL" tpl=" SELECT POWER as power,CONVERT(varchar(100),day,112) as day, month(DAY) AS monty,year(DAY) AS year FROM t_records AS tr where datediff(year,DAY,getdate()) BETWEEN 0 AND 2   ORDER BY tr.[day] DESC " var="rs6">    
+            </xsql>  
+
         </xhand>
     </xform>
-    
+
+
     <xform desc="告警模块" id="warn">
         <xhandle desc="告警列表" id="queryData" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_people WHERE   @CONDITION  " var="bootstrap">
