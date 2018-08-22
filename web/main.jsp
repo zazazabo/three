@@ -298,13 +298,14 @@
                     type: "post",
                     url: "formuser.mainmenu.query.action",
                     dataType: "json",
-                    data:{language:1},
+                    data:{m_type:1},
                     success: function (data) {
                         var htmls = '';
                         var isIntelligentLampPoleProject = "4";
                         data = data2tree(data);
                         for (var i = 0; i < data.length; i++) {
                             if (data[i].children.length == 0) {
+                                
                                 htmls += '<li class="eachMenu layui-nav-item" >'
                                         + '<a class="list listdisplayNone" href="javascript:;" name="' + data[i].action + '">'
                                         + '<span class="' + data[i].icon + '">' + '</span>'

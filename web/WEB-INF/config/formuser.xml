@@ -41,11 +41,9 @@
     <xform desc="菜单模块" id="mainmenu">
         <xhandle desc="获取菜单列表" id="query" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select *  from  t_menu   WHERE   @CONDITION  ORDER BY m_code ASC  " var="list">
-                <xflt id="CONDITION" nrp="" tpl="@u_phone AND @u_name ">
-                    <xfltpara id="u_phone" nrp="1=1" para="u_phone" sql="u_phone = ':u_phone'">
-                    </xfltpara>
-                    <xfltpara id="u_name" nrp="1=1" para="u_name" sql="u_name = ':u_name'">
-                    </xfltpara>             
+                <xflt id="CONDITION" nrp="" tpl="@m_type ">
+                    <xfltpara id="m_type" nrp="1=1" para="m_type" sql="m_type = :m_type">
+                    </xfltpara>            
                 </xflt>        
             </xsql>               
         </xhandle>  
