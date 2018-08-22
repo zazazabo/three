@@ -91,9 +91,9 @@
                 return dataArray;
             }
             //退出
-            function getout(){
-                if(confirm("确定退出吗？")){
-                   window.location ="${pageContext.request.contextPath }/login.jsp";
+            function getout() {
+                if (confirm("确定退出吗？")) {
+                    window.location = "${pageContext.request.contextPath }/login.jsp";
                 }
             }
 
@@ -278,34 +278,20 @@
                                 alert(error.message);
                             });
                 })
-                /*
-                 **切换主题
-                 **/
-                $(".abcStyle li").on("click", function () {
-                    var themeName = $(this).attr("class");
-                    changeTheme(themeName);
-                    localStorage.setItem('theme', themeName);
-                });
-
-
-
-
-
-
                 /* 加载左边菜单 */
-                
+
                 $.ajax({
                     type: "post",
                     url: "formuser.mainmenu.query.action",
                     dataType: "json",
-                    data:{m_type:1},
+                    data: {m_type: 0},
                     success: function (data) {
                         var htmls = '';
                         var isIntelligentLampPoleProject = "4";
                         data = data2tree(data);
                         for (var i = 0; i < data.length; i++) {
                             if (data[i].children.length == 0) {
-                                
+
                                 htmls += '<li class="eachMenu layui-nav-item" >'
                                         + '<a class="list listdisplayNone" href="javascript:;" name="' + data[i].action + '">'
                                         + '<span class="' + data[i].icon + '">' + '</span>'
@@ -456,14 +442,46 @@
 
                 //语言切换
                 function changeLanguage(language) {
-                    alert("dd");
-                    doPostRequest({locale: language}, "user/changeLocale.action", function (retult) {
-                        window.top.location.href = "abc.action";
-                    },
-                            function (error) {
-                                alert(error.message);
-                            });
+                    console.log(language);
+                    var obj = {m_type: 0};
+                    if (language == "zh_CN") {
+                        obj.m_type = 0;
+                    } else if (language == "en_US") {
+                        obj.m_type = 1;
+                    }
+                    $.ajax({
+                        type: "post",
+                        url: "formuser.mainmenu.query.action",
+                        dataType: "json",
+                        data: obj,
+                        success: function (data) {
+                             $(".MenuBox").children('li').remove(); 
+                            var htmls = '';
+                            data = data2tree(data);
+                            for (var i = 0; i < data.length; i++) {
+                                if (data[i].children.length == 0) {
+
+                                    htmls += '<li class="eachMenu layui-nav-item" >'
+                                            + '<a class="list listdisplayNone" href="javascript:;" name="' + data[i].action + '">'
+                                            + '<span class="' + data[i].icon + '">' + '</span>'
+                                            + '<span class="menuMessage" style=" padding-left: 3px;" >' + data[i].title + '</span>'
+                                            + '</a>'
+                                            + '</li>';
+
+                                }
+                            }
+
+                            $(".MenuBox").html(htmls);
+                            $(".list:eq(0)").addClass("active");
+                            var ifrsrc = $(".list:eq(0)").attr("name");
+                            $("#iframe").attr("src", ifrsrc);
+                        }
+
+
+                    });
+ 
                 }
+
 
             });
             $(function () {
@@ -483,21 +501,6 @@
                 $("#navTop").css("background", color);
             }
 
-            function changeTheme(theme) {
-                //                var classicTheme = ['#393D49', '#FFFFFF', '#393D49', '#393D49', '#42485b'];
-                //                var oceanTheme = ['#1E9FFF', '#FFFFFF', '#0078D1', '#242D3D', '#344058'];
-                //                var greenTheme = ['#2F9688', '#FFFFFF', '#226A62', '#16181D', '#20222A'];
-                //                if (theme == 'classic') {
-                //                    themeColor(classicTheme);
-                //                    localStorage.setItem('theme', 'classic');
-                //                } else if (theme == 'ocean') {
-                //                    themeColor(oceanTheme);
-                //                    localStorage.setItem('theme', 'ocean');
-                //                } else {
-                //                    themeColor(greenTheme);
-                //                    localStorage.setItem('theme', 'green');
-                //                }
-            }
             function themeColor(theme) {
                 $("#navTop").css("background", theme[0]);
                 $('.controlMessage span').css("color", theme[1]);
