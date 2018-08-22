@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -183,7 +184,7 @@
                         <li class="one" style="width:140px;">
                             <i class="layui-icon indexIcon"></i>  
                             <span class="Till" style="width: 140px; padding-left: 24px; box-sizing: border-box; color: rgb(255, 255, 255);">
-                                <span class="admin" style="color: rgb(255, 255, 255);">huaming1</span>
+                                <span class="admin" style="color: rgb(255, 255, 255);">${rs[0].name}</span>
                             </span>
                             <ul class="two animated fadeInDown twoL" style="background: rgb(57, 61, 73) none repeat scroll 0% 0%; color: rgb(255, 255, 255);">
                                 <li>退出</li>
