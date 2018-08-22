@@ -3,5 +3,5 @@
   <xfile id="/WEB-INF/config/test1.xml" desc="path" ></xfile>
   <xfile id="/WEB-INF/config/test2.xml" desc="path" ></xfile>
     <xfile id="/WEB-INF/config/formuser.xml" desc="path" ></xfile>
-     <xfile id="/WEB-INF/config/login.xml" desc="path" ></xfile>
+     <!--<xfile id="/WEB-INF/config/login.xml" desc="path" ></xfile>-->
 </xFiles>

@@ -155,15 +155,15 @@
                             <img src="abc.action_files/alarm_s.png" class="alarmLi">
                             <div class="alarmNub alarmLi" id="alarmNumber">0</div>
                         </li>
-<!--                        <li class="one setName" style="width: 74px; display: block;">
-                            <i class="layui-icon indexIcon"></i>   
-                            <span class="Till" style="width: 74px; text-align: center; color: rgb(255, 255, 255);">配置</span>
-                            <ul class="two animated fadeInDown language setMenu" style="background: rgb(57, 61, 73) none repeat scroll 0% 0%; color: rgb(255, 255, 255);">
-
-                                <li action="config/paramConfig.action">参数配置</li><li action="config/gateway.action">网关配置</li>
-                                <li action="config/alarmConfig.action">项目配置</li>
-                            </ul>
-                        </li>-->
+                        <!--                        <li class="one setName" style="width: 74px; display: block;">
+                                                    <i class="layui-icon indexIcon"></i>   
+                                                    <span class="Till" style="width: 74px; text-align: center; color: rgb(255, 255, 255);">配置</span>
+                                                    <ul class="two animated fadeInDown language setMenu" style="background: rgb(57, 61, 73) none repeat scroll 0% 0%; color: rgb(255, 255, 255);">
+                        
+                                                        <li action="config/paramConfig.action">参数配置</li><li action="config/gateway.action">网关配置</li>
+                                                        <li action="config/alarmConfig.action">项目配置</li>
+                                                    </ul>
+                                                </li>-->
                         <li class="one" style="width:74px;">
                             <i class="layui-icon indexIcon"></i>   
                             <span class="Till" style="width: 74px; text-align: center; color: rgb(255, 255, 255);">语言</span>
@@ -172,15 +172,15 @@
                                 <li language="en_US">英文</li>
                             </ul>
                         </li>
-<!--                        <li class="one themeItem" style="width:74px;">
-                            <i class="layui-icon indexIcon"></i>   
-                            <span class="Till" style="width: 74px; text-align: center; color: rgb(255, 255, 255);">主题</span>
-                            <ul class="two animated fadeInDown abcStyle" style="background: rgb(57, 61, 73) none repeat scroll 0% 0%; color: rgb(255, 255, 255);">
-                                <li class="classic">经典</li>
-                                <li class="ocean">海洋</li>
-                                <li class="green">翡翠</li>
-                            </ul>
-                        </li>-->
+                        <!--                        <li class="one themeItem" style="width:74px;">
+                                                    <i class="layui-icon indexIcon"></i>   
+                                                    <span class="Till" style="width: 74px; text-align: center; color: rgb(255, 255, 255);">主题</span>
+                                                    <ul class="two animated fadeInDown abcStyle" style="background: rgb(57, 61, 73) none repeat scroll 0% 0%; color: rgb(255, 255, 255);">
+                                                        <li class="classic">经典</li>
+                                                        <li class="ocean">海洋</li>
+                                                        <li class="green">翡翠</li>
+                                                    </ul>
+                                                </li>-->
                         <li class="one" style="width:140px;">
                             <i class="layui-icon indexIcon"></i>  
                             <span class="Till" style="width: 140px; padding-left: 24px; box-sizing: border-box; color: rgb(255, 255, 255);">
@@ -292,6 +292,7 @@
                     type: "post",
                     url: "formuser.mainmenu.query.action",
                     dataType: "json",
+                    data:{language:1},
                     success: function (data) {
                         var htmls = '';
                         var isIntelligentLampPoleProject = "4";
@@ -300,7 +301,7 @@
                             if (data[i].children.length == 0) {
                                 htmls += '<li class="eachMenu layui-nav-item" >'
                                         + '<a class="list listdisplayNone" href="javascript:;" name="' + data[i].action + '">'
-                                        + '<span class="' + data[i].icon + '">'  + '</span>'
+                                        + '<span class="' + data[i].icon + '">' + '</span>'
                                         + '<span class="menuMessage" style=" padding-left: 3px;" >' + data[i].title + '</span>'
                                         + '</a>'
                                         + '</li>';
@@ -448,6 +449,7 @@
 
                 //语言切换
                 function changeLanguage(language) {
+                    alert("dd");
                     doPostRequest({locale: language}, "user/changeLocale.action", function (retult) {
                         window.top.location.href = "abc.action";
                     },

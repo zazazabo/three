@@ -411,7 +411,7 @@
 
 
 
-                o3.thisYear3 =       yearobj[2018];
+                o3.thisYear3 = yearobj[2018];
                 o3.thisYear2 = yearobj[2017];
                 o3.thisYear1 = yearobj[2016];
 //                console.log(o3);
@@ -427,8 +427,8 @@
 
                 var a4 = new Array();
                 var o4 = new Object();
-                o4.thisYear3 =   Math.floor(yearbar[2018] * 100) / 100;    
-                o4.thisYear2 =Math.floor(yearbar[2017] * 100) / 100;
+                o4.thisYear3 = Math.floor(yearbar[2018] * 100) / 100;
+                o4.thisYear2 = Math.floor(yearbar[2017] * 100) / 100;
                 o4.thisYear1 = Math.floor(yearbar[2016] * 100) / 100;
                 o4.date3 = 2018;
                 o4.date2 = 2017;
@@ -438,11 +438,12 @@
                 var data = a4;
                 var echarts4DataX = [data[0].date1, data[0].date2, data[0].date3];
                 var echarts4DataY = [data[0].thisYear1, data[0].thisYear2, data[0].thisYear3];
-                ech4('echarts4', '数据趋势', '能耗', echarts4DataX, echarts4DataY, 'bar', 'kW·h', "#0e62c7");
+                ech4('echarts4', '数据趋势', '能耗', echarts4DataX, echarts4DataY, 'bar', 'kW·h', "#337dd7");
 
 
                 var date = new Date();
                 var year1 = date.getFullYear();
+                var year2 = year1 - 1;
                 var month1 = date.getMonth() + 1;
                 var month2 = month1 - 1;
 //                console.log(year1);
@@ -451,11 +452,23 @@
                 var a5 = [0.0, 4.5, 0.0, -100.0, 0.0];
                 var data = a5;
                 var dataX = ["当月能耗", "上月能耗", "去年同期"];
-                
-                var nowmonth= Math.floor(yearobj[year1.toString()][month1 - 1] * 100) / 100;
-                var premonth=Math.floor(yearobj[year1.toString()][month2 - 1] * 100) / 100;
-                var dataY = [nowmonth,premonth, 0];
+
+                var nowmonth = Math.floor(yearobj[year1.toString()][month1 - 1] * 100) / 100;  //当月
+                var premonth = Math.floor(yearobj[year1.toString()][month2 - 1] * 100) / 100;  //前个月
+
+
+                var preyear = Math.floor(yearobj[year2.toString()][month1 - 1] * 100) / 100;  //去年当月
+                var dataY = [nowmonth, premonth, preyear];
                 ech('echarts1', '能耗分析', '能耗', dataX, dataY, 'bar', 'kW·h', "#68b928");
+                $("#benyue").html(nowmonth);
+                $("#shangyue").html(premonth);
+                var huanbi = nowmonth - premonth;
+                var hh = Math.floor(huanbi * 100) / 100;
+                $("#lastMonth").html(hh);
+                var qiantb = nowmonth - preyear;
+                 qiantb = Math.floor(qiantb * 100) / 100;
+                $("#lastYearSameMonth").html(qiantb);
+
                 window.onresize = function () {
 //                    myChart.resize();
 //                    myChart2.resize();
@@ -781,7 +794,7 @@
                 $('#online').html(str);
             }
             var websocket = null;
-            
+
             $(function () {
 
 
@@ -941,21 +954,23 @@
                 <div class="topCenter2Mess">	
                     <div class="nenghao">
                         <span class="subPara">本月能耗:</span><br>
-                        <span id="benyue" class="paraValue">0</span>kW·h</div>
+                        <span id="benyue" class="paraValue"></span>kW·h</div>
                     <div class="nenghao1">
                         <span class="subPara">上月能耗:</span><br>
-                        <span id="shangyue" class="paraValue">4.5</span>kW·h<br>
+                        <span id="shangyue" class="paraValue"></span>kW·h<br>
                         <span>环比：</span>
-                        <span class="tongbi" id="lastMonth">-100%</span>
+                        <span class="tongbi" id="lastMonth"></span>
+                        kW·h
                     </div>
                     <div class="nenghao1">
                         <span class="subPara">去年同期:</span><br>
-                        <span id="qunian" class="paraValue">0</span>kW·h<br>
+                        <span id="qunian" class="paraValue"></span>
                         <span>同比：</span>
-                        <span class="tongbi" id="lastYearSameMonth">0%</span>
+                        <span class="tongbi" id="lastYearSameMonth"></span>
+                        kW·h
                     </div>
                     <div class="nenghao1">
-                        <span class="subPara">每盏灯平均能耗:</span><br>
+                        <span class="subPara">每盏灯平均能耗:</span>
                         <span id="pingjun" class="paraValue">0</span>kW·h
                     </div>
                 </div>
