@@ -90,6 +90,12 @@
                 }
                 return dataArray;
             }
+            //退出
+            function getout(){
+                if(confirm("确定退出吗？")){
+                   window.location ="${pageContext.request.contextPath }/login.jsp";
+                }
+            }
 
 
 
@@ -168,8 +174,8 @@
                             <i class="layui-icon indexIcon"></i>   
                             <span class="Till" style="width: 74px; text-align: center; color: rgb(255, 255, 255);">语言</span>
                             <ul class="two animated fadeInDown language" style="background: rgb(57, 61, 73) none repeat scroll 0% 0%; color: rgb(255, 255, 255);">
-                                <li language="zh_CN">中文</li>
-                                <li language="en_US">英文</li>
+                                <li language="zh_CN" id="chinese">中文</li>
+                                <li language="en_US" id="english">英文</li>
                             </ul>
                         </li>
                         <!--                        <li class="one themeItem" style="width:74px;">
@@ -187,7 +193,7 @@
                                 <span class="admin" style="color: rgb(255, 255, 255);">${rs[0].name}</span>
                             </span>
                             <ul class="two animated fadeInDown twoL" style="background: rgb(57, 61, 73) none repeat scroll 0% 0%; color: rgb(255, 255, 255);">
-                                <li>退出</li>
+                                <li id="out" onclick="getout()">退出</li>
                                 <li style="display:none;">修改密码</li>
                             </ul>
                         </li>

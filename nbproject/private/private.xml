@@ -2,6 +2,14 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="5">
         <file>
+            <url>src/java/com/mylib/ControlServlet.java</url>
+            <bookmark id="1">
+                <name/>
+                <line>264</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
             <url>web/gateway.jsp</url>
             <bookmark id="5">
                 <name/>
@@ -17,32 +25,11 @@
                 <key/>
             </bookmark>
         </file>
-        <file>
-            <url>src/java/com/mylib/ControlServlet.java</url>
-            <bookmark id="1">
-                <name/>
-                <line>264</line>
-                <key/>
-            </bookmark>
-        </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Administrator/Documents/NetBeansProjects/three/web/mainsub.jsp</file>
-            <file>file:/C:/Users/Administrator/Documents/NetBeansProjects/three/web/addloop.jsp</file>
-            <file>file:/C:/Users/Administrator/Documents/NetBeansProjects/three/web/echarts1.jsp</file>
-            <file>file:/C:/Users/Administrator/Documents/NetBeansProjects/three/web/index.jsp</file>
-            <file>file:/C:/Users/Administrator/Documents/NetBeansProjects/three/web/warnning.jsp</file>
-            <file>file:/C:/Users/Administrator/Documents/NetBeansProjects/three/web/eccharttest.jsp</file>
-            <file>file:/C:/Users/Administrator/Documents/NetBeansProjects/three/web/lightgroupe.jsp</file>
-            <file>file:/C:/Users/Administrator/Documents/NetBeansProjects/three/web/usermanage.jsp</file>
-            <file>file:/C:/Users/Administrator/Documents/NetBeansProjects/three/web/warnanylize.jsp</file>
-            <file>file:/C:/Users/Administrator/Documents/NetBeansProjects/three/web/gateway.jsp</file>
-            <file>file:/C:/Users/Administrator/Documents/NetBeansProjects/three/web/static.jsp</file>
-            <file>file:/C:/Users/Administrator/Documents/NetBeansProjects/three/web/WEB-INF/config/allconfig.xml</file>
-            <file>file:/C:/Users/Administrator/Documents/NetBeansProjects/three/web/lightval.jsp</file>
-            <file>file:/C:/Users/Administrator/Documents/NetBeansProjects/three/web/strategyTab.jsp</file>
-            <file>file:/C:/Users/Administrator/Documents/NetBeansProjects/three/web/warntab.jsp</file>
+            <file>file:/D:/Documents/NetBeansProjects/2/three/web/main.jsp</file>
+            <file>file:/D:/Documents/NetBeansProjects/2/three/web/login.jsp</file>
         </group>
     </open-files>
 </project-private>

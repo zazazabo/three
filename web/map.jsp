@@ -210,6 +210,7 @@
                 {
                     text: '添加灯具',
                     callback: function () {
+                        //alert("ddd");
                         // map.zoomIn()
                     }
                 },
