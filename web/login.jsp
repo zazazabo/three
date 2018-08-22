@@ -196,11 +196,12 @@
                 display:none;
             }
             .checkBox{
-                width: 150px;
+                width: 345px;
                 margin-top: 10px;
-                padding-left: 70px;
+                padding-right:180px;
                 font-size: 14px;
                 line-height: 30px;
+                margin-left: 18%;
             }
             .logion{
                 width:315px;height:50px;
@@ -265,7 +266,7 @@
                 background:url(img/user-scret.png) no-repeat 10px -61px;
             }
             .changeLanguage{
-                width:125px;
+                width:150px;
                 height:40px;
                 position:absolute;
                 top:20px;
@@ -273,7 +274,7 @@
             }
             .Zh{
                 float:left;
-                width:60px;
+                width:70px;
                 height:40px;
                 line-height:40px;
                 font-size:14px;
@@ -291,7 +292,7 @@
             }
             .line{
                 margin-top:10px;
-                margin-left:-15px;
+                margin-left:-10px;
                 float:left;
                 font-size:14px;
                 color:#BFD4F8;
@@ -458,17 +459,12 @@
                 var password = getCookieValue("password");
                 $("#username").val(username);
                 $("#password").val(password);
-                var uservalue = $("#username").value;
-                var pwdvalue = $("#password").value;
-                var u = String(uservalue).trim(); //将用户名改为string类型
-                var p = String(pwdvalue).trim();//将密码改为string类型
-                if ( u != "" && p != "") {
+                if (username != null && password != null) {
                      $("#cc").prop("checked", true);
-                   //  $("#rememberPW").prop(":checked","checked")
                     
                 }
-                if ($("#username").value == null && $("#password").value == null) {
-                    $("#rememberPW").prop("checked", false);
+                if (username == null && password == null) {
+                    $("#cc").prop("checked", false);
                 }
                 //登陆
                 $("#login").click(function () {
@@ -500,9 +496,11 @@
                     var pwd = $("#password").val();
                     var username = $("#username").val();
                     if(pwd==""||username==""){
-                        alert("请输入用户名和密码！");
+                        //alert("请输入用户名和密码！");
+                         $("#cc").prop("checked", false);
                     }
                     else if ($("#cc").is(":checked")) {
+                        
                         var pass = $("#password").val();
                         // var name = $("#username").val();               
                         var password = hex_md5(pass);
@@ -510,7 +508,7 @@
                         obj.password = password;
                         obj.name = username;
                         //obj.name = name;
-                        console.log(obj);
+                       // console.log(obj);
                         $.ajax({async: false, url: "login.loginform.loginhand.action", type: "get", datatype: "JSON", data: obj,
                             success: function (data) {
                                 // console.log(data);
@@ -526,6 +524,8 @@
                                         addCookie("username", username, 7);
                                         addCookie("password", pwd, 7);
                                        // alert("记住了");
+                                    }else{
+                                      $("#cc").prop("checked", false);  
                                     }
                                 } else if (arrlist.length == 0) {
                                     alert("用户名或密码错误！");
@@ -562,7 +562,7 @@
                         var username2 = aCurmb[0].toString().trim();
                         username = username.toString();
                         if (username == username2) {
-                            return unescape(aCurmb[1]);
+                            return unescape(String(aCurmb[1]));
                         } 
 
                     }
@@ -577,6 +577,21 @@
                     document.cookie = name + "=a;expires=" + date.toGMTString();
 
                 }
+                //切换中文
+                $("#chinese").click(function (){
+                    $("#chinese").html("中文");
+                    $("#rememberPW").html("记住密码");
+                    $("#login").val("登陆");
+                    $("#top").html("账号登陆");
+                });
+                //切换英文
+                $("#english").click(function (){
+                  $("#chinese").html("Chinese");
+                  $("#rememberPW").html("remember password");
+                  $("#login").val("Login");
+                  $("#top").html("Account login");
+                });
+                
             });
         </script>
     </head>
@@ -592,9 +607,9 @@
         </div> 
 
         <div class="changeLanguage">
-            <div language="zh_CN" class="Zh">中文</div>
+            <div language="zh_CN" class="Zh" id="chinese">中文</div>
             <div class="line">|</div>
-            <div language="en_US" class="En">English</div>
+            <div language="en_US" class="En" id="english">English</div>
         </div>
 
 
@@ -603,7 +618,7 @@
         </div>
 
         <div class="loginBox animated bounceInUp" style="display: block;">
-            <div class="h3">账号登陆</div>
+            <div class="h3" id="top">账号登陆</div>
             <div style="width:100%;height:40px;">
                 <span style="margin-top:5px;color:red;margin-left:140px;display:block;">
 
@@ -625,7 +640,7 @@
                     </div>
                     <div class="checkBox">
                         <input type="checkbox" id="cc" value="">
-                        <label for="rememberPW">记住密码</label>
+                        <label for="rememberPW" id="rememberPW">记住密码</label>
                     </div>
                     <input class="logion" type="button" id="login" value="登陆">
                 </form>  	

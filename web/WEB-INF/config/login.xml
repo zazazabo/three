@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xforms>
+
+    <xform desc="login" id="loginform">
+        <xhandle desc="登陆" id="loginhand" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_user WHERE   @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@name AND @password ">
+                    <xfltpara id="name" nrp="1=1" para="name" sql="name = ':name'">
+                    </xfltpara>
+                    <xfltpara id="password" nrp="1=1" para="password" sql="password = ':password'">
+                    </xfltpara>            
+                </xflt>      
+            </xsql>
+                       
+        </xhandle>                 
+    </xform>
+    
+        <xform desc="主页" id="main">
+        <xhand id="home" rtn="main.jsp" rtnype="PGE">
+            
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_user WHERE   @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@name">
+                    <xfltpara id="name" nrp="1=1" para="name" sql="name = ':name'">
+                    </xfltpara>
+<!--                    <xfltpara id="password" nrp="1=1" para="password" sql="password = ':password'">
+                    </xfltpara>            -->
+                </xflt>      
+            </xsql>       
+
+             
+        </xhand>
+    </xform>
+</xforms>
