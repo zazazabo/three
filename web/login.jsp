@@ -600,10 +600,10 @@
             <canvas id="demo-canvas" width="1398" height="914"></canvas>
         </div>
 
-        <img src="./aaa_files/login-bg.jpg" style="position:absolute;top:0;left:0;z-index:-1;width:100%;height:100%;">
+        <img src="./img/login-bg.jpg" style="position:absolute;top:0;left:0;z-index:-1;width:100%;height:100%;">
         <div class="logo animated bounceInDown" style="display: block;">
             <!-- <img src="imgs/login/sz.png"/> -->
-            <img src="./aaa_files/sz-tit.png" class="phoneTit">
+            <img src="./img/sz-tit.png" class="phoneTit">
         </div> 
 
         <div class="changeLanguage">
@@ -614,7 +614,7 @@
 
 
         <div class="logo-animate animated bounceIn" style="display: block;">
-            <img src="./aaa_files/sz-animate.png">
+            <img src="./img/sz-animate.png">
         </div>
 
         <div class="loginBox animated bounceInUp" style="display: block;">
