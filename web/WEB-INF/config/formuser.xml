@@ -40,7 +40,7 @@
     
     <xform desc="菜单模块" id="mainmenu">
         <xhandle desc="获取菜单列表" id="query" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select *  from  t_menu   WHERE   @CONDITION  ORDER BY m_code ASC  " var="list">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select *  from  t_menu   WHERE    @CONDITION  ORDER BY m_code ASC  " var="list">
                 <xflt id="CONDITION" nrp="" tpl="@m_type ">
                     <xfltpara id="m_type" nrp="1=1" para="m_type" sql="m_type = :m_type">
                     </xfltpara>            
@@ -49,7 +49,7 @@
         </xhandle>  
         <!--{id: 1, pId: 0, name: "[core] 基本功能 演示", open: true},-->
         <xhandle desc="获取菜单列表" id="queryZtree" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select m_code AS id,m_parent as pId,m_title as name,m_icon as icon  from  t_menu   WHERE   @CONDITION  ORDER BY m_code ASC  " var="list">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select m_code AS id,m_parent as pId,m_title as name,m_icon as icon  from  t_menu   WHERE m_type=0 and   @CONDITION  ORDER BY m_code ASC  " var="list">
                 <xflt id="CONDITION" nrp="" tpl="@u_phone AND @u_name ">
                     <xfltpara id="u_phone" nrp="1=1" para="u_phone" sql="u_phone = ':u_phone'">
                     </xfltpara>

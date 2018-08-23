@@ -291,11 +291,14 @@
                         data = data2tree(data);
                         for (var i = 0; i < data.length; i++) {
                             if (data[i].children.length == 0) {
-
+                                var lang = "zh_CN";
+                                var obj = eval('(' + data[i].title + ')');
+                                console.log(obj);
+                                console.log(obj[lang]);
                                 htmls += '<li class="eachMenu layui-nav-item" >'
                                         + '<a class="list listdisplayNone" href="javascript:;" name="' + data[i].action + '">'
                                         + '<span class="' + data[i].icon + '">' + '</span>'
-                                        + '<span class="menuMessage" style=" padding-left: 3px;" >' + data[i].title + '</span>'
+                                        + '<span class="menuMessage" style=" padding-left: 3px;" >' + obj[lang] + '</span>'
                                         + '</a>'
                                         + '</li>';
                                 if (data[i].code == 6) {
@@ -444,27 +447,24 @@
                 function changeLanguage(language) {
                     console.log(language);
                     var obj = {m_type: 0};
-                    if (language == "zh_CN") {
-                        obj.m_type = 0;
-                    } else if (language == "en_US") {
-                        obj.m_type = 1;
-                    }
                     $.ajax({
                         type: "post",
                         url: "formuser.mainmenu.query.action",
                         dataType: "json",
                         data: obj,
                         success: function (data) {
-                             $(".MenuBox").children('li').remove(); 
+                            $(".MenuBox").children('li').remove();
                             var htmls = '';
                             data = data2tree(data);
                             for (var i = 0; i < data.length; i++) {
                                 if (data[i].children.length == 0) {
+                                    var lang = language;
+                                    var obj = eval('(' + data[i].title + ')');
 
                                     htmls += '<li class="eachMenu layui-nav-item" >'
                                             + '<a class="list listdisplayNone" href="javascript:;" name="' + data[i].action + '">'
                                             + '<span class="' + data[i].icon + '">' + '</span>'
-                                            + '<span class="menuMessage" style=" padding-left: 3px;" >' + data[i].title + '</span>'
+                                            + '<span class="menuMessage" style=" padding-left: 3px;" >' + obj[lang] + '</span>'
                                             + '</a>'
                                             + '</li>';
 
@@ -479,7 +479,7 @@
 
 
                     });
- 
+
                 }
 
 
