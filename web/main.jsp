@@ -158,37 +158,26 @@
                             <img alt="" src="abc.action_files/home_s.png" style="height:21px;width:21px;margin-top:2px;">
                         </li>
                         <li class="one imgM">
-                            <img src="abc.action_files/alarm_s.png" class="alarmLi">
+                            <img src="img/alarm_s.png" class="alarmLi">
                             <div class="alarmNub alarmLi" id="alarmNumber">0</div>
                         </li>
-                        <!--                        <li class="one setName" style="width: 74px; display: block;">
-                                                    <i class="layui-icon indexIcon"></i>   
-                                                    <span class="Till" style="width: 74px; text-align: center; color: rgb(255, 255, 255);">配置</span>
-                                                    <ul class="two animated fadeInDown language setMenu" style="background: rgb(57, 61, 73) none repeat scroll 0% 0%; color: rgb(255, 255, 255);">
-                        
-                                                        <li action="config/paramConfig.action">参数配置</li><li action="config/gateway.action">网关配置</li>
-                                                        <li action="config/alarmConfig.action">项目配置</li>
-                                                    </ul>
-                                                </li>-->
+
                         <li class="one" style="width:74px;">
+                            
                             <i class="layui-icon indexIcon"></i>   
-                            <span class="Till" style="width: 74px; text-align: center; color: rgb(255, 255, 255);">语言</span>
+                        <!--<span class="glyphicon glyphicon-tags indexIcon"/>-->
+     <span class="Till" style="width: 74px; text-align: center; color: rgb(255, 255, 255);">语言</span>
+
+                            
+                           
                             <ul class="two animated fadeInDown language" style="background: rgb(57, 61, 73) none repeat scroll 0% 0%; color: rgb(255, 255, 255);">
                                 <li language="zh_CN" id="chinese">中文</li>
                                 <li language="en_US" id="english">英文</li>
                             </ul>
                         </li>
-                        <!--                        <li class="one themeItem" style="width:74px;">
-                                                    <i class="layui-icon indexIcon"></i>   
-                                                    <span class="Till" style="width: 74px; text-align: center; color: rgb(255, 255, 255);">主题</span>
-                                                    <ul class="two animated fadeInDown abcStyle" style="background: rgb(57, 61, 73) none repeat scroll 0% 0%; color: rgb(255, 255, 255);">
-                                                        <li class="classic">经典</li>
-                                                        <li class="ocean">海洋</li>
-                                                        <li class="green">翡翠</li>
-                                                    </ul>
-                                                </li>-->
                         <li class="one" style="width:140px;">
                             <i class="layui-icon indexIcon"></i>  
+                            <!--<span class="glyphicon glyphicon-user"></span>-->
                             <span class="Till" style="width: 140px; padding-left: 24px; box-sizing: border-box; color: rgb(255, 255, 255);">
                                 <span class="admin" style="color: rgb(255, 255, 255);">${rs[0].name}</span>
                             </span>
