@@ -32,8 +32,8 @@
 
 
         <script>
-            
-            
+
+
             function getIdSelections() {
                 return $.map($("#gravidaTable").bootstrapTable('getSelections'), function (row) {
                     return row.id
@@ -45,7 +45,7 @@
                 if (treeNode == null) {
                     var a = 1; // 什么都不做
                 } else if (treeNode && treeNode.name) {
-                    
+
                     curName = treeNode.name;
                     if (treeNode.checked == true && treeNode.isParent == false) {
                         $("#treeid").val(treeNode.id);
@@ -65,7 +65,7 @@
 //隐藏右键菜单
             function hideRMenu() {
                 var rMenu = $("#rMenu");
-                
+
                 if (rMenu)
                     rMenu.css({"visibility": "hidden"}); //设置右键菜单不可见
                 $("body").unbind("mousedown", onBodyMouseDown);
@@ -81,7 +81,7 @@
                         var id = $("#treeid").val();
                         var node = zTreeOjb.getNodeByParam("id", id);
                         if (node.checked == true) {
-                            
+
                             layer.confirm('确认要取消权限吗？', {
                                 btn: ['确定', '取消']//按钮
                             }, function (index) {
@@ -92,7 +92,7 @@
                                     return;
                                 }
                                 var select = selects[0];
-                                
+
                                 var author = select.author == null ? "" : select.author;
                                 var arr = author.split("|");
                                 var str = "";
@@ -112,16 +112,16 @@
                                             console.log(data);
                                             var arrlist = data.rs;
                                             if (arrlist.length > 0) {
-                                                
+
                                                 $("#gravidaTable").bootstrapTable('updateCell', {index: select.index, field: "author", value: str});
                                                 zTreeOjb.checkNode(node, false, false);
                                                 //zTreeOjb.cancelSelectedNode(node);
-                                                
+
                                                 //var index = row.data('index');
-                                                
+
                                                 // $('#gravidaTable').bootstrapTable("check", index);
-                                                
-                                                
+
+
                                             }
                                         },
                                         error: function () {
@@ -129,25 +129,25 @@
                                         }
                                     });
                                 }
-                                
+
                                 $("#treeid").val("");
                             });
-                            
-                            
+
+
                             // layerAler("取消息当明操作的节点");
                         }
                         rMenu.css({"visibility": "hidden"});
                     }
                 }
-                
-                
+
+
             }
-            
-            
+
+
             function addauthor() {
                 var zTreeOjb = $.fn.zTree.getZTreeObj("treeDemo");
                 var nodes = zTreeOjb.getCheckedNodes();
-                
+
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
                 if (nodes.length == 0 || selects.length == 0) {
                     layerAler("请勾选菜单列表和选中要分配权限的用户");
@@ -172,7 +172,7 @@
                                         nodes.splice(index, 1);
                                     }
                                 }
-                                
+
                             }
                         }
                         str = delendchar(str);
@@ -181,14 +181,14 @@
                             if (nodes[i].id == "0") {
                                 continue;
                             }
-                            
+
                             str1 = str1 + nodes[i].id + "|";
                         }
-                        
+
                         str1 = delendchar(str1);
-                        
+
                         var strauthor = str == "" ? str1 : str + "|" + str1;
-                        
+
                         $.ajax({async: false, url: "formuser.user.editUserAuthor.action", type: "get", datatype: "JSON", data: {id: select.id, author: strauthor},
                             success: function (data) {
                                 console.log(data);
@@ -206,20 +206,20 @@
                     layer.close(index);
                 });
             }
-            
-            
+
+
             $(function () {
-                
+
                 var zNodes = [
                 ];
-                var lang="zh_CN";
+                var lang = "zh_CN";
                 $.ajax({async: false, url: "formuser.mainmenu.queryZtree.action", type: "get", datatype: "JSON", data: {},
                     success: function (data) {
                         for (var i = 0; i < data.length; i++) {
 //                            console.log(data[i]);
                             var obj1 = eval('(' + data[i].name + ')');
 //                            console.log(obj1);
-                            data[i].name=obj1[lang];
+                            data[i].name = obj1[lang];
                         }
                         var obj = {id: "0", pId: 0, name: "菜单目录", open: true};
                         data.push(obj);
@@ -244,103 +244,151 @@
                     }
                 };
                 $.fn.zTree.init($("#treeDemo"), setting, zNodes);
-                
+
                 $("#btnauthor").show(true);
-                $('#gravidaTable').bootstrapTable({
-                    url: 'formuser.user.query.action',
-                    columns: [
-                        {
-                            title: '单选',
-                            field: 'select',
-                            //复选框
-                            checkbox: true,
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        },
-                        {
-                            field: 'name',
-                            title: '姓名',
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
-                            field: 'department',
-                            title: '部门',
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
-                            field: 'author',
-                            title: '权限',
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle',
-                            formatter: function (value, row, index, field) {
-                                console.log(value);
-                                
-                                return value;
-                            }
-                        }],
-                    clickToSelect: true,
-                    singleSelect: true,
-                    sortName: 'id',
-                    locale: 'zh-CN', //中文支持,
-                    sortOrder: 'desc',
-                    pagination: true,
-                    sidePagination: 'server',
-                    pageNumber: 1,
-                    pageSize: 50,
-                    showRefresh: true,
-                    search: true,
-                    showToggle: true,
-                    // 设置默认分页为 50
-                    pageList: [50, 100, 150],
-                    onLoadSuccess: function () {  //加载成功时执行  表格加载完成时 获取集中器在线状态
-//                        console.info("加载成功");
-                    },
-                    //服务器url
-                    queryParams: function (params)  {   //配置参数     
-                        var temp  =   {    //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的 
-                            search: params.search,
-                            skip: params.offset,
-                            limit: params.limit,
-                            type_id: "1"    
-                        };      
-                        return temp;  
-                    },
-                });
-                $('#gravidaTable').on("dbl-click-row.bs.table", function (field, value, row, element) {
-                    var zTreeOjb = $.fn.zTree.getZTreeObj("treeDemo");
-                    zTreeOjb.checkAllNodes(false);
-                    var str = value.author;
-                    
-                    if (str != "" && str != null) {
-                        str = delendchar(str);
-                        var arr = str.split("|");
-                        for (var i = 0; i < arr.length; i++) {
-                            var node = zTreeOjb.getNodeByParam("id", arr[i]);
-                            zTreeOjb.checkNode(node, true, true);
-                        }
-                        
-                    }
-                    
-                    var index = row.data('index');
-                    value.index = index;
-                    $('#gravidaTable').bootstrapTable("check", index);
-                    
-                    
-                });
+
+//                $('#gravidaTable').bootstrapTable({
+//                    url: 'formuser.user.query.action',
+//                    columns: [
+//                        {
+//                            title: '单选',
+//                            field: 'select',
+//                            //复选框
+//                            checkbox: true,
+//                            width: 25,
+//                            align: 'center',
+//                            valign: 'middle'
+//                        },
+//                        {
+//                            field: 'name',
+//                            title: '姓名',
+//                            width: 25,
+//                            align: 'center',
+//                            valign: 'middle'
+//                        }, {
+//                            field: 'department',
+//                            title: '部门',
+//                            width: 25,
+//                            align: 'center',
+//                            valign: 'middle'
+//                        }, {
+//                            field: 'author',
+//                            title: '权限',
+//                            width: 25,
+//                            align: 'center',
+//                            valign: 'middle',
+//                            formatter: function (value, row, index, field) {
+//                                console.log(value);
+//                                
+//                                return value;
+//                            }
+//                        }],
+//                    clickToSelect: true,
+//                    singleSelect: true,
+//                    sortName: 'id',
+//                    locale: 'zh-CN', //中文支持,
+//                    sortOrder: 'desc',
+//                    pagination: true,
+//                    sidePagination: 'server',
+//                    pageNumber: 1,
+//                    pageSize: 50,
+//                    showRefresh: true,
+//                    search: true,
+//                    showToggle: true,
+//                    // 设置默认分页为 50
+//                    pageList: [50, 100, 150],
+//                    onLoadSuccess: function () {  //加载成功时执行  表格加载完成时 获取集中器在线状态
+////                        console.info("加载成功");
+//                    },
+//                    //服务器url
+//                    queryParams: function (params)  {   //配置参数     
+//                        var temp  =   {    //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的 
+//                            search: params.search,
+//                            skip: params.offset,
+//                            limit: params.limit,
+//                            type_id: "1"    
+//                        };      
+//                        return temp;  
+//                    },
+//                });
+//                $('#gravidaTable').on("dbl-click-row.bs.table", function (field, value, row, element) {
+//                    var zTreeOjb = $.fn.zTree.getZTreeObj("treeDemo");
+//                    zTreeOjb.checkAllNodes(false);
+//                    var str = value.author;
+//                    
+//                    if (str != "" && str != null) {
+//                        str = delendchar(str);
+//                        var arr = str.split("|");
+//                        for (var i = 0; i < arr.length; i++) {
+//                            var node = zTreeOjb.getNodeByParam("id", arr[i]);
+//                            zTreeOjb.checkNode(node, true, true);
+//                        }
+//                        
+//                    }
+//                    
+//                    var index = row.data('index');
+//                    value.index = index;
+//                    $('#gravidaTable').bootstrapTable("check", index);
+//                    
+//                    
+//                });
+
+
+
             })
-            
+
             function layerAler(str) {
                 layer.alert(str, {
                     icon: 6,
                     offset: 'center'
                 });
             }
-            
-            
+
+
+            $(function () {
+                $('#role').combobox({
+                    onSelect: function (record) {
+                        console.log(record);
+
+                        var objrole = {role: record.id};
+                        $.ajax({type: "post", url: "formuser.mainmenu.querysub.action", dataType: "json", data: objrole,
+                            success: function (datas) {
+                                var zTreeOjb = $.fn.zTree.getZTreeObj("treeDemo");
+                                zTreeOjb.checkAllNodes(false);
+                                datas.forEach(function (data) {
+                                    var m_code = data.m_code;
+                                    var node = zTreeOjb.getNodeByParam("id", m_code);
+                                    zTreeOjb.checkNode(node, true, true);                                 
+    
+                                });
+
+
+                            }
+
+
+                        });
+
+
+
+
+
+
+
+
+//                        var obj = $("#tosearch").serializeObject();
+//                        obj.l_comaddr = record.id;
+//                        obj.l_deplayment = 1;
+//                        console.log(obj);
+//                        var opt = {
+//                            url: "test1.lamp.Groupe.action",
+//                            silent: true,
+//                            query: obj
+//                        };
+//                        $('#gravidaTable').bootstrapTable('refresh', opt);
+                    }
+                });
+            })
+
         </script>
 
     </head>
@@ -367,9 +415,12 @@
                         </div>
 
                         <div class="col-xs-4">
+                            <span class="label label-success label-lg ">角色列表1</span>
+                            <input id="role" class="easyui-combobox" name="role" style="width:150px; height: 34px" data-options="editable:true,valueField:'id', textField:'text',url:'formuser.mainmenu.rolemenu.action'" />
 
-                            <table id="gravidaTable" style="width:100%;" class="text-nowrap table table-hover table-striped">
-                            </table> 
+
+                            <!--                            <table id="gravidaTable" style="width:100%;" class="text-nowrap table table-hover table-striped">
+                                                        </table> -->
 
                         </div>
                         <div class="col-xs-3">

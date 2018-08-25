@@ -253,25 +253,6 @@
                     data: {parameter_A: $("#parameter_A").val(), parameter_B: $("#parameter_B").val()},
                     success: function (data) {
 
-
-
-//                        var arrlist = data.rs;
-
-
-//                        if (arrlist.length > 0) {
-//                            $("#model").empty();
-//                        } else {
-//                            var str = "<option value='Lc-100'>Lc-100</option>";
-//                            $("#model").append(str); //添加option
-//                        }
-//                         $('#model').combobox({'title': '显示所有'});
-
-//                        for (var i = 0; i < arrlist.length; i++) {
-//                            var objlist = arrlist[i];
-//                            console.log(objlist.model); //comaddr
-//                            var str = "<option value='" + objlist.model + "'>" + objlist.model + "</option>";
-//                            $("#model").append(str); //添加option
-//                        }
                     },
                     error: function () {
                         alert("提交失败！");
@@ -449,7 +430,7 @@
 
     <!-- 添加 -->
     <div class="modal" id="pjj">
-        <div class="modal-dialog">
+        <div class="modal-dialog"  >
             <div class="modal-content" style="min-width:700px;">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">

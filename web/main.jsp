@@ -14,83 +14,13 @@
         <link type="text/css" href="layer/layui.css" rel="stylesheet">
         <link type="text/css" href="layer/animate.css" rel="stylesheet">
         <link type="text/css" href="layer/indexNavigation.css" rel="stylesheet">
-        <!--<script type="text/javascript" src="abc.action_files/jquery.js"></script>-->
-        <!--<script type="text/javascript" src="abc.action_files/layui.js"> </script>-->
-        <!--<link id="layuicss-laydate" rel="stylesheet" href="abc.action_files/laydate.css" media="all">-->
-        <!--<link id="layuicss-layer" rel="stylesheet" href="abc.action_files/layer.css" media="all">-->
-        <!--<link id="layuicss-skincodecss" rel="stylesheet" href="abc.action_files/code.css" media="all">-->
-        <!--<script type="text/javascript" src="abc.action_files/utils.js"></script>-->
-        <!--<script type="text/javascript" src="abc.action_files/ajaxUtils.js"></script>--> 
-
+            <script type="text/javascript" src="js/genel.js"></script>
         <script>
 
-            /**
-             *  先把父亲节点取出来，放进一个数组dataArray
-             * @param {Object} datas 所有数据
-             */
-            function data2tree(datas) {
-                var dataArray = [];
-                datas.forEach(function (data) {
-                    var CATL_PARENT = data.m_parent;
-                    if (CATL_PARENT == '0') {
-                        var CATL_CODE = data.m_code;
-                        var CATL_NAME = data.m_title;
-                        var action = data.m_action;
-                        var icon = data.m_icon;
-                        var objTemp = {
-                            parent: CATL_PARENT,
-                            code: CATL_CODE,
-                            title: CATL_NAME,
-                            action: action,
-                            icon: icon
-                        }
-                        dataArray.push(objTemp);
-                    }
-                });
-                console.log(dataArray);
-                return data2treeDG(datas, dataArray);
-            }
 
-
-            /**
-             * 
-             * @param {Object} datas  所有数据
-             * @param {Object} dataArray 父节点组成的数组
-             */
-            function data2treeDG(datas, dataArray) {
-                for (var j = 0; j < dataArray.length; j++) {
-                    var dataArrayIndex = dataArray[j];
-                    var childrenArray = [];
-                    var CATL_CODEP = dataArrayIndex.code;
-
-                    for (var i = 0; i < datas.length; i++) {
-                        var data = datas[i];
-                        var CATL_PARENT = data.m_parent;
-                        if (CATL_PARENT == CATL_CODEP) {//判断是否为儿子节点
-                            var CATL_CODE = data.m_code;
-                            var CATL_NAME = data.m_title;
-                            var action = data.m_action;
-                            var icon = data.m_icon;
-                            var objTemp = {
-                                parent: CATL_PARENT,
-                                code: CATL_CODE,
-                                title: CATL_NAME,
-                                action: action,
-                                icon: icon
-                            }
-                            childrenArray.push(objTemp);
-                        }
-
-                    }
-                    dataArrayIndex.children = childrenArray;
-                    if (childrenArray.length > 0) {//有儿子节点则递归
-                        data2treeDG(datas, childrenArray);
-                    }
-
-                }
-                return dataArray;
-            }
-            //退出
+           
+    
+    //退出
             function getout() {
                 if (confirm("确定退出吗？")) {
                     window.location = "${pageContext.request.contextPath }/login.jsp";
@@ -109,37 +39,6 @@
                     <span class="menuMessage" style="width:80px;margin-left:30px;">智慧照明</span>
                 </div>
                 <ul class="layui-nav layui-nav-tree layui-nav-side MenuBox ">
-                    <!--                    
-                                        <li class="layui-nav-item" style="background: rgb(66, 72, 91) none repeat scroll 0% 0%;">
-                    
-                    
-                                            <a class="list listdisplayNone active" name="mainsub.jsp">
-                                                <i class=yui-icon-home"></i>"layui-icon layui-icon-home"></i>
-                                                <span class="menuMessage">综合首页</span>
-                    
-                                            </a>
-                                        </li>
-                                        <li class="eachMenu layui-nav-item" style="background: rgb(66, 72, 91) none repeat scroll 0% 0%;">
-                                            <a class="list listdisplayNone" href="javascript:;" name="lightTab.jsp"><span class="menuMessage">照明控制</span></a>
-                                        </li>
-                                        <li class="eachMenu layui-nav-item" style="background: rgb(66, 72, 91) none repeat scroll 0% 0%;">
-                                            <a class="list listdisplayNone" href="javascript:;" name="map.jsp"><span class="menuMessage">地图导航</span></a>
-                                        </li>
-                                          <li class="eachMenu layui-nav-item" style="background: rgb(66, 72, 91) none repeat scroll 0% 0%;">
-                                                 <a class="list listdisplayNone" href="javascript:;" name="strategyTab.jsp"><span class="menuMessage">策略管理</span></a>
-                                             </li>                   
-                                             <li class="eachMenu layui-nav-item" style="background: rgb(66, 72, 91) none repeat scroll 0% 0%;">
-                                                 <a class="list listdisplayNone" href="javascript:;" name="reporttab.jsp"><span class="menuMessage">报表管理</span></a>
-                                             </li>                   
-                                             <li class="eachMenu layui-nav-item" style="background: rgb(66, 72, 91) none repeat scroll 0% 0%;">
-                                                 <a class="list listdisplayNone" href="javascript:;" name="devicetab.jsp"><span class="menuMessage">设备管理</span></a>
-                                             </li>
-                                             <li class="eachMenu layui-nav-item" style="background: rgb(66, 72, 91) none repeat scroll 0% 0%;">
-                                                 <a class="list listdisplayNone" href="javascript:;" name="warntab.jsp"><span class="menuMessage">参数设置</span></a>
-                                             </li>         
-                                             <li class="eachMenu layui-nav-item" style="background: rgb(66, 72, 91) none repeat scroll 0% 0%;">
-                                                 <a class="list listdisplayNone" href="javascript:;" name="authortab.jsp"><span class="menuMessage">权限管理</span></a>
-                                             </li>             -->
                 </ul>
             </div>
 
@@ -163,13 +62,13 @@
                         </li>
 
                         <li class="one" style="width:74px;">
-                            
-                            <i class="layui-icon indexIcon"></i>   
-                        <!--<span class="glyphicon glyphicon-tags indexIcon"/>-->
-     <span class="Till" style="width: 74px; text-align: center; color: rgb(255, 255, 255);">语言</span>
 
-                            
-                           
+                            <i class="layui-icon indexIcon"></i>   
+                            <!--<span class="glyphicon glyphicon-tags indexIcon"/>-->
+                            <span class="Till" style="width: 74px; text-align: center; color: rgb(255, 255, 255);">语言</span>
+
+
+
                             <ul class="two animated fadeInDown language" style="background: rgb(57, 61, 73) none repeat scroll 0% 0%; color: rgb(255, 255, 255);">
                                 <li language="zh_CN" id="chinese">中文</li>
                                 <li language="en_US" id="english">英文</li>
@@ -199,10 +98,10 @@
         </iframe>
         <script type="text/javascript">
             $(function () {
-                $(".alarmLi").click(function () {
-                    $("#alarmTable").css("display", "block");
-                    document.getElementById('alarmTable').contentWindow.document.location.reload();
-                });
+//                $(".alarmLi").click(function () {
+//                    $("#alarmTable").css("display", "block");
+//                    document.getElementById('alarmTable').contentWindow.document.location.reload();
+//                });
 
                 $("body").delegate(".list", "click", function () {
                     if ($(this).siblings(".secondMenu").length != 0) {
@@ -221,9 +120,10 @@
                         $(this).parent(".eachMenu").siblings(".eachMenu").children(".list").removeClass("active");
                         $(this).parent(".eachMenu").siblings(".eachMenu").children(".secondMenu").children(".secondMenuList").removeClass("active");
                         var iframesrc = $(this).attr("name");
+                        console.log(iframesrc);
                         $("#iframe").attr("src", iframesrc);
-                        var _this = $('#navTop');
-                        actionColor(iframesrc, _this);
+
+
                     }
                 });
 
@@ -268,153 +168,44 @@
                             });
                 })
                 /* 加载左边菜单 */
+                //传角色权限 获取菜单 
+                var objrole = {role: 1};
 
-                $.ajax({
-                    type: "post",
-                    url: "formuser.mainmenu.query.action",
-                    dataType: "json",
-                    data: {m_type: 0},
+                $.ajax({type: "post", url: "formuser.mainmenu.querysub.action", dataType: "json", data: objrole,
                     success: function (data) {
                         var htmls = '';
-                        var isIntelligentLampPoleProject = "4";
                         data = data2tree(data);
+
                         for (var i = 0; i < data.length; i++) {
-                            if (data[i].children.length == 0) {
-                                var lang = "zh_CN";
-                                var obj = eval('(' + data[i].title + ')');
-                                console.log(obj);
-                                console.log(obj[lang]);
-                                htmls += '<li class="eachMenu layui-nav-item" >'
-                                        + '<a class="list listdisplayNone" href="javascript:;" name="' + data[i].action + '">'
-                                        + '<span class="' + data[i].icon + '">' + '</span>'
-                                        + '<span class="menuMessage" style=" padding-left: 3px;" >' + obj[lang] + '</span>'
-                                        + '</a>'
-                                        + '</li>';
-                                if (data[i].code == 6) {
-//                                        names[names.length] = {title: data[i].title, code: data[i].code};
-                                    //显示首页顶部导航中的图标
-                                    /* $(".navTop").append('<li title="' + data[i].children[j].title +'" name="' + data[i].children[j].action 
-                                     +'" style=background:url("imgs/indexNav/' + data[i].children[j].code + '.png")></li>'); */
-                                }
-                            } else {
-//                                    htmls += '<li class="eachMenu layui-nav-item" >'
-//                                            + '<a class="list listdisplayNone" href="javascript:;" name="' + data[i].action + '">'
-//                                            /*     							 +			'<img src="'+data[i].icon+'"/>' */
-//                                            + '<span class="menuMessage">' + data[i].title + '</span>'
-//                                            + '<span class="layui-nav-more"></span>'
-//                                            + '</a>'
-//                                            + '<dl class="secondMenu layui-nav-child">';
-//                                    for (var j = 0; j < data[i].children.length; j++) {
-//                                        htmls += '<dd class="secondMenuList" name="' + data[i].children[j].action + '"><a href="javascript:;">' + data[i].children[j].title + '</a></dd>';
-//                                        if (data[i].code == 5) {
-//                                            if (2 != -1) {
-//                                                isIntelligentLampPoleProject = true;
-//                                            }
-//                                            if (data[i].children.length == 2) {
-//                                                if (data[i].children[0].code == '5b' && data[i].children[1].code == '5c') {
-//                                                    isIntelligentLampPoleProject = false;
-//                                                }
-//                                            }
-//                                            names[j] = {title: data[i].children[j].title, code: data[i].children[j].code};
-//                                            //显示首页顶部导航中的图标
-//                                            $(".navTop").append('<li title="' + data[i].children[j].title + '" name="' + data[i].children[j].action
-//                                                    + '" style=background:url("imgs/indexNav/' + data[i].children[j].code + '.png")></li>');
-//                                        } else if (data[i].code == 4) {
-//                                            configurations[j] = {title: data[i].children[j].title, action: data[i].children[j].action, icon: data[i].children[j].icon};
-//                                        }
-//                                    }
-//                                    htmls += '</dl></li>';
+
+                            var action = data[i].action;
+                            if (data[i].children.length > 0) {
+                                console.log(objrole);
+                                action = action + "?m_parent=" + data[i].code + "&role=" + objrole.role;
                             }
 
-//                                if (data[i].code == 2) {//显示首页顶部导航中的“照明”图标
-//                                    $(".navTop").append('<li title="' + data[i].title + '" name="' + data[i].action + '" style=background:url("imgs/indexNav/' + data[i].code + '.png")></li>');
-//                                }
-//                                if (data[i].code == 3) {//显示首页顶部导航中的“地图”图标
-//                                    $(".navTop").append('<li title="' + data[i].title + '" name="' + data[i].action + '" style=background:url("imgs/indexNav/' + data[i].code + '.png")></li>');
-//                                }           
+
+//                            if (data[i].children.length == 0) {
+                            var lang = "zh_CN";
+                            var obj = eval('(' + data[i].title + ')');
+                            console.log(obj);
+                            console.log(obj[lang]);
+                            htmls += '<li class="eachMenu layui-nav-item" >'
+                                    + '<a class="list listdisplayNone" href="javascript:;" name="' + action + '">'
+                                    + '<span class="' + data[i].icon + '">' + '</span>'
+                                    + '<span class="menuMessage" style=" padding-left: 3px;" >' + obj[lang] + '</span>'
+                                    + '</a>'
+                                    + '</li>';
+                            if (data[i].code == 6) {
+                            }
+//                            } else {
+//                            }         
                         }
-
-//                        console.log(htmls)
-                        /*
-                         **是否是智慧灯杆项目
-                         **isIntelligentLampPoleProject
-                         */
-//                        if (isIntelligentLampPoleProject) {
-//                            $(".bodyRight").css("padding-left", "0px");
-//                            htmls = '<li class="eachMenu layui-nav-item" >'
-//                                    + '<a class="list listdisplayNone" name="abc/homeIntelligent.action">'
-//                                    /*                          +          '<img src="imgs/index/home.png"/>' */
-//                                    + '<span class="menuMessage">首页</span>'
-//                                    + '</a>'
-//                                    + '</li>' + htmls;
-//                            $(".themeItem").css("display", "none");
-//                        } else {
-
-//                            $(".bodyRight").css("padding-left", "140px");
-//                            $(".bodyLeft").css("display", "");
-//                            $(".navTop").css("left", "200px");//顶部导航
-//                            $("#changeSize").css("display", 'none');
-//                            $(".Home").css("display", 'none');
-//                            
-
-//                            if (includesHome) {
-//                                htmls = '<li class="eachMenu layui-nav-item" >'
-//                                        + '<a class="list listdisplayNone" name="abc/home.action">'
-//                                        /*                              +          '<img src="imgs/index/home.png"/>' */
-//                                        + '<span class="menuMessage">首页</span>'
-//                                        + '</a>'
-//                                        + '</li>' + htmls;
-//                            }
-                        //initTheme(); //初始化主题
-
-//                        }
-
-
-//                        if (names.length != 0) {
-//                            $("#names").val(JSON.stringify(names));
-//                        }
-//                        if (configurations.length != 0) {
-//                            $("#configurations").val(JSON.stringify(configurations));
-//                        }
-
-
 
                         $(".MenuBox").html(htmls);
                         $(".list:eq(0)").addClass("active");
                         var ifrsrc = $(".list:eq(0)").attr("name");
                         $("#iframe").attr("src", ifrsrc);
-
-//                        var user = false;
-//                        if (user && ($("#iframe").attr("src") == 'abc/homeIntelligent.action')) {								//针对于地球平台logo
-//                            $(".CCIOT-logo").css('display', '');
-//                            var logoWidth = $(".CCIOT-logo img").width() + 20;
-//                            $(".navTop").css("left", logoWidth);
-//                        }
-
-
-//                        var navStand = $("#iframe").attr("src");
-//                        if (navStand == 'abc/home.action') {		   //针对于root权限的顶部背景
-//                            $('.navTop').css("display", "none");
-//                            $("#changeSize").css("display", "none");
-//                            initTheme(); //初始化主题
-//                        } else if (navStand == 'abc/device.action') {//针对于照明平台初始化导航栏变色
-//                            initTheme(); //初始化主题
-//                        }
-
-//                        var _configurations = $('#configurations').val();
-//                        if (_configurations != '') {
-//                            $(".setName").css("display", "block");
-//                            var configurationsObj = JSON.parse(_configurations);
-//                            $.each(configurationsObj, function (i, item) {
-//                                var li = $('<li action="' + item.action + '">' + item.title + '</li>');
-//                                $(".setMenu").append(li);
-//                                li.click(function () {
-//                                    $('#iframe').attr("src", $(this).attr('action'));
-//                                    $(".navCon").hide();
-//                                    $(".logo").hide();
-//                                });
-//                            });
-//                        }
                     }
 
 
@@ -433,96 +224,58 @@
                 });
 
                 //语言切换
+                var obj = {type: 1};
                 function changeLanguage(language) {
                     console.log(language);
-                    var obj = {m_type: 0};
-                    $.ajax({
-                        type: "post",
-                        url: "formuser.mainmenu.query.action",
-                        dataType: "json",
-                        data: obj,
-                        success: function (data) {
-                            $(".MenuBox").children('li').remove();
-                            var htmls = '';
-                            data = data2tree(data);
-                            for (var i = 0; i < data.length; i++) {
-                                if (data[i].children.length == 0) {
-                                    var lang = language;
-                                    var obj = eval('(' + data[i].title + ')');
-
-                                    htmls += '<li class="eachMenu layui-nav-item" >'
-                                            + '<a class="list listdisplayNone" href="javascript:;" name="' + data[i].action + '">'
-                                            + '<span class="' + data[i].icon + '">' + '</span>'
-                                            + '<span class="menuMessage" style=" padding-left: 3px;" >' + obj[lang] + '</span>'
-                                            + '</a>'
-                                            + '</li>';
-
-                                }
-                            }
-
-                            $(".MenuBox").html(htmls);
-                            $(".list:eq(0)").addClass("active");
-                            var ifrsrc = $(".list:eq(0)").attr("name");
-                            $("#iframe").attr("src", ifrsrc);
-                        }
-
-
-                    });
+//                    var obj = obj;
+//                    $.ajax({
+//                        type: "post",
+//                        url: "formuser.mainmenu.query.action",
+//                        dataType: "json",
+//                        data: obj,
+//                        success: function (data) {
+//                            $(".MenuBox").children('li').remove();
+//                            var htmls = '';
+//                            data = data2tree(data);
+//                            console.log(data);
+//                            for (var i = 0; i < data.length; i++) {
+//                                if (data[i].children.length == 0) {
+//                                    var lang = language;
+//                                    var obj = eval('(' + data[i].title + ')');
+//
+//                                    htmls += '<li class="eachMenu layui-nav-item" >'
+//                                            + '<a class="list listdisplayNone" href="javascript:;" name="' + data[i].action + '">'
+//                                            + '<span class="' + data[i].icon + '">' + '</span>'
+//                                            + '<span class="menuMessage" style=" padding-left: 3px;" >' + obj[lang] + '</span>'
+//                                            + '</a>'
+//                                            + '</li>';
+//
+//                                }
+//                            }
+//
+//                            $(".MenuBox").html(htmls);
+//                            $(".list:eq(0)").addClass("active");
+//                            var ifrsrc = $(".list:eq(0)").attr("name");
+//                            $("#iframe").attr("src", ifrsrc);
+//                        }
+//
+//
+//                    });
 
                 }
 
 
             });
+
             $(function () {
                 $(".navTop").delegate("li", "click", function () {
                     var html = $(this).attr('name');
-                    $("#iframe").attr('src', html);
+                    console.log(html);
+                    // $("#iframe").attr('src', html);
                     //导航栏颜色
-                    var standSrc = $("#iframe").attr("src");
-                    if (standSrc == 'abc/homeIntelligent.action') {
-                        changeColor('#0E122D');
-                    } else {
-                        changeColor('#0E122D');
-                    }
                 });
             });
-            function changeColor(color) {
-                $("#navTop").css("background", color);
-            }
 
-            function themeColor(theme) {
-                $("#navTop").css("background", theme[0]);
-                $('.controlMessage span').css("color", theme[1]);
-                $(".controlMessage .two").css({
-                    "background": theme[0],
-                    "color": theme[1]
-                });
-                $(".bodyLeftTop").css("background", theme[2]);
-                $(".bodyLeft").css("background", theme[3]);
-                $(".eachMenu").css("background", theme[4]);
-            }
-            //切换页面设置相应背景色
-            function actionColor(src, $this) {
-                var themeName = localStorage.getItem('theme');
-                var deepColor = ['abc/device.action', 'forward/ledProgramSetUp.action', 'forward/videoRightSetUp.action', 'deviceChargingPile.action', 'forward/meteorologicalSensorSetUp.action', 'forward/keyAlarmSetUp.action', 'forward/loudSpeakerSetUp2.action', 'forward/wifitApSetUp.action', 'forward/ledProgramSetUp2.action', 'forward/direct_con_magne.action', 'forward/direct_con_smoke_detec.action'];
-                for (var i = 0; i < deepColor.length; i++) {
-                    if (src == deepColor[i]) {
-                        $this.css('background', '#0E122D');
-                        return;
-                    } else {
-                        changeTheme(themeName);
-                    }
-                }
-            }
-            function initTheme() {
-                var getItem = localStorage.getItem('theme');
-                if (getItem != undefined) {
-                    changeTheme(getItem);
-                } else {
-                    localStorage.setItem('theme', 'classic');
-                    changeTheme('classic');
-                }
-            }
         </script>
 
     </body>

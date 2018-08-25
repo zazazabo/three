@@ -40,13 +40,30 @@
     
     <xform desc="菜单模块" id="mainmenu">
         <xhandle desc="获取菜单列表" id="query" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select *  from  t_menu   WHERE    @CONDITION  ORDER BY m_code ASC  " var="list">
-                <xflt id="CONDITION" nrp="" tpl="@m_type ">
-                    <xfltpara id="m_type" nrp="1=1" para="m_type" sql="m_type = :m_type">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT * FROM t_menu tm WHERE   tm.m_code IN   (SELECT code AS m_code FROM t_role tr WHERE enable=1 and   @CONDITION ) ORDER BY m_code ASC  " var="list">
+                <xflt id="CONDITION" nrp="" tpl="@type ">
+                    <xfltpara id="type" nrp="1!=1" para="type" sql="roletype = :type">
                     </xfltpara>            
                 </xflt>        
             </xsql>               
         </xhandle>  
+        
+        <xhandle desc="获取二菜单列表" id="querysub" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl=" SELECT * FROM   t_menu tm,t_role tr WHERE tm.m_code=tr.code AND tr.enable=1 AND  @CONDITION   ORDER BY m_code ASC" var="list">
+                <xflt id="CONDITION" nrp="" tpl="@role AND @m_parent  ">
+                    <xfltpara id="role" nrp="1=1" para="role" sql="roletype = :role">
+                    </xfltpara> 
+                    <xfltpara id="m_parent" nrp="1=1" para="m_parent" sql="tm.m_parent = :m_parent">
+                    </xfltpara>                                  
+                </xflt>        
+            </xsql>               
+        </xhandle>  
+       
+      <xhandle desc="" id="rolemenu" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT DISTINCT roletype as id,name as text FROM t_role " var="list">
+            </xsql>
+        </xhandle>                  
+        
         <!--{id: 1, pId: 0, name: "[core] 基本功能 演示", open: true},-->
         <xhandle desc="获取菜单列表" id="queryZtree" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select m_code AS id,m_parent as pId,m_title as name,m_icon as icon  from  t_menu   WHERE m_type=0 and   @CONDITION  ORDER BY m_code ASC  " var="list">

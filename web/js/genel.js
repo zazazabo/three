@@ -398,3 +398,70 @@ function delendchar(str) {
     }
     return str;
 }
+
+
+/**
+ *  先把父亲节点取出来，放进一个数组dataArray
+ * @param {Object} datas 所有数据
+ */
+function data2tree(datas) {
+    var dataArray = [];
+    datas.forEach(function (data) {
+        var CATL_PARENT = data.m_parent;
+        if (CATL_PARENT == '0') {
+            var CATL_CODE = data.m_code;
+            var CATL_NAME = data.m_title;
+            var action = data.m_action;
+            var icon = data.m_icon;
+            var objTemp = {
+                parent: CATL_PARENT,
+                code: CATL_CODE,
+                title: CATL_NAME,
+                action: action,
+                icon: icon
+            }
+            dataArray.push(objTemp);
+        }
+    });
+    return data2treeDG(datas, dataArray);
+}
+
+
+/**
+ * 
+ * @param {Object} datas  所有数据
+ * @param {Object} dataArray 父节点组成的数组
+ */
+function data2treeDG(datas, dataArray) {
+    for (var j = 0; j < dataArray.length; j++) {
+        var dataArrayIndex = dataArray[j];
+        var childrenArray = [];
+        var CATL_CODEP = dataArrayIndex.code;
+
+        for (var i = 0; i < datas.length; i++) {
+            var data = datas[i];
+            var CATL_PARENT = data.m_parent;
+            if (CATL_PARENT == CATL_CODEP) {//判断是否为儿子节点
+                var CATL_CODE = data.m_code;
+                var CATL_NAME = data.m_title;
+                var action = data.m_action;
+                var icon = data.m_icon;
+                var objTemp = {
+                    parent: CATL_PARENT,
+                    code: CATL_CODE,
+                    title: CATL_NAME,
+                    action: action,
+                    icon: icon
+                }
+                childrenArray.push(objTemp);
+            }
+
+        }
+        dataArrayIndex.children = childrenArray;
+        if (childrenArray.length > 0) {//有儿子节点则递归
+            data2treeDG(datas, childrenArray);
+        }
+
+    }
+    return dataArray;
+}
