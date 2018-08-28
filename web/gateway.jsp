@@ -9,10 +9,10 @@
 <!DOCTYPE html>
 <html>
     <head>
-         <%@include  file="js.jspf" %>
+        <%@include  file="js.jspf" %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-        
+
         <style>* { margin: 0; padding: 0; } body, html { width: 100%; height: 100%; } .zuheanniu { margin-top: 2px; margin-left: 10px; } table { font-size: 14px; } .modal-body input[type="text"], .modal-body select, .modal-body input[type="radio"] { height: 30px; } .modal-body table td { line-height: 40px; } .menuBox { position: relative; background: skyblue; } .getMenu { z-index: 1000; display: none; background: white; list-style: none; border: 1px solid skyblue; width: 150px; height: auto; max-height: 200px; position: absolute; left: 0; top: 25px; overflow: auto; } .getMenu li { width: 148px; padding-left: 10px; line-height: 22px; font-size: 14px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; } .getMenu li:hover { background: #eee; cursor: pointer; } .a-upload { padding: 4px 10px; height: 30px; line-height: 20px; position: relative; cursor: pointer; color: #888; background: #fafafa; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; display: inline-block; *display: inline; *zoom: 1 } .a-upload input { position: absolute; font-size: 100px; right: 0; top: 0; opacity: 0; filter: alpha(opacity = 0); cursor: pointer } .a-upload:hover { color: #444; background: #eee; border-color: #ccc; text-decoration: none } .pagination-info { float: left; margin-top: -4px; } .modal-body { text-align: -webkit-center; text-align: -moz-center; width: 600px; margin: auto; } .btn-primary { color: #fff; background-color: #0099CC; border-color: #0099CC; }</style></head>
 
     <script type="text/javascript" src="js/genel.js"></script>
@@ -20,8 +20,40 @@
     <script>
 
         var websocket = null;
+        var vvvv = 0;
+        var flag = null;
+        function dealsend() {
+
+            if (websocket != null && websocket.readyState == 1) {
+                var allTableData = $("#gravidaTable").bootstrapTable('getData'); //获取表格的所有内容行
+                if (allTableData.length > vvvv) {
+                    var obj = allTableData[vvvv];
+                    var addrArea = Str2Bytes(obj.comaddr);
+                    var straddr = sprintf("%02d", addrArea[1]) + sprintf("%02d", addrArea[0]) + sprintf("%02d", addrArea[3]) + sprintf("%02d", addrArea[2]);
+                    var user = new Object();
+                    user.msg = "getStatus";
+                    user.res = 1;
+                    user.row = vvvv;
+                    user.addr = straddr; //"02170101";
+                    user.data = false;
+                    console.log(user);
+                    var datajson = JSON.stringify(user);
+                    websocket.send(datajson);
+                    vvvv += 1;
+                } else {
+                    clearInterval(flag);
+                    vvvv = 0;
+                }
+
+            }
+
+
+        }
 
         $(function () {
+
+            flag = setInterval("dealsend()", 1000);
+
             var bb = $(window).height() - 20;
             console.log(bb);
             $('#gravidaTable').bootstrapTable({
@@ -34,13 +66,19 @@
                         width: 25,
                         align: 'center',
                         valign: 'middle'
+                    },{
+                        field: 'pid',
+                        title: '所属项目',
+                        width: 25,
+                        align: 'center',
+                        valign: 'middle'
                     }, {
                         field: 'model',
                         title: '型号',
                         width: 25,
                         align: 'center',
                         valign: 'middle'
-                    }, {
+                    },  {
                         field: 'name',
                         title: '名称',
                         width: 25,
@@ -91,22 +129,7 @@
                     console.info("加载成功");
                     console.log(websocket.readyState);
                     if (websocket != null && websocket.readyState == 1) {
-                        var allTableData = $("#gravidaTable").bootstrapTable('getData'); //获取表格的所有内容行
-                        console.log(allTableData);
-                        for (i = 0; i < allTableData.length; i++)
-                        {
-                            var obj = allTableData[i];
-                            var addrArea = Str2Bytes(obj.comaddr);
-                            var straddr = sprintf("%02d", addrArea[1]) + sprintf("%02d", addrArea[0]) + sprintf("%02d", addrArea[3]) + sprintf("%02d", addrArea[2]);
-                            var user = new Object();
-                            user.msg = "getStatus";
-                            user.res = 1;
-                            user.row = i;
-                            user.addr = straddr; //"02170101";
-                            user.data = false;
-                            var datajson = JSON.stringify(user);
-                            websocket.send(datajson);
-                        }
+
                     }
                 },
                 url: 'test1.f5.h1.action',
@@ -122,13 +145,10 @@
                 },
             });
 
-//            $("#gravidaTable").on('load-success.bs.table', function (data) {
-//
-//                //gatewayconfig_files
-//                console.log("load success");
-//
-//
-//            });
+
+            $("#gravidaTable").on('refresh.bs.table', function (data) {
+                flag = setInterval("dealsend()", 1000);
+            });
 
             $('#gravidaTable').on("click-row.bs.table", function (e, row, element) {
 
@@ -142,21 +162,8 @@
             });
             $("#gravidaTable").on('click-cell.bs.table', function (field, value, row, element) {
                 if (value == "online") {
-                    
-//                    console.log(field);
-//                    console.log(value);
-//                    console.log(row);
-//                    var user = new Object();
-//                    user.msg = "getStatus";
-//                    user.res = 1;
-//                    user.row = 0;
-//                    var addrArea = Str2Bytes(element.comaddr);
-//                    var straddr = sprintf("%02d", addrArea[1]) + sprintf("%02d", addrArea[0]) + sprintf("%02d", addrArea[3]) + sprintf("%02d", addrArea[2]);
-//                    user.addr = straddr; //"02170101";
-//                    user.data = false;
-//                    $datajson = JSON.stringify(user);
-//                    console.log($datajson);
-//                    websocket.send($datajson);
+
+
                 }
 
             })
@@ -264,7 +271,7 @@
 
 
             $("#xiugai1").click(function () {
-                
+
                 var selectRow1 = $("#gravidaTable").bootstrapTable("getSelections");
                 if (selectRow1.length > 1) {
                     layer.alert('只能选择一行进行修改', {
@@ -306,6 +313,7 @@
 
         })
 
+
         $(function () {
 
             if ('WebSocket' in window) {
@@ -315,23 +323,24 @@
             }
 //                // 连接成功建立的回调方法
             websocket.onopen = function (e) {
-                var allTableData = $("#gravidaTable").bootstrapTable('getData'); //获取表格的所有内容行
-                console.log(allTableData.length);
-                for (i = 0; i < allTableData.length; i++)
-                {
-                    var obj = allTableData[i];
-                    var addrArea = Str2Bytes(obj.comaddr);
-                    var straddr = sprintf("%02d", addrArea[1]) + sprintf("%02d", addrArea[0]) + sprintf("%02d", addrArea[3]) + sprintf("%02d", addrArea[2]);
-                    var user = new Object();
-                    user.msg = "getStatus";
-                    user.res = 1;
-                    user.row = i;
-                    user.addr = straddr; //"02170101";
-                    user.data = false;
-                    $datajson = JSON.stringify(user);
-                    console.log($datajson);
-                    websocket.send($datajson);
-                }
+
+//                var allTableData = $("#gravidaTable").bootstrapTable('getData'); //获取表格的所有内容行
+//                console.log(allTableData.length);
+//                for (i = 0; i < allTableData.length; i++)
+//                {
+//                    var obj = allTableData[i];
+//                    var addrArea = Str2Bytes(obj.comaddr);
+//                    var straddr = sprintf("%02d", addrArea[1]) + sprintf("%02d", addrArea[0]) + sprintf("%02d", addrArea[3]) + sprintf("%02d", addrArea[2]);
+//                    var user = new Object();
+//                    user.msg = "getStatus";
+//                    user.res = 1;
+//                    user.row = i;
+//                    user.addr = straddr; //"02170101";
+//                    user.data = false;
+//                    var datajson = JSON.stringify(user);
+//                    websocket.send(datajson);
+//                    console.log(datajson);
+//                }
             }
 
             //接收到消息的回调方法
@@ -341,8 +350,8 @@
                 console.log(ArrData);
                 if (ArrData.hasOwnProperty("msg")) {
                     if (ArrData.msg = "getStatus" && ArrData.data == true) {
-                        var trarr = $("#gravidaTable").find("tr");
-                        var child = $(trarr[ArrData.row + 1]).children('td:eq(6)');
+                        var trarr = $("#gravidaTable").find("tr");  //所有tr数组
+                        var child = $(trarr[ArrData.row + 1]).children('td:eq(7)');
                         console.log(child);
                         if (child.length == 1) {
                             var jqimg = child.children();
@@ -379,6 +388,98 @@
 
         })
 
+
+
+
+
+
+        function checkAdd() {
+
+
+            if (/^[0-9A-F]{8}$/.test($("#comaddr").val().trim()) == false) {
+                layer.alert('网关地址应为八位有效十六进制字符', {
+                    icon: 6,
+                    offset: 'center'
+                });
+                return false;
+            }
+
+
+//            if ($("#longitudem26d").val().trim() != "" && $("#longitudem26m").val().trim() != "" && $("#longitudem26s").val().trim() != "" && $("#latitudem26d").val().trim() != "" && $("#latitudem26m").val().trim() != "" && $("#latitudem26s").val().trim() != "") {
+//                if ((!enforceInputFloat("longitudem26d")) || (!enforceInputFloat("longitudem26m")) || (!enforceInputFloat("longitudem26s")) || (!enforceInputFloat("latitudem26d")) || (!enforceInputFloat("latitudem26m")) || (!enforceInputFloat("latitudem26s")) || (!enforceInputLongitudeDegree($("#longitudem26d").val().trim())) || (!enforceInputLatitudeDegree($("#latitudem26d").val().trim())) || (!enforceInputLteSixty($("#longitudem26m").val().trim())) || (!enforceInputLteSixty($("#longitudem26s").val().trim())) || (!enforceInputLteSixty($("#latitudem26m").val().trim())) || (!enforceInputLteSixty($("#latitudem26s").val().trim()))) {
+//                    layer.alert('经纬度非法!', {
+//                        icon: 1,
+//                        offset: 'center'
+//                    });
+//                    return false;
+//                } else {
+//                    $("#longitude").val(parseLongitudeLatitudeFloat(parseInt($("#longitudem26d").val().trim()), parseInt($("#longitudem26m").val().trim()), parseFloat($("#longitudem26s").val().trim())));
+//                    $("#latitude").val(parseLongitudeLatitudeFloat(parseInt($("#latitudem26d").val().trim()), parseInt($("#latitudem26m").val().trim()), parseFloat($("#latitudem26s").val().trim())));
+//                }
+//            }
+
+            var name = $("#name").val();
+            var addr = $("#comaddr").val();
+
+            var model = $('#model').combobox('getValue');
+            var namesss = false;
+            $.ajax({
+                async: false,
+                cache: false,
+                url: "test1.f5.queryGateway.action",
+                type: "GET",
+                data: {
+                    name: name,
+                    comaddr: addr,
+                    model: model
+                },
+                success: function (data) {
+                    var arrlist = data.rs;
+                    if (arrlist.length == 1) {
+                        layer.alert('此网关已存在', {
+                            icon: 6,
+                            offset: 'center'
+                        });
+                        namesss = false;
+                        return;
+                    } else if (arrlist.length == 0) {
+
+                        var jsondata = $("#eqpTypeForm").serializeObject();
+                        var latitudemstr = jsondata.latitudem26d + "." + jsondata.latitudem26m + "." + jsondata.latitudem26s;
+                        jsondata.latitude = latitudemstr;
+                        var longitudemstr = jsondata.longitudem26d + "." + jsondata.longitudem26m + "." + jsondata.longitudem26s;
+                        jsondata.longitude = longitudemstr;
+                        console.log(jsondata);
+                        $.ajax({
+                            async: false,
+                            cache: false,
+                            url: "test1.f5.addGateway.action",
+                            type: "GET",
+                            data: jsondata,
+                            success: function (data) {
+                                namesss = true;
+                                $("#gravidaTable").bootstrapTable('refresh');
+                            },
+                            error: function () {
+                                layer.alert('系统错误，刷新后重试', {
+                                    icon: 6,
+                                    offset: 'center'
+                                });
+                            }
+                        })
+                    }
+
+                },
+                error: function () {
+                    layer.alert('系统错误，刷新后重试', {
+                        icon: 6,
+                        offset: 'center'
+                    });
+                }
+            });
+
+            return namesss;
+        }
     </script>
 </head>
 <body>
@@ -402,29 +503,33 @@
 
 
     </div>
-<!--    <form id="importForm" action="importGateway.action" method="post" enctype="multipart/form-data" onsubmit="return check()">
-        <div style="float:left;margin:12px 0 0 10px;border-radius:5px 0 0 5px;position:relative;z-index:100;width:230px;height:30px;">
-            <a href="javascript:;" class="a-upload" style="width:130px;">
-                <input name="excel" id="excel" type="file">
-                <div class="filess">点击这里选择文件</div></a>
-            <input style="float:right;" class="btn btn-default" value="导入Excel" type="submit"></div>
-    </form>
-    <form id="exportForm" action="exportGateway.action" method="post" style="display: inline;">
-        <input id="daochu" class="btn btn-default" style="float:left;margin:12px 0 0 20px;" value="导出Excel" type="button">
-    </form>-->
+    <!--    <form id="importForm" action="importGateway.action" method="post" enctype="multipart/form-data" onsubmit="return check()">
+            <div style="float:left;margin:12px 0 0 10px;border-radius:5px 0 0 5px;position:relative;z-index:100;width:230px;height:30px;">
+                <a href="javascript:;" class="a-upload" style="width:130px;">
+                    <input name="excel" id="excel" type="file">
+                    <div class="filess">点击这里选择文件</div></a>
+                <input style="float:right;" class="btn btn-default" value="导入Excel" type="submit"></div>
+        </form>
+        <form id="exportForm" action="exportGateway.action" method="post" style="display: inline;">
+            <input id="daochu" class="btn btn-default" style="float:left;margin:12px 0 0 20px;" value="导出Excel" type="button">
+        </form>-->
+
     <div style="width:100%;">
-        <div class="bootstrap-table">
-            <div class="fixed-table-container" style="height: 214px; padding-bottom: 0px;">
-                <div class="fixed-table-header">
-                    <table></table>
-                </div>
-                <div class="fixed-table-body">
-                    <div class="fixed-table-loading" style="top: 42px; display: none;">正在努力地加载数据中，请稍候……</div>
-                    <table id="gravidaTable" style="width:100%;" class="text-nowrap table table-hover table-striped">
-                    </table>
-                </div>
-            </div>
-        </div>
+
+        <table id="gravidaTable" style="width:100%;" class="text-nowrap table table-hover table-striped">
+        </table>
+        <!--        <div class="bootstrap-table">
+                    <div class="fixed-table-container" style="height: 214px; padding-bottom: 0px;">
+                        <div class="fixed-table-header">
+                            <table></table>
+                        </div>
+                        <div class="fixed-table-body">
+                            <div class="fixed-table-loading" style="top: 42px; display: none;">正在努力地加载数据中，请稍候……</div>
+                            <table id="gravidaTable" style="width:100%;" class="text-nowrap table table-hover table-striped">
+                            </table>
+                        </div>
+                    </div>
+                </div>-->
     </div>
 
 
@@ -442,7 +547,26 @@
                     <div class="modal-body">
                         <table>
                             <tbody>
+                                <tr>
+                                    <td>
+                                        <span style="margin-left:20px;">项目列表&nbsp;</span>
+                                        <input id="pid" class="easyui-combobox" name="pid" style="width:150px; height: 34px" 
+                                               data-options="onLoadSuccess:function(data){
+                                               if(Array.isArray(data)&&data.length>0){
+                                                    $(this).combobox('select', data[0].id)
+                                               }else{
+                                                         $(this).combobox('select',);
+                                               }
+                                               console.log(data);
+                                               },editable:false,valueField:'id', textField:'text',url:'formuser.project.getProject.action?code=P00001' " />
+                                    </td>
+                                    <td>
 
+                                    </td>
+                                    <td>
+
+                                    </td>
+                                </tr>
                                 <tr>
                                     <td>
                                         <span style="margin-left:20px;">网关名称</span>&nbsp;
@@ -489,7 +613,7 @@
                                     <td></td>
                                     <td>
                                         <span style="margin-left:10px;">倍&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;率&nbsp;</span>
-                                        <input id="powerrate" class="form-control" name="powerrate" style="width:150px;display: inline;" placeholder="请输入倍率" type="text"></td>
+                                        <input id="multpower" class="form-control" name="multpower" style="width:150px;display: inline;" placeholder="请输入倍率" type="text"></td>
                                 </tr>
                                 <tr>
                                     <td>
@@ -534,6 +658,9 @@
                     <div class="modal-body">
                         <table>
                             <tbody>
+
+
+
                                 <tr>
                                     <td>
                                         <span style="margin-left:20px;">网关名称</span>&nbsp;

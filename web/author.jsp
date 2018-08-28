@@ -349,7 +349,6 @@
                 $('#role').combobox({
                     onSelect: function (record) {
                         console.log(record);
-
                         var objrole = {role: record.id};
                         $.ajax({type: "post", url: "formuser.mainmenu.querysub.action", dataType: "json", data: objrole,
                             success: function (datas) {

@@ -61,6 +61,12 @@
                             width: 25,
                             align: 'center',
                             valign: 'middle'
+                        }, {
+                            field: 'pid',
+                            title: '所属项目',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
                         }],
                     clickToSelect: true,
                     singleSelect: false,
@@ -142,12 +148,15 @@
 
             function editaction() {
                 var formobj = $("#Form_Edit").serializeObject();
+                
                 formobj.email = formobj.email_edit;
                 formobj.department = formobj.department_edit;
                 formobj.name = formobj.name_edit;
                 formobj.phone = formobj.phone_edit;
                 formobj.sex = formobj.sex_edit;
-
+                formobj.pid=formobj.pidedt;
+//                console.log(formobj);
+                
                 $.ajax({url: "formuser.user.editUser.action", async: false, type: "get", datatype: "JSON", data: formobj,
                     success: function (data) {
                         var arrlist = data.rs;
@@ -268,8 +277,12 @@
                                         <input id="department" class="form-control"  name="department" style="width:150px;display: inline;" placeholder="请输入电话" type="text"></td>
                                     <td></td>
                                     <td>
-                                        <!--                                        <span style="margin-left:10px;">项目&nbsp;</span>
-                                                                                <input id="project" class="form-control" name="project" style="width:150px;display: inline;" placeholder="请输入邮箱" type="text"></td>-->
+                                        <span style="margin-left:10px;">项目&nbsp;</span>
+                                        <input id="pid" class="easyui-combobox" name="pid" style="width:150px; height: 34px" 
+                                               data-options="onLoadSuccess:function(data){
+                                               $(this).select(0);
+                                               },editable:true,valueField:'id', textField:'text',url:'formuser.project.getProject.action' " />
+
                                     </td>
                                 </tr>                               
 
@@ -335,6 +348,10 @@
                                         <input id="department_edit" class="form-control"  name="department_edit" style="width:150px;display: inline;" placeholder="请输入电话" type="text"></td>
                                     <td></td>
                                     <td>
+                                                                                <span style="margin-left:10px;">项目&nbsp;</span>
+                                        <input id="pidedt" class="easyui-combobox" name="pidedt" style="width:150px; height: 34px" 
+                                               data-options="editable:true,valueField:'id', textField:'text',url:'formuser.project.getProject.action' " />
+
                                     </td>
                                 </tr>                               
 
