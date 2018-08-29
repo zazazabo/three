@@ -15,19 +15,93 @@
         </xhandle>                 
     </xform>
     
-        <xform desc="主页" id="main">
+    <xform desc="主页" id="main">
         <xhand id="home" rtn="main.jsp" rtnype="PGE">
             
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_user WHERE   @CONDITION " var="rs">
                 <xflt id="CONDITION" nrp="" tpl="@name">
                     <xfltpara id="name" nrp="1=1" para="name" sql="name = ':name'">
                     </xfltpara>
-<!--                    <xfltpara id="password" nrp="1=1" para="password" sql="password = ':password'">
+                    <!--                    <xfltpara id="password" nrp="1=1" para="password" sql="password = ':password'">
                     </xfltpara>            -->
                 </xflt>      
             </xsql>       
 
              
         </xhand>
+    </xform>
+    
+    <xform desc="" id="map">
+        <xhandle desc="查询所有网关信息" id="map" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_baseinfo where @CONDITION " var="bootstrap">
+                <xflt id="CONDITION" nrp="" tpl="@comaddr AND @name">
+                    <xfltpara id="comaddr" nrp="1=1" para="comaddr" sql="comaddr = ':comaddr'">
+                    </xfltpara>
+                    <xfltpara id="name" nrp="1=1" para="name" sql="name = ':name'">
+                    </xfltpara>
+                </xflt>
+            </xsql>
+        </xhandle>
+        <xhandle desc="查询所有灯具信息" id="lamp" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_lamp where @CONDITION " var="bootstrap">
+                <xflt id="CONDITION" nrp="" tpl="@l_comaddr AND @l_name">
+                    <xfltpara id="l_comaddr" nrp="1=1" para="l_comaddr" sql="l_comaddr = ':l_comaddr'">
+                    </xfltpara>
+                    <xfltpara id="l_name" nrp="1=1" para="l_name" sql="l_name = ':l_name'">
+                    </xfltpara>
+                </xflt>
+            </xsql>
+        </xhandle>
+        <xhandle desc="查询所有经纬度" id="lnglat" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_baseinfo" var="rs">
+            </xsql>
+        </xhandle>
+        <xhandle desc="查询所有网关" id="getallcomaddr" rtnype="JSON">
+            <xsql id="a2" list="true" page="true" tpe="SQL" tpl="SELECT comaddr  FROM t_baseinfo" var="rs">
+<!--                <xflt id="CONDITION" nrp="" tpl="@comaddr">
+                    <xfltpara id="comaddr" nrp="1=1" para="comaddr" sql="comaddr = ':comaddr'">
+                    </xfltpara>
+                </xflt>      -->
+            </xsql>               
+        </xhandle>
+         <xhandle desc="修改网关经纬度" id="updatelnglat" rtn="rs" rtnype="JSON">
+            <xsql id="a1" para="Longitude,latitude"  tpe="DDL" tpl="update t_baseinfo set Longitude=':Longitude',latitude=':latitude' where @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@comaddr">
+                    <xfltpara id="comaddr" nrp="1=1" para="comaddr" sql="comaddr=:comaddr">
+                    </xfltpara>
+                </xflt>
+            </xsql>
+        </xhandle> 
+        <xhandle desc="修改灯具经纬度" id="updateLamplnglat" rtn="rs" rtnype="JSON">
+            <xsql id="a1" para="Longitude,latitude"  tpe="DDL" tpl="update t_lamp set Longitude=':Longitude',latitude=':latitude' where @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@id">
+                    <xfltpara id="id" nrp="1=1" para="id" sql="id=:id">
+                    </xfltpara>
+                </xflt>
+            </xsql>
+        </xhandle> 
+        <xhandle desc="查询灯具分布列表" id="queryLamp" rtnype="JSON">
+            <xsql id="a2" list="true" page="true" tpe="SQL" tpl="SELECT *  FROM t_lamp  AS tb where @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@comaddr">
+                    <xfltpara id="comaddr" nrp="1=1" para="comaddr" sql="comaddr = ':comaddr'">
+                    </xfltpara>
+                </xflt>      
+            </xsql>               
+        </xhandle>
+    </xform>
+    
+    
+    
+    <xform desc="测试" id="table">
+        <xhandle desc="jk" id="tabletest" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from  t_user " var="bootstrap">
+                <!--                <xflt id="CONDITION" nrp="" tpl="@u_phone AND @u_name ">
+                    <xfltpara id="u_phone" nrp="1=1" para="u_phone" sql="u_phone = ':u_phone'"> 
+                    </xfltpara>
+                    <xfltpara id="u_name" nrp="1=1" para="u_name" sql="u_name = ':u_name'">
+                    </xfltpara>             
+                </xflt>        -->
+            </xsql>        
+        </xhandle>                 
     </xform>
 </xforms>
