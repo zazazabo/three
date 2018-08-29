@@ -30,6 +30,87 @@
         <script type="text/javascript" src="js/genel.js"></script>
         <script>
 
+
+            function dealsend(data, type) {
+                var selects = $('#lampTable').bootstrapTable('getSelections');
+                var comaddr1 = $("#l_comaddr").combobox('getValue');
+                var arr = new Array();
+                for (var i = 0; i < selects.length; i++) {
+                    arr.push(selects[i].uid);
+                }
+                var user = new Object();
+                user.res = 1;
+                user.afn = 320;
+                user.status = "";
+                user.function = "setLoop";
+                user.parama = arr;
+                user.page = 2;
+                user.type = type;    //0移除   1是部署
+                user.msg = "setParam";
+                user.res = 1;
+                user.addr = getComAddr(comaddr1); //"02170101";
+                user.data = data;
+                parent.parent.sendData(user);
+            }
+
+
+            function deployloop() {
+                var selects = $('#gravidaTable').bootstrapTable('getSelections');
+                if (selects.length == 0) {
+                    layerAler("请勾选表格数据");
+                    return;
+                }
+                if (selects[0].l_deplayment == 1) {
+                    layerAler("已部署");
+                    return;
+                }
+
+
+                var vv =[];
+                vv.push(1);
+                var setcode = ele.l_code;
+                console.log(setcode);
+                var dd = get2byte(setcode);
+                var set1 = Str2BytesH(dd);
+                vv.push(set1[1]);
+                vv.push(set1[0]); //装置序号  2字节
+                vv.push(set1[1]);
+                vv.push(set1[0]); //测量点号  2字节 
+
+                vv.push(parseInt(setcode, 16)); //通信地址
+                var iworktype = parseInt(ele.l_worktype);
+                vv.push(iworktype); //工作方式
+                var igroupe = parseInt(ele.l_groupe); //组号
+                vv.push(igroupe); //组号                       
+                var num = randnum(0, 9) + 0x70; //随机帧序列号
+                var sss = buicode(comaddr1, 0x04, 0xA4, num, 0, 320, vv); //0320
+                dealsend(sss,1);
+                
+//                var user = new Object();
+//                user.msg = "setParam";
+//                user.res = 1;
+//                user.afn = 320;
+//                user.status = "";
+//                user.function = "setLoop";
+//                user.parama = ele;
+//                user.addr = getComAddr(comaddr1); //"02170101";
+//                user.data = sss;
+//                $datajson = JSON.stringify(user);
+//                console.log($datajson);
+//                websocket.send($datajson);
+
+
+
+
+
+
+//                console.log(selects[0]);
+//                var obj1 = {index: 0, data: selects[0]};
+//                var str = JSON.stringify(obj1);
+//                gz(str);
+            }
+
+
             var websocket = null;
             function setLoop(obj) {
                 console.log("come on callback setLoop");
@@ -143,24 +224,7 @@
             }
 
             $(function () {
-                $("#btndeploy").click(function () {
 
-                    var selects = $('#gravidaTable').bootstrapTable('getSelections');
-                    if (selects.length == 0) {
-                        layerAler("请勾选表格数据");
-                        return;
-                    }
-                    if (selects[0].l_deplayment == 1) {
-                        layerAler("已部署");
-                        return;
-                    }
-                    console.log(selects[0]);
-                    var obj1 = {index: 0, data: selects[0]};
-                    var str = JSON.stringify(obj1);
-                    gz(str);
-
-
-                });
                 $("#btnremove").click(function () {
 
                     var selects = $('#gravidaTable').bootstrapTable('getSelections');
@@ -178,125 +242,6 @@
                     gz(str);
                 });
 
-                $("#btndeploylamp").click(function () {
-
-                    if (websocket.readyState == 3) {
-                        layerAler("服务端没连接上");
-                        return;
-                    }
-                    var selects = $('#lampTable').bootstrapTable('getSelections');
-                    var comaddr1 = $("#l_comaddr_lamp").val();
-                    console.log(selects);
-                    var vv = new Array();
-                    if (selects.length == 0) {
-                        layerAler("请勾选表格数据");
-                        return;
-                    }
-                    for (var i = 0; i < selects.length; i++) {
-                        if (selects[i].l_deplayment == "1") {
-                            layerAler(selects[i] + "此装置已经部署过");
-                            continue;
-                        }
-                        if (i == 0) {
-                            var len = sprintf("%04d", selects.length);
-                            var vvbyte = Str2BytesH(len);
-                            vv.push(vvbyte[1]);
-                            vv.push(vvbyte[0]);
-                        }
-                        var setcode = selects[i].l_code;
-                        var factorycode = selects[i].l_factorycode;
-                        var dd = get2byte(setcode);
-                        var set1 = Str2BytesH(dd);
-                        var factor = Str2BytesH(factorycode);
-                        vv.push(set1[1]);
-                        vv.push(set1[0]); //装置序号  2字节
-                        vv.push(set1[1]);
-                        vv.push(set1[0]); //测量点号  2字节 
-
-
-                        vv.push(factor[5]); //通信地址
-                        vv.push(factor[4]); //通信地址
-                        vv.push(factor[3]); //通信地址
-                        vv.push(factor[2]); //通信地址
-                        vv.push(factor[1]); //通信地址
-                        vv.push(factor[0]); //通信地址
-
-                        var iworktype = parseInt(selects[i].l_worktype);
-                        vv.push(iworktype); //工作方式
-                        var igroupe = parseInt(selects[i].l_group); //组号
-                        vv.push(igroupe); //组号
-                    }
-                    var num = randnum(0, 9) + 0x70;
-                    var sss = buicode(comaddr1, 0x04, 0xA4, num, 0, 102, vv); //0320
-                    var user = new Object();
-                    user.msg = "setParam";
-                    user.res = 1;
-                    user.addr = getComAddr(comaddr1); //"02170101";
-                    user.data = sss;
-                    $datajson = JSON.stringify(user);
-                    console.log($datajson);
-                    websocket.send($datajson);
-                });
-                $("#btnremovelamp").click(function () {
-
-                    if (websocket.readyState == 3) {
-                        layerAler("服务端没连接上");
-                        return;
-                    }
-                    var selects = $('#lampTable').bootstrapTable('getSelections');
-                    var comaddr1 = $("#l_comaddr_lamp").val();
-                    console.log(selects);
-                    var vv = new Array();
-                    if (selects.length == 0) {
-                        layerAler("请勾选表格数据");
-                        return;
-                    }
-                    for (var i = 0; i < selects.length; i++) {
-                        if (selects[i].l_deplayment == "1") {
-                            layerAler(selects[i] + "此装置已经部署过");
-                            continue;
-                        }
-                        if (i == 0) {
-                            var len = sprintf("%04d", selects.length);
-                            alert(len);
-                            var lenbyte = Str2BytesH(len);
-                            vv.push(lenbyte[1]);
-                            vv.push(lenbyte[0]);
-                        }
-                        var setcode = selects[i].l_code;
-                        var factorycode = selects[i].l_factorycode;
-                        var dd = get2byte(setcode);
-                        var set1 = Str2BytesH(dd);
-                        var factor = Str2BytesH(factorycode);
-                        vv.push(set1[1]);
-                        vv.push(set1[0]); //装置序号  2字节
-                        vv.push(0);
-                        vv.push(0); //测量点号  2字节 
-
-
-                        vv.push(factor[5]); //通信地址
-                        vv.push(factor[4]); //通信地址
-                        vv.push(factor[3]); //通信地址
-                        vv.push(factor[2]); //通信地址
-                        vv.push(factor[1]); //通信地址
-                        vv.push(factor[0]); //通信地址
-
-                        var iworktype = parseInt(selects[i].l_worktype);
-                        vv.push(iworktype); //工作方式
-                        var igroupe = parseInt(selects[i].l_group); //组号
-                        vv.push(igroupe); //组号
-                    }
-                    var num = randnum(0, 9) + 0x70;
-                    var sss = buicode(comaddr1, 0x04, 0xA4, num, 0, 102, vv); //0320
-                    var user = new Object();
-                    user.msg = "setParam";
-                    user.res = 1;
-                    user.addr = getComAddr(comaddr1); //"02170101";
-                    user.data = sss;
-                    $datajson = JSON.stringify(user);
-                    console.log($datajson);
-                    websocket.send($datajson);
-                });
                 $("#btnswitch").click(function () {
                     if (websocket.readyState == 3) {
                         layerAler("服务端没连接上");
@@ -339,167 +284,7 @@
                     console.log($datajson);
                     websocket.send($datajson);
                 });
-                $("#btnlampval").click(function () {
-                    if (websocket.readyState == 3) {
-                        layerAler("服务端没连接上");
-                        return;
-                    }
-                    var selects = $('#lampTable').bootstrapTable('getSelections');
-                    var comaddr1 = $("#l_comaddr").val();
-                    var lampval = $("#select_lamp_val").val();
-                    var vv = new Array();
-                    if (selects.length == 0) {
-                        layerAler("请勾选表格数据");
-                        return;
-                    }
-                    for (var i = 0; i < selects.length; i++) {
 
-                        if (selects[i].l_deplayment == "1") {
-                            layerAler(selects[i] + "此装置已经部署过");
-                            continue;
-                        }
-
-                        var setcode = selects[i].l_code;
-                        var dd = get2byte(setcode);
-                        var set1 = Str2BytesH(dd);
-                        vv.push(set1[1]);
-                        vv.push(set1[0]); //装置序号  2字节
-                        vv.push(parseInt(lampval));
-                    }
-
-                    var num = randnum(0, 9) + 0x70;
-                    var sss = buicode(comaddr1, 0x04, 0xA5, num, 0, 301, vv); //01 03
-
-                    var user = new Object();
-                    user.msg = "contrParam";
-                    user.res = 1;
-                    user.addr = getComAddr(comaddr1); //"02170101";
-                    user.data = sss;
-                    $datajson = JSON.stringify(user);
-                    console.log($datajson);
-                    websocket.send($datajson);
-                });
-                $('#lampTable').bootstrapTable({
-                    columns: [
-                        {
-                            title: '单选',
-                            field: 'select',
-                            //复选框
-                            checkbox: true,
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
-                            field: 'uid',
-                            title: 'ID',
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
-                            field: 'l_group',
-                            title: '组号',
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle',
-                            formatter: function (value, row, index, field) {
-
-                                if (value == 0) {
-                                    value = "0";
-                                    return value;
-                                } else if (value == 1) {
-                                    value = "1";
-                                    return value;
-                                }
-                            }
-                        }, {
-                            field: 'l_comaddr',
-                            title: '所属网关',
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
-                            field: 'l_factorycode',
-                            title: '通信地址',
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
-                            field: 'l_name',
-                            title: '名称',
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
-                            field: 'l_code',
-                            title: '装置序号',
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
-                            field: 'l_worktype',
-                            title: '控制方式',
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle',
-                            formatter: function (value, row, index, field) {
-                                console.log(value);
-                                if (value == 0) {
-                                    value = "0(时间)";
-                                    return value;
-                                } else if (value == 1) {
-                                    value = "1";
-                                    return value;
-                                }
-                            }
-                        }, {
-                            field: 'l_plan',
-                            title: '控制方案',
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
-                            field: 'l_deployment',
-                            title: '部署情况',
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle',
-                            formatter: function (value, row, index, field) {
-                                if (row.l_deplayment == "0") {
-                                    var str = "<span class='label label-warning'>末部署</span>"
-                                    return  str;
-                                } else if (row.l_deplayment == "1") {
-                                    var str = "<span class='label label-success'>已部署</span>"
-                                    return  str;
-                                }
-                            }
-                        }],
-                    singleSelect: false,
-                    sortName: 'id',
-                    locale: 'zh-CN', //中文支持,
-                    showColumns: true,
-                    sortOrder: 'desc',
-                    pagination: true,
-                    sidePagination: 'server',
-                    pageNumber: 1,
-                    pageSize: 5,
-                    showRefresh: true,
-                    showToggle: true,
-                    // 设置默认分页为 50
-                    pageList: [5, 10, 15, 20, 25],
-                    onLoadSuccess: function () {  //加载成功时执行  表格加载完成时 获取集中器在线状态
-//                        console.info("加载成功");
-                    },
-                    //服务器url
-                    queryParams: function (params)  {   //配置参数     
-                        var temp  =   {    //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的 
-                            search: params.search,
-                            skip: params.offset,
-                            limit: params.limit,
-                            type_id: "1"    
-                        };      
-                        return temp;  
-                    },
-                });
                 $('#gravidaTable').bootstrapTable({
                     columns: [
                         {
@@ -606,73 +391,66 @@
                         return temp;  
                     },
                 });
-                $('#gravidaTable').on("click-cell.bs.table", function (field, value, row, element) {
-                    if (value == "l_plan") {
-                        $.ajax({
-                            url: "test1.loop.getPlan.action",
-                            type: "get",
-                            datatype: "JSON",
-                            data: {p_code: row, p_attr: 0},
-                            success: function (data) {
-                                var arrlist = data.rs;
-                                if (arrlist.length == 1) {
-                                    var jsonstr = arrlist[0].p_content;
-                                    var obj = eval('(' + jsonstr + ')');
-                                    if (obj.hasOwnProperty("loop")) {
-                                        var val = obj.loop[0];
-                                        var str = "闭合时间:" + val.start + "<br>断开时间:" + val.end;
-                                        layer.alert(str, {
-                                            icon: 6,
-                                            offset: 'center'
-                                        });
-                                    }
-                                }
-                            },
-                            error: function () {
-                                alert("提交失败！");
-                            }
-                        });
-                    }
 
 
-                })
-
-                $("#l_comaddr").change(function () {
-                    var comaddr = $(this).children('option:selected').val();
-                    var url = "test1.loop.getloop.action?l_comaddr=" + comaddr;
-                    var opt = {
-                        url: url
-                    };
-                    $('#gravidaTable').bootstrapTable('refresh', opt);
-                })
-
-
-
-
-                $.ajax({
-                    async: false,
-                    url: "test1.loop.getGayway.action",
-                    type: "get",
-                    datatype: "JSON",
-                    data: {},
-                    success: function (data) {
-                        $("#l_comaddr").empty();
-                        var arrlist = data.rs;
-                        for (var i = 0; i < arrlist.length; i++) {
-                            var objlist = arrlist[i];
-                            console.log(objlist.model); //comaddr
-                            var str = "<option value='" + objlist.l_comaddr + "'>" + objlist.l_comaddr + "</option>";
-                            $("#l_comaddr").append(str); //添加option
-                        }
-                        var comaddr = $("#l_comaddr").children('option:selected').val();
-                        var url = "test1.loop.getloop.action?l_comaddr=" + comaddr;
-                        var opt = {url: url};
-                        $('#gravidaTable').bootstrapTable('refresh', opt);
-                    },
-                    error: function () {
-                        alert("提交失败！");
+                $('#l_comaddr').combobox({
+                    onSelect: function (record) {
+                        var obj = {};
+                        obj.l_comaddr = record.id;
+                        console.log(obj);
+                        var opt = {
+                            url: "test1.loop.getloop.action",
+                            silent: true,
+                            query: obj
+                        };
+                        $("#gravidaTable").bootstrapTable('refresh', opt);
                     }
                 });
+
+
+
+
+
+
+
+
+
+//                $("#l_comaddr").change(function () {
+//                    var comaddr = $(this).children('option:selected').val();
+//                    var url = "test1.loop.getloop.action?l_comaddr=" + comaddr;
+//                    var opt = {
+//                        url: url
+//                    };
+//                    $('#gravidaTable').bootstrapTable('refresh', opt);
+//                })
+
+
+
+
+//                $.ajax({
+//                    async: false,
+//                    url: "test1.loop.getGayway.action",
+//                    type: "get",
+//                    datatype: "JSON",
+//                    data: {},
+//                    success: function (data) {
+//                        $("#l_comaddr").empty();
+//                        var arrlist = data.rs;
+//                        for (var i = 0; i < arrlist.length; i++) {
+//                            var objlist = arrlist[i];
+//                            console.log(objlist.model); //comaddr
+//                            var str = "<option value='" + objlist.l_comaddr + "'>" + objlist.l_comaddr + "</option>";
+//                            $("#l_comaddr").append(str); //添加option
+//                        }
+//                        var comaddr = $("#l_comaddr").children('option:selected').val();
+//                        var url = "test1.loop.getloop.action?l_comaddr=" + comaddr;
+//                        var opt = {url: url};
+//                        $('#gravidaTable').bootstrapTable('refresh', opt);
+//                    },
+//                    error: function () {
+//                        alert("提交失败！");
+//                    }
+//                });
 
             })
 
@@ -731,20 +509,29 @@
             <table>
                 <tbody>
                     <tr>
-                        <td>
-                        </td>
-                        <td>
-
-                        </td>
+                        <td></td>
+                        <td></td>
                         <td>
                             <span style="margin-left:10px;">网关地址&nbsp;</span>
                             <span class="menuBox">
-                                <select name="l_comaddr" id="l_comaddr" placeholder="回路" class="input-sm" style="width:150px;">
+
+                                <input id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 34px" 
+                                       data-options="onLoadSuccess:function(data){
+                                       if(Array.isArray(data)&&data.length>0){
+                                       $(this).combobox('select', data[0].id);
+
+                                       }else{
+                                       $(this).combobox('select',);
+                                       }
+                                       console.log(data);
+                                       },editable:false,valueField:'id', textField:'text',url:'test1.loop.getlampcomaddr.action' " />
+
+                                <!--                                <select name="l_comaddr" id="l_comaddr" placeholder="回路" class="input-sm" style="width:150px;">-->
                             </span>    
                         </td>
 
                         <td>
-                            &nbsp;&nbsp;  <button id="btndeploy" class="btn btn-success">部&nbsp;&nbsp;&nbsp;&nbsp;署</button>
+                            &nbsp;&nbsp;  <button id="btndeploy" onclick="deployloop()" class="btn btn-success">部&nbsp;&nbsp;&nbsp;&nbsp;署</button>
                         </td>
                         <td>
                             &nbsp;&nbsp;  <button id="btnremove" class="btn btn-success">移&nbsp;&nbsp;除</button>
