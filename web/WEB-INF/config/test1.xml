@@ -365,19 +365,12 @@
             </xsql>
         </xhandle>
         <xhandle desc="" id="addGateway" rtn="rs" rtnype="JSON">
-            <xsql id="a1" para="model,comaddr,name,longitude,latitude" tpe="DDL" tpl="insert into t_baseinfo(model,comaddr,name,longitude,latitude) values(':model',':comaddr',':name',':longitude',':latitude')" var="rs">
-                <!--                <xFlt id="CONDITION" tpl="@MODEL AND @COMADDR AND @NAME  "   nrp="" >
-                    <xFltPara id="MODEL" para="model" sql="(':model'" nrp="(''" />
-                    <xFltPara id="COMADDR" para="comaddr" sql="':comaddr'" nrp="''" />
-                    <xFltPara id="NAME" para="name" sql="':name') " nrp="''" />
-                </xFlt>-->
+            <xsql id="a1" para="model,comaddr,name,longitude,latitude,pid,multpower" tpe="DDL" tpl="insert into t_baseinfo(model,comaddr,name,longitude,latitude,pid) values(':model',':comaddr',':name',':longitude',':latitude',':pid',:multpower)" var="rs">
             </xsql>
         </xhandle>
         <xhandle desc="" id="queryGateway" rtn="rs" rtnype="JSON">
             <xsql id="a1" inst="sysuser" tpe="SQL" tpl="select * from t_baseinfo where @CONDITION" var="rs">
-                <xflt id="CONDITION" nrp="1=1" tpl="@MODEL AND @COMADDR  ">
-                    <xfltpara id="MODEL" para="model" sql="model= ':model' ">
-                    </xfltpara>
+                <xflt id="CONDITION" nrp="1=1" tpl="@COMADDR  ">
                     <xfltpara id="COMADDR" para="comaddr" sql="comaddr = ':comaddr' ">
                     </xfltpara>
                 </xflt>

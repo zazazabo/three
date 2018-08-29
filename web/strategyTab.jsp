@@ -30,10 +30,11 @@
                 <ul class="secondMenu layui-nav">
                     <li name="loopplan.jsp" class="layui-nav-item layui-this active"><a href="javascript:;">回路策略</a></li>
                     <li name="lampplan.jsp" class="layui-nav-item"><a href="javascript:;">灯具策略</a></li>
-                    <span class="layui-nav-bar" style="width: 0px; left: 484px; opacity: 0; top: 45px;"></span></ul>
+                    <span class="layui-nav-bar" style="width: 0px; left: 484px; opacity: 0; top: 45px;"></span>
+                </ul>
             </div>
             <div  id="content-main" style="height: 878px;">
-                <iframe class="J_iframe" name="iframe0" src="loopplan.jsp"   width="100%" height="100%" frameborder="0"></iframe>
+                <iframe class="J_iframe" name="iframe0" src="#"   width="100%" height="100%" frameborder="0"></iframe>
             </div>
         </div>
         <!--<script type="text/javascript" src="abc_files/jquery.js"></script>-->
@@ -42,6 +43,8 @@
         <script>
             $(function () {
                 /* 初始化加载三级菜单 */
+                
+                
                 var htmlFirst = $(".secondMenu li:eq(0)").attr('name');
                 $(".J_iframe").attr('src', htmlFirst);
                 $(".secondMenu li:eq(0)").addClass("active").siblings("li").removeClass("active");

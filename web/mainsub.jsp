@@ -557,11 +557,11 @@
                             color: "skyblue"
                         }
                     },
-                    //                    legend: {
-                    //                        orient: 'vertical',
-                    //                        x: 'left',
-                    //                        data: ['计划能耗', '实际能耗']
-                    //                    },
+//                                        legend: {
+//                                            orient: 'vertical',
+//                                            x: 'left',
+//                                            data: ['计划能耗', '实际能耗']
+//                                        },
                     tooltip: {
                         trigger: 'item',
                         formatter: "{a} <br/>{b} : {c} kW·h ({d}%)"
@@ -585,10 +585,10 @@
                             itemStyle: {
                                 normal: {
                                     label: {
-                                        show: false
+                                        show: true
                                     },
                                     labelLine: {
-                                        show: false
+                                        show: true
                                     }
                                 },
                                 emphasis: {

@@ -135,95 +135,98 @@ function Str2BytesH(str) {
     return hexA;
 }
 
-var namesss = false;
-function checkAdd() {
 
 
-    if (/^[0-9A-F]{8}$/.test($("#comaddr").val().trim()) == false) {
-        layer.alert('网关地址应为八位有效十六进制字符', {
-            icon: 6,
-            offset: 'center'
-        });
-        return false;
-    }
 
-
-    if ($("#longitudem26d").val().trim() != "" && $("#longitudem26m").val().trim() != "" && $("#longitudem26s").val().trim() != "" && $("#latitudem26d").val().trim() != "" && $("#latitudem26m").val().trim() != "" && $("#latitudem26s").val().trim() != "") {
-        if ((!enforceInputFloat("longitudem26d")) || (!enforceInputFloat("longitudem26m")) || (!enforceInputFloat("longitudem26s")) || (!enforceInputFloat("latitudem26d")) || (!enforceInputFloat("latitudem26m")) || (!enforceInputFloat("latitudem26s")) || (!enforceInputLongitudeDegree($("#longitudem26d").val().trim())) || (!enforceInputLatitudeDegree($("#latitudem26d").val().trim())) || (!enforceInputLteSixty($("#longitudem26m").val().trim())) || (!enforceInputLteSixty($("#longitudem26s").val().trim())) || (!enforceInputLteSixty($("#latitudem26m").val().trim())) || (!enforceInputLteSixty($("#latitudem26s").val().trim()))) {
-            layer.alert('经纬度非法!', {
-                icon: 1,
-                offset: 'center'
-            });
-            return false;
-        } else {
-            $("#longitude").val(parseLongitudeLatitudeFloat(parseInt($("#longitudem26d").val().trim()), parseInt($("#longitudem26m").val().trim()), parseFloat($("#longitudem26s").val().trim())));
-            $("#latitude").val(parseLongitudeLatitudeFloat(parseInt($("#latitudem26d").val().trim()), parseInt($("#latitudem26m").val().trim()), parseFloat($("#latitudem26s").val().trim())));
-        }
-    }
-
-    var name = $("#name").val();
-    var addr = $("#comaddr").val();
-
-    var model = $('#model').combobox('getValue');
-    var namesss = false;
-    $.ajax({
-        async: false,
-        cache: false,
-        url: "test1.f5.queryGateway.action",
-        type: "GET",
-        data: {
-            name: name,
-            comaddr: addr,
-            model: model
-        },
-        success: function (data) {
-            var arrlist = data.rs;
-            if (arrlist.length == 1) {
-                layer.alert('此网关已存在', {
-                    icon: 6,
-                    offset: 'center'
-                });
-                namesss = false;
-                return;
-            } else if (arrlist.length == 0) {
-
-                var jsondata = $("#eqpTypeForm").serializeObject();
-                var latitudemstr = jsondata.latitudem26d + "." + jsondata.latitudem26m + "." + jsondata.latitudem26s;
-                jsondata.latitude = latitudemstr;
-                var longitudemstr = jsondata.longitudem26d + "." + jsondata.longitudem26m + "." + jsondata.longitudem26s;
-                jsondata.longitude = longitudemstr;
-                console.log(jsondata);
-                $.ajax({
-                    async: false,
-                    cache: false,
-                    url: "test1.f5.addGateway.action",
-                    type: "GET",
-                    data: jsondata,
-                    success: function (data) {
-                        namesss = true;
-                        $("#gravidaTable").bootstrapTable('refresh');
-                    },
-                    error: function () {
-                        layer.alert('系统错误，刷新后重试', {
-                            icon: 6,
-                            offset: 'center'
-                        });
-                    }
-                })
-            }
-
-        },
-        error: function () {
-            layer.alert('系统错误，刷新后重试', {
-                icon: 6,
-                offset: 'center'
-            });
-        }
-    });
-
-    return namesss;
-}
-
+//
+//function checkAdd() {
+//
+//
+//    if (/^[0-9A-F]{8}$/.test($("#comaddr").val().trim()) == false) {
+//        layer.alert('网关地址应为八位有效十六进制字符', {
+//            icon: 6,
+//            offset: 'center'
+//        });
+//        return false;
+//    }
+//
+//
+//    if ($("#longitudem26d").val().trim() != "" && $("#longitudem26m").val().trim() != "" && $("#longitudem26s").val().trim() != "" && $("#latitudem26d").val().trim() != "" && $("#latitudem26m").val().trim() != "" && $("#latitudem26s").val().trim() != "") {
+//        if ((!enforceInputFloat("longitudem26d")) || (!enforceInputFloat("longitudem26m")) || (!enforceInputFloat("longitudem26s")) || (!enforceInputFloat("latitudem26d")) || (!enforceInputFloat("latitudem26m")) || (!enforceInputFloat("latitudem26s")) || (!enforceInputLongitudeDegree($("#longitudem26d").val().trim())) || (!enforceInputLatitudeDegree($("#latitudem26d").val().trim())) || (!enforceInputLteSixty($("#longitudem26m").val().trim())) || (!enforceInputLteSixty($("#longitudem26s").val().trim())) || (!enforceInputLteSixty($("#latitudem26m").val().trim())) || (!enforceInputLteSixty($("#latitudem26s").val().trim()))) {
+//            layer.alert('经纬度非法!', {
+//                icon: 1,
+//                offset: 'center'
+//            });
+//            return false;
+//        } else {
+//            $("#longitude").val(parseLongitudeLatitudeFloat(parseInt($("#longitudem26d").val().trim()), parseInt($("#longitudem26m").val().trim()), parseFloat($("#longitudem26s").val().trim())));
+//            $("#latitude").val(parseLongitudeLatitudeFloat(parseInt($("#latitudem26d").val().trim()), parseInt($("#latitudem26m").val().trim()), parseFloat($("#latitudem26s").val().trim())));
+//        }
+//    }
+//
+//    var name = $("#name").val();
+//    var addr = $("#comaddr").val();
+//
+//    var model = $('#model').combobox('getValue');
+//    var namesss = false;
+//    $.ajax({
+//        async: false,
+//        cache: false,
+//        url: "test1.f5.queryGateway.action",
+//        type: "GET",
+//        data: {
+//            name: name,
+//            comaddr: addr,
+//            model: model
+//        },
+//        success: function (data) {
+//            var arrlist = data.rs;
+//            if (arrlist.length == 1) {
+//                layer.alert('此网关已存在', {
+//                    icon: 6,
+//                    offset: 'center'
+//                });
+//                namesss = false;
+//                return;
+//            } else if (arrlist.length == 0) {
+//
+//                var jsondata = $("#eqpTypeForm").serializeObject();
+//                var latitudemstr = jsondata.latitudem26d + "." + jsondata.latitudem26m + "." + jsondata.latitudem26s;
+//                jsondata.latitude = latitudemstr;
+//                var longitudemstr = jsondata.longitudem26d + "." + jsondata.longitudem26m + "." + jsondata.longitudem26s;
+//                jsondata.longitude = longitudemstr;
+//                console.log(jsondata);
+//                $.ajax({
+//                    async: false,
+//                    cache: false,
+//                    url: "test1.f5.addGateway.action",
+//                    type: "GET",
+//                    data: jsondata,
+//                    success: function (data) {
+//                        namesss = true;
+//                        $("#gravidaTable").bootstrapTable('refresh');
+//                    },
+//                    error: function () {
+//                        layer.alert('系统错误，刷新后重试', {
+//                            icon: 6,
+//                            offset: 'center'
+//                        });
+//                    }
+//                })
+//            }
+//
+//        },
+//        error: function () {
+//            layer.alert('系统错误，刷新后重试', {
+//                icon: 6,
+//                offset: 'center'
+//            });
+//        }
+//    });
+//
+//    return namesss;
+//}
+//
 
 
 function checkModify()
@@ -397,4 +400,71 @@ function delendchar(str) {
         str = str.substring(0, str.lastIndexOf('|'));
     }
     return str;
+}
+
+
+/**
+ *  先把父亲节点取出来，放进一个数组dataArray
+ * @param {Object} datas 所有数据
+ */
+function data2tree(datas) {
+    var dataArray = [];
+    datas.forEach(function (data) {
+        var CATL_PARENT = data.m_parent;
+        if (CATL_PARENT == '0') {
+            var CATL_CODE = data.m_code;
+            var CATL_NAME = data.m_title;
+            var action = data.m_action;
+            var icon = data.m_icon;
+            var objTemp = {
+                parent: CATL_PARENT,
+                code: CATL_CODE,
+                title: CATL_NAME,
+                action: action,
+                icon: icon
+            }
+            dataArray.push(objTemp);
+        }
+    });
+    return data2treeDG(datas, dataArray);
+}
+
+
+/**
+ * 
+ * @param {Object} datas  所有数据
+ * @param {Object} dataArray 父节点组成的数组
+ */
+function data2treeDG(datas, dataArray) {
+    for (var j = 0; j < dataArray.length; j++) {
+        var dataArrayIndex = dataArray[j];
+        var childrenArray = [];
+        var CATL_CODEP = dataArrayIndex.code;
+
+        for (var i = 0; i < datas.length; i++) {
+            var data = datas[i];
+            var CATL_PARENT = data.m_parent;
+            if (CATL_PARENT == CATL_CODEP) {//判断是否为儿子节点
+                var CATL_CODE = data.m_code;
+                var CATL_NAME = data.m_title;
+                var action = data.m_action;
+                var icon = data.m_icon;
+                var objTemp = {
+                    parent: CATL_PARENT,
+                    code: CATL_CODE,
+                    title: CATL_NAME,
+                    action: action,
+                    icon: icon
+                }
+                childrenArray.push(objTemp);
+            }
+
+        }
+        dataArrayIndex.children = childrenArray;
+        if (childrenArray.length > 0) {//有儿子节点则递归
+            data2treeDG(datas, childrenArray);
+        }
+
+    }
+    return dataArray;
 }
