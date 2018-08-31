@@ -53,14 +53,16 @@
                 console.log(objrole);
                 $.ajax({type: "post", async: false, url: "formuser.mainmenu.querysub.action", dataType: "json", data: objrole,
                     success: function (datas) {
+                        console.log(datas);
                         var htmls = "";
                         var i = 0;
                         datas.forEach(function (data) {
                             var action = data.m_action;
                             var lang = "zh_CN";
                             var objlang = eval('(' + data.m_title + ')');
-
-                            htmls += '<li class="layui-nav-item" name="' + action + '">'
+                            console.log(data);
+                            var u1=action + "?m_parent=" + data.m_code + "&role=" + ${param.role};
+                            htmls += '<li class="layui-nav-item" name="' + u1 + '">'
                                     + '<a href="javascript:;">'
                                     + objlang[lang]
                                     + '</a>'

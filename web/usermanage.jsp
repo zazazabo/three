@@ -19,6 +19,36 @@
 
         <script>
             $(function () {
+                $("#add").attr("disabled",true);
+                $("#update").attr("disabled",true);
+                $("#del").attr("disabled",true);
+                var obj = {};
+                obj.m_parent =8001  ;// ${param.m_parent};
+                $.ajax({async: false, url: "login.usermanage.power.action", type: "get", datatype: "JSON", data: obj,
+                    success: function (data) {
+                        var rs=data.rs;
+                        if(rs.length>0){
+                            for (var i = 0; i < rs.length; i++) {
+                                if(rs[i].m_code=="800101" && rs[i].m_type !=1){
+                                     $("#add").attr("disabled",false);
+                                    continue;
+                                }
+                                if(rs[i].m_code=="800102" && rs[i].m_type !=1){
+                                     $("#update").attr("disabled",false);
+                                    continue;
+                                }
+                                if(rs[i].m_code=="800103" && rs[i].m_type !=1){
+                                     $("#del").attr("disabled",false);
+                                    continue;
+                                }
+}
+                        }
+
+                    },
+                    error: function () {
+                        alert("提交失败！");
+                    }
+                });
                 $('#gravidaTable').bootstrapTable({
                     url: 'formuser.user.query.action',
                     columns: [
@@ -148,15 +178,15 @@
 
             function editaction() {
                 var formobj = $("#Form_Edit").serializeObject();
-                
+
                 formobj.email = formobj.email_edit;
                 formobj.department = formobj.department_edit;
                 formobj.name = formobj.name_edit;
                 formobj.phone = formobj.phone_edit;
                 formobj.sex = formobj.sex_edit;
-                formobj.pid=formobj.pidedt;
+                formobj.pid = formobj.pidedt;
 //                console.log(formobj);
-                
+
                 $.ajax({url: "formuser.user.editUser.action", async: false, type: "get", datatype: "JSON", data: formobj,
                     success: function (data) {
                         var arrlist = data.rs;
@@ -210,13 +240,13 @@
     <body>
 
         <div class="btn-group zuheanniu" id="zuheanniu" style="float:left;position:relative;z-index:100;margin:12px 0 0 10px;">
-            <button class="btn btn-success ctrol" data-toggle="modal" data-target="#pjj">
+            <button class="btn btn-success ctrol" data-toggle="modal" data-target="#pjj" name="8000101" id="add">
                 <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;添加
             </button>
-            <button class="btn btn-primary ctrol"   onclick="edituser()" >
+            <button class="btn btn-primary ctrol"   onclick="edituser()"  id="update">
                 <span class="glyphicon glyphicon-pencil"></span>&nbsp;编辑
             </button>
-            <button class="btn btn-danger ctrol" onclick="deleteUser();" >
+            <button class="btn btn-danger ctrol" onclick="deleteUser();" id="del" >
                 <span class="glyphicon glyphicon-trash"></span>&nbsp;删除
             </button> 
         </div>
@@ -348,7 +378,7 @@
                                         <input id="department_edit" class="form-control"  name="department_edit" style="width:150px;display: inline;" placeholder="请输入电话" type="text"></td>
                                     <td></td>
                                     <td>
-                                                                                <span style="margin-left:10px;">项目&nbsp;</span>
+                                        <span style="margin-left:10px;">项目&nbsp;</span>
                                         <input id="pidedt" class="easyui-combobox" name="pidedt" style="width:150px; height: 34px" 
                                                data-options="editable:true,valueField:'id', textField:'text',url:'formuser.project.getProject.action' " />
 

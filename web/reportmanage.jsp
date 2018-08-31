@@ -5,40 +5,47 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="/WEB-INF/fn.tld" prefix="fn" %>
 <!DOCTYPE html>
 <html xmlns:f="http://java.sun.com/jsf/core">
     <head>
         <%@include  file="js.jspf" %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <!--        <script src="select2-developr/dist/js/select2.js"></script>
-                <link href="select2-develop/dist/css/select2.css" rel="stylesheet" />
-        
-        
-        
-                <link rel="stylesheet" type="text/css" href="gatewayconfig_files/bootstrap.css">
-                <link rel="stylesheet" type="text/css" href="gatewayconfig_files/bootstrap-table.css">
-                <script type="text/javascript" src="gatewayconfig_files/jquery.js"></script>
-                <script type="text/javascript" src="gatewayconfig_files/bootstrap.js"></script>
-                <script type="text/javascript" src="gatewayconfig_files/bootstrap-table.js"></script>
-                <script type="text/javascript" src="gatewayconfig_files/bootstrap-table-zh-CN.js"></script>
-                <link type="text/css" href="gatewayconfig_files/basicInformation.css" rel="stylesheet">
-                 easyui 
-                <link href="gatewayconfig_files/easyui.css" rel="stylesheet" type="text/css" switch="switch-style">
-                <link href="gatewayconfig_files/icon.css" rel="stylesheet" type="text/css">
-                <script src="gatewayconfig_files/jquery_002.js" type="text/javascript"></script>
-                <script src="gatewayconfig_files/easyui-lang-zh_CN.js" type="text/javascript"></script>
-                <script type="text/javascript" src="gatewayconfig_files/selectAjaxFunction.js"></script>
-                <script type="text/javascript" src="gatewayconfig_files/bootstrap-multiselect.js"></script>
-                <link rel="stylesheet" href="gatewayconfig_files/bootstrap-multiselect.css" type="text/css">
-                <link rel="stylesheet" type="text/css" href="gatewayconfig_files/layer.css">
-                <script type="text/javascript" src="gatewayconfig_files/layer.js"></script>-->
+        <style type="text/css">
+            #div2{
+                display: none;
+            }
+            #gravidaMonthTable{
+                border: 1px solid;
+                text-align:center;
+                vertical-align:middle;
+                margin-left: 10%;
+            }
+            #gravidaMonthTable tr th{
+                border: 1px solid #ccc;
+                text-align:center;
+                height: 50px;
+                font-size: 24px;
+            }
+            /*            #gravidaMonthTable tr:nth-of-type(even){ background:#ffcc00;}偶数行 */
+            #gravidaMonthTable tr td{
+                border: 1px solid #ccc;
+                height: 40px;
+            }
+            #sum{
+                font-size: 18px;
+                color: red;
+            }
+            #year{
+                height: 30px;
+                border: 1px solid #01AAED;
+                border-radius:5px;
+            }
+        </style>
         <script type="text/javascript" src="js/genel.js"></script>
         <script>
             var websocket = null;
-
-            $(function () {
-
-            })
             function layerAler(str) {
                 layer.alert(str, {
                     icon: 6,
@@ -146,13 +153,8 @@
                 return m + '/' + d + '/' + y;
             }
             $(function () {
-
                 var curr_time = new Date();
                 $("#dd").datebox("setValue", myformatter(curr_time));
-
-
-
-
                 var val = $("#dd").datebox("getValue");
 
                 $('#gravidaTable').bootstrapTable({
@@ -509,7 +511,6 @@
 
                         }
                         obj.rows = a;
-//                        data = obj;
                         $("#gravidaTable").bootstrapTable("load", obj)
                         var data = $('#gravidaTable').bootstrapTable('getData', true);
                         // 合并单元格
@@ -533,7 +534,7 @@
 
 
 
-            })
+            });
 
             function aaa() {
                 var data = $('#gravidaTable').bootstrapTable('getData', true);
@@ -546,20 +547,456 @@
 //                alert("ddd");
             }
             function search() {
+                $("#div2").hide();
+                $("#div1").show();
                 var val1 = $('#dd').datebox('getValue');
-//                alert(val1);
                 var opt = {
                     url: "test1.report.queryRecord.action",
                     silent: false,
                     query: {day: val1}
                 };
                 $("#gravidaTable").bootstrapTable('refresh', opt);
+            }
+
+            function getMoth() {
+                var year;
+                if($("#year").val()=="0"){
+                    var myDate = new Date();
+                    year = myDate.getFullYear();
+                }else{
+                    year = $("#year").val();
+                }
+                var obj = {};
+                obj.year = year;
+                $.ajax({async: false, url: "login.reportmanage.getMoth.action", type: "GET", datatype: "JSON", data: obj,
+                    success: function (data) {
+                        var MothSum = 0; //年度消耗
+                        $("#gravidaMonthTable").html("");
+                        var th = "<tr><th colspan='2'>" + year + "--年度消耗</th></tr>";
+                        $("#gravidaMonthTable").append(th);
+                        var tabelhear = "<tr><th>月份</th><th>每月总消耗</th></tr>";
+                        $("#gravidaMonthTable").append(tabelhear);
+                        var obj = {};
+                        obj = data;
+                        if (typeof data == "string") {
+                            obj = eval('(' + data + ')');
+                        }
+                        if (obj.M1.length == 0) {
+                            var options = "<tr><td>一月</td><td>0/KW</td></tr>";
+                            $("#gravidaMonthTable").append(options);
+                        } else if (obj.M1.length == 1) {
+                            var power;
+                            var obj2 = {};
+                            obj2 = eval('(' + obj.M1[0].power + ')');
+                            power = obj2;
+                            var powerArr = power.A.split("|");
+                            var val = powerArr[power.len - 1];
+                            var fend = parseFloat(val);
+                            MothSum += fend;
+                            var options = "<tr><td>一月</td><td>" + fend + "/KW</td></tr>";
+                            $("#gravidaMonthTable").append(options);
+                        } else {
+                            var power1;   //存储第一条power
+                            var power2;   //存储最后一条powe
+                            var obj1 = {};
+                            var obj2 = {};
+                            obj1 = eval('(' + obj.M1[0].power + ')');
+                            obj2 = eval('(' + obj.M1[obj.M1.length - 1].power + ')');
+                            power1 = obj1;
+                            power2 = obj2;
+                            var powerArr1 = power1.A.split("|");
+                            var powerArr2 = power2.A.split("|");
+                            var val1 = powerArr1[power.len - 1];
+                            var val2 = powerArr2[power.len - 1];
+                            var val3 = val1 - val2;
+                            MothSum += val3;
+                            var options = "<tr><td>一月</td><td>" + val3 + "/KW</td></tr>";
+                            $("#gravidaMonthTable").append(options);
+
+                        }
+
+                        if (obj.M2.length == 0) {
+                            var options = "<tr><td>二月</td><td>0/KW</td></tr>";
+                            $("#gravidaMonthTable").append(options);
+                        } else if (obj.M2.length == 1) {
+                            var power;
+                            var obj2 = {};
+                            obj2 = eval('(' + obj.M2[0].power + ')');
+                            power = obj2;
+                            var powerArr = power.A.split("|");
+                            var val = powerArr[power.len - 1];
+                            var fend = parseFloat(val);
+                            MothSum += fend;
+                            var options = "<tr><td>二月</td><td>" + fend + "/KW</td></tr>";
+                            $("#gravidaMonthTable").append(options);
+                        } else {
+                            var power1;   //存储第一条power
+                            var power2;   //存储最后一条powe
+                            var obj1 = {};
+                            var obj2 = {};
+                            obj1 = eval('(' + obj.M2[0].power + ')');
+                            obj2 = eval('(' + obj.M2[obj.M2.length - 1].power + ')');
+                            power1 = obj1;
+                            power2 = obj2;
+                            var powerArr1 = power1.A.split("|");
+                            var powerArr2 = power2.A.split("|");
+                            var val1 = powerArr1[power.len - 1];
+                            var val2 = powerArr2[power.len - 1];
+                            var val3 = val1 - val2;
+                            MothSum += val3;
+                            var options = "<tr><td>二月</td><td>" + val3 + "/KW</td></tr>";
+                            $("#gravidaMonthTable").append(options);
+
+                        }
+                        if (obj.M3.length == 0) {
+                            var options = "<tr><td>三月</td><td>0/KW</td></tr>";
+                            $("#gravidaMonthTable").append(options);
+                        } else if (obj.M3.length == 1) {
+                            var power;
+                            var obj2 = {};
+                            obj2 = eval('(' + obj.M3[0].power + ')');
+                            power = obj2;
+                            var powerArr = power.A.split("|");
+                            var val = powerArr[power.len - 1];
+                            var fend = parseFloat(val);
+                            MothSum += fend;
+                            var options = "<tr><td>三月</td><td>" + fend + "/KW</td></tr>";
+                            $("#gravidaMonthTable").append(options);
+                        } else {
+                            var power1;   //存储第一条power
+                            var power2;   //存储最后一条powe
+                            var obj1 = {};
+                            var obj2 = {};
+                            obj1 = eval('(' + obj.M3[0].power + ')');
+                            obj2 = eval('(' + obj.M3[obj.M3.length - 1].power + ')');
+                            power1 = obj1;
+                            power2 = obj2;
+                            var powerArr1 = power1.A.split("|");
+                            var powerArr2 = power2.A.split("|");
+                            var val1 = powerArr1[power.len - 1];
+                            var val2 = powerArr2[power.len - 1];
+                            var val3 = val1 - val2;
+                            MothSum += val3;
+                            var options = "<tr><td>三月</td><td>" + val3 + "/KW</td></tr>";
+                            $("#gravidaMonthTable").append(options);
+
+                        }
+                        if (obj.M4.length == 0) {
+                            var options = "<tr><td>四月</td><td>0/KW</td></tr>";
+                            $("#gravidaMonthTable").append(options);
+                        } else if (obj.M4.length == 1) {
+                            var power;
+                            var obj2 = {};
+                            obj2 = eval('(' + obj.M4[0].power + ')');
+                            power = obj2;
+                            var powerArr = power.A.split("|");
+                            var val = powerArr[power.len - 1];
+                            var fend = parseFloat(val);
+                            MothSum += fend;
+                            var options = "<tr><td>四月</td><td>" + fend + "/KW</td></tr>";
+                            $("#gravidaMonthTable").append(options);
+                        } else {
+                            var power1;   //存储第一条power
+                            var power2;   //存储最后一条powe
+                            var obj1 = {};
+                            var obj2 = {};
+                            obj1 = eval('(' + obj.M4[0].power + ')');
+                            obj2 = eval('(' + obj.M4[obj.M4.length - 1].power + ')');
+                            power1 = obj1;
+                            power2 = obj2;
+                            var powerArr1 = power1.A.split("|");
+                            var powerArr2 = power2.A.split("|");
+                            var val1 = powerArr1[power.len - 1];
+                            var val2 = powerArr2[power.len - 1];
+                            var val3 = val1 - val2;
+                            MothSum += val3;
+                            var options = "<tr><td>四月</td><td>" + val3 + "/KW</td></tr>";
+                            $("#gravidaMonthTable").append(options);
+
+                        }
+
+                        if (obj.M5.length == 0) {
+                            var options = "<tr><td>五月</td><td>0/KW</td></tr>";
+                            $("#gravidaMonthTable").append(options);
+                        } else if (obj.M5.length == 1) {
+                            var power;
+                            var obj2 = {};
+                            obj2 = eval('(' + obj.M5[0].power + ')');
+                            power = obj2;
+                            var powerArr = power.A.split("|");
+                            var val = powerArr[power.len - 1];
+                            var fend = parseFloat(val);
+                            MothSum += fend;
+                            var options = "<tr><td>五月</td><td>" + fend + "/KW</td></tr>";
+                            $("#gravidaMonthTable").append(options);
+                        } else {
+                            var power1;   //存储第一条power
+                            var power2;   //存储最后一条powe
+                            var obj1 = {};
+                            var obj2 = {};
+                            obj1 = eval('(' + obj.M5[0].power + ')');
+                            obj2 = eval('(' + obj.M5[obj.M5.length - 1].power + ')');
+                            power1 = obj1;
+                            power2 = obj2;
+                            var powerArr1 = power1.A.split("|");
+                            var powerArr2 = power2.A.split("|");
+                            var val1 = powerArr1[power.len - 1];
+                            var val2 = powerArr2[power.len - 1];
+                            var val3 = val1 - val2;
+                            MothSum += val3;
+                            var options = "<tr><td>五月</td><td>" + val3 + "/KW</td></tr>";
+                            $("#gravidaMonthTable").append(options);
+
+                        }
+                        if (obj.M6.length == 0) {
+                            var options = "<tr><td>六月</td><td>0/KW</td></tr>";
+                            $("#gravidaMonthTable").append(options);
+                        } else if (obj.M6.length == 1) {
+                            var power;
+                            var obj2 = {};
+                            obj2 = eval('(' + obj.M6[0].power + ')');
+                            power = obj2;
+                            var powerArr = power.A.split("|");
+                            var val = powerArr[power.len - 1];
+                            var fend = parseFloat(val);
+                            MothSum += fend;
+                            var options = "<tr><td>六月</td><td>" + fend + "/KW</td></tr>";
+                            $("#gravidaMonthTable").append(options);
+                        } else {
+                            var power1;   //存储第一条power
+                            var power2;   //存储最后一条powe
+                            var obj1 = {};
+                            var obj2 = {};
+                            obj1 = eval('(' + obj.M6[0].power + ')');
+                            obj2 = eval('(' + obj.M6[obj.M6.length - 1].power + ')');
+                            power1 = obj1;
+                            power2 = obj2;
+                            var powerArr1 = power1.A.split("|");
+                            var powerArr2 = power2.A.split("|");
+                            var val1 = powerArr1[power.len - 1];
+                            var val2 = powerArr2[power.len - 1];
+                            var val3 = val1 - val2;
+                            MothSum += val3;
+                            var options = "<tr><td>六月</td><td>" + val3 + "/KW</td></tr>";
+                            $("#gravidaMonthTable").append(options);
+
+                        }
+
+                        if (obj.M7.length == 0) {
+                            var options = "<tr><td>七月</td><td>0/KW</td></tr>";
+                            $("#gravidaMonthTable").append(options);
+                        } else if (obj.M7.length == 1) {
+                            var power;
+                            var obj2 = {};
+                            obj2 = eval('(' + obj.M7[0].power + ')');
+                            power = obj2;
+                            var powerArr = power.A.split("|");
+                            var val = powerArr[power.len - 1];
+                            var fend = parseFloat(val);
+                            MothSum += fend;
+                            var options = "<tr><td>七月</td><td>" + fend + "/KW</td></tr>";
+                            $("#gravidaMonthTable").append(options);
+                        } else {
+                            var power1;   //存储第一条power
+                            var power2;   //存储最后一条powe
+                            var obj1 = {};
+                            var obj2 = {};
+                            obj1 = eval('(' + obj.M7[0].power + ')');
+                            obj2 = eval('(' + obj.M7[obj.M7.length - 1].power + ')');
+                            power1 = obj1;
+                            power2 = obj2;
+                            var powerArr1 = power1.A.split("|");
+                            var powerArr2 = power2.A.split("|");
+                            var val1 = powerArr1[power.len - 1];
+                            var val2 = powerArr2[power.len - 1];
+                            var val3 = val1 - val2;
+                            MothSum += val3;
+                            var options = "<tr><td>七月</td><td>" + val3 + "/KW</td></tr>";
+                            $("#gravidaMonthTable").append(options);
+                        }
+                        if (obj.M8.length == 0) {
+                            var options = "<tr><td>八月</td><td>0/KW</td></tr>";
+                            $("#gravidaMonthTable").append(options);
+                        } else if (obj.M8.length == 1) {
+                            var power;
+                            var obj2 = {};
+                            obj2 = eval('(' + obj.M8[0].power + ')');
+                            power = obj2;
+                            var powerArr = power.A.split("|");
+                            var val = powerArr[power.len - 1];
+                            var fend = parseFloat(val);
+                            MothSum += fend;
+                            var options = "<tr><td>八月</td><td>" + fend + "/KW</td></tr>";
+                            $("#gravidaMonthTable").append(options);
+                        } else {
+                            var power1;   //存储第一条power
+                            var power2;   //存储最后一条powe
+                            var obj1 = {};
+                            var obj2 = {};
+                            obj1 = eval('(' + obj.M8[0].power + ')');
+                            obj2 = eval('(' + obj.M8[obj.M8.length - 1].power + ')');
+                            power1 = obj1;
+                            power2 = obj2;
+                            var powerArr1 = power1.A.split("|");
+                            var powerArr2 = power2.A.split("|");
+                            var val1 = powerArr1[power.len - 1];
+                            var val2 = powerArr2[power.len - 1];
+                            var val3 = val1 - val2;
+                            MothSum += val3;
+                            var options = "<tr><td>八月</td><td>" + val3 + "/KW</td></tr>";
+                            $("#gravidaMonthTable").append(options);
+
+                        }
+
+                        if (obj.M9.length == 0) {
+                            var options = "<tr><td>九月</td><td>0/KW</td></tr>";
+                            $("#gravidaMonthTable").append(options);
+                        } else if (obj.M9.length == 1) {
+                            var power;
+                            var obj2 = {};
+                            obj2 = eval('(' + obj.M9[0].power + ')');
+                            power = obj2;
+                            var powerArr = power.A.split("|");
+                            var val = powerArr[power.len - 1];
+                            var fend = parseFloat(val);
+                            MothSum += fend;
+                            var options = "<tr><td>九月</td><td>" + fend + "/KW</td></tr>";
+                            $("#gravidaMonthTable").append(options);
+                        } else {
+                            var power1;   //存储第一条power
+                            var power2;   //存储最后一条powe
+                            var obj1 = {};
+                            var obj2 = {};
+                            obj1 = eval('(' + obj.M9[0].power + ')');
+                            obj2 = eval('(' + obj.M9[obj.M9.length - 1].power + ')');
+                            power1 = obj1;
+                            power2 = obj2;
+                            var powerArr1 = power1.A.split("|");
+                            var powerArr2 = power2.A.split("|");
+                            var val1 = powerArr1[power.len - 1];
+                            var val2 = powerArr2[power.len - 1];
+                            var val3 = val1 - val2;
+                            MothSum += val3;
+                            var options = "<tr><td>九月</td><td>" + val3 + "/KW</td></tr>";
+                            $("#gravidaMonthTable").append(options);
+
+                        }
+
+                        if (obj.M10.length == 0) {
+                            var options = "<tr><td>十月</td><td>0/KW</td></tr>";
+                            $("#gravidaMonthTable").append(options);
+                        } else if (obj.M10.length == 1) {
+                            var power;
+                            var obj2 = {};
+                            obj2 = eval('(' + obj.M10[0].power + ')');
+                            power = obj2;
+                            var powerArr = power.A.split("|");
+                            var val = powerArr[power.len - 1];
+                            var fend = parseFloat(val);
+                            MothSum += fend;
+                            var options = "<tr><td>十月</td><td>" + fend + "/KW</td></tr>";
+                            $("#gravidaMonthTable").append(options);
+                        } else {
+                            var power1;   //存储第一条power
+                            var power2;   //存储最后一条powe
+                            var obj1 = {};
+                            var obj2 = {};
+                            obj1 = eval('(' + obj.M10[0].power + ')');
+                            obj2 = eval('(' + obj.M10[obj.M10.length - 1].power + ')');
+                            power1 = obj1;
+                            power2 = obj2;
+                            var powerArr1 = power1.A.split("|");
+                            var powerArr2 = power2.A.split("|");
+                            var val1 = powerArr1[power.len - 1];
+                            var val2 = powerArr2[power.len - 1];
+                            var val3 = val1 - val2;
+                            MothSum += val3;
+                            var options = "<tr><td>十月</td><td>" + val3 + "/KW</td></tr>";
+                            $("#gravidaMonthTable").append(options);
+
+                        }
+
+                        if (obj.M11.length == 0) {
+                            var options = "<tr><td>十一月</td><td>0/KW</td></tr>";
+                            $("#gravidaMonthTable").append(options);
+                        } else if (obj.M11.length == 1) {
+                            var power;
+                            var obj2 = {};
+                            obj2 = eval('(' + obj.M11[0].power + ')');
+                            power = obj2;
+                            var powerArr = power.A.split("|");
+                            var val = powerArr[power.len - 1];
+                            var fend = parseFloat(val);
+                            MothSum += fend;
+                            var options = "<tr><td>十一月</td><td>" + fend + "/KW</td></tr>";
+                            $("#gravidaMonthTable").append(options);
+                        } else {
+                            var power1;   //存储第一条power
+                            var power2;   //存储最后一条powe
+                            var obj1 = {};
+                            var obj2 = {};
+                            obj1 = eval('(' + obj.M11[0].power + ')');
+                            obj2 = eval('(' + obj.M11[obj.M11.length - 1].power + ')');
+                            power1 = obj1;
+                            power2 = obj2;
+                            var powerArr1 = power1.A.split("|");
+                            var powerArr2 = power2.A.split("|");
+                            var val1 = powerArr1[power.len - 1];
+                            var val2 = powerArr2[power.len - 1];
+                            var val3 = val1 - val2;
+                            MothSum += val3;
+                            var options = "<tr><td>十一月</td><td>" + val3 + "/KW</td></tr>";
+                            $("#gravidaMonthTable").append(options);
+
+                        }
+
+                        if (obj.M12.length == 0) {
+                            var options = "<tr><td>十二月</td><td>0/KW</td></tr>";
+                            $("#gravidaMonthTable").append(options);
+                        } else if (obj.M12.length == 1) {
+                            var power;
+                            var obj2 = {};
+                            obj2 = eval('(' + obj.M12[0].power + ')');
+                            power = obj2;
+                            var powerArr = power.A.split("|");
+                            var val = powerArr[power.len - 1];
+                            var fend = parseFloat(val);
+                            MothSum += fend;
+                            var options = "<tr><td>十二月</td><td>" + fend + "/KW</td></tr>";
+                            $("#gravidaMonthTable").append(options);
+                        } else {
+                            var power1;   //存储第一条power
+                            var power2;   //存储最后一条powe
+                            var obj1 = {};
+                            var obj2 = {};
+                            obj1 = eval('(' + obj.M12[0].power + ')');
+                            obj2 = eval('(' + obj.M12[obj.M12.length - 1].power + ')');
+                            power1 = obj1;
+                            power2 = obj2;
+                            var powerArr1 = power1.A.split("|");
+                            var powerArr2 = power2.A.split("|");
+                            var val1 = powerArr1[power.len - 1];
+                            var val2 = powerArr2[power.len - 1];
+                            var val3 = val1 - val2;
+                            MothSum += val3;
+                            var options = "<tr><td>十二月</td><td>" + val3 + "/KW</td></tr>";
+                            $("#gravidaMonthTable").append(options);
+
+                        }
+
+                        var yearSum = "<tr id='sum'><td>年度总消耗</td><td>" + MothSum + "/KW</td></tr>";
+                        $("#gravidaMonthTable").append(yearSum);
 
 
 
-                //              alert(val1);
-//                $("#gravidaTable").bootstrapTable('refresh');
-//               alert(date);
+                    },
+                    error: function () {
+                        alert("提交失败！");
+                    }
+                });
+
+                $("#div1").hide();
+                $("#div2").show();
             }
 
         </script>
@@ -604,24 +1041,31 @@
             <span style="margin-left:20px;">
                 <button type="button" class="btn btn-sm btn-success" onclick="search()" >查找</button>
             </span>
-
-
+            <span style="margin-left:40px;">&nbsp;
+                <label class="label label-lg label-success ">年&nbsp;&nbsp;份</label>
+            </span>
+            <span >
+                <select id="year">
+                    <option value="0">请选择年份</option>
+                    <option value="2017">2017</option>
+                    <option value="2018">2018</option>
+                    <option value="2019">2019</option>
+                    <option value="2020">2020</option>
+                </select>
+            </span>
+            <span style="margin-left:0px;">
+                <button type="button" class="btn btn-sm btn-success" onclick="getMoth()" >按年份显示数据</button>
+            </span>
         </div>
 
-        <div style="width:100%;">
+        <div style="width:100%;" id="div1">
 
             <table id="gravidaTable" style="width:100%;" class="text-nowrap table table-hover table-striped">
             </table>
         </div>
-
-
-
-
-        <!-- 添加 -->
-
-        <!-- 修改 -->
-
-        <!--修改组号-->
-
+        <div id="div2">          
+            <table id="gravidaMonthTable" style="width:80%;"  class="text-nowrap table table-hover table-striped">
+            </table>
+        </div>
     </body>
 </html>

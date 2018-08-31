@@ -22,8 +22,6 @@
                 <xflt id="CONDITION" nrp="" tpl="@name">
                     <xfltpara id="name" nrp="1=1" para="name" sql="name = ':name'">
                     </xfltpara>
-                    <!--                    <xfltpara id="password" nrp="1=1" para="password" sql="password = ':password'">
-                    </xfltpara>            -->
                 </xflt>      
             </xsql>       
 
@@ -90,6 +88,106 @@
         </xhandle>
     </xform>
     
+    
+    
+     <xform desc="详细数据" id="reportmanage">
+        <xhand id="getMoth"   rtnype="JSON">
+            <xsql id="m1" list="true" page="true" tpe="SQL" tpl="select  power,month(day) as month, year(day) from t_records where @CONDITION and month(day)=1 order by day desc" var="M1">
+                <xflt id="CONDITION" nrp="" tpl="@year(day)">
+                    <xfltpara id="year(day)" nrp="1=1" para="year" sql="year(day) = ':year'">
+                    </xfltpara>
+                </xflt>      
+            </xsql> 
+            <xsql id="m2" list="true" page="true" tpe="SQL" tpl="select  power,month(day) as month, year(day) from t_records where @CONDITION and month(day)=2 order by day desc" var="M2">
+                <xflt id="CONDITION" nrp="" tpl="@year(day)">
+                    <xfltpara id="year(day)" nrp="1=1" para="year" sql="year(day) = ':year'">
+                    </xfltpara>
+                </xflt>      
+            </xsql>           
+            
+            <xsql id="m3" list="true" page="true" tpe="SQL" tpl="select  power,month(day) as month, year(day) from t_records where @CONDITION and month(day)=3 order by day desc" var="M3">
+                <xflt id="CONDITION" nrp="" tpl="@year(day)">
+                    <xfltpara id="year(day)" nrp="1=1" para="year" sql="year(day) = ':year'">
+                    </xfltpara>
+                </xflt>      
+            </xsql>
+
+            <xsql id="m4" list="true" page="true" tpe="SQL" tpl="select  power,month(day) as month, year(day) from t_records where @CONDITION and month(day)=4 order by day desc" var="M4">
+                <xflt id="CONDITION" nrp="" tpl="@year(day)">
+                    <xfltpara id="year(day)" nrp="1=1" para="year" sql="year(day) = ':year'">
+                    </xfltpara>
+                </xflt>      
+            </xsql> 
+
+           <xsql id="m5" list="true" page="true" tpe="SQL" tpl="select  power,month(day) as month, year(day) from t_records where @CONDITION and month(day)=5 order by day desc" var="M5">
+                <xflt id="CONDITION" nrp="" tpl="@year(day)">
+                    <xfltpara id="year(day)" nrp="1=1" para="year" sql="year(day) = ':year'">
+                    </xfltpara>
+                </xflt>      
+            </xsql>
+           
+            <xsql id="m6" list="true" page="true" tpe="SQL" tpl="select  power,month(day) as month, year(day) from t_records where @CONDITION and month(day)=6 order by day desc" var="M6">
+                <xflt id="CONDITION" nrp="" tpl="@year(day)">
+                    <xfltpara id="year(day)" nrp="1=1" para="year" sql="year(day) = ':year'">
+                    </xfltpara>
+                </xflt>      
+            </xsql>        
+            
+            <xsql id="m7" list="true" page="true" tpe="SQL" tpl="select  power,month(day) as month, year(day) from t_records where @CONDITION and month(day)=7 order by day desc" var="M7">
+                <xflt id="CONDITION" nrp="" tpl="@year(day)">
+                    <xfltpara id="year(day)" nrp="1=1" para="year" sql="year(day) = ':year'">
+                    </xfltpara>
+                </xflt>      
+            </xsql>
+            
+             <xsql id="m8" list="true" page="true" tpe="SQL" tpl="select  power,month(day) as month, year(day) from t_records where @CONDITION and month(day)=8 order by day desc" var="M8">
+                <xflt id="CONDITION" nrp="" tpl="@year(day)">
+                    <xfltpara id="year(day)" nrp="1=1" para="year" sql="year(day) = ':year'">
+                    </xfltpara>
+                </xflt>      
+            </xsql>
+            
+            <xsql id="m9" list="true" page="true" tpe="SQL" tpl="select  power,month(day) as month, year(day) from t_records where @CONDITION and month(day)=9 order by day desc" var="M9">
+                <xflt id="CONDITION" nrp="" tpl="@year(day)">
+                    <xfltpara id="year(day)" nrp="1=1" para="year" sql="year(day) = ':year'">
+                    </xfltpara>
+                </xflt>      
+            </xsql>
+            
+            <xsql id="m10" list="true" page="true" tpe="SQL" tpl="select  power,month(day) as month, year(day) from t_records where @CONDITION and month(day)=10 order by day desc" var="M10">
+                <xflt id="CONDITION" nrp="" tpl="@year(day)">
+                    <xfltpara id="year(day)" nrp="1=1" para="year" sql="year(day) = ':year'">
+                    </xfltpara>
+                </xflt>      
+            </xsql>
+            
+            <xsql id="m11" list="true" page="true" tpe="SQL" tpl="select  power,month(day) as month, year(day) from t_records where @CONDITION and month(day)=11 order by day desc" var="M11">
+                <xflt id="CONDITION" nrp="" tpl="@year(day)">
+                    <xfltpara id="year(day)" nrp="1=1" para="year" sql="year(day) = ':year'">
+                    </xfltpara>
+                </xflt>      
+            </xsql>
+            
+            <xsql id="m12" list="true" page="true" tpe="SQL" tpl="select  power,month(day) as month, year(day) from t_records where @CONDITION and month(day)=12 order by day desc" var="M12">
+                <xflt id="CONDITION" nrp="" tpl="@year(day)">
+                    <xfltpara id="year(day)" nrp="1=1" para="year" sql="year(day) = ':year'">
+                    </xfltpara>
+                </xflt>      
+            </xsql>
+
+        </xhand>
+    </xform>
+    
+    <xform desc="用户管理" id="usermanage">
+        <xhand des="查看拥有操作权限" id="power"  rtnype="JSON">    
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_menu where @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@m_parent">
+                    <xfltpara id="m_parent" nrp="1=1" para="m_parent" sql="m_parent = ':m_parent'">
+                    </xfltpara>
+                </xflt>      
+            </xsql>            
+        </xhand>
+    </xform>
     
     
     <xform desc="测试" id="table">

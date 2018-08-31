@@ -10,9 +10,6 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>登录系统平台</title>
-<!--        <link rel="shortcut icon" href="http://slighting.shuncom.com.cn/CloudPlatform/imgs/favicon/favicon.png">-->
-<!--        <link rel="stylesheet" type="text/css" href="./aaa_files/animate.css">-->
-<!--        <link rel="stylesheet" type="text/css" href="./aaa_files/layui.css">-->
         <style>
             *{margin:0;padding:0;}
             html,body{
@@ -97,6 +94,9 @@
                     height:610px;  
                 }  
             }		
+            #rememberPW{
+                color:  #FFB800;
+            }
             input{
                 outline-style:none;
             }
@@ -124,6 +124,7 @@
                 -moz-user-select:none;
                 -o-user-select:none;
                 user-select:none;
+                color:  #FFB800;
             }
             .logo{
                 padding-top: 55px;
@@ -139,8 +140,8 @@
                 width: 443px;
                 height: 400px;
                 position:absolute;
-                right:8%;   
-                top:30%;
+                right:37%;   
+                top:33%;
                 /* transform: translate(-50%,-50%); */  
                 border-style:none;
                 border:1px solid #022D7D;
@@ -152,7 +153,7 @@
                 -moz-border-radius:15px; 
                 -ms-border-radius:15px;  
                 -o-border-radius:15px;
-                background:rgba(2,8,25,0.49);
+/*                background:rgba(2,8,25,0.49);*/
                 display:none;  
             }
 
@@ -175,22 +176,23 @@
                 line-height: 60px;
                 text-align: center;
                 font-size: 30px;
-                color: #BFD4F8;
+                color: #FFB800;
             }
             .inputText{
                 width: 315px;
                 height: 50px;
                 border:1px solid #123374;
                 -webkit-border-radius:15px;
-                -moz-border-radius:15px; 
+               -moz-border-radius:15px; 
                 -ms-border-radius:15px;  
                 -o-border-radius:15px;
                 border-radius:5px;
                 padding-left:5px;
-                -webkit-box-shadow: 0 0 0px 1000px #04193A inset;
-                -moz-box-shadow: 0 0 0px 1000px #04193A inset;
-                box-shadow: 0 0 0px 1000px #04193A inset;
-                color:#ccc;
+               background-color:whitesmoke;
+/*                -webkit-box-shadow: 0 0 0px 1000px #04193A inset;
+                -moz-box-shadow: 0 0 0px 1000px #04193A inset;*/
+/*                box-shadow: 0 0 0px 1000px #04193A inset;*/
+                color: #FFB800;
             }
             label.name{
                 display:none;
@@ -202,6 +204,7 @@
                 font-size: 14px;
                 line-height: 30px;
                 margin-left: 18%;
+                
             }
             .logion{
                 width:315px;height:50px;
@@ -216,7 +219,7 @@
                 background: -moz-linear-gradient(top,#0F3284,#031946);  
                 background: -ms-linear-gradient(top,#0F3284 0%,#031946 100%);  
                 background: linear-gradient(top,#0F3284,#031946);  
-                color:white;
+                color: #FFB800;
                 text-align:center;
                 line-height:20px;
                 border:1px solid #123374;
@@ -248,7 +251,7 @@
                 }
             }
             input:hover{
-                background-color:#04193A;
+                background-color:#BFD4F8;
                 border-color:#123374;
             }
             .icon{
@@ -325,7 +328,7 @@
                     -moz-border-radius:15px; 
                     -ms-border-radius:15px;  
                     -o-border-radius:15px;
-                    background:rgba(2,8,25,0.49);
+/*                    background:rgba(2,8,25,0.49);*/
                     margin: 50px auto 0 auto; 
                     display:none;  
                 }
@@ -399,7 +402,7 @@
                     -moz-border-radius:15px; 
                     -ms-border-radius:15px;  
                     -o-border-radius:15px;
-                    background:rgba(2,8,25,0.49);
+                   background:rgba(2,8,25,0.49);                  
                     margin: 50px auto 0 auto;
                     display:none;  
                 }
@@ -600,11 +603,11 @@
             <canvas id="demo-canvas" width="1398" height="914"></canvas>
         </div>
 
-        <img src="./img/login-bg.jpg" style="position:absolute;top:0;left:0;z-index:-1;width:100%;height:100%;">
-        <div class="logo animated bounceInDown" style="display: block;">
-            <!-- <img src="imgs/login/sz.png"/> -->
+        <img src="./img/jkl.png" style="position:absolute;top:0;left:0;z-index:-1;width:100%;height:100%;">
+<!--        <div class="logo animated bounceInDown" style="display: block;">
+             <img src="imgs/login/sz.png"/> 
             <img src="./img/sz-tit.png" class="phoneTit">
-        </div> 
+        </div> -->
 
         <div class="changeLanguage">
             <div language="zh_CN" class="Zh" id="chinese">中文</div>
@@ -612,10 +615,10 @@
             <div language="en_US" class="En" id="english">English</div>
         </div>
 
-
+<!--
         <div class="logo-animate animated bounceIn" style="display: block;">
             <img src="./img/sz-animate.png">
-        </div>
+        </div>-->
 
         <div class="loginBox animated bounceInUp" style="display: block;">
             <div class="h3" id="top">账号登陆</div>
