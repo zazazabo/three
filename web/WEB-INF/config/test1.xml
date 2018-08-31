@@ -194,6 +194,7 @@
             <xsql id="a1" para="l_worktype,l_groupe,l_name,l_factorycode,l_comaddr" tpe="DDL" tpl="insert into t_lamp(l_worktype,l_groupe,l_name,l_factorycode,l_comaddr,l_deplayment) values(:l_worktype,:l_groupe,':l_name',':l_factorycode',':l_comaddr',0) " var="rs">
             </xsql>
         </xhandle>
+        
         <xhandle desc="查询灯具表" id="getlamp1" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT tl.id as uid, * FROM  t_lamp tl,t_baseinfo tb WHERE tl.l_comaddr = tb.comaddr AND  @CONDITION  " var="bootstrap">
                 <xflt id="CONDITION" nrp="" tpl="@l_comaddr AND @l_factorycode AND @l_groupe AND @l_deplayment">
@@ -208,6 +209,7 @@
                 </xflt>
             </xsql>
         </xhandle>
+        
         <xhandle desc="查询灯具表" id="getlamp" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT * FROM  t_lamp  WHERE @CONDITION  " var="bootstrap">
                 <xflt id="CONDITION" nrp="" tpl="@l_comaddr AND @l_factorycode">
@@ -218,6 +220,20 @@
                 </xflt>
             </xsql>
         </xhandle>
+        
+        
+        <xhandle desc="" id="getlampcomaddr" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT   tl.l_comaddr as id,tl.l_comaddr as text FROM t_lamp tl where @CONDITION  " var="list">
+                <xflt id="CONDITION" nrp="" tpl="@l_comaddr ">
+                    <xfltpara id="l_comaddr" nrp="1=1" para="l_comaddr" sql="l_comaddr = ':l_comaddr' ">
+                    </xfltpara>
+                </xflt>
+            </xsql>
+        </xhandle> 
+        
+        
+        
+        
         <xhandle desc="" id="comaddr" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT DISTINCT  tl.l_comaddr as id,tl.l_comaddr as text,tl.l_comaddr as comaddr FROM t_lamp tl" var="rs">
             </xsql>
@@ -273,6 +289,8 @@
             <xsql id="a1" tpe="SQL" tpl="SELECT DISTINCT tl.l_comaddr FROM t_loop tl " var="rs">
             </xsql>
         </xhandle>
+        
+        
         <xhandle desc="删除回路" id="deleteLoop" rtn="rs" rtnype="JSON">
             <xsql id="a1" tpe="DDL" tpl="delete from t_loop where @CONDITION " var="rs">
                 <xflt id="CONDITION" tpl="@ID ">
@@ -303,6 +321,23 @@
                 </xflt>
             </xsql>
         </xhandle>
+        
+        
+        <xhandle desc="" id="getlampcomaddr" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT   tl.l_comaddr as id,tl.l_comaddr as text FROM t_loop tl where @CONDITION  " var="list">
+                <xflt id="CONDITION" nrp="" tpl="@l_comaddr ">
+                    <xfltpara id="l_comaddr" nrp="1=1" para="l_comaddr" sql="l_comaddr = ':l_comaddr' ">
+                    </xfltpara>
+                </xflt>
+            </xsql>
+        </xhandle> 
+        
+        
+        
+        
+        
+        
+        
         <xhandle desc="修改回路方案" id="modifyplan" rtnype="JSON">
             <xsql id="a1" para="l_plan" tpe="DDL" tpl="update t_loop set l_plan=':l_plan' where @CONDITION " var="rs">
                 <xflt id="CONDITION" nrp="" tpl="@id_ ">
