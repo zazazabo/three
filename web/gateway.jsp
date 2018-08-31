@@ -22,32 +22,55 @@
         var websocket = null;
         var vvvv = 0;
         var flag = null;
+
+
+        function getMessage(obj) {
+            console.log("getMessage");
+            console.log(obj);
+            if (obj.hasOwnProperty("msg")) {
+                if (obj.msg = "getStatus" && obj.data == true) {
+                    var trarr = $("#gravidaTable").find("tr");  //所有tr数组
+                    var child = $(trarr[obj.row + 1]).children('td:eq(7)');
+                    console.log(child);
+                    if (child.length == 1) {
+                        var jqimg = child.children();
+                        if (jqimg.prop("tagName") == "IMG") {
+                            jqimg.attr("src", "img/online1.png");
+                        }
+                    }
+                }
+            }
+        }
+
+
+
         function dealsend() {
 
-            if (websocket != null && websocket.readyState == 1) {
-                var allTableData = $("#gravidaTable").bootstrapTable('getData'); //获取表格的所有内容行
-                if (allTableData.length > vvvv) {
-                    var obj = allTableData[vvvv];
-                    var addrArea = Str2Bytes(obj.comaddr);
-                    var straddr = sprintf("%02d", addrArea[1]) + sprintf("%02d", addrArea[0]) + sprintf("%02d", addrArea[3]) + sprintf("%02d", addrArea[2]);
-                    var user = new Object();
-                    user.msg = "getStatus";
-                    user.res = 1;
-                    user.row = vvvv;
-                    user.addr = straddr; //"02170101";
-                    user.data = false;
-                    console.log(user);
-                    var datajson = JSON.stringify(user);
-                    websocket.send(datajson);
-                    vvvv += 1;
-                } else {
-                    clearInterval(flag);
-                    vvvv = 0;
-                }
-
+//            if (websocket != null && websocket.readyState == 1) {
+            var allTableData = $("#gravidaTable").bootstrapTable('getData'); //获取表格的所有内容行
+            if (allTableData.length > vvvv) {
+                var obj = allTableData[vvvv];
+                var addrArea = Str2Bytes(obj.comaddr);
+                var straddr = sprintf("%02d", addrArea[1]) + sprintf("%02d", addrArea[0]) + sprintf("%02d", addrArea[3]) + sprintf("%02d", addrArea[2]);
+                var user = new Object();
+                var ele = {};
+                user.msg = "getStatus";
+                user.res = 1;
+                user.row = vvvv;
+                user.parama = ele;
+                user.page = 2;
+                user.function = "getMessage";
+                user.addr = straddr; //"02170101";
+                user.data = false;
+                parent.parent.sendData(user);
+                //  console.log(user);
+                // var datajson = JSON.stringify(user);
+                // websocket.send(datajson);
+                vvvv += 1;
+            } else {
+                clearInterval(flag);
+                vvvv = 0;
             }
-
-
         }
 
         $(function () {
@@ -66,7 +89,7 @@
                         width: 25,
                         align: 'center',
                         valign: 'middle'
-                    },{
+                    }, {
                         field: 'pid',
                         title: '所属项目',
                         width: 25,
@@ -78,7 +101,7 @@
                         width: 25,
                         align: 'center',
                         valign: 'middle'
-                    },  {
+                    }, {
                         field: 'name',
                         title: '名称',
                         width: 25,
@@ -127,10 +150,10 @@
                 pageList: [5, 10, 15, 20, 25],
                 onLoadSuccess: function () {  //加载成功时执行  表格加载完成时 获取集中器在线状态
                     console.info("加载成功");
-                    console.log(websocket.readyState);
-                    if (websocket != null && websocket.readyState == 1) {
-
-                    }
+//                    console.log(websocket.readyState);
+//                    if (websocket != null && websocket.readyState == 1) {
+//
+//                    }
                 },
                 url: 'test1.f5.h1.action',
                 //服务器url
@@ -313,82 +336,64 @@
 
         })
 
-
-        $(function () {
-
-            if ('WebSocket' in window) {
-                websocket = new WebSocket("ws://zhizhichun.eicp.net:18414/");
-            } else {
-                alert('当前浏览器不支持websocket')
-            }
-//                // 连接成功建立的回调方法
-            websocket.onopen = function (e) {
-
-//                var allTableData = $("#gravidaTable").bootstrapTable('getData'); //获取表格的所有内容行
-//                console.log(allTableData.length);
-//                for (i = 0; i < allTableData.length; i++)
-//                {
-//                    var obj = allTableData[i];
-//                    var addrArea = Str2Bytes(obj.comaddr);
-//                    var straddr = sprintf("%02d", addrArea[1]) + sprintf("%02d", addrArea[0]) + sprintf("%02d", addrArea[3]) + sprintf("%02d", addrArea[2]);
-//                    var user = new Object();
-//                    user.msg = "getStatus";
-//                    user.res = 1;
-//                    user.row = i;
-//                    user.addr = straddr; //"02170101";
-//                    user.data = false;
-//                    var datajson = JSON.stringify(user);
-//                    websocket.send(datajson);
-//                    console.log(datajson);
+//
+//        $(function () {
+//
+//            if ('WebSocket' in window) {
+//                websocket = new WebSocket("ws://zhizhichun.eicp.net:18414/");
+//            } else {
+//                alert('当前浏览器不支持websocket')
+//            }
+////                // 连接成功建立的回调方法
+//            websocket.onopen = function (e) {
+//            }
+//
+//            //接收到消息的回调方法
+//            websocket.onmessage = function (e) {
+//
+//                var ArrData = JSON.parse(e.data);
+//                console.log(ArrData);
+//                if (ArrData.hasOwnProperty("msg")) {
+//                    if (ArrData.msg = "getStatus" && ArrData.data == true) {
+//                        var trarr = $("#gravidaTable").find("tr");  //所有tr数组
+//                        var child = $(trarr[ArrData.row + 1]).children('td:eq(7)');
+//                        console.log(child);
+//                        if (child.length == 1) {
+//                            var jqimg = child.children();
+//                            if (jqimg.prop("tagName") == "IMG") {
+//                                jqimg.attr("src", "img/online1.png");
+//                            }
+//                        }
+//                    }
 //                }
-            }
-
-            //接收到消息的回调方法
-            websocket.onmessage = function (e) {
-
-                var ArrData = JSON.parse(e.data);
-                console.log(ArrData);
-                if (ArrData.hasOwnProperty("msg")) {
-                    if (ArrData.msg = "getStatus" && ArrData.data == true) {
-                        var trarr = $("#gravidaTable").find("tr");  //所有tr数组
-                        var child = $(trarr[ArrData.row + 1]).children('td:eq(7)');
-                        console.log(child);
-                        if (child.length == 1) {
-                            var jqimg = child.children();
-                            if (jqimg.prop("tagName") == "IMG") {
-                                jqimg.attr("src", "img/online1.png");
-                            }
-                        }
-                    }
-                }
-//                var obj = ArrData[0];
-//                if (obj.hasOwnProperty("msg")) {
-////                    alert(obj.msg);
-//                }
-
-
-            }
-
-            //连接关闭的回调方法
-            websocket.onclose = function () {
-                console.log("websocket close");
-                websocket.close();
-            }
-
-
-            //连接发生错误的回调方法
-            websocket.onerror = function () {
-                console.log("Webscoket连接发生错误");
-            }
-
-            //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
-            window.onbeforeunload = function () {
-                websocket.close();
-            }
-
-        })
-
-
+////                var obj = ArrData[0];
+////                if (obj.hasOwnProperty("msg")) {
+//////                    alert(obj.msg);
+////                }
+//
+//
+//            }
+//
+//            //连接关闭的回调方法
+//            websocket.onclose = function () {
+//                console.log("websocket close");
+//                websocket.close();
+//            }
+//
+//
+//            //连接发生错误的回调方法
+//            websocket.onerror = function () {
+//                console.log("Webscoket连接发生错误");
+//            }
+//
+//            //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+//            window.onbeforeunload = function () {
+//                websocket.close();
+//            }
+//
+//        })
+//
+//
 
 
 
@@ -553,9 +558,9 @@
                                         <input id="pid" class="easyui-combobox" name="pid" style="width:150px; height: 34px" 
                                                data-options="onLoadSuccess:function(data){
                                                if(Array.isArray(data)&&data.length>0){
-                                                    $(this).combobox('select', data[0].id)
+                                               $(this).combobox('select', data[0].id)
                                                }else{
-                                                         $(this).combobox('select',);
+                                               $(this).combobox('select',);
                                                }
                                                console.log(data);
                                                },editable:false,valueField:'id', textField:'text',url:'formuser.project.getProject.action?code=P00001' " />
@@ -593,7 +598,8 @@
                                     <td></td>
                                     <td>
                                         <span style="margin-left:10px;">网关地址&nbsp;</span>
-                                        <input id="comaddr" class="form-control" name="comaddr" style="width:150px;display: inline;" placeholder="请输入网关地址" type="text"></td>
+                                        <input id="comaddr" class="form-control" name="comaddr" style="width:150px;display: inline;" placeholder="请输入网关地址" type="text">
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>

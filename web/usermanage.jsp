@@ -105,6 +105,15 @@
                 });
             }
 
+
+            function send(){
+                var obj={};
+                obj.name="aa";
+                obj.age=33;
+                alert("ddddd");
+               // parent.parent.sendData(obj);
+//                alert("dd");
+            }
             function  checkUserAdd() {
                 var obj = $("#Form_User").serializeObject();
                 if (obj.name == "") {
@@ -219,6 +228,11 @@
             <button class="btn btn-danger ctrol" onclick="deleteUser();" >
                 <span class="glyphicon glyphicon-trash"></span>&nbsp;删除
             </button> 
+            
+                 <button class="btn btn-danger ctrol" onclick="send();" >
+                <span class="glyphicon glyphicon-trash"></span>&nbsp;test
+            </button>        
+            
         </div>
         <div class="bootstrap-table">
             <div class="fixed-table-container" style="height: 350px; padding-bottom: 0px;">

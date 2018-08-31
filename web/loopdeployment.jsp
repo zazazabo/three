@@ -10,33 +10,16 @@
     <head>
         <%@include  file="js.jspf" %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <!--        <link rel="stylesheet" type="text/css" href="gatewayconfig_files/bootstrap.css">
-                <link rel="stylesheet" type="text/css" href="gatewayconfig_files/bootstrap-table.css">
-                <script type="text/javascript" src="gatewayconfig_files/jquery.js"></script>
-                <script type="text/javascript" src="gatewayconfig_files/bootstrap.js"></script>
-                <script type="text/javascript" src="gatewayconfig_files/bootstrap-table.js"></script>
-                <script type="text/javascript" src="gatewayconfig_files/bootstrap-table-zh-CN.js"></script>
-                <link type="text/css" href="gatewayconfig_files/basicInformation.css" rel="stylesheet">
-                 easyui 
-                <link href="gatewayconfig_files/easyui.css" rel="stylesheet" type="text/css" switch="switch-style">
-                <link href="gatewayconfig_files/icon.css" rel="stylesheet" type="text/css">
-                <script src="gatewayconfig_files/jquery_002.js" type="text/javascript"></script>
-                <script src="gatewayconfig_files/easyui-lang-zh_CN.js" type="text/javascript"></script>
-                <script type="text/javascript" src="gatewayconfig_files/selectAjaxFunction.js"></script>
-                <script type="text/javascript" src="gatewayconfig_files/bootstrap-multiselect.js"></script>
-                <link rel="stylesheet" href="gatewayconfig_files/bootstrap-multiselect.css" type="text/css">
-                <link rel="stylesheet" type="text/css" href="gatewayconfig_files/layer.css">
-                <script type="text/javascript" src="gatewayconfig_files/layer.js"></script>-->
         <script type="text/javascript" src="js/genel.js"></script>
         <script>
 
 
             function dealsend(data, type) {
-                var selects = $('#lampTable').bootstrapTable('getSelections');
+                var selects = $('#gravidaTable').bootstrapTable('getSelections');
                 var comaddr1 = $("#l_comaddr").combobox('getValue');
                 var arr = new Array();
                 for (var i = 0; i < selects.length; i++) {
-                    arr.push(selects[i].uid);
+                    arr.push(selects[i].id);
                 }
                 var user = new Object();
                 user.res = 1;
@@ -60,123 +43,23 @@
                     layerAler("请勾选表格数据");
                     return;
                 }
-                if (selects[0].l_deplayment == 1) {
-                    layerAler("已部署");
-                    return;
-                }
+//                if (selects[0].l_deplayment == 1) {
+//                    layerAler("已部署");
+//                    return;
+//                }
 
 
-                var vv =[];
-                vv.push(1);
-                var setcode = ele.l_code;
-                console.log(setcode);
-                var dd = get2byte(setcode);
-                var set1 = Str2BytesH(dd);
-                vv.push(set1[1]);
-                vv.push(set1[0]); //装置序号  2字节
-                vv.push(set1[1]);
-                vv.push(set1[0]); //测量点号  2字节 
-
-                vv.push(parseInt(setcode, 16)); //通信地址
-                var iworktype = parseInt(ele.l_worktype);
-                vv.push(iworktype); //工作方式
-                var igroupe = parseInt(ele.l_groupe); //组号
-                vv.push(igroupe); //组号                       
-                var num = randnum(0, 9) + 0x70; //随机帧序列号
-                var sss = buicode(comaddr1, 0x04, 0xA4, num, 0, 320, vv); //0320
-                dealsend(sss,1);
-                
-//                var user = new Object();
-//                user.msg = "setParam";
-//                user.res = 1;
-//                user.afn = 320;
-//                user.status = "";
-//                user.function = "setLoop";
-//                user.parama = ele;
-//                user.addr = getComAddr(comaddr1); //"02170101";
-//                user.data = sss;
-//                $datajson = JSON.stringify(user);
-//                console.log($datajson);
-//                websocket.send($datajson);
-
-
-
-
-
-
-//                console.log(selects[0]);
-//                var obj1 = {index: 0, data: selects[0]};
-//                var str = JSON.stringify(obj1);
-//                gz(str);
-            }
-
-
-            var websocket = null;
-            function setLoop(obj) {
-                console.log("come on callback setLoop");
-                console.log(obj);
-                if (obj.status == "fail") {
-                    if (obj.errcode == 2) {
-                        layerAler("重复设备序号");
-                        obj.l_deplayment = 1;
-                        $.ajax({async: false, url: "test1.loop.modifyDepayment.action", type: "get", datatype: "JSON", data: obj,
-                            success: function (data) {
-                                $("#gravidaTable").bootstrapTable('refresh');
-                            },
-                            error: function () {
-                                alert("提交失败！");
-                            }
-                        });
-                    } else if (obj.errcode == 6) {
-                        layerAler("未查询到此设备或信息");
+                var vv = [];
+                var comaddr1 = $("#l_comaddr").combobox('getValue');
+                for (var i = 0; i < selects.length; i++) {
+                    if (i == 0) {
+                        //var len = sprintf("%02d", selects.length);
+                        vv.push(selects.length);
                     }
-                } else if (obj.status == "success") {
+                    var ele = selects[i];
 
-                    if (obj.l_deplayment == 1) {
-                        layerAler("移除成功");
-                    } else if (obj.l_deplayment == 0) {
-                        layerAler("部署成功");
-                    }
-                    obj.l_deplayment = 1 - obj.l_deplayment;
-                    $.ajax({async: false, url: "test1.loop.modifyDepayment.action", type: "get", datatype: "JSON", data: obj,
-                        success: function (data) {
-                            $("#gravidaTable").bootstrapTable('refresh');
-                        },
-                        error: function () {
-                            alert("提交失败！");
-                        }
-                    });
-                }
-
-            }
-            function layerAler(str) {
-                layer.alert(str, {
-                    icon: 6,
-                    offset: 'center'
-                });
-            }
-
-            function gz(param) {
-                var jsonobj = eval('(' + param + ')');
-                var ele = jsonobj.data;
-                delete ele.l_name;
-                console.log(jsonobj);
-                if (websocket.readyState == 3) {
-                    layerAler("服务端没连接上");
-                    return;
-                }
-
-                if (ele.l_comaddr == "" || ele.l_code == "" || ele.l_worktype == "" || ele.l_groupe == "") {
-                    layerAler("信息不能为空");
-                    return;
-                }
-
-                var comaddr1 = ele.l_comaddr;
-                var vv = new Array();
-                if (ele.l_deplayment == 0) {
-                    vv.push(1);
                     var setcode = ele.l_code;
-                    console.log(setcode);
+
                     var dd = get2byte(setcode);
                     var set1 = Str2BytesH(dd);
                     vv.push(set1[1]);
@@ -188,11 +71,37 @@
                     var iworktype = parseInt(ele.l_worktype);
                     vv.push(iworktype); //工作方式
                     var igroupe = parseInt(ele.l_groupe); //组号
-                    vv.push(igroupe); //组号               
-                } else if (ele.l_deplayment == 1) {
-                    vv.push(1);
+                    vv.push(igroupe); //组号                      
+
+                }
+
+                var num = randnum(0, 9) + 0x70; //随机帧序列号
+                var sss = buicode(comaddr1, 0x04, 0xA4, num, 0, 320, vv); //0320    
+                dealsend(sss, 1);
+            }
+
+            function removeloop() {
+                var selects = $('#gravidaTable').bootstrapTable('getSelections');
+                if (selects.length == 0) {
+                    layerAler("请勾选表格数据");
+                    return;
+                }
+//                if (selects[0].l_deplayment == 1) {
+//                    layerAler("已部署");
+//                    return;
+//                }
+
+
+                var vv = [];
+                var comaddr1 = $("#l_comaddr").combobox('getValue');
+                for (var i = 0; i < selects.length; i++) {
+                    if (i == 0) {
+                        //var len = sprintf("%02d", selects.length);
+                        vv.push(selects.length);
+                    }
+                    var ele = selects[i];
+
                     var setcode = ele.l_code;
-                    console.log(setcode);
                     var dd = get2byte(setcode);
                     var set1 = Str2BytesH(dd);
                     vv.push(set1[1]);
@@ -204,43 +113,87 @@
                     var iworktype = parseInt(ele.l_worktype);
                     vv.push(iworktype); //工作方式
                     var igroupe = parseInt(ele.l_groupe); //组号
-                    vv.push(igroupe);
+                    vv.push(igroupe); //组号                      
+
                 }
 
                 var num = randnum(0, 9) + 0x70; //随机帧序列号
-                var sss = buicode(comaddr1, 0x04, 0xA4, num, 0, 320, vv); //0320
-                var user = new Object();
-                user.msg = "setParam";
-                user.res = 1;
-                user.afn = 320;
-                user.status = "";
-                user.function = "setLoop";
-                user.parama = ele;
-                user.addr = getComAddr(comaddr1); //"02170101";
-                user.data = sss;
-                $datajson = JSON.stringify(user);
-                console.log($datajson);
-                websocket.send($datajson);
+                var sss = buicode(comaddr1, 0x04, 0xA4, num, 0, 320, vv); //0320    
+                dealsend(sss, 0);
             }
 
-            $(function () {
 
-                $("#btnremove").click(function () {
 
-                    var selects = $('#gravidaTable').bootstrapTable('getSelections');
-                    if (selects.length == 0) {
-                        layerAler("请勾选表格数据");
-                        return;
+//            var websocket = null;
+            function setLoop(obj) {
+                console.log(obj);
+                if (obj.status == "fail") {
+                    if (obj.type == 0) {
+                        layerAler("移除失败");
+                    } else if (obj.type == 1) {
+                        if (obj.errcode == 2) {
+                            layerAler("重复设备序号");
+                            var ar = obj.parama;
+                            for (var i = 0; i < ar.length; i++) {
+                                var o1 = {};
+                                var o = ar[i];
+                                o1.id = ar[i];
+                                o1.l_deplayment = 1;
+                                $.ajax({async: false, url: "test1.loop.modifyDepayment.action", type: "get", datatype: "JSON", data: o1,
+                                    success: function (data) {
+                                        $("#lampTable").bootstrapTable('refresh');
+                                    },
+                                    error: function () {
+                                        alert("提交失败！");
+                                    }
+                                });
+
+                            }
+                        } else if (obj.errcode == 6) {
+                            layerAler("未查询到此设备或信息");
+                        }
+
                     }
-                    if (selects[0].l_deplayment == 0) {
-                        layerAler("已移除");
-                        return;
+
+                } else if (obj.status == "success") {
+                    if (obj.type == 0) {
+                        layerAler("移除成功");
+                        obj.l_deplayment = 0;
+                    } else if (obj.type == 1) {
+                        layerAler("部署成功");
+                        obj.l_deplayment = 1;
                     }
-                    console.log(selects[0]);
-                    var obj1 = {index: 0, data: selects[0]};
-                    var str = JSON.stringify(obj1);
-                    gz(str);
+
+                    var ar = obj.parama;
+                    for (var i = 0; i < ar.length; i++) {
+                        var o1 = {};
+                        var o = ar[i];
+                        o1.id = ar[i];
+                        o1.l_deplayment = obj.l_deplayment;
+                        console.log(o1);
+                        $.ajax({async: false, url: "test1.loop.modifyDepayment.action", type: "get", datatype: "JSON", data: o1,
+                            success: function (data) {
+                                $("#gravidaTable").bootstrapTable('refresh');
+                            },
+                            error: function () {
+                                alert("提交失败！");
+                            }
+                        });
+
+                    }
+
+
+                }
+            }
+            function layerAler(str) {
+                layer.alert(str, {
+                    icon: 6,
+                    offset: 'center'
                 });
+            }
+
+
+            $(function () {
 
                 $("#btnswitch").click(function () {
                     if (websocket.readyState == 3) {
@@ -392,7 +345,6 @@
                     },
                 });
 
-
                 $('#l_comaddr').combobox({
                     onSelect: function (record) {
                         var obj = {};
@@ -407,99 +359,9 @@
                     }
                 });
 
-
-
-
-
-
-
-
-
-//                $("#l_comaddr").change(function () {
-//                    var comaddr = $(this).children('option:selected').val();
-//                    var url = "test1.loop.getloop.action?l_comaddr=" + comaddr;
-//                    var opt = {
-//                        url: url
-//                    };
-//                    $('#gravidaTable').bootstrapTable('refresh', opt);
-//                })
-
-
-
-
-//                $.ajax({
-//                    async: false,
-//                    url: "test1.loop.getGayway.action",
-//                    type: "get",
-//                    datatype: "JSON",
-//                    data: {},
-//                    success: function (data) {
-//                        $("#l_comaddr").empty();
-//                        var arrlist = data.rs;
-//                        for (var i = 0; i < arrlist.length; i++) {
-//                            var objlist = arrlist[i];
-//                            console.log(objlist.model); //comaddr
-//                            var str = "<option value='" + objlist.l_comaddr + "'>" + objlist.l_comaddr + "</option>";
-//                            $("#l_comaddr").append(str); //添加option
-//                        }
-//                        var comaddr = $("#l_comaddr").children('option:selected').val();
-//                        var url = "test1.loop.getloop.action?l_comaddr=" + comaddr;
-//                        var opt = {url: url};
-//                        $('#gravidaTable').bootstrapTable('refresh', opt);
-//                    },
-//                    error: function () {
-//                        alert("提交失败！");
-//                    }
-//                });
-
             })
 
 
-
-            $(function () {
-
-                if ('WebSocket' in window) {
-                    websocket = new WebSocket("ws://zhizhichun.eicp.net:18414/");
-                } else {
-                    alert('当前浏览器不支持websocket')
-                }
-//                // 连接成功建立的回调方法
-                websocket.onopen = function (e) {
-
-                }
-
-                //接收到消息的回调方法
-                websocket.onmessage = function (e) {
-                    console.log("onmessage");
-                    var jsoninfo = JSON.parse(e.data);
-                    console.log(jsoninfo);
-                    if (jsoninfo.hasOwnProperty("function")) {
-                        var vvv = jsoninfo.function;
-                        var obj = jsoninfo.parama;
-                        obj.status = jsoninfo.status;
-                        obj.errcode = jsoninfo.errcode;
-                        obj.frame = jsoninfo.frame;
-                        window[vvv](obj);
-                    }
-
-                }
-                //连接关闭的回调方法
-                websocket.onclose = function () {
-                    console.log("websocket close");
-                    websocket.close();
-                }
-
-                //连接发生错误的回调方法
-                websocket.onerror = function () {
-                    console.log("Webscoket连接发生错误");
-                }
-
-                //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
-                window.onbeforeunload = function () {
-                    websocket.close();
-                }
-
-            })
 
         </script>
     </head>
@@ -534,22 +396,9 @@
                             &nbsp;&nbsp;  <button id="btndeploy" onclick="deployloop()" class="btn btn-success">部&nbsp;&nbsp;&nbsp;&nbsp;署</button>
                         </td>
                         <td>
-                            &nbsp;&nbsp;  <button id="btnremove" class="btn btn-success">移&nbsp;&nbsp;除</button>
+                            &nbsp;&nbsp;  <button id="btnremove" onclick="removeloop()" class="btn btn-success">移&nbsp;&nbsp;除</button>
                         </td>
 
-                        <td>
-                            <span style="margin-left:10px;">合闸参数&nbsp;</span>
-                            <span class="menuBox">
-                                <select name="select_switch" id="select_switch" placeholder="开关闸" class="input-sm" style="width:150px;">
-                                    <option value="170">关</option>
-                                    <option value="85">开</option>
-                                </select>
-                            </span>   
-                        </td>
-
-                        <td>
-                            <button id="btnswitch" class="btn btn-success">合闸开关</button>
-                        </td>
 
 
                     </tr>

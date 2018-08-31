@@ -191,23 +191,25 @@
                         vv.push(val);
                         eleArray.push(l_groupe);
                     }
+                    var num = randnum(0, 9) + 0x70;
+                    var sss = buicode(comaddr1, 0x04, 0xA5, num, 0, 302, vv); //01 03 F24  
+                    var user = {};
+                    user.begin = '6A'
+                    user.len = sss.length;
+                    user.data=sss;
                     var ele = {id: eleArray};
-                    var user = new Object();
                     user.res = 1;
                     user.afn = 302;
                     user.status = "";
                     user.function = "groupeLampValue";
                     user.parama = ele;
-                    user.msg = "contrParam";
-                    user.res = 1;
+                    user.msg = "A5";
                     user.addr = getComAddr(comaddr1); //"02170101";
-                    var num = randnum(0, 9) + 0x70;
-                    var sss = buicode(comaddr1, 0x04, 0xA5, num, 0, 302, vv); //01 03 F24        
-                    user.data = sss;
-                    $datajson = JSON.stringify(user);
-                    console.log("websocket readystate:" + websocket.readyState);
+                    user.end = '6A';
                     console.log(user);
-                    websocket.send($datajson)
+                    var o1 = JSON.stringify(user);
+                    websocket.send(o1);
+
 
 
 

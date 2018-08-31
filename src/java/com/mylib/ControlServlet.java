@@ -137,8 +137,11 @@ public class ControlServlet extends HttpServlet {
                 } else if (info1.var.equals("list")) {
                     List aa = list3.get(info1.var);
                     jsonstr = JSONArray.fromObject(aa).toString();
+                    
                 } else {
+                      List aa = list3.get(info1.var);
                     jsonstr = JSONObject.fromObject(list3).toString();
+             
                 }
             } else {
                 try {

@@ -33,6 +33,45 @@
 
         <script>
 
+            function addrole() {
+                var name = $("#rolename").val();
+                if (name == "") {
+                    layerAler("角色名不能为空");
+                    return;
+                }
+                $.ajax({async: false, url: "formuser.role.getrole.action", type: "POST", datatype: "JSON", data: {roletype: 1, name: name},
+                    success: function (data) {
+                        console.log(data);
+                        if (data != null) {
+                            var rsname = data.rsname;
+                            if (rsname.length > 0) {
+                                layerAler("此角色已存在");
+                                return;
+                            }
+                            var list = data.rs;
+                            for (var i = 0; i < list.length; i++) {
+
+                                var obj = list[i];
+                                obj.enable = 0;
+                                obj.roletype = parseInt(data.rsmax[0].maxtype) + 1;
+                                obj.name = name;
+                                $.ajax({async: false, url: "formuser.role.addrole.action", type: "get", datatype: "JSON", data: obj,
+                                    success: function (data) {
+                                        console.log(data);
+                                    },
+                                    error: function () {
+                                        alert("提交失败！");
+                                    }
+                                });
+
+                            }
+                        }
+                    },
+                    error: function () {
+                        alert("提交失败！");
+                    }
+                });
+            }
 
             function getIdSelections() {
                 return $.map($("#gravidaTable").bootstrapTable('getSelections'), function (row) {
@@ -147,62 +186,93 @@
             function addauthor() {
                 var zTreeOjb = $.fn.zTree.getZTreeObj("treeDemo");
                 var nodes = zTreeOjb.getCheckedNodes();
+                var roletype = $("#role").combobox('getValue');
+                var name = $("#role").combobox('getText');
 
-                var selects = $('#gravidaTable').bootstrapTable('getSelections');
-                if (nodes.length == 0 || selects.length == 0) {
+                if (nodes.length == 0) {
                     layerAler("请勾选菜单列表和选中要分配权限的用户");
                     return;
                 }
-                console.log(nodes);
+                //console.log(nodes);
                 layer.confirm('确认要分配权限吗？', {
                     btn: ['确定', '取消']//按钮
                 }, function (index) {
-                    for (var i = 0; i < selects.length; i++) {
-                        var select = selects[i];
-                        var str = select.author == null ? "" : select.author;
-                        if (str != "") {
-                            var arr = str.split("|");
-                            for (var j = 0; j < arr.length; j++) {
-                                var node = zTreeOjb.getNodeByParam("id", arr[j]);
-//                                console.log(node.checked);
-                                if (node.checked) {
-                                    var index = nodes.indexOf(node);
-//                                    console.log(index);
-                                    if (index > -1) {
-                                        nodes.splice(index, 1);
-                                    }
-                                }
 
-                            }
+
+                    for (var i = 0; i < nodes.length; i++) {
+                        if (nodes[i].id == "0") {
+                            continue;
                         }
-                        str = delendchar(str);
-                        var str1 = "";
-                        for (var i = 0; i < nodes.length; i++) {
-                            if (nodes[i].id == "0") {
-                                continue;
-                            }
-
-                            str1 = str1 + nodes[i].id + "|";
-                        }
-
-                        str1 = delendchar(str1);
-
-                        var strauthor = str == "" ? str1 : str + "|" + str1;
-
-                        $.ajax({async: false, url: "formuser.user.editUserAuthor.action", type: "get", datatype: "JSON", data: {id: select.id, author: strauthor},
-                            success: function (data) {
-                                console.log(data);
-                                var arrlist = data.rs;
-                                if (arrlist.length > 0) {
-                                    $("#gravidaTable").bootstrapTable('refresh');
-                                    layer.close(index);
+                        if (nodes[i].isParent == false) {
+                            var obj1 = {};
+                            obj1.enable = 1;
+                            obj1.name = name;
+                            obj1.code = nodes[i].id;
+                            obj1.roletype = roletype;
+                            console.log(obj1);
+                            $.ajax({async: false, url: "formuser.role.updaterole.action", type: "POST", datatype: "JSON", data: obj1,
+                                success: function (data) {
+                                    console.log(data);
+                                },
+                                error: function () {
+                                    alert("提交失败！");
                                 }
-                            },
-                            error: function () {
-                                alert("提交失败！");
-                            }
-                        });
+                            });
+                        }
                     }
+
+
+
+
+
+
+//                    for (var i = 0; i < selects.length; i++) {
+//                        var select = selects[i];
+//                        var str = select.author == null ? "" : select.author;
+//                        if (str != "") {
+//                            var arr = str.split("|");
+//                            for (var j = 0; j < arr.length; j++) {
+//                                var node = zTreeOjb.getNodeByParam("id", arr[j]);
+////                                console.log(node.checked);
+//                                if (node.checked) {
+//                                    var index = nodes.indexOf(node);
+////                                    console.log(index);
+//                                    if (index > -1) {
+//                                        nodes.splice(index, 1);
+//                                    }
+//                                }
+//
+//                            }
+//                        }
+//                        str = delendchar(str);
+//                        var str1 = "";
+//                        for (var i = 0; i < nodes.length; i++) {
+//                            if (nodes[i].id == "0") {
+//                                continue;
+//                            }
+//
+//                            str1 = str1 + nodes[i].id + "|";
+//                        }
+//
+//                        str1 = delendchar(str1);
+//
+//                        var strauthor = str == "" ? str1 : str + "|" + str1;
+//
+//                        $.ajax({async: false, url: "formuser.user.editUserAuthor.action", type: "get", datatype: "JSON", data: {id: select.id, author: strauthor},
+//                            success: function (data) {
+//                                console.log(data);
+//                                var arrlist = data.rs;
+//                                if (arrlist.length > 0) {
+//                                    $("#gravidaTable").bootstrapTable('refresh');
+//                                    layer.close(index);
+//                                }
+//                            },
+//                            error: function () {
+//                                alert("提交失败！");
+//                            }
+//                        });
+//                    }
+//                    
                     layer.close(index);
                 });
             }
@@ -348,7 +418,7 @@
             $(function () {
                 $('#role').combobox({
                     onSelect: function (record) {
-                        console.log(record);
+
                         var objrole = {role: record.id};
                         $.ajax({type: "post", url: "formuser.mainmenu.querysub.action", dataType: "json", data: objrole,
                             success: function (datas) {
@@ -357,14 +427,10 @@
                                 datas.forEach(function (data) {
                                     var m_code = data.m_code;
                                     var node = zTreeOjb.getNodeByParam("id", m_code);
-                                    zTreeOjb.checkNode(node, true, true);                                 
-    
+                                    zTreeOjb.checkNode(node, true, true);
+                                    zTreeOjb.updateNode(node);
                                 });
-
-
                             }
-
-
                         });
 
 
@@ -408,12 +474,12 @@
 
                                 <button class="btn btn-success" onclick="addauthor()" style="  margin-top: 20px">分配权限</button>
 
-                                <!--<button class="btn btn-success" style=" margin-top: 20px">删除权限</button>-->       
+                                <!--                                <button class="btn btn-success" style=" margin-top: 20px"></button>       -->
                             </div>
 
                         </div>
 
-                        <div class="col-xs-4">
+                        <div class="col-xs-3">
                             <span class="label label-success label-lg ">角色列表1</span>
                             <input id="role" class="easyui-combobox" name="role" style="width:150px; height: 34px" data-options="editable:true,valueField:'id', textField:'text',url:'formuser.mainmenu.rolemenu.action'" />
 
@@ -422,8 +488,10 @@
                                                         </table> -->
 
                         </div>
-                        <div class="col-xs-3">
-
+                        <div class="col-xs-4">
+                            <span style="margin-left:20px;">角色名称</span>&nbsp;
+                            <input id="rolename" class="form-control" name="rolename" style="width:150px;display: inline;" placeholder="请输入网关名称" type="text">
+                            <button id="btnrole" onclick="addrole()" class="btn btn-success">生成角色</button>
                         </div>
                     </div>
                 </div>

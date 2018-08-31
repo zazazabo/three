@@ -10,9 +10,9 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>登录系统平台</title>
-<!--        <link rel="shortcut icon" href="http://slighting.shuncom.com.cn/CloudPlatform/imgs/favicon/favicon.png">-->
-<!--        <link rel="stylesheet" type="text/css" href="./aaa_files/animate.css">-->
-<!--        <link rel="stylesheet" type="text/css" href="./aaa_files/layui.css">-->
+        <!--        <link rel="shortcut icon" href="http://slighting.shuncom.com.cn/CloudPlatform/imgs/favicon/favicon.png">-->
+        <!--        <link rel="stylesheet" type="text/css" href="./aaa_files/animate.css">-->
+        <!--        <link rel="stylesheet" type="text/css" href="./aaa_files/layui.css">-->
         <style>
             *{margin:0;padding:0;}
             html,body{
@@ -258,9 +258,9 @@
 
             }
             .iconName{
-               background:url(img/user-scret.png) no-repeat 10px 10px;
-                 
-                  
+                background:url(img/user-scret.png) no-repeat 10px 10px;
+
+
             }
             .iconPassword{
                 background:url(img/user-scret.png) no-repeat 10px -61px;
@@ -453,6 +453,12 @@
         <script type="text/javascript" src="js/genel.js"></script>
         <script type="text/javascript" src="js/md5.js"></script>
         <script type="text/javascript">
+            function layerAler(str) {
+                layer.alert(str, {
+                    icon: 6,
+                    offset: 'center'
+                });
+            }
             $(function () {
                 //获取cookie的值
                 var username = getCookieValue("username");
@@ -460,8 +466,8 @@
                 $("#username").val(username);
                 $("#password").val(password);
                 if (username != null && password != null) {
-                     $("#cc").prop("checked", true);
-                    
+                    $("#cc").prop("checked", true);
+
                 }
                 if (username == null && password == null) {
                     $("#cc").prop("checked", false);
@@ -469,20 +475,23 @@
                 //登陆
                 $("#login").click(function () {
                     var pass = $("#password").val();
-                    var name = $("#username").val();               
+                    var name = $("#username").val();
                     var password = hex_md5(pass);
                     var obj = $("#myfrom").serializeObject();
                     obj.password = password;
                     obj.name = name;
-                    $.ajax({async: false, url: "login.loginform.loginhand.action", type: "get", datatype: "JSON", data: obj,
+                    $.ajax({async: false, url: "login.loginform.loginhand.action", type: "POST", datatype: "JSON", data: obj,
                         success: function (data) {
                             // console.log(data);
                             var arrlist = data.rs;
                             if (arrlist.length == 1) {
-                               window.location = "${pageContext.request.contextPath }/login.main.home.action?name="+name;
-                              // window.location ="${pageContext.request.contextPath }/main.jsp";
+
+                                window.location = "login.main.home.action?name=" + name;
+                                // window.location ="${pageContext.request.contextPath }/main.jsp";
                             } else if (arrlist.length == 0) {
-                                alert("用户名或密码错误！");
+                                //alert("用户名或密码错误！");
+                                layerAler("用户名或密码错误！");
+
                             }
                         },
                         error: function () {
@@ -495,12 +504,11 @@
                 $("#cc").click(function () {
                     var pwd = $("#password").val();
                     var username = $("#username").val();
-                    if(pwd==""||username==""){
+                    if (pwd == "" || username == "") {
                         //alert("请输入用户名和密码！");
-                         $("#cc").prop("checked", false);
-                    }
-                    else if ($("#cc").is(":checked")) {
-                        
+                        $("#cc").prop("checked", false);
+                    } else if ($("#cc").is(":checked")) {
+
                         var pass = $("#password").val();
                         // var name = $("#username").val();               
                         var password = hex_md5(pass);
@@ -508,7 +516,7 @@
                         obj.password = password;
                         obj.name = username;
                         //obj.name = name;
-                       // console.log(obj);
+                        // console.log(obj);
                         $.ajax({async: false, url: "login.loginform.loginhand.action", type: "get", datatype: "JSON", data: obj,
                             success: function (data) {
                                 // console.log(data);
@@ -523,9 +531,9 @@
                                         addCookie("rmbUser", "true", 7);
                                         addCookie("username", username, 7);
                                         addCookie("password", pwd, 7);
-                                       // alert("记住了");
-                                    }else{
-                                      $("#cc").prop("checked", false);  
+                                        // alert("记住了");
+                                    } else {
+                                        $("#cc").prop("checked", false);
                                     }
                                 } else if (arrlist.length == 0) {
                                     alert("用户名或密码错误！");
@@ -563,10 +571,10 @@
                         username = username.toString();
                         if (username == username2) {
                             return unescape(String(aCurmb[1]));
-                        } 
+                        }
 
                     }
-                     return  null;
+                    return  null;
 
                 }
 
@@ -578,20 +586,20 @@
 
                 }
                 //切换中文
-                $("#chinese").click(function (){
+                $("#chinese").click(function () {
                     $("#chinese").html("中文");
                     $("#rememberPW").html("记住密码");
                     $("#login").val("登陆");
                     $("#top").html("账号登陆");
                 });
                 //切换英文
-                $("#english").click(function (){
-                  $("#chinese").html("Chinese");
-                  $("#rememberPW").html("remember password");
-                  $("#login").val("Login");
-                  $("#top").html("Account login");
+                $("#english").click(function () {
+                    $("#chinese").html("Chinese");
+                    $("#rememberPW").html("remember password");
+                    $("#login").val("Login");
+                    $("#top").html("Account login");
                 });
-                
+
             });
         </script>
     </head>

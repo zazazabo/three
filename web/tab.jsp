@@ -25,6 +25,16 @@
 
 
         <script type="text/javascript" src="js/genel.js"></script>
+        <script>
+            function callchild(obj) {
+                var func = obj.function;
+                var objchild = $("iframe").eq(0);
+                var win = objchild[0].contentWindow;
+                if (win.hasOwnProperty(func)) {
+                    win[func](obj);
+                }
+            }
+        </script>
     </head>
 
     <body>
@@ -32,7 +42,7 @@
             <div class="top">
                 <ul class="secondMenu layui-nav">
                     <!--                                        <li name="lightval.jsp" class="layui-nav-item layui-this active"><a href="javascript:;">单灯调光</a></li>
-                                                            <li name="lightgroupe.jsp" class="layui-nav-item"><a href="javascript:;">按组调光</a></li>-->
+                    <li name="lightgroupe.jsp" class="layui-nav-item"><a href="javascript:;">按组调光</a></li>-->
 
 
                     <!--<span class="layui-nav-bar" style="width: 0px; left: 484px; opacity: 0; top: 45px;"></span>-->
@@ -51,7 +61,8 @@
                 $(".secondMenu").children('li').remove();
                 var objrole = {role: ${param.role}, m_parent:${param.m_parent}};
                 console.log(objrole);
-                $.ajax({type: "post", async: false, url: "formuser.mainmenu.querysub.action", dataType: "json", data: objrole,
+                $.ajax({
+                    type: "post", async: false, url: "formuser.mainmenu.querysub.action", dataType: "json", data: objrole,
                     success: function (datas) {
                         var htmls = "";
                         var i = 0;
@@ -59,7 +70,6 @@
                             var action = data.m_action;
                             var lang = "zh_CN";
                             var objlang = eval('(' + data.m_title + ')');
-
                             htmls += '<li class="layui-nav-item" name="' + action + '">'
                                     + '<a href="javascript:;">'
                                     + objlang[lang]

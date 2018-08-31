@@ -363,6 +363,26 @@
 
 
 
+
+            function dealsend() {
+
+                var user = new Object();
+                user.count = 0;
+                user.res = 1;
+                user.afn = 0;
+                user.status = "";
+                user.function = "getCount";
+                user.errcode = 0;
+                user.frame = 0;
+                user.msg = "Online";
+                user.res = 1;
+                user.page = 1;
+                parent.sendData(user);
+
+            }
+
+
+
             $(function () {
                 var a3 = new Array();
                 var o3 = new Object();
@@ -466,7 +486,7 @@
                 var hh = Math.floor(huanbi * 100) / 100;
                 $("#lastMonth").html(hh);
                 var qiantb = nowmonth - preyear;
-                 qiantb = Math.floor(qiantb * 100) / 100;
+                qiantb = Math.floor(qiantb * 100) / 100;
                 $("#lastYearSameMonth").html(qiantb);
 
                 window.onresize = function () {
@@ -793,69 +813,8 @@
                 var str = a.toString() + '%';
                 $('#online').html(str);
             }
-            var websocket = null;
-
             $(function () {
-
-
-                if ('WebSocket' in window) {
-                    websocket = new WebSocket("ws://zhizhichun.eicp.net:18414/");
-                } else {
-                    alert('当前浏览器不支持websocket')
-                }
-                //                // 连接成功建立的回调方法
-                websocket.onopen = function (e) {
-                    var user = new Object();
-                    user.count = 0;
-                    var ele = {count: user.count};
-                    user.res = 1;
-                    user.afn = 0;
-                    user.status = "";
-                    user.function = "getCount";
-                    user.errcode = 0;
-                    user.frame = 0;
-                    user.parama = ele;
-                    user.msg = "Online";
-                    user.res = 1;
-                    num = 0x71;
-                    $datajson = JSON.stringify(user);
-                    console.log("websocket readystate:" + websocket.readyState);
-                    console.log(user);
-                    websocket.send($datajson)
-                }
-
-                //接收到消息的回调方法
-                websocket.onmessage = function (e) {
-                    console.log("onmessage");
-                    var jsoninfo = JSON.parse(e.data);
-                    console.log(jsoninfo);
-                    if (jsoninfo.hasOwnProperty("function")) {
-                        var vvv = jsoninfo.function;
-                        var obj = jsoninfo.parama;
-                        obj.status = jsoninfo.status;
-                        obj.errcode = jsoninfo.errcode;
-                        obj.frame = jsoninfo.frame;
-                        obj.count = jsoninfo.count;
-                        window[vvv](obj);
-                    }
-
-                }
-                //连接关闭的回调方法
-                websocket.onclose = function () {
-                    console.log("websocket close");
-                    websocket.close();
-                }
-
-                //连接发生错误的回调方法
-                websocket.onerror = function () {
-                    console.log("Webscoket连接发生错误");
-                }
-
-                //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
-                window.onbeforeunload = function () {
-                    websocket.close();
-                }
-
+                dealsend();
             })
 
         </script>

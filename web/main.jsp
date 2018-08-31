@@ -14,13 +14,13 @@
         <link type="text/css" href="layer/layui.css" rel="stylesheet">
         <link type="text/css" href="layer/animate.css" rel="stylesheet">
         <link type="text/css" href="layer/indexNavigation.css" rel="stylesheet">
-            <script type="text/javascript" src="js/genel.js"></script>
+        <script type="text/javascript" src="js/genel.js"></script>
         <script>
 
 
-           
-    
-    //退出
+
+
+            //退出
             function getout() {
                 if (confirm("确定退出吗？")) {
                     window.location = "${pageContext.request.contextPath }/login.jsp";
@@ -30,9 +30,120 @@
 
 
         </script>
+        <script>
+            var websocket = null;
+
+            function sendData(obj) {
+                console.log(websocket.readyState);
+                if (websocket.readyState == 3) {
+                    layerAler("通迅已断开");
+                }
+                if (websocket != null && websocket.readyState == 1) {
+                    console.log(obj);
+                    var datajson = JSON.stringify(obj);
+                    websocket.send(datajson);
+                }
+//              alert("abcdefg");
+            }
+
+
+
+
+            $(function () {
+
+                if ('WebSocket' in window) {
+                    websocket = new WebSocket("ws://zhizhichun.eicp.net:18414/");
+                } else {
+                    alert('当前浏览器不支持websocket')
+                }
+//                // 连接成功建立的回调方法
+                websocket.onopen = function (e) {
+
+                }
+
+                //接收到消息的回调方法
+                websocket.onmessage = function (e) {
+                    var info = JSON.parse(e.data);
+                    console.log("main onmessage");
+                    console.log(info);
+
+                    if (info.hasOwnProperty("page")) {
+                        console.log(info.page);
+                        var obj = $("iframe").eq(0);
+                        var win = obj[0].contentWindow;
+                        if (info.page == 1) {
+                            var func = info.function;
+                            console.log(func);
+                            win[func](info);
+                        } else if (info.page == 2) {
+                            win.callchild(info);
+                        }
+                    }
+
+
+//                    if (jsoninfo.hasOwnProperty("function")) {
+////                        var vvv = jsoninfo.function;
+////                        var obj = jsoninfo.parama;
+////                        obj.status = jsoninfo.status;
+////                        obj.errcode = jsoninfo.errcode;
+////                        obj.frame = jsoninfo.frame;
+//
+//                        if (win.hasOwnProperty("callchild")) {
+//                            win.callchild(jsoninfo);
+//                        }
+//
+//
+//                        //window[vvv](obj);
+//                    }
+
+                }
+                //连接关闭的回调方法
+                websocket.onclose = function () {
+                    console.log("websocket close");
+                    websocket.close();
+                }
+
+                //连接发生错误的回调方法
+                websocket.onerror = function () {
+                    console.log("Webscoket连接发生错误");
+                }
+
+                //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+                window.onbeforeunload = function () {
+                    websocket.close();
+                }
+
+            })
+
+
+
+            function callback() {
+
+                var obj = $("iframe").eq(0);
+                var win = obj[0].contentWindow;
+                if (win.hasOwnProperty("callchild")) {
+                    var obj1 = {};
+                    obj1.name = "aaa";
+                    win.callchild(obj1);
+                }
+
+                //  console.log(win.isPrototypeOf("callchild"));
+                //win.callchild(obj1);
+            }
+
+
+
+        </script>
+
+
+
+
+
+
 
     </head>
     <body>
+
         <div class="wraper"> 
             <div class="bodyLeft" style="background: rgb(14, 98, 199) none repeat scroll 0% 0%;">
                 <div class="bodyLeftTop listdisplayNone" style="background: rgb(92, 183, 92) none repeat scroll 0% 0%">
@@ -89,7 +200,7 @@
                 </div>
                 <input  id="names" value="" type="hidden">
                 <!--<input id="configurations" value="[{&quot;title&quot;:&quot;参数配置&quot;,&quot;action&quot;:&quot;config/paramConfig.action&quot;,&quot;icon&quot;:&quot;imgs/manager/paramConfiguration.png&quot;},{&quot;title&quot;:&quot;网关配置&quot;,&quot;action&quot;:&quot;config/gateway.action&quot;,&quot;icon&quot;:&quot;imgs/manager/gatewayConfiguration.png&quot;},{&quot;title&quot;:&quot;项目配置&quot;,&quot;action&quot;:&quot;config/alarmConfig.action&quot;,&quot;icon&quot;:&quot;imgs/manager/alarmConfiguration.png&quot;}]" type="hidden">-->
-                <iframe id="iframe" src="" seamless="" style="height: 886px;" width="100%" frameborder="0">
+                <iframe id="iframe" name="iframe" src="" seamless="" style="height: 886px;" width="100%" frameborder="0">
                 </iframe>
             </div>
         </div>
@@ -97,6 +208,14 @@
         <iframe id="alarmTable" src="abc.action_files/warningToday.htm" name="alarmTable" frameborder="0">
         </iframe>
         <script type="text/javascript">
+
+            function layerAler(str) {
+                layer.alert(str, {
+                    icon: 6,
+                    offset: 'center'
+                });
+            }
+
             $(function () {
 //                $(".alarmLi").click(function () {
 //                    $("#alarmTable").css("display", "block");

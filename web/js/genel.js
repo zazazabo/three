@@ -13,30 +13,12 @@ $.fn.serializeObject = function () {
     });
     return o;
 }
+
 function str_repeat(i, m) {
     for (var o = []; m > 0; o[--m] = i)
         ;
     return o.join('');
 }
-
-function isJSON(str) {
-    if (typeof str == 'string') {
-        try {
-            var obj = JSON.parse(str);
-            if (typeof obj == 'object' && obj) {
-                return true;
-            } else {
-                return false;
-            }
-
-        } catch (e) {
-            console.log('error：' + str + '!!!' + e);
-            return false;
-        }
-    }
-    console.log('It is not a string!')
-}
-
 function sprintf() {
     var i = 0, a, f = arguments[i++], o = [], m, p, c, x, s = '';
     while (f) {
@@ -95,6 +77,26 @@ function sprintf() {
     }
     return o.join('');
 }
+
+function isJSON(str) {
+    if (typeof str == 'string') {
+        try {
+            var obj = JSON.parse(str);
+            if (typeof obj == 'object' && obj) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (e) {
+            console.log('error：' + str + '!!!' + e);
+            return false;
+        }
+    }
+    console.log('It is not a string!')
+}
+
+
 
 
 function Str2Bytes(str) {
@@ -314,9 +316,6 @@ function randnum(n, m) {
 }
 
 
-
-
-
 //地址域 字符串  控制域:整数   AFN:功能码 整数   SEQ:帧序列 整数 0x72    DA 整数  DT 整数  参数数组:
 function  buicode(comaddr, C, AFN, SEQ, DA, DT, paraArr) {
 
@@ -374,7 +373,7 @@ function  buicode(comaddr, C, AFN, SEQ, DA, DT, paraArr) {
 
     var ByteToSend = "";
     for (var i = 0; i < hexData.length; i++) {
-        ByteToSend = ByteToSend + b2s(hexData[i]) + " ";
+        ByteToSend = ByteToSend + b2s(hexData[i]) + "";
         //console.log(hexData[i].toString(16));
     }
 
@@ -391,8 +390,6 @@ function  buicode(comaddr, C, AFN, SEQ, DA, DT, paraArr) {
 
 
 function delendchar(str) {
-//    console.log(str.length);
-//    console.log(str.lastIndexOf('|'));
     while (str.lastIndexOf('|') == str.length - 1) {
         if (str.lastIndexOf('|') == -1) {
             break;
@@ -467,4 +464,19 @@ function data2treeDG(datas, dataArray) {
 
     }
     return dataArray;
+}
+
+
+
+
+function isNumber(val) {
+
+    var regPos = /^\d+(\.\d+)?$/; //非负浮点数
+    var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
+    if (regPos.test(val) || regNeg.test(val)) {
+        return true;
+    } else {
+        return false;
+    }
+
 }
