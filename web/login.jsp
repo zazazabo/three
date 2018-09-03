@@ -10,12 +10,6 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>登录系统平台</title>
-<<<<<<< HEAD
-        <!--        <link rel="shortcut icon" href="http://slighting.shuncom.com.cn/CloudPlatform/imgs/favicon/favicon.png">-->
-        <!--        <link rel="stylesheet" type="text/css" href="./aaa_files/animate.css">-->
-        <!--        <link rel="stylesheet" type="text/css" href="./aaa_files/layui.css">-->
-=======
->>>>>>> cafc39742cda46849f402b976ef75d450904749a
         <style>
             *{margin:0;padding:0;}
             html,body{

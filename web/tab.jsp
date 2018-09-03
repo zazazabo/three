@@ -68,24 +68,21 @@
                         var htmls = "";
                         var i = 0;
                         datas.forEach(function (data) {
+                            console.log(data);
                             var action = data.m_action;
                             var lang = "zh_CN";
                             var objlang = eval('(' + data.m_title + ')');
-<<<<<<< HEAD
+                            var u1 = action + "?m_parent=" + data.m_code + "&role=" + ${param.role};
                             htmls += '<li class="layui-nav-item" name="' + action + '">'
-=======
-                            console.log(data);
-                            var u1=action + "?m_parent=" + data.m_code + "&role=" + ${param.role};
+
                             htmls += '<li class="layui-nav-item" name="' + u1 + '">'
->>>>>>> cafc39742cda46849f402b976ef75d450904749a
                                     + '<a href="javascript:;">'
                                     + objlang[lang]
                                     + '</a>'
-
                                     + '</li>'
                         });
                         htmls += '<span class="layui-nav-bar" style="width: 0px; left: 484px; opacity: 0; top: 45px;"></span>';
-                        console.log(htmls);
+//                        console.log(htmls);
                         $(".secondMenu").html(htmls);
                     }
 

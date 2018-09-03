@@ -79,6 +79,7 @@
 
             var bb = $(window).height() - 20;
             console.log(bb);
+            
             $('#gravidaTable').bootstrapTable({
                 columns: [
                     {
@@ -619,7 +620,8 @@
                                     <td></td>
                                     <td>
                                         <span style="margin-left:10px;">倍&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;率&nbsp;</span>
-                                        <input id="multpower" class="form-control" name="multpower" style="width:150px;display: inline;" placeholder="请输入倍率" type="text"></td>
+                                        <input id="multpower" class="form-control" name="multpower" style="width:150px;display: inline;" placeholder="请输入倍率" type="text">
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>
