@@ -151,8 +151,8 @@ public class ControlServlet extends HttpServlet {
                 }
             }
             Logger.getLogger(ControlServlet.class.getName()).log(Level.INFO, jsonstr);
-            response.getOutputStream().write(jsonstr.getBytes("UTF-8"));
-            response.setContentType("text/json; charset=UTF-8");
+             response.setContentType("text/json; charset=UTF-8");
+            response.getOutputStream().write(jsonstr.getBytes("UTF-8"));       
         }
     }
 
