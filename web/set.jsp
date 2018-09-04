@@ -18,7 +18,10 @@
     <script type="text/javascript" src="js/genel.js"></script>
 
     <script>
-
+        function isValidIP(ip) {
+            var reg = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/
+            return reg.test(ip);
+        }
         var websocket = null;
         var vvvv = 0;
         var flag = null;
@@ -155,10 +158,11 @@
                         align: 'center',
                         valign: 'middle',
                         formatter: function (value, row, index) {
-                            console.log(row);
-                            console.log(value);
-                            var str = value + ":" + row.dnsport.toString();
-                            return str;
+                            if (value != null) {
+                                var str = value + ":" + row.dnsport.toString();
+                                return str;
+                            }
+
                         },
                     }, {
                         field: 'dnsip_',
@@ -167,8 +171,11 @@
                         align: 'center',
                         valign: 'middle',
                         formatter: function (value, row, index) {
-                            var str = value + ":" + row.dnsport_.toString();
-                            return str;
+                            if (value != null) {
+                                var str = value + ":" + row.dnsport_.toString();
+                                return str;
+                            }
+
                         }
                     }, {
                         field: 'siteip',
@@ -177,10 +184,10 @@
                         align: 'center',
                         valign: 'middle',
                         formatter: function (value, row, index) {
-                            console.log(row);
-                            console.log(value);
-                            var str = value + ":" + row.siteport.toString();
-                            return str;
+                            if (value != null) {
+                                var str = value + ":" + row.siteport.toString();
+                                return str;
+                            }
                         }
                     }, {
                         field: 'siteip_',
@@ -189,8 +196,11 @@
                         align: 'center',
                         valign: 'middle',
                         formatter: function (value, row, index) {
-                            var str = value + ":" + row.siteport_.toString();
-                            return str;
+
+                            if (value != null) {
+                                var str = value + ":" + row.siteport_.toString();
+                                return str;
+                            }
                         }
                     }, {
                         field: 'domain',
@@ -259,14 +269,11 @@
             });
 
 
-            $("#addback").click(function () {
-                alert("aaa");
-            })
 
             $('#gravidaTable').on("check.bs.table", function (field, value, row, element) {
                 var index = row.data('index');
                 value.index = index;
-                console.log(value);
+//                console.log(value);
             });
 
 
@@ -318,9 +325,7 @@
         }
 
         function readsite() {
-
             var selects = $('#gravidaTable').bootstrapTable('getSelections');
-
             if (selects.length > 1) {
                 layerAler("只能选一条");
                 return;
@@ -330,25 +335,18 @@
                 return;
             }
 
-
             var select = selects[0];
             var comaddr = select.comaddr;
-
-
-// 00 00 01 00 
             var vv = [];
             var num = randnum(0, 9) + 0x70;
             var data = buicode(comaddr, 0x04, 0xAA, num, 0, 1, vv); //01 03 F24    
-
             console.log(data);
             dealsend2(data, 1, "getsite", comaddr, select.index, 0, select.id);
-
         }
 
 
         function readtime() {
             var selects = $('#gravidaTable').bootstrapTable('getSelections');
-
             if (selects.length > 1) {
                 layerAler("只能选一条");
                 return;
@@ -357,11 +355,8 @@
                 layerAler("请勾选列表读取");
                 return;
             }
-
-
             var select = selects[0];
             var comaddr = select.comaddr;
-
 
 // 00 00 01 00 
             var vv = [];
@@ -398,11 +393,7 @@
 
             var u1 = hexport >> 8 & 0x00ff;
             var u2 = hexport & 0x000ff;
-
-
-
-
-            // console.log(v1.toString(16));
+            console.log(obj);
             var vv = [];
             if (isValidIP(obj.ip) == false) {
                 // layerAler("不是合法ip");
@@ -434,21 +425,27 @@
                         vv.push(c);
                     }
                 }
+
+
+
+                var len = obj.ip.length;
+                vv.push(len);
+                for (var i = 0; i < len; i++) {
+                    var c = obj.ip.charCodeAt(i);
+                    vv.push(c);
+                }
+
+        
+                var select = selects[0];
+                var comaddr = select.comaddr;
+                var num = randnum(0, 9) + 0x70;
+                var data = buicode(comaddr, 0x04, 0xA4, num, 0, 1, vv); //01 03 F24    
+                console.log(data);
+                //dealsend2(data, 1, "setsite", comaddr, select.index, 0, select.id);
                 
                 
+
             }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -499,6 +496,10 @@
             var num = randnum(0, 9) + 0x70;
             var data = buicode(comaddr, 0x04, 0xA4, num, 0, 2, vv); //01 03 F24    
             dealsend2(data, 4, "getAPN", comaddr, select.index, apn, select.id);
+
+
+
+
         }
     </script>
 </head>
@@ -512,11 +513,11 @@
                 <tr>
                     <td><span class="label label-success" style="margin-left: 10px;" >主站ip或域名</span></td>
                     <td>
-                        <input id="ip" class="form-control" name="ip" style="width:150px;display: inline; margin-left: 3px;" placeholder="输入主站域名" type="text">
+                        <input id="ip" class="form-control" name="ip" value="zhizhichun.eicp.net" style="width:150px;display: inline; margin-left: 3px;" placeholder="输入主站域名" type="text">
                     </td>
                     <td><span class="label label-success" style="margin-left: 10px;" >端口</span></td>
                     <td>
-                        <input id="port" class="form-control" name="port" style="width:150px;display: inline; margin-left: 3px;" placeholder="输入端口" type="text">
+                        <input id="port" class="form-control" name="port" style="width:150px;display: inline; margin-left: 3px;" value="18414" placeholder="输入端口" type="text">
                     </td>
                     <td><span class="label label-success" style="margin-left: 10px;" >APN</span></td>
                     <td>
