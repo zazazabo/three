@@ -191,12 +191,12 @@
         
         
   
-              <xhandle desc="修改灯具调光值" id="modifygroupeval" rtnype="JSON">
+        <xhandle desc="修改灯具调光值" id="modifygroupeval" rtnype="JSON">
             <xsql id="a1" para="l_value" tpe="DDL" tpl="update t_lamp set l_value=:l_value where @CONDITION " var="rs">
                 <xflt id="CONDITION"  tpl="@l_comaddr AND @l_groupe ">
                     <xfltpara id="l_comaddr" nrp="1=1" para="l_comaddr" sql="l_comaddr=':l_comaddr'">
                     </xfltpara>
-                     <xfltpara id="l_groupe" nrp="1=1" para="l_groupe" sql="l_groupe=':l_groupe'">
+                    <xfltpara id="l_groupe" nrp="1=1" para="l_groupe" sql="l_groupe=':l_groupe'">
                     </xfltpara>                   
                     
                 </xflt>
@@ -413,7 +413,13 @@
     
     <xform dese="bootstrattable" id="f5">
         <xhandle desc="" id="h1" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_baseinfo" var="bootstrap">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_baseinfo where @CONDITION " var="bootstrap">
+                <xflt id="CONDITION" nrp="" tpl="@id AND @comaddr">
+                    <xfltpara id="id" nrp="1=1" para="id" sql="id = ':id'">
+                    </xfltpara>
+                    <xfltpara id="comaddr" nrp="1=1" para="comaddr" sql="comaddr = ':comaddr'">
+                    </xfltpara>
+                </xflt>
             </xsql>
         </xhandle>
         <xhandle desc="" id="h2" rtnype="JSON">

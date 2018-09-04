@@ -22,6 +22,7 @@
                     arr.push(selects[i].id);
                 }
                 var user = new Object();
+                user.begin = '6A';
                 user.res = 1;
                 user.afn = 320;
                 user.status = "";
@@ -29,10 +30,11 @@
                 user.parama = arr;
                 user.page = 2;
                 user.type = type;    //0移除   1是部署
-                user.msg = "setParam";
+                user.msg = "A4";
                 user.res = 1;
                 user.addr = getComAddr(comaddr1); //"02170101";
                 user.data = data;
+                user.end = '6A';
                 parent.parent.sendData(user);
             }
 

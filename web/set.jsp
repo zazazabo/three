@@ -42,38 +42,90 @@
             }
         }
 
+        function gettime(obj) {
+            console.log(obj);
 
-
-            function dealsend2(data, fn, func, comaddr, type, param, val) {
-                var user = new Object();
-                user.begin = '6A';
-                user.res = 1;
-                user.status = "";
-                user.comaddr = comaddr;
-                user.fn = fn;
-                user.function = func;
-                user.param = param;
-                user.page = 2;
-                user.msg = "AA";
-                user.res = 1;
-                user.val = val;
-                user.type = type;
-                user.addr = getComAddr(comaddr); //"02170101";
-                user.data = data;
-                user.len = data.length;
-                user.end = '6A';
-                console.log(user);
-                parent.parent.sendData(user);
+            obj.id = obj.val;
+            console.log(obj.domain)
+            if (obj.status == "success") {
+                $.ajax({async: false, url: "param.param.updatetime.action", type: "get", datatype: "JSON", data: obj,
+                    success: function (data) {
+                        var arrlist = data.rs;
+                        if (arrlist.length == 1) {
+                            layerAler("读取换日时间成功");
+                            var opt = {
+                                url: "test1.f5.h1.action",
+                                silent: true,
+                                query: obj
+                            };
+                            $("#gravidaTable").bootstrapTable('refresh', opt);
+                        }
+                    },
+                    error: function () {
+                        alert("提交失败！");
+                    }
+                });
             }
+
+        }
+        function  getsite(obj) {
+            obj.id = obj.val;
+            console.log(obj.domain)
+            if (obj.status == "success") {
+                $.ajax({async: false, url: "param.param.updatesite.action", type: "get", datatype: "JSON", data: obj,
+                    success: function (data) {
+                        var arrlist = data.rs;
+                        if (arrlist.length == 1) {
+                            layerAler("读取站点信息成功");
+                            var opt = {
+                                url: "test1.f5.h1.action",
+                                silent: true,
+                                query: obj
+                            };
+                            $("#gravidaTable").bootstrapTable('refresh', opt);
+                        }
+                    },
+                    error: function () {
+                        alert("提交失败！");
+                    }
+                });
+            }
+
+        }
+
+        function getAPN(obj) {
+            if (obj.status == "success") {
+                layerAler("设置运营商APN成功");
+            }
+        }
+        function dealsend2(data, fn, func, comaddr, type, param, val) {
+            var user = new Object();
+            user.begin = '6A';
+            user.res = 1;
+            user.status = "";
+            user.comaddr = comaddr;
+            user.fn = fn;
+            user.function = func;
+            user.param = param;
+            user.page = 2;
+            user.msg = "AA";
+            user.res = 1;
+            user.val = val;
+            user.type = type;
+            user.addr = getComAddr(comaddr); //"02170101";
+            user.data = data;
+            user.len = data.length;
+            user.end = '6A';
+            console.log(user);
+            parent.parent.sendData(user);
+        }
 
 
 
         $(function () {
 
             //flag = setInterval("dealsend()", 1000);
-            var bb = $(window).height() - 20;
-            console.log(bb);
-            
+
             $('#gravidaTable').bootstrapTable({
                 columns: [
                     {
@@ -91,38 +143,70 @@
                         align: 'center',
                         valign: 'middle'
                     }, {
-                        field: 'dnsip',
-                        title: '主站域名',
-                        width: 25,
-                        align: 'center',
-                        valign: 'middle'
-                    }, {
                         field: 'comaddr',
                         title: '通信地址',
                         width: 25,
                         align: 'center',
                         valign: 'middle'
-                    },{
+                    }, {
                         field: 'dnsip',
-                        title: '主站端口',
+                        title: '域名解析的IP',
                         width: 25,
                         align: 'center',
-                        valign: 'middle'
-                    },{
+                        valign: 'middle',
+                        formatter: function (value, row, index) {
+                            console.log(row);
+                            console.log(value);
+                            var str = value + ":" + row.dnsport.toString();
+                            return str;
+                        },
+                    }, {
+                        field: 'dnsip_',
+                        title: '域名解析的IP(备用)',
+                        width: 25,
+                        align: 'center',
+                        valign: 'middle',
+                        formatter: function (value, row, index) {
+                            var str = value + ":" + row.dnsport_.toString();
+                            return str;
+                        }
+                    }, {
                         field: 'siteip',
                         title: '主站ip',
                         width: 25,
                         align: 'center',
-                        valign: 'middle'
-                    },{
-                        field: 'siteport',
-                        title: '主站端口',
+                        valign: 'middle',
+                        formatter: function (value, row, index) {
+                            console.log(row);
+                            console.log(value);
+                            var str = value + ":" + row.siteport.toString();
+                            return str;
+                        }
+                    }, {
+                        field: 'siteip_',
+                        title: '主站ip(备用)',
+                        width: 25,
+                        align: 'center',
+                        valign: 'middle',
+                        formatter: function (value, row, index) {
+                            var str = value + ":" + row.siteport_.toString();
+                            return str;
+                        }
+                    }, {
+                        field: 'domain',
+                        title: '域名',
                         width: 25,
                         align: 'center',
                         valign: 'middle'
-                    },{
+                    }, {
                         field: 'apn',
                         title: 'APN',
+                        width: 25,
+                        align: 'center',
+                        valign: 'middle'
+                    }, {
+                        field: 'chgdaytime',
+                        title: '换日时间',
                         width: 25,
                         align: 'center',
                         valign: 'middle'
@@ -171,7 +255,7 @@
 
 
             $("#gravidaTable").on('refresh.bs.table', function (data) {
-               // flag = setInterval("dealsend()", 1000);
+                // flag = setInterval("dealsend()", 1000);
             });
 
 
@@ -179,18 +263,30 @@
                 alert("aaa");
             })
 
+            $('#gravidaTable').on("check.bs.table", function (field, value, row, element) {
+                var index = row.data('index');
+                value.index = index;
+                console.log(value);
+            });
+
+
+            $('#groupegravidaTable').on("check.bs.table", function (field, value, row, element) {
+                var index = row.data('index');
+                value.index = index;
+            });
+
 
             //添加时触发
 
             //修改时触发
         })
 
-            function layerAler(str) {
-                layer.alert(str, {
-                    icon: 6,
-                    offset: 'center'
-                });
-            }
+        function layerAler(str) {
+            layer.alert(str, {
+                icon: 6,
+                offset: 'center'
+            });
+        }
 
         function dealsend() {
 
@@ -216,162 +312,253 @@
                 // websocket.send(datajson);
                 vvvv += 1;
             } else {
-               // clearInterval(flag);
+                // clearInterval(flag);
                 vvvv = 0;
             }
         }
 
-        function reasite(){
+        function readsite() {
 
-                var selects = $('#gravidaTable').bootstrapTable('getSelections');
+            var selects = $('#gravidaTable').bootstrapTable('getSelections');
 
-                if (selects.length>1) {
-                    layerAler("只能选一条");
-                    return;
-                }
-                if (selects.length==0) {
-                    layerAler("请勾选列表读取");
-                    return;
-                }
+            if (selects.length > 1) {
+                layerAler("只能选一条");
+                return;
+            }
+            if (selects.length == 0) {
+                layerAler("请勾选列表读取");
+                return;
+            }
 
 
-                var select=selects[0];
-                var comaddr=select.comaddr;
+            var select = selects[0];
+            var comaddr = select.comaddr;
 
 
 // 00 00 01 00 
-                var vv=[];
-                 var num = randnum(0, 9) + 0x70;
-                 var data = buicode(comaddr, 0x04, 0xAA, num, 0, 1, vv); //01 03 F24    
+            var vv = [];
+            var num = randnum(0, 9) + 0x70;
+            var data = buicode(comaddr, 0x04, 0xAA, num, 0, 1, vv); //01 03 F24    
 
-                 console.log(data); 
-                 dealsend2(data, 1, "getsite", comaddr, 0, 0, 0);
+            console.log(data);
+            dealsend2(data, 1, "getsite", comaddr, select.index, 0, select.id);
 
         }
-        
+
+
+        function readtime() {
+            var selects = $('#gravidaTable').bootstrapTable('getSelections');
+
+            if (selects.length > 1) {
+                layerAler("只能选一条");
+                return;
+            }
+            if (selects.length == 0) {
+                layerAler("请勾选列表读取");
+                return;
+            }
+
+
+            var select = selects[0];
+            var comaddr = select.comaddr;
+
+
+// 00 00 01 00 
+            var vv = [];
+            var num = randnum(0, 9) + 0x70;
+            var data = buicode(comaddr, 0x04, 0xAA, num, 0, 4, vv); //01 03 F24    
+
+            console.log(data);
+            dealsend2(data, 4, "gettime", comaddr, select.index, 0, select.id);
+        }
+
+        function setsite() {
+            var selects = $('#gravidaTable').bootstrapTable('getSelections');
+            if (selects.length == 0) {
+                layerAler("请勾选列表读取");
+                return;
+            }
+
+            var obj = $("#form1").serializeObject();
+
+            if (obj.port == "") {
+                layerAler("端口不能为空");
+                return;
+            }
+            if (obj.apn.length > 16) {
+                layerAler("apn长度不能超过16");
+                return;
+            }
+            if (isNumber(obj.port) == false) {
+                layerAler("端口不能为空");
+                return;
+            }
+            var hexport = parseInt(obj.port);
+
+
+            var u1 = hexport >> 8 & 0x00ff;
+            var u2 = hexport & 0x000ff;
+
+
+
+
+            // console.log(v1.toString(16));
+            var vv = [];
+            if (isValidIP(obj.ip) == false) {
+                // layerAler("不是合法ip");
+                if (obj.ip != "") {
+                    vv.push(0);
+                    vv.push(0);
+                    vv.push(0);
+                    vv.push(0);
+                    vv.push(u2);
+                    vv.push(u1);
+                    //主站ip 主站备用ip 
+                    for (var i = 0; i < 12; i++) {
+                        vv.push(0);
+                    }
+
+                    //APN
+
+                }
+            }
+
+            if (vv.length > 0) {
+                for (var i = 0; i < 16; i++) {
+                    var apn = obj.apn;
+                    var len = apn.length;
+                    if (len <= i) {
+                        vv.push(0);
+                    } else {
+                        var c = apn.charCodeAt(i);
+                        vv.push(c);
+                    }
+                }
+                
+                
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+
+        function setchgtime() {
+            var obj = $("#form1").serializeObject();
+
+
+        }
+        function setAPN() {
+            var selects = $('#gravidaTable').bootstrapTable('getSelections');
+            if (selects.length == 0) {
+                layerAler("请勾选列表读取");
+                return;
+            }
+
+            var obj = $("#form1").serializeObject();
+            if (obj.apn == "") {
+                layerAler("apn不能为空");
+                return;
+            }
+            if (obj.apn.length > 16) {
+                layerAler("apn长度不能超过16");
+                return;
+            }
+            var vv = [];
+            for (var i = 0; i < 16; i++) {
+                var apn = obj.apn;
+                var len = apn.length;
+                if (len <= i) {
+                    vv.push(0);
+                } else {
+                    var c = apn.charCodeAt(i);
+                    vv.push(c);
+                }
+
+            }
+            console.log(vv);
+
+//            console.log(obj);
+            var select = selects[0];
+            var comaddr = select.comaddr;
+//
+//
+            var num = randnum(0, 9) + 0x70;
+            var data = buicode(comaddr, 0x04, 0xA4, num, 0, 2, vv); //01 03 F24    
+            dealsend2(data, 4, "getAPN", comaddr, select.index, apn, select.id);
+        }
     </script>
 </head>
 <body>
-    <div class="btn-group zuheanniu" id="zuheanniu" style="float:left;position:relative;z-index:100;margin:12px 0 0 10px;">
-    
-        <form id="tosearch">
-                <table>
-                    <tbody>
-                        <tr>
-                            <td>
-<!--                                <span style="margin-left:10px;">读取主站信息&nbsp;</span>-->
-                                <button  type="button" style="margin-left:20px;" onclick="reasite()" class="btn btn-success">读取主站信息 </button>
-                            </td>
-                            <td>
-                                 <button  type="button" style="margin-left:20px;" onclick="reasite()" class="btn btn-success">读取换日时间</button>
-<!--                                <span style="margin-left:10px;">调光方式&nbsp;</span>
-
-                                <select class="easyui-combobox" id="switch" name="switch" style="width:150px; height: 34px">
-                                    <option value="0">立即调光</option>
-                                    <option value="1">场景调光</option>           
-                                </select>-->
-
-                            </td>
-                            <td>
 
 
-                                          <span class="label label-success" style="margin-left: 10px;" >主站ip或域名</span>
-                                        <input id="multpower" class="form-control" name="multpower" style="width:150px;display: inline;" placeholder="输入主站域名" type="text">
+    <form id="form1">
+        <table>
+            <tbody>
 
+                <tr>
+                    <td><span class="label label-success" style="margin-left: 10px;" >主站ip或域名</span></td>
+                    <td>
+                        <input id="ip" class="form-control" name="ip" style="width:150px;display: inline; margin-left: 3px;" placeholder="输入主站域名" type="text">
+                    </td>
+                    <td><span class="label label-success" style="margin-left: 10px;" >端口</span></td>
+                    <td>
+                        <input id="port" class="form-control" name="port" style="width:150px;display: inline; margin-left: 3px;" placeholder="输入端口" type="text">
+                    </td>
+                    <td><span class="label label-success" style="margin-left: 10px;" >APN</span></td>
+                    <td>
+                        <input id="apn" class="form-control" name="apn" value="cmnet" style="width:150px;display: inline; margin-left: 3px;" placeholder="输入APN" type="text">
+                    </td>
+                    <td>
+                        <button  type="button" style="margin-left:20px;" onclick="setsite()" class="btn btn-success">设置主站信息</button>
+                    </td>
+                    <td> <button  type="button" style="margin-left:20px;" onclick="readsite()" class="btn btn-success">读取主站信息 </button></td>
+                    <td> <button  type="button" style="margin-left:20px;" onclick="setAPN()" class="btn btn-success">设置APN </button></td>
+                </tr>
 
-                                <button  type="button" style="margin-left:20px;" onclick="reasite()" class="btn btn-success">设置主站域名</button>
+                <tr>
+                    <td><span class="label label-success" style="margin-left: 10px;" >换日时间</span></td>
+                    <td>
+                        <input id="time4" name="time4" style=" height: 34px; width: 150px; margin-left: 3px;" class="easyui-timespinner">
+                        <!--<input id="multpower" class="form-control" name="multpower" style="width:150px;display: inline; margin-left: 3px;" placeholder="输入主站域名" type="text">-->
+                    </td>
+                    <td></td>
+                    <td>
+                        <!--<input id="multpower" class="form-control" name="multpower" style="width:150px;display: inline; margin-left: 3px;" placeholder="输入端口" type="text">-->
+                    </td>
+                    <td></td>
+                    <td>
+                        <!--<input id="multpower" class="form-control" name="multpower" value="cmnet" style="width:150px;display: inline; margin-left: 3px;" placeholder="输入APN" type="text">-->
+                    </td>
+                    <td>
+                        <button  type="button" style="margin-left:20px;" onclick="setchgtime()" class="btn btn-success">设置换日时间</button>
+                    </td>
+                    <td>
+                        <button  type="button" style="margin-left:20px;" onclick="readtime()" class="btn btn-success">读取换日时间</button>
+                    </td>
+                </tr>             
 
+            </tbody>
+        </table>
+    </form>
 
-
-                            </td>
-
-                            <td>
-                   
-                                          <span class="label label-success" style="margin-left: 10px;" >APN</span>
-                                        <input id="multpower" class="form-control" name="multpower" style="width:150px;display: inline;" placeholder="输入主站域名" type="text">
-
-
-                                <button  type="button" style="margin-left:20px;" onclick="reasite()" class="btn btn-success">设置APN</button>
-                            </td>
-
-                            <td>
-
-
-
-
-                            </td>
-                            <td>
-                                <!-- <button id="btn_reset_auto_run" type="button" style="margin-left:20px;" class="btn btn-success">恢复自动运行</button> -->
-                            </td>
-                        </tr>
-                        <tr >
-                            <td>
-
-                            </td>
-                            <td>
-
-                            </td>
-                            <td>
-                               
-                            </td>
-                            <td>
-
-                            </td>
-                            <td>
-
-                            </td>
-                            <td>
-
-                            </td>                           
-                        </tr>
-
-                        <tr>
-                                                        <td>
-
-                            </td>
-                            <td>
-
-                            </td>
-                            <td>
-                               
-                            </td>
-                            <td>
-
-                            </td>
-                            <td>
-
-                            </td>
-                            <td>
-
-                            </td>  
-                        </tr>
-
-                    </tbody>
-                </table>
-            </form>
-    
-    
-    
-    
-        </div>
-    
-
-    <div style="width:100%;">
+    <div style="width:100%; margin-top: 10px;">
 
         <table id="gravidaTable" style="width:100%;" class="text-nowrap table table-hover table-striped">
         </table>
-        <!--        <div class="bootstrap-table">
-                    <div class="fixed-table-container" style="height: 214px; padding-bottom: 0px;">
-                        <div class="fixed-table-header">
-                            <table></table>
-                        </div>
-                        <div class="fixed-table-body">
-                            <div class="fixed-table-loading" style="top: 42px; display: none;">正在努力地加载数据中，请稍候……</div>
-                            <table id="gravidaTable" style="width:100%;" class="text-nowrap table table-hover table-striped">
-                            </table>
-                        </div>
-                    </div>
-                </div>-->
     </div>
 
 

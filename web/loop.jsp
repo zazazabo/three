@@ -8,31 +8,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-         <%@include  file="js.jspf" %>
+        <%@include  file="js.jspf" %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<!--
-        <script src="select2-developr/dist/js/select2.js"></script>
-        <link href="select2-develop/dist/css/select2.css" rel="stylesheet" />
-
-
-        <link rel="stylesheet" type="text/css" href="gatewayconfig_files/bootstrap.css">
-        <link rel="stylesheet" type="text/css" href="gatewayconfig_files/bootstrap-table.css">
-        <script type="text/javascript" src="gatewayconfig_files/jquery.js"></script>
-        <script type="text/javascript" src="gatewayconfig_files/bootstrap.js"></script>
-        <script type="text/javascript" src="gatewayconfig_files/bootstrap-table.js"></script>
-        <script type="text/javascript" src="gatewayconfig_files/bootstrap-table-zh-CN.js"></script>
-        <link type="text/css" href="gatewayconfig_files/basicInformation.css" rel="stylesheet">
-         easyui 
-        <link href="gatewayconfig_files/easyui.css" rel="stylesheet" type="text/css" switch="switch-style">
-        <link href="gatewayconfig_files/icon.css" rel="stylesheet" type="text/css">
-        <script src="gatewayconfig_files/jquery_002.js" type="text/javascript"></script>
-        <script src="gatewayconfig_files/easyui-lang-zh_CN.js" type="text/javascript"></script>
-        <script type="text/javascript" src="gatewayconfig_files/selectAjaxFunction.js"></script>
-        <script type="text/javascript" src="gatewayconfig_files/bootstrap-multiselect.js"></script>
-        <link rel="stylesheet" href="gatewayconfig_files/bootstrap-multiselect.css" type="text/css">
-        <link rel="stylesheet" type="text/css" href="gatewayconfig_files/layer.css">
-        <script type="text/javascript" src="gatewayconfig_files/layer.js"></script>-->
-
         <script type="text/javascript" src="js/genel.js"></script>
         <script>
             function layerAler(str) {
@@ -272,7 +249,7 @@
                                 } else if (row.l_deplayment == "1") {
                                     var str = "<span class='label label-success'>已部署</span>"
                                     return  str;
-                                } 
+                                }
                             }
                         }],
                     singleSelect: true,
@@ -302,12 +279,12 @@
                         return temp;  
                     },
                 });
-                
-                    
-                 
-           
-                
-                
+
+
+
+
+
+
                 $("#select_l_comaddr").change(function () {
                     var name1 = $(this).find("option:selected").attr("detail");
                     $("#txt_name").val(name1);
@@ -416,45 +393,29 @@
 
                 $("#shanchu").click(function () {
                     var selects = $('#gravidaTable').bootstrapTable('getSelections');
-                    console.log(selects);
-                    var num = ""
-                    if (selects.length == 1) {
-                        num = selects[0];
-                    } else {
-                        for (var i = 0; i < selects.length; i++) {
-                            num += selects[i].id + ",";
-                        }
+                    if (selects.length == 0) {
+                        layerAler("请选择要删除的数据");
+                        return;
+
                     }
+                    layer.confirm('您确定要删除吗？', {
+                        btn: ['确定', '取消'], //按钮
+                        icon: 3,
+                        offset: 'center',
+                        title: '提示'
+                    }, function (index) {
 
-                    if (num == 0) {
-                        layer.alert('请选择您要删除的记录', {
-                            icon: 6,
-                            offset: 'center'
-                        });
-                    } else {
-                        layer.confirm('您确定要删除吗？', {
-                            btn: ['确定', '取消'], //按钮
-                            icon: 3,
-                            offset: 'center',
-                            title: '提示'
-                        }, function (index) {
+                        for (var i = 0; i < selects.length; i++) {
+                            var select = selects[i];
+                            console.log(select);
 
-                            if (selects.length == 1) {
-
-                                if (num.l_deployment == 1) {
-                                    layer.alert('此回路已部署,不能', {
-                                        icon: 6,
-                                        offset: 'center'
-                                    });
-                                }
-
-                                $.ajax({
-                                    url: "test1.loop.deleteLoop.action",
-                                    type: "POST",
-                                    datatype: "JSON",
-                                    data: {
-                                        id: num.uid
-                                    },
+                            var l_deployment = select.l_deplayment;
+                            console.log(l_deployment);
+                            if (l_deployment == 1) {
+                                layerAler("已部署不能删除");
+                                continue;
+                            } else {
+                                $.ajax({url: "test1.loop.deleteLoop.action", type: "POST", datatype: "JSON", data: {id: select.uid},
                                     success: function (data) {
                                         var arrlist = data.rs;
                                         if (arrlist.length == 1) {
@@ -464,29 +425,25 @@
                                                 yes: function (index, layero) {
                                                     $("#gravidaTable").bootstrapTable('refresh');
                                                     layer.close(index);
-                                                    // layer.close(index) window.parent.document.getElementsByClassName('J_iframe')[0].src = "device/gatewayConfig.action";
                                                 }
                                             });
                                         }
                                         layer.close(index);
-//                                    
                                     },
                                     error: function () {
                                         alert("提交失败！");
                                     }
                                 });
-                            } else {
-                                layer.alert('只能选择一行进行修改', {
-                                    icon: 6,
-                                    offset: 'center'
-                                });
                             }
 
 
-                        });
-                    }
 
 
+                        }
+
+                        layer.close(index);
+
+                    });
                 });
                 $("#btnmodify1").click(function () {
 

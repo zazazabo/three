@@ -54,6 +54,7 @@
                 var straddr = sprintf("%02d", addrArea[1]) + sprintf("%02d", addrArea[0]) + sprintf("%02d", addrArea[3]) + sprintf("%02d", addrArea[2]);
                 var user = new Object();
                 var ele = {};
+                user.begin = '6A';
                 user.msg = "getStatus";
                 user.res = 1;
                 user.row = vvvv;
@@ -62,6 +63,7 @@
                 user.function = "getMessage";
                 user.addr = straddr; //"02170101";
                 user.data = false;
+                user.end = '6A';
                 parent.parent.sendData(user);
                 //  console.log(user);
                 // var datajson = JSON.stringify(user);
@@ -79,7 +81,7 @@
 
             var bb = $(window).height() - 20;
             console.log(bb);
-            
+
             $('#gravidaTable').bootstrapTable({
                 columns: [
                     {

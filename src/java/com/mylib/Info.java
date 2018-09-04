@@ -239,9 +239,10 @@ public class Info extends HttpServlet {
                 }
                 if (paravalue == null) {
                     Logger.getLogger(ControlServlet.class.getName()).log(Level.INFO, para[i] + ":null");
+                    paravalue="";
                 }
                 xsqlinfo.first = xsqlinfo.first + para[i] + "=" + paravalue + ",";
-                sql = sql.replace(":" + para[i], paravalue);
+                sql = sql.replaceFirst(":" + para[i], paravalue);
             }
         }
         sql = getsqlString(xsql, re, sql, xsqlinfo);
