@@ -356,6 +356,7 @@ function  buicode(comaddr, C, AFN, SEQ, DA, DT, paraArr) {
 
 
     var len1 = 18 - 6 + paraArr.length;   //18是固定长度  6报文头     
+        console.log(len1);
     hexData[1] = len1 << 2 | 2;
     hexData[2] = 0;
     hexData[3] = len1 << 2 | 2;
@@ -483,7 +484,3 @@ function isNumber(val) {
 
 
 
-function isValidIP(ip) {
-    var reg = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/
-    return reg.test(ip);
-} 
