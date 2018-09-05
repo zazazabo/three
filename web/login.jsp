@@ -488,8 +488,8 @@
                             // console.log(data);
                             var arrlist = data.rs;
                             if (arrlist.length == 1) {
-
-                                window.location = "login.main.home.action?name=" + name;
+                                var id = arrlist[0].id;
+                                window.location = "login.main.home.action?id=" + id;
                                 // window.location ="${pageContext.request.contextPath }/main.jsp";
                             } else if (arrlist.length == 0) {
                                 //alert("用户名或密码错误！");
@@ -611,7 +611,7 @@
             <canvas id="demo-canvas" width="1398" height="914"></canvas>
         </div>
 
-        <img src="./img/jkl.png" style="position:absolute;top:0;left:0;z-index:-1;width:100%;height:100%;">
+        <img src="./img/huaming.jpg" style="position:absolute;top:0;left:0;z-index:-1;width:100%;height:100%;">
 <!--        <div class="logo animated bounceInDown" style="display: block;">
              <img src="imgs/login/sz.png"/> 
             <img src="./img/sz-tit.png" class="phoneTit">
