@@ -52,9 +52,8 @@
         }
 
         function gettime(obj) {
-            console.log(obj);
+
             obj.id = obj.val;
-            console.log(obj.domain)
             if (obj.status == "success") {
                 $.ajax({async: false, url: "param.param.updatetime.action", type: "get", datatype: "JSON", data: obj,
                     success: function (data) {
@@ -101,7 +100,12 @@
             }
 
         }
-
+        function getchgtime(obj) {
+            console.log(obj)
+            if (obj.status == "success") {
+                layerAler("设置换日时间和冻结时间成功");
+            }
+        }
         function getAPN(obj) {
             if (obj.status == "success") {
                 layerAler("设置运营商APN成功");
@@ -137,6 +141,8 @@
 
             //flag = setInterval("dealsend()", 1000);
 
+            $('#time4').timespinner('setValue', '00:00');
+            $('#time3').timespinner('setValue', '00:00');
             $('#gravidaTable').bootstrapTable({
                 columns: [
                     {
@@ -203,6 +209,12 @@
                         align: 'center',
                         valign: 'middle'
                     }, {
+                        field: 'flozetime',
+                        title: '冻结时间',
+                        width: 25,
+                        align: 'center',
+                        valign: 'middle'
+                    }, {
                         field: 'online',
                         title: '在线状态',
                         width: 25,
@@ -250,15 +262,7 @@
             $('#gravidaTable').on("check.bs.table", function (field, value, row, element) {
                 var index = row.data('index');
                 value.index = index;
-//                console.log(value);
             });
-            $('#groupegravidaTable').on("check.bs.table", function (field, value, row, element) {
-                var index = row.data('index');
-                value.index = index;
-            });
-            //添加时触发
-
-            //修改时触发
         })
 
         function layerAler(str) {
@@ -336,7 +340,7 @@
             var data = buicode(comaddr, 0x04, 0xAA, num, 0, 4, vv); //01 03 F24    
 
             console.log(data);
-            dealsend2(data, 4, "gettime", comaddr, select.index, 0, select.id);
+            dealsend2("AA", data, 4, "gettime", comaddr, select.index, 0, select.id);
         }
 
         function setsite() {
@@ -447,7 +451,51 @@
         }
 
         function setchgtime() {
+
+
+            var selects = $('#gravidaTable').bootstrapTable('getSelections');
+            if (selects.length == 0) {
+                layerAler("请勾选列表读取");
+                return;
+            }
+
             var obj = $("#form1").serializeObject();
+            var o4 = obj.time4;
+            var o3 = obj.time3;
+            var oo = {"o4": o4, "o3": o3};
+            var a = o4.split(":");
+            var b = o3.split(":");
+
+            var h1 = parseInt(a[0], 16);
+            var m1 = parseInt(a[1], 16);
+
+            var h2 = parseInt(b[0], 16);
+            var m2 = parseInt(b[1], 16);
+            var vv = [];
+            vv.push(h1);
+            vv.push(m1);
+            vv.push(h2);
+            vv.push(m2);
+
+
+
+            console.log(h1);
+            console.log(m1);
+            console.log(h2);
+            console.log(m2);
+
+            var select = selects[0];
+            var comaddr = select.comaddr;
+
+            var num = randnum(0, 9) + 0x70;
+            var data = buicode(comaddr, 0x04, 0xA4, num, 0, 4, vv); //01 03 F24    
+
+            dealsend2("A4", data, 4, "getchgtime", comaddr, select.index, oo, select.id);
+
+
+
+
+
         }
         function setAPN() {
             var selects = $('#gravidaTable').bootstrapTable('getSelections');
@@ -487,6 +535,61 @@
             var data = buicode(comaddr, 0x04, 0xA4, num, 0, 2, vv); //01 03 F24    
             dealsend2("A4", data, 4, "getAPN", comaddr, select.index, apn, select.id);
         }
+
+        function setinspectcb(obj) {
+            console.log(obj);
+            if (obj.status == "success") {
+                layerAler("灯具通信失联巡检次数成功");
+            }
+            if (obj.status == "fail") {
+                layerAler("灯具通信失联巡检次数失败");
+            }
+        }
+        function setinspect() {
+            var selects = $('#gravidaTable').bootstrapTable('getSelections');
+            if (selects.length == 0) {
+                layerAler("请勾选列表读取");
+                return;
+            }
+            var obj = $("#form1").serializeObject();
+            var o = obj.inspect;
+            if (o == "") {
+                layerAler("请填写巡检次数");
+                return;
+            }
+            var vv = [];
+            vv.push(parseInt(o));
+
+
+//            console.log(obj);
+            var select = selects[0];
+            var comaddr = select.comaddr;
+//
+//
+            var num = randnum(0, 9) + 0x70;
+            var data = buicode(comaddr, 0x04, 0xA4, num, 0, 202, vv); //01 03 F24    
+            dealsend2("A4", data, 4, "setinspectcb", comaddr, select.index, apn, select.id);
+        }
+
+        function readinspectcb(obj){
+            console.log(obj);
+        }
+        function readinspect() {
+            var selects = $('#gravidaTable').bootstrapTable('getSelections');
+            if (selects.length == 0) {
+                layerAler("请勾选列表读取");
+                return;
+            }
+            var vv=[];
+            
+            var select = selects[0];
+            var comaddr = select.comaddr;
+            var num = randnum(0, 9) + 0x70;
+            var data = buicode(comaddr, 0x04, 0xAA, num, 0, 202, vv); //01 03 F24    
+            dealsend2("AA", data, 4, "readinspectcb", comaddr, select.index, apn, select.id);
+        }
+
+
     </script>
 </head>
 <body>
@@ -525,16 +628,17 @@
                     <td><span class="label label-success" style="margin-left: 10px;" >换日时间</span></td>
                     <td>
                         &nbsp;&nbsp;&nbsp;&nbsp;
-                        <input id="time4" name="time4" style=" height: 34px; width: 150px; margin-left: 20px;" class="easyui-timespinner">
-                        <!--<input id="multpower" class="form-control" name="multpower" style="width:150px;display: inline; margin-left: 3px;" placeholder="输入主站域名" type="text">-->
+
+                        <input id="time4" name="time4" style=" height: 34px; width: 150px; margin-left: 20px;"  class="easyui-timespinner">
+                    </td>
+                    <td><span class="label label-success" style="margin-left: 10px;" >冻结时间</span></td>
+                    <td>
+                        &nbsp;
+
+                        <input id="time3" name="time3" style=" height: 34px; width: 130px; margin-left: 20px;"  class="easyui-timespinner">
                     </td>
                     <td></td>
                     <td>
-                        <!--<input id="multpower" class="form-control" name="multpower" style="width:150px;display: inline; margin-left: 3px;" placeholder="输入端口" type="text">-->
-                    </td>
-                    <td></td>
-                    <td>
-                        <!--<input id="multpower" class="form-control" name="multpower" value="cmnet" style="width:150px;display: inline; margin-left: 3px;" placeholder="输入APN" type="text">-->
                     </td>
                     <td>
                         <button  type="button" style="margin-left:20px;" onclick="setchgtime()" class="btn btn-success">设置换日时间</button>
@@ -548,7 +652,31 @@
 
 
 
+        <table  style=" margin-top: 10px;">
+            <tbody>
+                <tr >
+                    <td><span class="label label-success" style="margin-left: 10px;" >通信巡检次数</span></td>
+                    <td>
+                        <input id="inspect" class="form-control" name="inspect" value="" style="width:150px;display: inline; margin-left: 3px;" placeholder="灯具通信失联巡检次数" type="text">
+                    </td>
+                    <td>
+                        <button  type="button" style="margin-left:20px;" onclick="setinspect()" class="btn btn-success">设置巡检次数</button>
+                    </td>
+                    <td>
+                        <button  type="button" style="margin-left:20px;" onclick="readinspect()" class="btn btn-success">读取巡检次数</button>
+                    </td>
+                    <td></td>
+                    <td>
+                    </td>
+                    <td>
 
+                    </td>
+                    <td>
+
+                    </td>
+                </tr> 
+            </tbody>
+        </table>
 
 
 
