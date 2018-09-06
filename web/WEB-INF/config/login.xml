@@ -19,8 +19,8 @@
         <xhand id="home" rtn="main.jsp" rtnype="PGE">
             
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_user WHERE   @CONDITION " var="rs">
-                <xflt id="CONDITION" nrp="" tpl="@name">
-                    <xfltpara id="name" nrp="1=1" para="name" sql="name = ':name'">
+                <xflt id="CONDITION" nrp="" tpl="@id">
+                    <xfltpara id="id" nrp="1=1" para="id" sql="id = ':id'">
                     </xfltpara>
                 </xflt>      
             </xsql>       
@@ -187,6 +187,20 @@
                 </xflt>      
             </xsql>            
         </xhand>
+    </xform>
+    
+    <xform desc="权限管理" id="rolemanage">
+         <xhandle desc="权限分配" id="getpower" rtn="rs" rtnype="JSON">
+            <xsql id="a1" para="enable"  tpe="DDL" tpl=" update t_role set enable=':enable' where @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@code AND @roletype">
+                    <xfltpara id="code" nrp="1=1" para="code" sql="code=:code">
+                    </xfltpara>
+                    <xfltpara id="roletype" nrp="1=1" para="roletype" sql="roletype=:roletype">
+                    </xfltpara>
+                </xflt>
+                
+            </xsql>
+        </xhandle> 
     </xform>
     
     

@@ -3,13 +3,13 @@
        
     <xform desc="参数模块" id="param">
 
-        <xhandle desc="更新站点信息" id="updatesite" rtn="rs" rtnype="JSON">
+        <xhandle desc="查询站点信息" id="updatesite" rtn="rs" rtnype="JSON">
             <xsql id="a1" para="domain,apn,dnsip,dnsport,dnsip_,dnsport_,siteip,siteport,siteip_,siteport_" tpe="DDL" tpl="update t_baseinfo set domain=':domain',apn=':apn',dnsip=':dnsip',dnsport=:dnsport,dnsip_=':dnsip_',dnsport_=:dnsport_, siteip=':siteip',siteport=:siteport,siteip_=':siteip_',siteport_=:siteport_ where @CONDITION " var="rs">
                 <xflt id="CONDITION"  tpl="@id AND @comaddr  ">
                     <xfltpara id="id" nrp="1=1" para="id" sql="id=:id">
                     </xfltpara>  
 
-                     <xfltpara id="comaddr" nrp="1=1" para="comaddr" sql="comaddr=':comaddr'">
+                    <xfltpara id="comaddr" nrp="1=1" para="comaddr" sql="comaddr=':comaddr'">
                     </xfltpara>        
                 </xflt>                            
             </xsql>
@@ -18,12 +18,12 @@
 
 
         <xhandle desc="查询换日时间" id="updatetime" rtn="rs" rtnype="JSON">
-            <xsql id="a1" para="chgdaytime" tpe="DDL" tpl="update t_baseinfo set chgdaytime=':chgdaytime' where @CONDITION " var="rs">
+            <xsql id="a1" para="chgdaytime,flozetime" tpe="DDL" tpl="update t_baseinfo set chgdaytime=':chgdaytime',flozetime=':flozetime' where @CONDITION " var="rs">
                 <xflt id="CONDITION"  tpl="@id AND @comaddr  ">
                     <xfltpara id="id" nrp="1=1" para="id" sql="id=:id">
                     </xfltpara>  
 
-                     <xfltpara id="comaddr" nrp="1=1" para="comaddr" sql="comaddr=':comaddr'">
+                    <xfltpara id="comaddr" nrp="1=1" para="comaddr" sql="comaddr=':comaddr'">
                     </xfltpara>        
                 </xflt>                            
             </xsql>

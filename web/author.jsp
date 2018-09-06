@@ -32,7 +32,7 @@
 
 
         <script>
-
+            //添加角色
             function addrole() {
                 var name = $("#rolename").val();
                 if (name == "") {
@@ -65,6 +65,7 @@
                                 });
 
                             }
+                            alert("添加成功！");
                         }
                     },
                     error: function () {
@@ -189,10 +190,15 @@
                 var roletype = $("#role").combobox('getValue');
                 var name = $("#role").combobox('getText');
 
-                if (nodes.length == 0) {
-                    layerAler("请勾选菜单列表和选中要分配权限的用户");
+                if ($("#role").val()=="") {
+                    layerAler("请选择要分配权限的角色");
                     return;
                 }
+                if (nodes.length == 0) {
+                    layerAler("请勾选菜单列表");
+                    return;
+                }
+               
                 //console.log(nodes);
                 layer.confirm('确认要分配权限吗？', {
                     btn: ['确定', '取消']//按钮
@@ -203,23 +209,22 @@
                         if (nodes[i].id == "0") {
                             continue;
                         }
-                        if (nodes[i].isParent == false) {
                             var obj1 = {};
                             obj1.enable = 1;
                             obj1.name = name;
                             obj1.code = nodes[i].id;
                             obj1.roletype = roletype;
-                            console.log(obj1);
-                            $.ajax({async: false, url: "formuser.role.updaterole.action", type: "POST", datatype: "JSON", data: obj1,
+                            //console.log(obj1);
+                            $.ajax({async: false, url: "login.rolemanage.getpower.action", type: "POST", datatype: "JSON", data: obj1,
                                 success: function (data) {
                                     console.log(data);
                                 },
                                 error: function () {
                                     alert("提交失败！");
                                 }
-                            });
-                        }
+                            });                          
                     }
+                     layerAler("权限分配成功！");
 
 
 
@@ -418,16 +423,17 @@
             $(function () {
                 $('#role').combobox({
                     onSelect: function (record) {
-
                         var objrole = {role: record.id};
                         $.ajax({type: "post", url: "formuser.mainmenu.querysub.action", dataType: "json", data: objrole,
                             success: function (datas) {
+                                console.log(datas);
                                 var zTreeOjb = $.fn.zTree.getZTreeObj("treeDemo");
                                 zTreeOjb.checkAllNodes(false);
                                 datas.forEach(function (data) {
+                                    console.log(data);
                                     var m_code = data.m_code;
                                     var node = zTreeOjb.getNodeByParam("id", m_code);
-                                    zTreeOjb.checkNode(node, true, true);
+                                    zTreeOjb.checkNode(node, true, false);
                                     zTreeOjb.updateNode(node);
                                 });
                             }
@@ -490,7 +496,7 @@
                         </div>
                         <div class="col-xs-4">
                             <span style="margin-left:20px;">角色名称</span>&nbsp;
-                            <input id="rolename" class="form-control" name="rolename" style="width:150px;display: inline;" placeholder="请输入网关名称" type="text">
+                            <input id="rolename" class="form-control" name="rolename" style="width:150px;display: inline;" placeholder="请输入角色名称" type="text">
                             <button id="btnrole" onclick="addrole()" class="btn btn-success">生成角色</button>
                         </div>
                     </div>
