@@ -8,31 +8,9 @@
 <!DOCTYPE html>
 <html xmlns:f="http://java.sun.com/jsf/core">
     <head>
-          <%@include  file="js.jspf" %>
+        <%@include  file="js.jspf" %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<!--        <script src="select2-developr/dist/js/select2.js"></script>
-        <link href="select2-develop/dist/css/select2.css" rel="stylesheet" />
-
-
-
-        <link rel="stylesheet" type="text/css" href="gatewayconfig_files/bootstrap.css">
-        <link rel="stylesheet" type="text/css" href="gatewayconfig_files/bootstrap-table.css">
-        <script type="text/javascript" src="gatewayconfig_files/jquery.js"></script>
-        <script type="text/javascript" src="gatewayconfig_files/bootstrap.js"></script>
-        <script type="text/javascript" src="gatewayconfig_files/bootstrap-table.js"></script>
-        <script type="text/javascript" src="gatewayconfig_files/bootstrap-table-zh-CN.js"></script>
-        <link type="text/css" href="gatewayconfig_files/basicInformation.css" rel="stylesheet">
-         easyui 
-        <link href="gatewayconfig_files/easyui.css" rel="stylesheet" type="text/css" switch="switch-style">
-        <link href="gatewayconfig_files/icon.css" rel="stylesheet" type="text/css">
-        <script src="gatewayconfig_files/jquery_002.js" type="text/javascript"></script>
-        <script src="gatewayconfig_files/easyui-lang-zh_CN.js" type="text/javascript"></script>
-        <script type="text/javascript" src="gatewayconfig_files/selectAjaxFunction.js"></script>
-        <script type="text/javascript" src="gatewayconfig_files/bootstrap-multiselect.js"></script>
-        <link rel="stylesheet" href="gatewayconfig_files/bootstrap-multiselect.css" type="text/css">
-        <link rel="stylesheet" type="text/css" href="gatewayconfig_files/layer.css">
-        <script type="text/javascript" src="gatewayconfig_files/layer.js"></script>-->
         <script type="text/javascript" src="js/genel.js"></script>
         <script>
             function layerAler(str) {
@@ -43,11 +21,11 @@
             }
 
             function editloopplan_finish() {
-                $("#select_type_edit").attr("disabled", false);
+//                $("#select_type_edit").attr("disabled", false);
                 var obj = $("#Form_edit").serializeObject();
-                obj.p_outtime = obj.txt_p_outtime_edit;
+                obj.p_outtime = obj.outtime_edit;
                 obj.p_name = obj.txt_p_name_edit;
-                obj.p_intime = obj.txt_p_intime_edit;
+                obj.p_intime = obj.intime_edit;
                 obj.id = obj.txt_hidden_id;
                 $.ajax({async: false, url: "test1.plan.editloop.action", type: "get", datatype: "JSON", data: obj,
                     success: function (data) {
@@ -75,23 +53,27 @@
                     return false;
                 }
 
+
+//
                 var select = selects[0];
-                $("#select_type_edit").attr("disabled", false);
-                $("#select_type_edit").val(select.p_type);
-                $("#select_type_edit").attr("disabled", true);
+                console.log(select);
+                $('#intime_edit').timespinner('setValue', select.p_intime);
+                $('#outtime_edit').timespinner('setValue', select.p_outtime);
                 $("#txt_hidden_id").val(select.id);
                 if (select.p_type == "0") {
+//                    layerAler("bbb");
                     $("#tr_jw_hide").hide();
-                } else if (select.p_type == 1) {
+//                    $("#select_type_edit").combobox({disabled: false});
+                    $('#select_type_edit').combobox('select', '0');
+                    $("#select_type_edit").combobox({disabled: true});
+                } else if (select.p_type == "1") {
+//                    layerAler("ddd");
+                        console.log("经纬度");
                     $("#tr_time_hide").hide();
+                    $("#select_type_edit").combobox({disabled: true});
+                    $('#select_type_edit').combobox('setValue', '1');
+                    $("#select_type_edit").combobox({disabled: false});
                 }
-
-//                 p_outtime,p_intime,p_name
-                $("#txt_p_intime_edit").val(select.p_intime);
-
-                $("#txt_p_outtime_edit").val(select.p_outtime);
-                $("#txt_p_name_edit").val(select.p_name);
-
                 $("#modal_plan_loop").modal();
                 return false;
             }
@@ -117,26 +99,53 @@
             }
 
             function checkPlanLoopAdd() {
-                var obj = $("#eqpTypeForm").serializeObject();
+                var obj = $("#addform").serializeObject();
                 console.log(obj);
-                obj.p_outtime = obj.txt_p_outtime;
-                obj.p_intime = obj.txt_p_intime;
+                obj.p_outtime = "";
+                obj.p_outtime = "";
+                obj.p_Longitude = "";
+                obj.p_latitude = "";
+
                 obj.p_name = obj.txt_p_name;
                 obj.p_type = obj.select_type;
+
+
+
+
+
+                if (obj.p_type == 1) {
+
+                    if (obj.longitudem26m == "" || obj.longitudem26s == "" || obj.latitudem26d == "") {
+                        layerAler("经度不能为空");
+                        return;
+                    }
+
+                    if (obj.latitudem26d == "" || obj.latitudem26m == "" || obj.latitudem26s == "") {
+                        layerAler("纬度不能为空");
+                        return;
+                    }
+                    obj.p_Longitude = obj.longitudem26m + "." + obj.longitudem26s + "." + obj.latitudem26d;
+                    obj.p_latitude = obj.latitudem26d + "." + obj.latitudem26m + "." + obj.latitudem26s;
+
+
+                }
+
+
+
                 if (obj.p_type == 0) {
                     if (obj.p_intime == "" || obj.p_outtime == "") {
                         layerAler("断开和闭合时间不能为空");
                         return false;
                     }
-
+                    obj.p_outtime = obj.outtime;
+                    obj.p_intime = obj.intime;
                 }
                 var ret = false;
-
                 $.ajax({async: false, url: "test1.plan.addloop.action", type: "get", datatype: "JSON", data: obj,
                     success: function (data) {
                         var arrlist = data.rs;
                         if (arrlist.length == 1) {
-                            ret = true;
+                            ret = false;
                         }
                     },
                     error: function () {
@@ -149,21 +158,63 @@
 
 
             $(function () {
+
+                $('#intime').timespinner('setValue', '00:00');
+                $('#outtime').timespinner('setValue', '23:00');
+
+
                 $("#tr_jw_hide_add").hide();
 
-                $("#select_type").change(function () {
-                    var val = $(this).val();
-                    if (val == 0) {
-                        $("#tr_jw_hide_add").hide();
-                        $("#tr_time_hide_add").show();
-                    } else if (val == 1) {
-                        $("#tr_jw_hide_add").show();
-                        $("#tr_time_hide_add").hide();
+                $('#select_type').combobox({
+                    onSelect: function (record) {
+                        if (record.value == "0") {
+                            $("#tr_jw_hide_add").hide();
+                            $("#tr_time_hide_add").show();
+                        }
+                        if (record.value == "1")
+                        {
+                            $("#tr_jw_hide_add").show();
+                            $("#tr_time_hide_add").hide();
+                        }
+                        console.log(record);
                     }
                 });
 
-                var p_type = $("#select_type_query").val();
-                var url = "test1.plan.getLoopPlan.action?p_attr=0&p_type=" + p_type;
+
+                $("#select_type_query").combobox({
+                    onSelect: function (record) {
+                        var url = "test1.plan.getLoopPlan.action";
+                        var obj = {p_type: record.value};
+                        var opt = {
+                            url: url,
+                            silent: true,
+                            query: obj
+                        };
+
+                        $("#table_loop").bootstrapTable('refresh', opt);
+
+
+                        if (record.value == "0") {
+                            $("#table_loop").bootstrapTable('hideColumn', 'p_Longitude');
+                            $("#table_loop").bootstrapTable('hideColumn', 'p_latitude');
+                            $("#table_loop").bootstrapTable('showColumn', 'p_outtime');
+                            $("#table_loop").bootstrapTable('showColumn', 'p_intime');
+                        }
+                        if (record.value == "1")
+                        {
+                            $("#table_loop").bootstrapTable('hideColumn', 'p_outtime');
+                            $("#table_loop").bootstrapTable('hideColumn', 'p_intime');
+
+                            $("#table_loop").bootstrapTable('showColumn', 'p_Longitude');
+                            $("#table_loop").bootstrapTable('showColumn', 'p_latitude');
+                        }
+//                        console.log(record);
+                    }
+                })
+
+                var p_type = $("#select_type_query").combobox('getValue');
+//                console.log(p_type);
+                var url = "test1.plan.getLoopPlan.action";
                 $('#table_loop').bootstrapTable({
                     url: url,
                     clickToSelect: true,
@@ -249,38 +300,13 @@
                             search: params.search,
                             skip: params.offset,
                             limit: params.limit,
-                            type_id: "1"    
+                            type_id: "1",
+                            p_attr: "0",
+                            p_type: p_type   
                         };      
                         return temp;  
                     },
                 });
-
-                $("#table_loop").bootstrapTable('hideColumn', 'p_Longitude');
-                $("#table_loop").bootstrapTable('hideColumn', 'p_latitude');
-
-                $("#select_type_query").change(function () {
-                    var val = $(this).val();
-                    var p_type = $(this).val();
-                    var url = "test1.plan.getLoopPlan.action?p_attr=0&p_type=" + p_type;
-
-                    $("#event_table").bootstrapTable('refreshOptions', {url: url});
-                    if (val == "0") {
-                        $("#table_loop").bootstrapTable('hideColumn', 'p_Longitude');
-                        $("#table_loop").bootstrapTable('hideColumn', 'p_latitude');
-                        $("#table_loop").bootstrapTable('showColumn', 'p_outtime');
-                        $("#table_loop").bootstrapTable('showColumn', 'p_intime');
-
-                    } else if (val == "1") {
-                        $("#table_loop").bootstrapTable('hideColumn', 'p_outtime');
-                        $("#table_loop").bootstrapTable('hideColumn', 'p_intime');
-
-                        $("#table_loop").bootstrapTable('showColumn', 'p_Longitude');
-                        $("#table_loop").bootstrapTable('showColumn', 'p_latitude');
-                    }
-
-                });
-                console.log(options);
-
             })
 
         </script>
@@ -292,38 +318,44 @@
 
     <body>
         <!--<div style=" margin-left: 10px" class="panel panel-info">-->
-            <!--<div class="panel-heading">回路方案</div>-->
+        <!--<div class="panel-heading">回路方案</div>-->
 
 
 
 
 
-            <div class="btn-group zuheanniu" id="btn_add" style="float:left;position:relative;z-index:100;margin:12px 0 0 10px;">
-                <!-- data-toggle="modal" data-target="#pjj" -->
-                <button class="btn btn-success ctrol" data-toggle="modal" data-target="#modal_add"  >
-                    <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;添加
-                </button>
-                <button class="btn btn-primary ctrol" type="button"   onclick="editloopplan();"  >
-                    <span class="glyphicon glyphicon-pencil"></span>&nbsp;编辑
-                </button>
-                <button class="btn btn-danger ctrol" onclick="deleteloopplan();" >
-                    <span class="glyphicon glyphicon-trash"></span>&nbsp;删除
-                </button>
-                <span style="margin-left:20px;">方案类型&nbsp;</span>
-                <span class="menuBox">
-                    <select name="select_type_query" id="select_type_query" class="input-sm" style="width:150px;">
-                        <option value="0">时间</option>
-                        <option value="1">经纬度</option>
-                    </select>
-                </span>  
+        <div class="btn-group zuheanniu" id="btn_add" style="float:left;position:relative;z-index:100;margin:12px 0 0 10px;">
+            <!-- data-toggle="modal" data-target="#pjj" -->
+            <button class="btn btn-success ctrol" data-toggle="modal" data-target="#modal_add"  >
+                <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;添加
+            </button>
+            <button class="btn btn-primary ctrol" type="button"   onclick="editloopplan();"  >
+                <span class="glyphicon glyphicon-pencil"></span>&nbsp;编辑
+            </button>
+            <button class="btn btn-danger ctrol" onclick="deleteloopplan();" >
+                <span class="glyphicon glyphicon-trash"></span>&nbsp;删除
+            </button>
+            <span style="margin-left:20px;">方案类型&nbsp;</span>
+            <span class="menuBox">
 
+                <select class="easyui-combobox" data-options="editable:false" id="select_type_query" name="select_type_query" style="width:150px; height: 34px">
+                    <option value="0">时间</option>
+                    <option value="1">经纬度</option>           
+                </select>
+
+                <!--                <select name="select_type_query" id="select_type_query" class="input-sm" style="width:150px;">
+                                    <option value="0">时间</option>
+                                    <option value="1">经纬度</option>
+                                </select>-->
+            </span>  
+
+        </div>
+        <div class="bootstrap-table">
+            <div class="fixed-table-container" style="height: 350px; padding-bottom: 0px;">
+                <table id="table_loop" style="width:100%;" class="text-nowrap table table-hover table-striped">
+                </table> 
             </div>
-            <div class="bootstrap-table">
-                <div class="fixed-table-container" style="height: 350px; padding-bottom: 0px;">
-                    <table id="table_loop" style="width:100%;" class="text-nowrap table table-hover table-striped">
-                    </table> 
-                </div>
-            </div>
+        </div>
 
 
         <!--</div>-->
@@ -343,7 +375,7 @@
                         <h4 class="modal-title" style="display: inline;">回路方案添加</h4>
                     </div>
 
-                    <form action="" method="POST" id="eqpTypeForm" onsubmit="return checkPlanLoopAdd()">      
+                    <form action="" method="POST" id="addform" onsubmit="return checkPlanLoopAdd()">      
                         <div class="modal-body">
                             <table>
                                 <tbody>
@@ -351,9 +383,9 @@
                                         <td>
                                             <span style="margin-left:20px;">方案类型&nbsp;</span>
                                             <span class="menuBox">
-                                                <select name="select_type" id="select_type" class="input-sm" style="width:150px;">
+                                                <select class="easyui-combobox" data-options="editable:false" id="select_type" name="select_type" style="width:150px; height: 34px">
                                                     <option value="0">时间</option>
-                                                    <option value="1">经纬度</option>
+                                                    <option value="1">经纬度</option>           
                                                 </select>
                                             </span>  
                                         </td>
@@ -368,11 +400,13 @@
                                     <tr id="tr_time_hide_add">
                                         <td>
                                             <span style="margin-left:20px;">闭合时间</span>&nbsp;
-                                            <input id="txt_p_intime" class="form-control"  name="txt_p_intime" style="width:150px;display: inline;" placeholder="请输入闭合时间" type="text"></td>
+                                            <!--<input id="intime" class="form-control"  name="intime" style="width:150px;display: inline;" placeholder="请输入闭合时间" type="text">-->
+                                            <input id="intime" name="intime" style=" height: 34px; width: 150px;  "  class="easyui-timespinner">
+                                        </td>
                                         <td></td>
                                         <td>
                                             <span style="margin-left:20px;">断开时间&nbsp;</span>
-                                            <input id="txt_p_outtime" class="form-control" name="txt_p_outtime" style="width:150px;display: inline;" placeholder="请输入断开时间" type="text">
+                                            <input id="outtime" name="outtime" style=" height: 34px; width: 150px;  "  class="easyui-timespinner">
                                         </td>
                                         </td>
                                     </tr>                                   
@@ -432,10 +466,13 @@
                                         <td>
                                             <span style="margin-left:20px;">方案类型&nbsp;</span>
                                             <span class="menuBox">
-                                                <select name="select_type_edit" disabled="true" id="select_type_edit" class="input-sm" style="width:150px;">
+
+
+                                                <select class="easyui-combobox" data-options="editable:false" id="select_type_edit" name="select_type_edit" style="width:150px; height: 34px">
                                                     <option value="0">时间</option>
-                                                    <option value="1">经纬度</option>
+                                                    <option value="1">经纬度</option>           
                                                 </select>
+
                                             </span>  
                                         </td>
                                         <td></td>
@@ -449,11 +486,15 @@
                                     <tr id="tr_time_hide">
                                         <td>
                                             <span style="margin-left:20px;">闭合时间</span>&nbsp;
-                                            <input id="txt_p_intime_edit" class="form-control"  name="txt_p_intime_edit" style="width:150px;display: inline;" placeholder="请输入闭合时间" type="text"></td>
+                                            <!--<input id="intime_edit" class="form-control"  name="intime_edit" style="width:150px;display: inline;" placeholder="请输入闭合时间" type="text">-->
+                                            <input id="intime_edit" name="intime_edit" style=" height: 34px; width: 150px;  "  class="easyui-timespinner">
+
+                                        </td>
                                         <td></td>
                                         <td>
                                             <span style="margin-left:20px;">断开时间&nbsp;</span>
-                                            <input id="txt_p_outtime_edit" class="form-control" name="txt_p_outtime_edit" style="width:150px;display: inline;" placeholder="请输入断开时间" type="text">
+                                            <!--<input id="outtime_edit" class="form-control" name="outtime_edit" style="width:150px;display: inline;" placeholder="请输入断开时间" type="text">-->
+                                            <input id="outtime_edit" name="outtime_edit" style=" height: 34px; width: 150px;  "  class="easyui-timespinner">
                                         </td>
                                         </td>
                                     </tr>                                   

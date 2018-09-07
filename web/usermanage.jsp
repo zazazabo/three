@@ -19,29 +19,31 @@
 
         <script>
             $(function () {
-                $("#add").attr("disabled",true);
-                $("#update").attr("disabled",true);
-                $("#del").attr("disabled",true);
+                $("#add").attr("disabled", true);
+                $("#update").attr("disabled", true);
+                $("#del").attr("disabled", true);
                 var obj = {};
-                obj.m_parent =8001  ;// ${param.m_parent};
+                obj.code = ${param.m_parent};
+                obj.roletype = ${param.role};
                 $.ajax({async: false, url: "login.usermanage.power.action", type: "get", datatype: "JSON", data: obj,
                     success: function (data) {
-                        var rs=data.rs;
-                        if(rs.length>0){
+                        var rs = data.rs;
+                        if (rs.length > 0) {
                             for (var i = 0; i < rs.length; i++) {
-                                if(rs[i].m_code=="800101" && rs[i].m_type !=1){
-                                     $("#add").attr("disabled",false);
+
+                                if (rs[i].code == "800101" && rs[i].enable != 0) {
+                                    $("#add").attr("disabled", false);
                                     continue;
                                 }
-                                if(rs[i].m_code=="800102" && rs[i].m_type !=1){
-                                     $("#update").attr("disabled",false);
+                                if (rs[i].code == "800102" && rs[i].enable != 0) {
+                                    $("#update").attr("disabled", false);
                                     continue;
                                 }
-                                if(rs[i].m_code=="800103" && rs[i].m_type !=1){
-                                     $("#del").attr("disabled",false);
+                                if (rs[i].code == "800103" && rs[i].enable != 0) {
+                                    $("#del").attr("disabled", false);
                                     continue;
                                 }
-}
+                            }
                         }
 
                     },
@@ -136,12 +138,12 @@
             }
 
 
-            function send(){
-                var obj={};
-                obj.name="aa";
-                obj.age=33;
+            function send() {
+                var obj = {};
+                obj.name = "aa";
+                obj.age = 33;
                 alert("ddddd");
-               // parent.parent.sendData(obj);
+                // parent.parent.sendData(obj);
 //                alert("dd");
             }
             function  checkUserAdd() {
@@ -153,12 +155,13 @@
 
                 obj.password = hex_md5("123");
                 var isflesh = false;
-                $.ajax({url: "formuser.user.addUser.action", async: false, type: "get", datatype: "JSON", data: obj,
+                $.ajax({url: "login.usermanage.addUser.action", async: false, type: "get", datatype: "JSON", data: obj,
                     success: function (data) {
                         var arrlist = data.rs;
                         if (arrlist.length == 1) {
+                            layerAler("添加成功！");
                             isflesh = true;
-//                            $("#gravidaTable").bootstrapTable('refresh');
+                            // $("#gravidaTable").bootstrapTable('refresh');
                         }
                     },
                     error: function () {
@@ -175,7 +178,6 @@
                     return;
                 }
                 var select = selects[0];
-                console.log(select);
                 $("#name_edit").val(select.name);
                 $("#sex_edit").val(select.sex);
                 $("#department_edit").val(select.department);
@@ -183,6 +185,8 @@
                 $("#phone_edit").val(select.phone);
                 $("#id").val(select.id);
                 $("#pjj2").modal();
+                $("#updaterole").combobox('setValue', select.m_code);
+                $("#pidedt").combobox('setValue', select.pid);
             }
 
             function editaction() {
@@ -194,13 +198,15 @@
                 formobj.phone = formobj.phone_edit;
                 formobj.sex = formobj.sex_edit;
                 formobj.pid = formobj.pidedt;
-//                console.log(formobj);
+                formobj.m_code = formobj.up_role;
 
-                $.ajax({url: "formuser.user.editUser.action", async: false, type: "get", datatype: "JSON", data: formobj,
+                $.ajax({url: "login.usermanage.updatePwd.action", async: false, type: "get", datatype: "JSON", data: formobj,
                     success: function (data) {
                         var arrlist = data.rs;
                         if (arrlist.length == 1) {
+                            layerAler("修改成功");
                             $("#gravidaTable").bootstrapTable('refresh');
+                            $("#pjj2").modal('hide');  //手动关闭
                         }
                     },
                     error: function () {
@@ -257,12 +263,8 @@
             </button>
             <button class="btn btn-danger ctrol" onclick="deleteUser();" id="del" >
                 <span class="glyphicon glyphicon-trash"></span>&nbsp;删除
-            </button> 
-            
-                 <button class="btn btn-danger ctrol" onclick="send();" >
-                <span class="glyphicon glyphicon-trash"></span>&nbsp;test
-            </button>        
-            
+            </button>       
+
         </div>
         <div class="bootstrap-table">
             <div class="fixed-table-container" style="height: 350px; padding-bottom: 0px;">
@@ -270,153 +272,164 @@
                 </table>  
             </div>
         </div>
-    </div>
 
 
 
-    <!-- 添加 -->
-    <div class="modal" id="pjj">
-        <div class="modal-dialog">
-            <div class="modal-content" style="min-width:700px;">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span style="font-size:20px ">×</span></button>
-                    <span class="glyphicon glyphicon-floppy-disk" style="font-size: 20px"></span>
-                    <h4 class="modal-title" style="display: inline;">添加用户</h4></div>
+        <!-- 添加 -->
+        <div class="modal" id="pjj" data-backdrop="static">
+            <div class="modal-dialog">
+                <div class="modal-content" style="min-width:700px;">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span style="font-size:20px ">×</span></button>
+                        <span class="glyphicon glyphicon-floppy-disk" style="font-size: 20px"></span>
+                        <h4 class="modal-title" style="display: inline;">添加用户</h4></div>
 
-                <form action="" method="POST" id="Form_User" onsubmit="return checkUserAdd()">      
-                    <div class="modal-body">
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <span style="margin-left:20px;">名字</span>&nbsp;
-                                        <input id="name"    class="form-control"  name="name" style="width:150px;display: inline;" placeholder="请输入名字" type="text"></td>
-                                    <td></td>
-                                    <td>
-                                        <span style="margin-left:10px;">姓别&nbsp;</span>
-                                        <span class="menuBox">
-                                            <select name="sex" id="sex"  style="width:150px;">
-                                                <option value="男">男</option>
-                                                <option value="女">女</option>
-                                            </select>
-                                        </span>    
-                                    </td>
-                                </tr>
+                    <form action="" method="POST" id="Form_User" onsubmit="return checkUserAdd()">      
+                        <div class="modal-body">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <span style="margin-left:20px;">名字</span>&nbsp;
+                                            <input id="name"    class="form-control"  name="name" style="width:150px;display: inline;" placeholder="请输入名字" type="text"></td>
+                                        <td></td>
+                                        <td>
+                                            <span style="margin-left:10px;">姓别&nbsp;</span>
+                                            <span class="menuBox">
+                                                <select name="sex" id="sex"  style="width:150px;">
+                                                    <option value="男">男</option>
+                                                    <option value="女">女</option>
+                                                </select>
+                                            </span>    
+                                        </td>
+                                    </tr>
 
-                                <tr>
-                                    <td>
-                                        <span style="margin-left:20px;">电话</span>&nbsp;
-                                        <input id="phone" class="form-control"  name="phone" style="width:150px;display: inline;" placeholder="请输入电话" type="text"></td>
-                                    <td></td>
-                                    <td>
-                                        <span style="margin-left:10px;">邮箱&nbsp;</span>
-                                        <input id="email" class="form-control" name="email" style="width:150px;display: inline;" placeholder="请输入邮箱" type="text"></td>
-                                    </td>
-                                </tr>                                   
+                                    <tr>
+                                        <td>
+                                            <span style="margin-left:20px;">电话</span>&nbsp;
+                                            <input id="phone" class="form-control"  name="phone" style="width:150px;display: inline;" placeholder="请输入电话" type="text"></td>
+                                        <td></td>
+                                        <td>
+                                            <span style="margin-left:10px;">邮箱&nbsp;</span>
+                                            <input id="email" class="form-control" name="email" style="width:150px;display: inline;" placeholder="请输入邮箱" type="text"></td>
+                                        </td>
+                                    </tr>                                   
 
-                                <tr>
-                                    <td>
-                                        <span style="margin-left:20px;">部门</span>&nbsp;
-                                        <input id="department" class="form-control"  name="department" style="width:150px;display: inline;" placeholder="请输入电话" type="text"></td>
-                                    <td></td>
-                                    <td>
-                                        <span style="margin-left:10px;">项目&nbsp;</span>
-                                        <input id="pid" class="easyui-combobox" name="pid" style="width:150px; height: 34px" 
-                                               data-options="onLoadSuccess:function(data){
-                                               $(this).select(0);
-                                               },editable:true,valueField:'id', textField:'text',url:'formuser.project.getProject.action' " />
+                                    <tr>
+                                        <td>
+                                            <span style="margin-left:20px;">部门</span>&nbsp;
+                                            <input id="department" class="form-control"  name="department" style="width:150px;display: inline;" placeholder="请输入电话" type="text"></td>
+                                        <td></td>
+                                        <td>
+                                            <span style="margin-left:10px;">项目&nbsp;</span>
+                                            <input id="pid" class="easyui-combobox" name="pid" style="width:150px; height: 34px" 
+                                                   data-options="onLoadSuccess:function(data){
+                                                   $(this).select(0);
+                                                   },editable:true,valueField:'id', textField:'text',url:'formuser.project.getProject.action' " />
 
-                                    </td>
-                                </tr>                               
+                                        </td>
+                                    </tr> 
+                                    <tr>
+                                        <td>
+                                            <span style="margin-left:20px;">角色</span>&nbsp;
+                                            <input id="role" class="easyui-combobox" name="m_code" style="width:150px; height: 34px" data-options="editable:true,valueField:'id', textField:'text',url:'formuser.mainmenu.rolemenu.action'" />
+                                        </td>
+                                        <td></td>
+                                    </tr>
 
 
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- 注脚 -->
-                    <div class="modal-footer">
-                        <!-- 添加按钮 -->
-                        <button id="tianjia1" type="submit" class="btn btn-primary">添加</button>
-                        <!-- 关闭按钮 -->
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button></div>
-                </form>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- 注脚 -->
+                        <div class="modal-footer">
+                            <!-- 添加按钮 -->
+                            <button id="tianjia1" type="submit" class="btn btn-primary">添加</button>
+                            <!-- 关闭按钮 -->
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button></div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- 修改 -->
-    <div class="modal" id="pjj2">
-        <div class="modal-dialog">
-            <div class="modal-content" style="min-width:700px;">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span style="font-size:20px ">×</span></button>
-                    <span class="glyphicon glyphicon-floppy-disk" style="font-size: 20px"></span>
-                    <h4 class="modal-title" style="display: inline;">修改灯具配置</h4></div>
-                <form action="" method="POST" id="Form_Edit" onsubmit="return checkLampModify()">     
-                    <input type="hidden" id="id" name="id" />
-                    <div class="modal-body">
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <span style="margin-left:20px;">名字</span>&nbsp;
-                                        <input id="name_edit" readonly="true"   class="form-control"  name="name_edit" style="width:150px;display: inline;" placeholder="请输入名字" type="text"></td>
-                                    <td></td>
-                                    <td>
-                                        <span style="margin-left:10px;">姓别&nbsp;</span>
-                                        <span class="menuBox">
-                                            <select name="sex_edit" id="sex_edit"  style="width:150px;">
-                                                <option value="男">男</option>
-                                                <option value="女">女</option>
-                                            </select>
-                                        </span>    
-                                    </td>
-                                </tr>
+        <!-- 修改 -->
+        <div class="modal" id="pjj2" data-backdrop="static">
+            <div class="modal-dialog">
+                <div class="modal-content" style="min-width:700px;">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span style="font-size:20px ">×</span></button>
+                        <span class="glyphicon glyphicon-floppy-disk" style="font-size: 20px"></span>
+                        <h4 class="modal-title" style="display: inline;">修改用户信息</h4></div>
+                    <form action="" method="POST" id="Form_Edit" onsubmit="return checkLampModify()">     
+                        <input type="hidden" id="id" name="id" />
+                        <div class="modal-body">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <span style="margin-left:20px;">名字</span>&nbsp;
+                                            <input id="name_edit" readonly="true"   class="form-control"  name="name_edit" style="width:150px;display: inline;" placeholder="请输入名字" type="text"></td>
+                                        <td></td>
+                                        <td>
+                                            <span style="margin-left:10px;">姓别&nbsp;</span>
+                                            <span class="menuBox">
+                                                <select name="sex_edit" id="sex_edit"  style="width:150px;">
+                                                    <option value="男">男</option>
+                                                    <option value="女">女</option>
+                                                </select>
+                                            </span>    
+                                        </td>
+                                    </tr>
 
-                                <tr>
-                                    <td>
-                                        <span style="margin-left:20px;">电话</span>&nbsp;
-                                        <input id="phone_edit" class="form-control"  name="phone_edit" style="width:150px;display: inline;" placeholder="请输入电话" type="text"></td>
-                                    <td></td>
-                                    <td>
-                                        <span style="margin-left:10px;">邮箱&nbsp;</span>
-                                        <input id="email_edit" class="form-control" name="email_edit" style="width:150px;display: inline;" placeholder="请输入邮箱" type="text"></td>
-                                    </td>
-                                </tr>                                   
+                                    <tr>
+                                        <td>
+                                            <span style="margin-left:20px;">电话</span>&nbsp;
+                                            <input id="phone_edit" class="form-control"  name="phone_edit" style="width:150px;display: inline;" placeholder="请输入电话" type="text"></td>
+                                        <td></td>
+                                        <td>
+                                            <span style="margin-left:10px;">邮箱&nbsp;</span>
+                                            <input id="email_edit" class="form-control" name="email_edit" style="width:150px;display: inline;" placeholder="请输入邮箱" type="text"></td>
+                                        </td>
+                                    </tr>                                   
 
-                                <tr>
-                                    <td>
-                                        <span style="margin-left:20px;">部门</span>&nbsp;
-                                        <input id="department_edit" class="form-control"  name="department_edit" style="width:150px;display: inline;" placeholder="请输入电话" type="text"></td>
-                                    <td></td>
-                                    <td>
-                                        <span style="margin-left:10px;">项目&nbsp;</span>
-                                        <input id="pidedt" class="easyui-combobox" name="pidedt" style="width:150px; height: 34px" 
-                                               data-options="editable:true,valueField:'id', textField:'text',url:'formuser.project.getProject.action' " />
+                                    <tr>
+                                        <td>
+                                            <span style="margin-left:20px;">部门</span>&nbsp;
+                                            <input id="department_edit" class="form-control"  name="department_edit" style="width:150px;display: inline;" placeholder="请输入部门名称" type="text"></td>
+                                        <td></td>
+                                        <td>
+                                            <span style="margin-left:10px;">项目&nbsp;</span>
+                                            <input id="pidedt" class="easyui-combobox" name="pidedt" style="width:150px; height: 34px" 
+                                                   data-options="editable:true,valueField:'id', textField:'text',url:'formuser.project.getProject.action' " />
+                                        </td>
+                                    </tr> 
+                                    <tr>
+                                        <td>
+                                            <span style="margin-left:20px;">角色</span>&nbsp;
+                                            <input id="updaterole" class="easyui-combobox" name="up_role" style="width:150px; height: 34px" data-options="editable:true,valueField:'id', textField:'text',url:'formuser.mainmenu.rolemenu.action'" />
+                                        </td>
+                                        <td></td>
+                                    </tr> 
 
-                                    </td>
-                                </tr>                               
-
-
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- 注脚 -->
-                    <div class="modal-footer" id="modal_footer_edit" >
-                        <!-- 添加按钮 -->
-                        <button id="xiugai" type="button" onclick="editaction()" class="btn btn-primary">修改</button>
-                        <!-- 关闭按钮 -->
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    </div>
-                </form>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- 注脚 -->
+                        <div class="modal-footer" id="modal_footer_edit" >
+                            <!-- 添加按钮 -->
+                            <button id="xiugai" type="button" onclick="editaction()" class="btn btn-primary">修改</button>
+                            <!-- 关闭按钮 -->
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
 
 
 
 
-</body>
+    </body>
 </html>

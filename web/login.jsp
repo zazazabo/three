@@ -153,7 +153,7 @@
                 -moz-border-radius:15px; 
                 -ms-border-radius:15px;  
                 -o-border-radius:15px;
-/*                background:rgba(2,8,25,0.49);*/
+                /*                background:rgba(2,8,25,0.49);*/
                 display:none;  
             }
 
@@ -183,15 +183,15 @@
                 height: 50px;
                 border:1px solid #123374;
                 -webkit-border-radius:15px;
-               -moz-border-radius:15px; 
+                -moz-border-radius:15px; 
                 -ms-border-radius:15px;  
                 -o-border-radius:15px;
                 border-radius:5px;
                 padding-left:5px;
-               background-color:whitesmoke;
-/*                -webkit-box-shadow: 0 0 0px 1000px #04193A inset;
-                -moz-box-shadow: 0 0 0px 1000px #04193A inset;*/
-/*                box-shadow: 0 0 0px 1000px #04193A inset;*/
+                background-color:whitesmoke;
+                /*                -webkit-box-shadow: 0 0 0px 1000px #04193A inset;
+                                -moz-box-shadow: 0 0 0px 1000px #04193A inset;*/
+                /*                box-shadow: 0 0 0px 1000px #04193A inset;*/
                 color: #FFB800;
             }
             label.name{
@@ -204,7 +204,7 @@
                 font-size: 14px;
                 line-height: 30px;
                 margin-left: 18%;
-                
+
             }
             .logion{
                 width:315px;height:50px;
@@ -328,7 +328,7 @@
                     -moz-border-radius:15px; 
                     -ms-border-radius:15px;  
                     -o-border-radius:15px;
-/*                    background:rgba(2,8,25,0.49);*/
+                    /*                    background:rgba(2,8,25,0.49);*/
                     margin: 50px auto 0 auto; 
                     display:none;  
                 }
@@ -402,7 +402,7 @@
                     -moz-border-radius:15px; 
                     -ms-border-radius:15px;  
                     -o-border-radius:15px;
-                   background:rgba(2,8,25,0.49);                  
+                    background:rgba(2,8,25,0.49);                  
                     margin: 50px auto 0 auto;
                     display:none;  
                 }
@@ -512,41 +512,18 @@
                         $("#cc").prop("checked", false);
                     } else if ($("#cc").is(":checked")) {
 
-                        var pass = $("#password").val();
+                        //var pass = $("#password").val();
                         // var name = $("#username").val();               
-                        var password = hex_md5(pass);
-                        var obj = $("#myfrom").serializeObject();
-                        obj.password = password;
-                        obj.name = username;
-                        //obj.name = name;
-                        // console.log(obj);
-                        $.ajax({async: false, url: "login.loginform.loginhand.action", type: "get", datatype: "JSON", data: obj,
-                            success: function (data) {
-                                // console.log(data);
-                                var arrlist = data.rs;
-                                if (arrlist.length == 1) {
-                                    if (confirm("确定要记住密码吗？")) {
-                                        //记住密码前先清除原先记住的密码
-                                        addCookie("rmbUser", "false", -1);
-                                        addCookie("username", "", -1);
-                                        addCookie("password", "", -1);
-                                        //记住新密码
-                                        addCookie("rmbUser", "true", 7);
-                                        addCookie("username", username, 7);
-                                        addCookie("password", pwd, 7);
-                                        // alert("记住了");
-                                    } else {
-                                        $("#cc").prop("checked", false);
-                                    }
-                                } else if (arrlist.length == 0) {
-                                    alert("用户名或密码错误！");
-                                    $("#cc").prop("checked", false);
-                                }
-                            },
-                            error: function () {
-                                alert("提交失败！");
-                            }
-                        });
+                        //var password = hex_md5(pass);
+                       //  var obj = $("#myfrom").serializeObject();
+                        //记住密码前先清除原先记住的密码
+                        addCookie("rmbUser", "false", -1);
+                        addCookie("username", "", -1);
+                        addCookie("password", "", -1);
+                        //记住新密码
+                        addCookie("rmbUser", "true", 7);
+                        addCookie("username", username, 7);
+                        addCookie("password", pwd, 7);
 
                     } else {
                         addCookie("rmbUser", "false", -1);
@@ -612,10 +589,10 @@
         </div>
 
         <img src="./img/huaming.jpg" style="position:absolute;top:0;left:0;z-index:-1;width:100%;height:100%;">
-<!--        <div class="logo animated bounceInDown" style="display: block;">
-             <img src="imgs/login/sz.png"/> 
-            <img src="./img/sz-tit.png" class="phoneTit">
-        </div> -->
+        <!--        <div class="logo animated bounceInDown" style="display: block;">
+                     <img src="imgs/login/sz.png"/> 
+                    <img src="./img/sz-tit.png" class="phoneTit">
+                </div> -->
 
         <div class="changeLanguage">
             <div language="zh_CN" class="Zh" id="chinese">中文</div>
@@ -623,10 +600,10 @@
             <div language="en_US" class="En" id="english">English</div>
         </div>
 
-<!--
-        <div class="logo-animate animated bounceIn" style="display: block;">
-            <img src="./img/sz-animate.png">
-        </div>-->
+        <!--
+                <div class="logo-animate animated bounceIn" style="display: block;">
+                    <img src="./img/sz-animate.png">
+                </div>-->
 
         <div class="loginBox animated bounceInUp" style="display: block;">
             <div class="h3" id="top">账号登陆</div>

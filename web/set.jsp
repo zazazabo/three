@@ -136,11 +136,6 @@
                 parent.parent.sendData(user);
             }
 
-
-
-
-
-
             $(function () {
 
                 //flag = setInterval("dealsend()", 1000);
@@ -703,9 +698,6 @@
                                         <input id="inspect" class="form-control" name="inspect" value="" style="width:150px;" placeholder="灯具通信失联巡检次数" type="text">
                                     </td>
                                 </tr>
-
-
-
                                 <tr>
                                     <td colspan="2">
                                         <button  type="button" style="margin-left:20px;" onclick="setinspect()" class="btn btn-success btn-xs">设置巡检次数</button>
@@ -722,203 +714,12 @@
             </form>
 
 
-            <!--                
-                    
-                    <div class="row" style=" margin-top: 3px;">
-                        <div class="col-xs-1" >
-                            <span class="label label-success" >主站ip或域名</span>
-        
-                        </div>
-                        <div class="col-xs-2">
-        
-                            <input id="ip" class="form-control" name="ip" style=" width: 150px; "  placeholder="输入主站域名" type="text">
-        
-                        </div>
-                        <div class="col-xs-1"> 
-                            <span class="label label-success" style="margin-left: 10px;" >端口</span>
-        
-        
-                        </div>
-                        <div class="col-xs-2">
-                            <input id="port" class="form-control" name="port" style="width:150px;" value="18414" placeholder="输入端口" type="text">
-                        </div>
-                        <div class="col-xs-1">
-                            <span class="label label-success" style="margin-left: 10px;" >APN</span>
-                        </div>
-                        <div class="col-xs-2">
-                            <input id="apn" class="form-control" name="apn" value="cmnet" style="width:150px;display: inline; margin-left: 3px;" placeholder="输入APN" type="text">
-                        </div>
-                        <div class="col-xs-1" >
-                            <button  type="button"  onclick="setsite()" class="btn btn-success" >设置主站信息</button>
-                        </div>
-                        <div class="col-xs-1" >
-                            <button  type="button"  onclick="readsite()" class="btn btn-success" >读取主站信息 </button>
-                        </div>
-                        <div class="col-xs-1">
-                            <button  type="button"  onclick="setAPN()" class="btn btn-success" >设置APN </button>
-                        </div>
-        
-                    </div>
-                  
-                    <div class="row" style=" margin-top: 3px;">
-                        <div class="col-xs-1" >
-        
-                            <span class="label label-success" >&nbsp;&nbsp;换日时间</span>
-                        </div>
-                        <div class="col-xs-2">
-                            <input id="time4" name="time4" style=" height: 34px; width: 150px; "  class="easyui-timespinner">
-                        </div>
-                        <div class="col-xs-1"> 
-                            <span class="label label-success" style="margin-left: 10px;" >冻结时间</span>
-        
-        
-                        </div>
-                        <div class="col-xs-2">
-                            <input id="time3" name="time3" style=" height: 34px; width: 150px;"  class="easyui-timespinner">
-                        </div>
-                        <div class="col-xs-1">
-        
-                        </div>
-                        <div class="col-xs-2">
-        
-                        </div>
-                        <div class="col-xs-1" >
-                            <button  type="button" style="margin-left:20px;" onclick="setchgtime()" class="btn btn-success">设置换日冻结时间</button>
-                        </div>
-                        <div class="col-xs-1">
-        
-                        </div>
-                        <div class="col-xs-1">
-                            <button  type="button" style="margin-left:20px;" onclick="readtime()" class="btn btn-success">读取换日冻结时间</button>
-                        </div>
-        
-                    </div>
-        
-        
-                    <div class="row" style=" margin-top: 3px;">
-                        <div class="col-xs-1" >
-                            <span class="label label-success" style="margin-left: 10px;" >通信巡检次数</span>
-        
-                        </div>
-                        <div class="col-xs-2">
-                            <input id="inspect" class="form-control" name="inspect" value="" style="width:150px;" placeholder="灯具通信失联巡检次数" type="text">
-                        </div>
-                        <div class="col-xs-1"> 
-        
-        
-        
-                        </div>
-                        <div class="col-xs-2">
-        
-                        </div>
-                        <div class="col-xs-1">
-        
-                        </div>
-                        <div class="col-xs-2">
-        
-                        </div>
-                        <div class="col-xs-1" >
-                            <button  type="button" style="margin-left:20px;" onclick="setinspect()" class="btn btn-success">设置巡检次数</button>
-                        </div>
-                        <div class="col-xs-1">
-        
-                        </div>
-                        <div class="col-xs-1">
-                            <button  type="button" style="margin-left:20px;" onclick="readinspect()" class="btn btn-success">读取巡检次数</button>
-                        </div>
-        
-                    </div>    -->
-
 
 
 
 
         </div>
-        <!--        </div>
-            </div>-->
 
-
-
-
-        <!--<form id="form1">-->
-        <!--        
-                <table>
-                    <tbody>
-        
-                        <tr>
-                            <td><span class="label label-success" style="margin-left: 10px;" >主站ip或域名</span></td>
-                            <td>
-                                &nbsp; <input id="ip" class="form-control" name="ip" value="103.46.128.47" style="width:150px;display: inline; margin-left: 3px;" placeholder="输入主站域名" type="text">
-                            </td>
-                            <td><span class="label label-success" style="margin-left: 10px;" >端口</span></td>
-                            <td>
-                                <input id="port" class="form-control" name="port" style="width:150px;display: inline; margin-left: 3px;" value="18414" placeholder="输入端口" type="text">
-                            </td>
-                            <td><span class="label label-success" style="margin-left: 10px;" >APN</span></td>
-                            <td>
-                                <input id="apn" class="form-control" name="apn" value="cmnet" style="width:150px;display: inline; margin-left: 3px;" placeholder="输入APN" type="text">
-                            </td>
-                            <td>
-                                <button  type="button" style="margin-left:20px;" onclick="setsite()" class="btn btn-success">设置主站信息</button>
-                            </td>
-                            <td> <button  type="button" style="margin-left:20px;" onclick="readsite()" class="btn btn-success">读取主站信息 </button></td>
-                            <td> <button  type="button" style="margin-left:20px;" onclick="setAPN()" class="btn btn-success">设置运营商APN </button></td>
-                        </tr>
-                    </tbody>
-                </table>
-        
-        
-                <table  style=" margin-top: 10px;">
-                    <tbody>
-                        <tr >
-                            <td><span class="label label-success" style="margin-left: 10px;" >换日时间参数</span></td>
-                            <td>
-                                &nbsp;
-        
-                                <input id="time4" name="time4" style=" height: 34px; width: 150px; margin-left: 20px;"  class="easyui-timespinner">
-                            </td>
-                            <td><span class="label label-success" style="margin-left: 10px;" >冻结时间</span></td>
-                            <td>
-                                &nbsp;
-        
-                                <input id="time3" name="time3" style=" height: 34px; width: 130px; margin-left: 20px;"  class="easyui-timespinner">
-                            </td>
-                            <td></td>
-                            <td>
-                            </td>
-                            <td>
-                                <button  type="button" style="margin-left:20px;" onclick="setchgtime()" class="btn btn-success">设置换日冻结时间</button>
-                            </td>
-                            <td>
-                                <button  type="button" style="margin-left:20px;" onclick="readtime()" class="btn btn-success">读取换日冻结时间</button>
-                            </td>
-                        </tr> 
-                    </tbody>
-                </table>
-        
-        
-        
-                <table  style=" margin-top: 10px;">
-                    <tbody>
-                        <tr >
-                            <td><span class="label label-success" style="margin-left: 10px;" >通信巡检次数</span></td>
-                            <td>
-                                &nbsp;  <input id="inspect" class="form-control" name="inspect" value="" style="width:150px;display: inline; margin-left: 3px;" placeholder="灯具通信失联巡检次数" type="text">
-                            </td>
-                            <td>
-                                <button  type="button" style="margin-left:20px;" onclick="setinspect()" class="btn btn-success">设置巡检次数</button>
-                            </td>
-                            <td>
-                                <button  type="button" style="margin-left:20px;" onclick="readinspect()" class="btn btn-success">读取巡检次数</button>
-                            </td>
-                        </tr> 
-                    </tbody>
-                </table>
-        -->
-
-
-
-        <!--</form>-->
 
         <div style="width:100%; margin-top: 10px;">
 
@@ -926,10 +727,6 @@
             </table>
         </div>
 
-
-        <!-- 添加 -->
-
-        <!-- 修改 -->
 
     </body>
 </html>
