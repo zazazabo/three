@@ -130,12 +130,50 @@
 
 
 
+<<<<<<< HEAD
             $(function () {
 
                 $('#intime').timespinner('setValue', '00:00');
                 $('#outtime').timespinner('setValue', '23:00');
 
 
+=======
+            $(function (){ 
+                
+                $("#add").attr("disabled", true);
+                $("#update").attr("disabled", true);
+                $("#del").attr("disabled", true);
+                var obj = {};
+                obj.code = ${param.m_parent};
+                obj.roletype = ${param.role};
+                $.ajax({async: false, url: "login.usermanage.power.action", type: "get", datatype: "JSON", data: obj,
+                    success: function (data) {
+                        var rs = data.rs;
+                        if (rs.length > 0) {
+                            for (var i = 0; i < rs.length; i++) {
+
+                                if (rs[i].code == "400101" && rs[i].enable != 0) {
+                                    $("#add").attr("disabled", false);
+                                    continue;
+                                }
+                                if (rs[i].code == "400102" && rs[i].enable != 0) {
+                                    $("#update").attr("disabled", false);
+                                    continue;
+                                }
+                                if (rs[i].code == "400103" && rs[i].enable != 0) {
+                                    $("#del").attr("disabled", false);
+                                    continue;
+                                }
+                            }
+                        }
+
+                    },
+                    error: function () {
+                        alert("提交失败！");
+                    }
+                });
+               
+>>>>>>> ef8e0ee5e725e2e5eefce608bed58bf4caa064af
                 $("#tr_jw_hide_add").hide();
 
                 $('#select_type').combobox({
@@ -287,9 +325,10 @@
 
 
 
-
+<!--
+<<<<<<< HEAD
         <div class="btn-group zuheanniu" id="btn_add" style="float:left;position:relative;z-index:100;margin:12px 0 0 10px;">
-            <!-- data-toggle="modal" data-target="#pjj" -->
+             data-toggle="modal" data-target="#pjj" 
             <button class="btn btn-success ctrol" data-toggle="modal" data-target="#modal_add"  >
                 <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;添加
             </button>
@@ -306,6 +345,26 @@
                     <option value="1">经纬度</option>
                 </select>
             </span>  
+=======-->
+            <div class="btn-group zuheanniu" id="btn_add" style="float:left;position:relative;z-index:100;margin:12px 0 0 10px;">
+                <!-- data-toggle="modal" data-target="#pjj" -->
+                <button class="btn btn-success ctrol" data-toggle="modal" data-target="#modal_add" id="add"  >
+                    <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;添加
+                </button>
+                <button class="btn btn-primary ctrol" type="button"   onclick="editloopplan();" id="update"  >
+                    <span class="glyphicon glyphicon-pencil"></span>&nbsp;编辑
+                </button>
+                <button class="btn btn-danger ctrol" onclick="deleteloopplan();" id="del" >
+                    <span class="glyphicon glyphicon-trash"></span>&nbsp;删除
+                </button>
+                <span style="margin-left:20px;">方案类型&nbsp;</span>
+                <span class="menuBox">
+                    <select name="select_type_query" id="select_type_query" class="input-sm" style="width:150px;">
+                        <option value="0">时间</option>
+                        <option value="1">经纬度</option>
+                    </select>
+                </span>  
+>>>>>>> ef8e0ee5e725e2e5eefce608bed58bf4caa064af
 
         </div>
         <div class="bootstrap-table">

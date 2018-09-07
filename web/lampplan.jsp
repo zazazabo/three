@@ -179,7 +179,38 @@
 
             $(function () {
 
+                $("#add").attr("disabled", true);
+                $("#update").attr("disabled", true);
+                $("#del").attr("disabled", true);
+                var obj = {};
+                obj.code = ${param.m_parent};
+                obj.roletype = ${param.role};
+                $.ajax({async: false, url: "login.usermanage.power.action", type: "get", datatype: "JSON", data: obj,
+                    success: function (data) {
+                        var rs = data.rs;
+                        if (rs.length > 0) {
+                            for (var i = 0; i < rs.length; i++) {
 
+                                if (rs[i].code == "400201" && rs[i].enable != 0) {
+                                    $("#add").attr("disabled", false);
+                                    continue;
+                                }
+                                if (rs[i].code == "400202" && rs[i].enable != 0) {
+                                    $("#update").attr("disabled", false);
+                                    continue;
+                                }
+                                if (rs[i].code == "400203" && rs[i].enable != 0) {
+                                    $("#del").attr("disabled", false);
+                                    continue;
+                                }
+                            }
+                        }
+
+                    },
+                    error: function () {
+                        alert("提交失败！");
+                    }
+                });
                 $("#modal_add").on("hidden.bs.modal", function () {
                     $(this).removeData("bs.modal");
                 });
@@ -539,13 +570,13 @@
 
 
         <div class="btn-group zuheanniu" id="zuheanniu" style="float:left;position:relative;z-index:100;margin:12px 0 0 10px;">
-            <button class="btn btn-success ctrol" data-toggle="modal" data-target="#modal_add">
+            <button class="btn btn-success ctrol" data-toggle="modal" data-target="#modal_add" id="add">
                 <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;添加
             </button>
-            <button class="btn btn-primary ctrol"   onclick="editlampplan()" >
+            <button class="btn btn-primary ctrol"   onclick="editlampplan()"  id="update">
                 <span class="glyphicon glyphicon-pencil"></span>&nbsp;编辑
             </button>
-            <button class="btn btn-danger ctrol" onclick="deletelampplan();" >
+            <button class="btn btn-danger ctrol" onclick="deletelampplan();" id="del" >
                 <span class="glyphicon glyphicon-trash"></span>&nbsp;删除
             </button>
             <span style="margin-left:20px;">方案类型&nbsp;</span>

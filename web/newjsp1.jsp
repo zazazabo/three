@@ -14,15 +14,34 @@
         <script>
 
             function hit() {
-                $.ajax({async: false, url: "formuser.reportmanage2.getMoth.action", type: "get", datatype: "JSON", data: {year:2018},
-                    success: function (data) {
-                        var obj = eval('(' + data + ')');
-                        console.log(obj)
-                    },
-                    error: function () {
-                        alert("提交失败！");
-                    }
-                });
+                
+                var v1=88;
+                var vv2=v1<<2|2;
+                
+                var vvv=[];
+                var a= vv2>>8&0x000F;
+                var b=vv2&0x00ff;
+                
+                console.log(a.toString(16));
+                console.log(b.toString(16));
+                
+                console.log(vv2.toString(16));
+                
+                
+                
+                
+                
+                
+                
+//                $.ajax({async: false, url: "formuser.reportmanage2.getMoth.action", type: "get", datatype: "JSON", data: {year:2018},
+//                    success: function (data) {
+//                        var obj = eval('(' + data + ')');
+//                        console.log(obj)
+//                    },
+//                    error: function () {
+//                        alert("提交失败！");
+//                    }
+//                });
             }
         </script>
     </head>

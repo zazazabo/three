@@ -268,6 +268,38 @@
 
 
             $(function () {
+                $("#add").attr("disabled", true);
+                $("#xiugai1").attr("disabled", true);
+                $("#shanchu").attr("disabled", true);
+                var obj = {};
+                obj.code = ${param.m_parent};
+                obj.roletype = ${param.role};
+                $.ajax({async: false, url: "login.usermanage.power.action", type: "get", datatype: "JSON", data: obj,
+                    success: function (data) {
+                        var rs = data.rs;
+                        if (rs.length > 0) {
+                            for (var i = 0; i < rs.length; i++) {
+
+                                if (rs[i].code == "600301" && rs[i].enable != 0) {
+                                    $("#add").attr("disabled", false);
+                                    continue;
+                                }
+                                if (rs[i].code == "600302" && rs[i].enable != 0) {
+                                    $("#xiugai1").attr("disabled", false);
+                                    continue;
+                                }
+                                if (rs[i].code == "600303" && rs[i].enable != 0) {
+                                    $("#shanchu").attr("disabled", false);
+                                    continue;
+                                }
+                            }
+                        }
+
+                    },
+                    error: function () {
+                        alert("提交失败！");
+                    }
+                });
 
                 $('#gravidaTable').bootstrapTable({
                     url: 'test1.lamp.getlamp1.action',
@@ -518,7 +550,7 @@
     <body>
 
         <div class="btn-group zuheanniu" id="zuheanniu" style="float:left;position:relative;z-index:100;margin:12px 0 0 10px;">
-            <button class="btn btn-success ctrol" data-toggle="modal" data-target="#pjj">
+            <button class="btn btn-success ctrol" data-toggle="modal" data-target="#pjj" id="add">
                 <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;添加
             </button>
             <button class="btn btn-primary ctrol" onclick="editlampInfo()"   id="xiugai1">

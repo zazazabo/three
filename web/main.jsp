@@ -15,21 +15,7 @@
         <link type="text/css" href="layer/animate.css" rel="stylesheet">
         <link type="text/css" href="layer/indexNavigation.css" rel="stylesheet">
         <script type="text/javascript" src="js/genel.js"></script>
-        <script>
-
-
-
-
-            //退出
-            function getout() {
-                if (confirm("确定退出吗？")) {
-                    window.location = "${pageContext.request.contextPath }/login.jsp";
-                }
-            }
-
-
-
-        </script>
+        <script type="text/javascript" src="js/md5.js"></script>
         <script>
             var websocket = null;
 
@@ -43,9 +29,64 @@
                     var datajson = JSON.stringify(obj);
                     websocket.send(datajson);
                 }
-//              alert("abcdefg");
             }
-
+            
+            //退出
+            function getout() {
+                if (confirm("确定退出吗？")) {
+                    window.location = "${pageContext.request.contextPath }/login.jsp";
+                }
+            }
+            
+            //修改密码
+            function  updatepwd(){
+                var pwd = $("#pwd").val();
+                var oldpwd = $("#oldPwd").val();
+                var oldpwd2 = hex_md5(oldpwd);
+                var newpwd = $("#newPwd").val();
+                var okpwd = $("#okPwd").val();
+                if(oldpwd==""){
+                    layerAler("请输入原密码");
+                    return;
+                }
+                if(newpwd==""){
+                    layerAler("请输入新密码");
+                    return;
+                }
+                if(okpwd==""){
+                    layerAler("请确认密码");
+                    return;
+                }
+                if(oldpwd2 != pwd){
+                    layerAler("原密码不正确");
+                    return;
+                }
+                
+                if(newpwd != okpwd){
+                    layerAler("确认密码不一致");
+                    return;
+                }
+                
+                var okpwd2 = hex_md5(okpwd);
+                var obj = {};
+                obj.password = okpwd2;
+                obj.id = $("#userid").val();
+                $.ajax({url: "login.usermanage.updatePwd.action", async: false, type: "get", datatype: "JSON", data: obj,
+                    success: function (data) {
+                        var arrlist = data.rs;
+                        if (arrlist.length == 1) {
+                            layerAler("修改成功");
+                            window.location ="${pageContext.request.contextPath }/login.jsp";
+                        }else{
+                            layerAler("修改失败");
+                        }
+                    },
+                    error: function () {
+                        alert("提交添加失败！");
+                    }
+                });
+               
+            }
 
 
 
@@ -190,10 +231,13 @@
                             <!--<span class="glyphicon glyphicon-user"></span>-->
                             <span class="Till" style="width: 140px; padding-left: 24px; box-sizing: border-box; color: rgb(255, 255, 255);">
                                 <span class="admin" style="color: rgb(255, 255, 255);">${rs[0].name}</span>
+                                <input id="m_code" type="hidden" value="${rs[0].m_code}"/>
+                                <input id="pwd" type="hidden" value="${rs[0].password}"/>
+                                <input id="userid" type="hidden" value="${rs[0].id}"/>
                             </span>
                             <ul class="two animated fadeInDown twoL" style="background: rgb(57, 61, 73) none repeat scroll 0% 0%; color: rgb(255, 255, 255);">
                                 <li id="out" onclick="getout()">退出</li>
-                                <li style="display:none;">修改密码</li>
+                                <li data-toggle="modal" data-target="#updpwdDiv" >修改密码</li>
                             </ul>
                         </li>
                     </ul> 
@@ -202,6 +246,49 @@
                 <!--<input id="configurations" value="[{&quot;title&quot;:&quot;参数配置&quot;,&quot;action&quot;:&quot;config/paramConfig.action&quot;,&quot;icon&quot;:&quot;imgs/manager/paramConfiguration.png&quot;},{&quot;title&quot;:&quot;网关配置&quot;,&quot;action&quot;:&quot;config/gateway.action&quot;,&quot;icon&quot;:&quot;imgs/manager/gatewayConfiguration.png&quot;},{&quot;title&quot;:&quot;项目配置&quot;,&quot;action&quot;:&quot;config/alarmConfig.action&quot;,&quot;icon&quot;:&quot;imgs/manager/alarmConfiguration.png&quot;}]" type="hidden">-->
                 <iframe id="iframe" name="iframe" src="" seamless="" style="height: 886px;" width="100%" frameborder="0">
                 </iframe>
+            </div>
+        </div>
+        <div class="modal" id="updpwdDiv" data-backdrop="static">
+            <div class="modal-dialog">
+                <div class="modal-content" style="min-width:700px;">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span style="font-size:20px ">×</span></button>
+                        <span class="glyphicon glyphicon-floppy-disk" style="font-size: 20px"></span>
+                        <h4 class="modal-title" style="display: inline;">修改密码</h4></div>    
+                        <div class="modal-body">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <span style="margin-left:35px;">原密码：</span>&nbsp;
+                                            <input id="oldPwd" class="form-control" style="width:150px;display: inline;" placeholder="请输入原密码" type="password">
+                                        </td>
+                                    </tr>
+                                     <tr>
+                                        <td>
+                                            <span style="margin-left:35px;">新密码：</span>&nbsp;
+                                            <input id="newPwd" class="form-control" style="width:150px;display: inline;" placeholder="请输入原密码" type="password">
+                                        </td>
+                                    </tr>
+                                     <tr>
+                                        <td>
+                                            <span style="margin-left:20px;">确定密码：</span>&nbsp;
+                                            <input id="okPwd" class="form-control" style="width:150px;display: inline;" placeholder="请输入原密码" type="password">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- 注脚 -->
+                        <div class="modal-footer" id="modal_footer_edit" >
+                            <!-- 添加按钮 -->
+                            <button id="xiugai" type="button" onclick="updatepwd()" class="btn btn-primary">修改</button>
+                            <!-- 关闭按钮 -->
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        </div>
+                    
+                </div>
             </div>
         </div>
 
@@ -288,7 +375,8 @@
                 })
                 /* 加载左边菜单 */
                 //传角色权限 获取菜单 
-                var objrole = {role: 1};
+                var rotype = $("#m_code").val(); //角色id
+                var objrole = {role: rotype};
 
                 $.ajax({type: "post", url: "formuser.mainmenu.querysub.action", dataType: "json", data: objrole,
                     success: function (data) {
@@ -300,6 +388,7 @@
                             var action = data[i].action;
                             if (data[i].children.length > 0) {
                                 console.log(objrole);
+                                
                                 action = action + "?m_parent=" + data[i].code + "&role=" + objrole.role;
                             }
 
@@ -389,7 +478,7 @@
             $(function () {
                 $(".navTop").delegate("li", "click", function () {
                     var html = $(this).attr('name');
-                    console.log(html);
+                    //console.log(html);
                     // $("#iframe").attr('src', html);
                     //导航栏颜色
                 });
