@@ -15,16 +15,10 @@ $.fn.serializeObject = function () {
 }
 
 
-String.prototype.trim = function () { 
-  return this.replace(/(^\s*)|(\s*$)/g, "");
+String.prototype.trim = function () {
+    return this.replace(/(^\s*)|(\s*$)/g, "");
 
- }
-
-
-
-
-
-
+}
 
 function str_repeat(i, m) {
     for (var o = []; m > 0; o[--m] = i)
@@ -152,96 +146,6 @@ function Str2BytesH(str) {
 
 
 
-//
-//function checkAdd() {
-//
-//
-//    if (/^[0-9A-F]{8}$/.test($("#comaddr").val().trim()) == false) {
-//        layer.alert('网关地址应为八位有效十六进制字符', {
-//            icon: 6,
-//            offset: 'center'
-//        });
-//        return false;
-//    }
-//
-//
-//    if ($("#longitudem26d").val().trim() != "" && $("#longitudem26m").val().trim() != "" && $("#longitudem26s").val().trim() != "" && $("#latitudem26d").val().trim() != "" && $("#latitudem26m").val().trim() != "" && $("#latitudem26s").val().trim() != "") {
-//        if ((!enforceInputFloat("longitudem26d")) || (!enforceInputFloat("longitudem26m")) || (!enforceInputFloat("longitudem26s")) || (!enforceInputFloat("latitudem26d")) || (!enforceInputFloat("latitudem26m")) || (!enforceInputFloat("latitudem26s")) || (!enforceInputLongitudeDegree($("#longitudem26d").val().trim())) || (!enforceInputLatitudeDegree($("#latitudem26d").val().trim())) || (!enforceInputLteSixty($("#longitudem26m").val().trim())) || (!enforceInputLteSixty($("#longitudem26s").val().trim())) || (!enforceInputLteSixty($("#latitudem26m").val().trim())) || (!enforceInputLteSixty($("#latitudem26s").val().trim()))) {
-//            layer.alert('经纬度非法!', {
-//                icon: 1,
-//                offset: 'center'
-//            });
-//            return false;
-//        } else {
-//            $("#longitude").val(parseLongitudeLatitudeFloat(parseInt($("#longitudem26d").val().trim()), parseInt($("#longitudem26m").val().trim()), parseFloat($("#longitudem26s").val().trim())));
-//            $("#latitude").val(parseLongitudeLatitudeFloat(parseInt($("#latitudem26d").val().trim()), parseInt($("#latitudem26m").val().trim()), parseFloat($("#latitudem26s").val().trim())));
-//        }
-//    }
-//
-//    var name = $("#name").val();
-//    var addr = $("#comaddr").val();
-//
-//    var model = $('#model').combobox('getValue');
-//    var namesss = false;
-//    $.ajax({
-//        async: false,
-//        cache: false,
-//        url: "test1.f5.queryGateway.action",
-//        type: "GET",
-//        data: {
-//            name: name,
-//            comaddr: addr,
-//            model: model
-//        },
-//        success: function (data) {
-//            var arrlist = data.rs;
-//            if (arrlist.length == 1) {
-//                layer.alert('此网关已存在', {
-//                    icon: 6,
-//                    offset: 'center'
-//                });
-//                namesss = false;
-//                return;
-//            } else if (arrlist.length == 0) {
-//
-//                var jsondata = $("#eqpTypeForm").serializeObject();
-//                var latitudemstr = jsondata.latitudem26d + "." + jsondata.latitudem26m + "." + jsondata.latitudem26s;
-//                jsondata.latitude = latitudemstr;
-//                var longitudemstr = jsondata.longitudem26d + "." + jsondata.longitudem26m + "." + jsondata.longitudem26s;
-//                jsondata.longitude = longitudemstr;
-//                console.log(jsondata);
-//                $.ajax({
-//                    async: false,
-//                    cache: false,
-//                    url: "test1.f5.addGateway.action",
-//                    type: "GET",
-//                    data: jsondata,
-//                    success: function (data) {
-//                        namesss = true;
-//                        $("#gravidaTable").bootstrapTable('refresh');
-//                    },
-//                    error: function () {
-//                        layer.alert('系统错误，刷新后重试', {
-//                            icon: 6,
-//                            offset: 'center'
-//                        });
-//                    }
-//                })
-//            }
-//
-//        },
-//        error: function () {
-//            layer.alert('系统错误，刷新后重试', {
-//                icon: 6,
-//                offset: 'center'
-//            });
-//        }
-//    });
-//
-//    return namesss;
-//}
-//
-
 
 function checkModify()
 {
@@ -360,21 +264,6 @@ function  buicode(comaddr, C, AFN, SEQ, DA, DT, paraArr) {
     for (var j = 0; j < paraArr.length; j++) {
         hexData.push(paraArr[j]);
     }
-    //额外加16字节
-//    for (var i = 0; i < 16; i++) {
-//        hexData.push(0);
-//    }
-
-
-
-<<<<<<< HEAD
-    var len1 = 18 - 6 + paraArr.length;   //18是固定长度  6报文头     
-        console.log(len1);
-    hexData[1] = len1 << 2 | 2;
-    hexData[2] = 0;
-    hexData[3] = len1 << 2 | 2;
-    hexData[4] = 0;
-=======
     var len1 = 18 - 6 + paraArr.length;   //18是固定长度  6报文头  
     var len2 = len1 << 2 | 2;
 
@@ -388,14 +277,6 @@ function  buicode(comaddr, C, AFN, SEQ, DA, DT, paraArr) {
 
     hexData[3] = b         //len1 << 2 | 2;
     hexData[4] = a
-
-
-
-
-//    hexData[3] = len1 << 2 | 2;
-//    hexData[4] = 0;
->>>>>>> 029c634993b9b029b89ce3df2b1f928accbb8558
-
 
     var v1 = 0;
     for (var i = 6; i < hexData.length; i++) {
@@ -413,14 +294,6 @@ function  buicode(comaddr, C, AFN, SEQ, DA, DT, paraArr) {
     }
 
     return ByteToSend;
-//    var user = new Object();
-//    user.msg = ByteToSend;
-//    user.res = 1;
-//
-//    hexData[7] = parseInt(addrArea[1].toString(10), 16)             //地址域
-//    hexData[8] = parseInt(addrArea[0].toString(10), 16)   //地址域
-//    hexData[9] = addrB[1]  //地址A
-//    hexData[10] = addrB[0]  //地址A
 }
 
 
