@@ -365,16 +365,6 @@ function  buicode(comaddr, C, AFN, SEQ, DA, DT, paraArr) {
 //        hexData.push(0);
 //    }
 
-
-
-<<<<<<< HEAD
-    var len1 = 18 - 6 + paraArr.length;   //18是固定长度  6报文头     
-        console.log(len1);
-    hexData[1] = len1 << 2 | 2;
-    hexData[2] = 0;
-    hexData[3] = len1 << 2 | 2;
-    hexData[4] = 0;
-=======
     var len1 = 18 - 6 + paraArr.length;   //18是固定长度  6报文头  
     var len2 = len1 << 2 | 2;
 
@@ -389,12 +379,6 @@ function  buicode(comaddr, C, AFN, SEQ, DA, DT, paraArr) {
     hexData[3] = b         //len1 << 2 | 2;
     hexData[4] = a
 
-
-
-
-//    hexData[3] = len1 << 2 | 2;
-//    hexData[4] = 0;
->>>>>>> 029c634993b9b029b89ce3df2b1f928accbb8558
 
 
     var v1 = 0;
