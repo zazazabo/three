@@ -60,19 +60,19 @@
             $(function () {
                 $(".secondMenu").children('li').remove();
                 var objrole = {role: ${param.role}, m_parent:${param.m_parent}};
-                console.log(objrole);
+                
                 $.ajax({
                     type: "post", async: false, url: "formuser.mainmenu.querysub.action", dataType: "json", data: objrole,
                     success: function (datas) {
-                        console.log(datas);
+                        //console.log(datas);
                         var htmls = "";
                         var i = 0;
                         datas.forEach(function (data) {
-                            console.log(data);
                             var action = data.m_action;
                             var lang = "zh_CN";
                             var objlang = eval('(' + data.m_title + ')');
                             var u1 = action + "?m_parent=" + data.m_code + "&role=" + ${param.role};
+                            //console.log(u1);
                             htmls += '<li class="layui-nav-item" name="' + action + '">'
 
                             htmls += '<li class="layui-nav-item" name="' + u1 + '">'
@@ -98,7 +98,6 @@
                 /* 结束 */
 
                 $(".secondMenu li").click(function () {
-                    // alert("dd");
 
                     $(this).addClass("layui-this active").siblings("li").removeClass("layui-this active");
                     var html = $(this).attr('name');

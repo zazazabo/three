@@ -19,6 +19,33 @@
 
         <script>
             $(function () {
+                $("#add").attr("disabled", true);
+                $("#del").attr("disabled", true);
+                var obj = {};
+                obj.code = ${param.m_parent};
+                obj.roletype = ${param.role};
+                $.ajax({async: false, url: "login.usermanage.power.action", type: "get", datatype: "JSON", data: obj,
+                    success: function (data) {
+                        var rs = data.rs;
+                        if (rs.length > 0) {
+                            for (var i = 0; i < rs.length; i++) {
+
+                                if (rs[i].code == "800301" && rs[i].enable != 0) {
+                                    $("#add").attr("disabled", false);
+                                    continue;
+                                }
+                                if (rs[i].code == "800302" && rs[i].enable != 0) {
+                                    $("#del").attr("disabled", false);
+                                    continue;
+                                }  
+                            }
+                        }
+
+                    },
+                    error: function () {
+                        alert("提交失败！");
+                    }
+                });
                 $('#gravidaTable').bootstrapTable({
                     url: 'formuser.project.queryProject.action',
                     columns: [
@@ -173,11 +200,11 @@
     <body>
 
         <div class="btn-group zuheanniu" id="zuheanniu" style="float:left;position:relative;z-index:100;margin:12px 0 0 10px;">
-            <button class="btn btn-success ctrol" data-toggle="modal" data-target="#pjj">
+            <button class="btn btn-success ctrol" data-toggle="modal" data-target="#pjj" id="add">
                 <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;添加
             </button>
 
-            <button class="btn btn-danger ctrol" onclick="deleteUser();" >
+            <button class="btn btn-danger ctrol" onclick="deleteUser();" id="del" >
                 <span class="glyphicon glyphicon-trash"></span>&nbsp;删除
             </button> 
         </div>
@@ -197,7 +224,7 @@
                     <button type="button" class="close" data-dismiss="modal">
                         <span style="font-size:20px ">×</span></button>
                     <span class="glyphicon glyphicon-floppy-disk" style="font-size: 20px"></span>
-                    <h4 class="modal-title" style="display: inline;">添加用户</h4></div>
+                    <h4 class="modal-title" style="display: inline;">添加项目</h4></div>
 
                 <form action="" method="POST" id="Form_User" onsubmit="return checkProjectAdd()">      
                     <div class="modal-body">

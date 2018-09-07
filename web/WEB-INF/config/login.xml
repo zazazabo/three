@@ -180,13 +180,39 @@
     
     <xform desc="用户管理" id="usermanage">
         <xhand des="查看拥有操作权限" id="power"  rtnype="JSON">    
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_menu where @CONDITION " var="rs">
-                <xflt id="CONDITION" nrp="" tpl="@m_parent">
-                    <xfltpara id="m_parent" nrp="1=1" para="m_parent" sql="m_parent = ':m_parent'">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select code,roletype,enable from t_role where @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@roletype AND @code">
+                    <xfltpara id="roletype" nrp="1=1" para="roletype" sql="roletype = ':roletype'">
+                    </xfltpara>
+                    <xfltpara id="code" nrp="1=1" para="code" sql="code like ':code_%'">
                     </xfltpara>
                 </xflt>      
             </xsql>            
         </xhand>
+         <xhandle desc="查看所有角色" id="rolemenu" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT DISTINCT roletype as id,name as text FROM t_role " var="list">
+            </xsql>
+        </xhandle> 
+        <xhandle desc="添加用户" id="addUser" rtn="rs" rtnype="JSON">
+            <xsql id="a1" para="name,sex,phone,department,email,password,pid,m_code" tpe="DDL" tpl="insert into t_user(name,sex,phone,department,email,password,pid,m_code) values(':name',':sex',':phone',':department',':email',':password',':pid',':m_code') " var="rs">
+            </xsql>
+        </xhandle>
+        <xhandle desc="修改用户" id="editUser" rtn="rs" rtnype="JSON">
+            <xsql id="a1" para="department,sex,email,phone,pid,name,m_code" tpe="DDL" tpl="update t_user set department=':department',sex=':sex',email=':email',phone=':phone',pid=':pid',name=':name',m_code=':m_code' where @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@id ">
+                    <xfltpara id="id" nrp="1=1" para="id" sql="id=:id">
+                    </xfltpara>
+                </xflt>
+            </xsql>
+        </xhandle> 
+        <xhandle desc="修改密码" id="updatePwd" rtn="rs" rtnype="JSON">
+            <xsql id="a1" para="password" tpe="DDL" tpl="update t_user set password=':password' where @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@id ">
+                    <xfltpara id="id" nrp="1=1" para="id" sql="id=:id">
+                    </xfltpara>
+                </xflt>
+            </xsql>
+        </xhandle>  
     </xform>
     
     <xform desc="权限管理" id="rolemanage">

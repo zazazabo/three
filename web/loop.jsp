@@ -129,6 +129,39 @@
 
             $(function () {
 
+                $("#add").attr("disabled", true);
+                $("#update").attr("disabled", true);
+                $("#shanchu").attr("disabled", true);
+                var obj = {};
+                obj.code = ${param.m_parent};
+                obj.roletype = ${param.role};
+                $.ajax({async: false, url: "login.usermanage.power.action", type: "get", datatype: "JSON", data: obj,
+                    success: function (data) {
+                        var rs = data.rs;
+                        if (rs.length > 0) {
+                            for (var i = 0; i < rs.length; i++) {
+
+                                if (rs[i].code == "600201" && rs[i].enable != 0) {
+                                    $("#add").attr("disabled", false);
+                                    continue;
+                                }
+                                if (rs[i].code == "600202" && rs[i].enable != 0) {
+                                    $("#update").attr("disabled", false);
+                                    continue;
+                                }
+                                if (rs[i].code == "600203" && rs[i].enable != 0) {
+                                    $("#shanchu").attr("disabled", false);
+                                    continue;
+                                }
+                            }
+                        }
+
+                    },
+                    error: function () {
+                        alert("提交失败！");
+                    }
+                });
+
                 $("#pjj2").on("show.bs.modal", function () {
                     var selects = $('#gravidaTable').bootstrapTable('getSelections');
                     var num = ""
@@ -604,12 +637,12 @@
         <div class="btn-group zuheanniu" id="zuheanniu" style="float:left;position:relative;z-index:100;margin:12px 0 0 10px;">
             <!--data-toggle="modal" data-target="#pjj"-->
             <!--onclick="addLoopModal()-->
-            <button class="btn btn-success ctrol" onclick="addLoopModal()" >  
+            <button class="btn btn-success ctrol" onclick="addLoopModal()" id="add" >  
                 <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;添加
             </button>
             <!--id="xiugai1"-->
             <!--onclick="modifyModal()-->
-            <button class="btn btn-primary ctrol"  onclick="modifyModal();" >
+            <button class="btn btn-primary ctrol"  onclick="modifyModal();" id="update" >
                 <span class="glyphicon glyphicon-pencil"></span>&nbsp;编辑
             </button>
             <button class="btn btn-danger ctrol" id="shanchu">
