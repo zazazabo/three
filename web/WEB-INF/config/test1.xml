@@ -133,7 +133,7 @@
             </xsql>
         </xhandle>
         <xhandle desc="添加回路方案" id="addloop" rtn="rs" rtnype="JSON">
-            <xsql id="a1" para="p_outtime,p_intime,p_name,p_type" tpe="DDL" tpl="insert into t_plan(p_attr,p_outtime,p_intime,p_name,p_type) values(0,':p_outtime',':p_intime',':p_name',:p_type) " var="rs">
+            <xsql id="a1" para="p_outtime,p_intime,p_name,p_type,p_Longitude,p_latitude" tpe="DDL" tpl="insert into t_plan(p_attr,p_outtime,p_intime,p_name,p_type,p_Longitude,p_latitude) values(0,':p_outtime',':p_intime',':p_name',:p_type,':p_Longitude',':p_latitude') " var="rs">
             </xsql>
         </xhandle>
         <xhandle desc="添加灯具方案" id="addlamp" rtn="rs" rtnype="JSON">
