@@ -264,14 +264,7 @@ function  buicode(comaddr, C, AFN, SEQ, DA, DT, paraArr) {
     for (var j = 0; j < paraArr.length; j++) {
         hexData.push(paraArr[j]);
     }
-<<<<<<< HEAD
-    //额外加16字节
-//    for (var i = 0; i < 16; i++) {
-//        hexData.push(0);
-//    }
 
-=======
->>>>>>> f579ebdc9c60ee6a35ef079c3ab2b4e70d57e2bd
     var len1 = 18 - 6 + paraArr.length;   //18是固定长度  6报文头  
     var len2 = len1 << 2 | 2;
 
@@ -286,11 +279,6 @@ function  buicode(comaddr, C, AFN, SEQ, DA, DT, paraArr) {
     hexData[3] = b         //len1 << 2 | 2;
     hexData[4] = a
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> f579ebdc9c60ee6a35ef079c3ab2b4e70d57e2bd
     var v1 = 0;
     for (var i = 6; i < hexData.length; i++) {
         //console.log(parseInt(hexData[i]));
