@@ -8,31 +8,9 @@
 <!DOCTYPE html>
 <html xmlns:f="http://java.sun.com/jsf/core">
     <head>
-          <%@include  file="js.jspf" %>
+        <%@include  file="js.jspf" %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<!--        <script src="select2-developr/dist/js/select2.js"></script>
-        <link href="select2-develop/dist/css/select2.css" rel="stylesheet" />
-
-
-
-        <link rel="stylesheet" type="text/css" href="gatewayconfig_files/bootstrap.css">
-        <link rel="stylesheet" type="text/css" href="gatewayconfig_files/bootstrap-table.css">
-        <script type="text/javascript" src="gatewayconfig_files/jquery.js"></script>
-        <script type="text/javascript" src="gatewayconfig_files/bootstrap.js"></script>
-        <script type="text/javascript" src="gatewayconfig_files/bootstrap-table.js"></script>
-        <script type="text/javascript" src="gatewayconfig_files/bootstrap-table-zh-CN.js"></script>
-        <link type="text/css" href="gatewayconfig_files/basicInformation.css" rel="stylesheet">
-         easyui 
-        <link href="gatewayconfig_files/easyui.css" rel="stylesheet" type="text/css" switch="switch-style">
-        <link href="gatewayconfig_files/icon.css" rel="stylesheet" type="text/css">
-        <script src="gatewayconfig_files/jquery_002.js" type="text/javascript"></script>
-        <script src="gatewayconfig_files/easyui-lang-zh_CN.js" type="text/javascript"></script>
-        <script type="text/javascript" src="gatewayconfig_files/selectAjaxFunction.js"></script>
-        <script type="text/javascript" src="gatewayconfig_files/bootstrap-multiselect.js"></script>
-        <link rel="stylesheet" href="gatewayconfig_files/bootstrap-multiselect.css" type="text/css">
-        <link rel="stylesheet" type="text/css" href="gatewayconfig_files/layer.css">
-        <script type="text/javascript" src="gatewayconfig_files/layer.js"></script>-->
         <script type="text/javascript" src="js/genel.js"></script>
         <script>
             function layerAler(str) {
@@ -45,9 +23,9 @@
             function editloopplan_finish() {
                 $("#select_type_edit").attr("disabled", false);
                 var obj = $("#Form_edit").serializeObject();
-                obj.p_outtime = obj.txt_p_outtime_edit;
+                obj.p_outtime = obj.outtime_edit;
                 obj.p_name = obj.txt_p_name_edit;
-                obj.p_intime = obj.txt_p_intime_edit;
+                obj.p_intime = obj.intime_edit;
                 obj.id = obj.txt_hidden_id;
                 $.ajax({async: false, url: "test1.plan.editloop.action", type: "get", datatype: "JSON", data: obj,
                     success: function (data) {
@@ -87,10 +65,14 @@
                 }
 
 //                 p_outtime,p_intime,p_name
-                $("#txt_p_intime_edit").val(select.p_intime);
+//                $("#intime_edit").val(select.p_intime);
+//                
+                $("#intime_edit").combobox('setValue', select.p_intime)
+                $("#outtime_edit").combobox('setValue', select.p_outtime)
+//                $("#outtime_edit").val(select.p_outtime);
 
-                $("#txt_p_outtime_edit").val(select.p_outtime);
-                $("#txt_p_name_edit").val(select.p_name);
+
+//                $("#txt_p_name_edit").val(select.p_name);
 
                 $("#modal_plan_loop").modal();
                 return false;
@@ -119,8 +101,8 @@
             function checkPlanLoopAdd() {
                 var obj = $("#eqpTypeForm").serializeObject();
                 console.log(obj);
-                obj.p_outtime = obj.txt_p_outtime;
-                obj.p_intime = obj.txt_p_intime;
+                obj.p_outtime = obj.outtime;
+                obj.p_intime = obj.intime;
                 obj.p_name = obj.txt_p_name;
                 obj.p_type = obj.select_type;
                 if (obj.p_type == 0) {
@@ -149,18 +131,28 @@
 
 
             $(function () {
+
+                $('#intime').timespinner('setValue', '00:00');
+                $('#outtime').timespinner('setValue', '23:00');
+
+
                 $("#tr_jw_hide_add").hide();
 
-                $("#select_type").change(function () {
-                    var val = $(this).val();
-                    if (val == 0) {
-                        $("#tr_jw_hide_add").hide();
-                        $("#tr_time_hide_add").show();
-                    } else if (val == 1) {
-                        $("#tr_jw_hide_add").show();
-                        $("#tr_time_hide_add").hide();
+                $('#select_type').combobox({
+                    onSelect: function (record) {
+                        if (record.value == "0") {
+                            $("#tr_jw_hide_add").hide();
+                            $("#tr_time_hide_add").show();
+                        }
+                        if (record.value == "1")
+                        {
+                            $("#tr_jw_hide_add").show();
+                            $("#tr_time_hide_add").hide();
+                        }
+                        console.log(record);
                     }
                 });
+
 
                 var p_type = $("#select_type_query").val();
                 var url = "test1.plan.getLoopPlan.action?p_attr=0&p_type=" + p_type;
@@ -279,8 +271,6 @@
                     }
 
                 });
-                console.log(options);
-
             })
 
         </script>
@@ -292,38 +282,38 @@
 
     <body>
         <!--<div style=" margin-left: 10px" class="panel panel-info">-->
-            <!--<div class="panel-heading">回路方案</div>-->
+        <!--<div class="panel-heading">回路方案</div>-->
 
 
 
 
 
-            <div class="btn-group zuheanniu" id="btn_add" style="float:left;position:relative;z-index:100;margin:12px 0 0 10px;">
-                <!-- data-toggle="modal" data-target="#pjj" -->
-                <button class="btn btn-success ctrol" data-toggle="modal" data-target="#modal_add"  >
-                    <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;添加
-                </button>
-                <button class="btn btn-primary ctrol" type="button"   onclick="editloopplan();"  >
-                    <span class="glyphicon glyphicon-pencil"></span>&nbsp;编辑
-                </button>
-                <button class="btn btn-danger ctrol" onclick="deleteloopplan();" >
-                    <span class="glyphicon glyphicon-trash"></span>&nbsp;删除
-                </button>
-                <span style="margin-left:20px;">方案类型&nbsp;</span>
-                <span class="menuBox">
-                    <select name="select_type_query" id="select_type_query" class="input-sm" style="width:150px;">
-                        <option value="0">时间</option>
-                        <option value="1">经纬度</option>
-                    </select>
-                </span>  
+        <div class="btn-group zuheanniu" id="btn_add" style="float:left;position:relative;z-index:100;margin:12px 0 0 10px;">
+            <!-- data-toggle="modal" data-target="#pjj" -->
+            <button class="btn btn-success ctrol" data-toggle="modal" data-target="#modal_add"  >
+                <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;添加
+            </button>
+            <button class="btn btn-primary ctrol" type="button"   onclick="editloopplan();"  >
+                <span class="glyphicon glyphicon-pencil"></span>&nbsp;编辑
+            </button>
+            <button class="btn btn-danger ctrol" onclick="deleteloopplan();" >
+                <span class="glyphicon glyphicon-trash"></span>&nbsp;删除
+            </button>
+            <span style="margin-left:20px;">方案类型&nbsp;</span>
+            <span class="menuBox">
+                <select name="select_type_query" id="select_type_query" class="input-sm" style="width:150px;">
+                    <option value="0">时间</option>
+                    <option value="1">经纬度</option>
+                </select>
+            </span>  
 
+        </div>
+        <div class="bootstrap-table">
+            <div class="fixed-table-container" style="height: 350px; padding-bottom: 0px;">
+                <table id="table_loop" style="width:100%;" class="text-nowrap table table-hover table-striped">
+                </table> 
             </div>
-            <div class="bootstrap-table">
-                <div class="fixed-table-container" style="height: 350px; padding-bottom: 0px;">
-                    <table id="table_loop" style="width:100%;" class="text-nowrap table table-hover table-striped">
-                    </table> 
-                </div>
-            </div>
+        </div>
 
 
         <!--</div>-->
@@ -351,10 +341,14 @@
                                         <td>
                                             <span style="margin-left:20px;">方案类型&nbsp;</span>
                                             <span class="menuBox">
-                                                <select name="select_type" id="select_type" class="input-sm" style="width:150px;">
+                                                <select class="easyui-combobox" data-options="editable:false" id="select_type" name="select_type" style="width:150px; height: 34px">
                                                     <option value="0">时间</option>
-                                                    <option value="1">经纬度</option>
+                                                    <option value="1">经纬度</option>           
                                                 </select>
+                                                <!--                                                <select name="select_type" id="select_type" class="input-sm" style="width:150px;">
+                                                                                                    <option value="0">时间</option>
+                                                                                                    <option value="1">经纬度</option>
+                                                                                                </select>-->
                                             </span>  
                                         </td>
                                         <td></td>
@@ -368,11 +362,15 @@
                                     <tr id="tr_time_hide_add">
                                         <td>
                                             <span style="margin-left:20px;">闭合时间</span>&nbsp;
-                                            <input id="txt_p_intime" class="form-control"  name="txt_p_intime" style="width:150px;display: inline;" placeholder="请输入闭合时间" type="text"></td>
+                                            <!--<input id="intime" class="form-control"  name="intime" style="width:150px;display: inline;" placeholder="请输入闭合时间" type="text">-->
+                                            <input id="intime" name="intime" style=" height: 34px; width: 150px;  "  class="easyui-timespinner">
+                                        </td>
                                         <td></td>
                                         <td>
                                             <span style="margin-left:20px;">断开时间&nbsp;</span>
-                                            <input id="txt_p_outtime" class="form-control" name="txt_p_outtime" style="width:150px;display: inline;" placeholder="请输入断开时间" type="text">
+                                            <input id="outtime" name="outtime" style=" height: 34px; width: 150px;  "  class="easyui-timespinner">
+                                            <!--<input id="outtime" class="form-control" name="outtime" style="width:150px;display: inline;" placeholder="请输入断开时间" type="text">-->
+                                            <!--<input id="outtime" name="outtime"   class="easyui-timespinner" style="width:150px;display: inline;">-->
                                         </td>
                                         </td>
                                     </tr>                                   
@@ -449,11 +447,15 @@
                                     <tr id="tr_time_hide">
                                         <td>
                                             <span style="margin-left:20px;">闭合时间</span>&nbsp;
-                                            <input id="txt_p_intime_edit" class="form-control"  name="txt_p_intime_edit" style="width:150px;display: inline;" placeholder="请输入闭合时间" type="text"></td>
+                                            <!--<input id="intime_edit" class="form-control"  name="intime_edit" style="width:150px;display: inline;" placeholder="请输入闭合时间" type="text">-->
+                                            <input id="intime_edit" name="intime_edit" style=" height: 34px; width: 150px;  "  class="easyui-timespinner">
+
+                                        </td>
                                         <td></td>
                                         <td>
                                             <span style="margin-left:20px;">断开时间&nbsp;</span>
-                                            <input id="txt_p_outtime_edit" class="form-control" name="txt_p_outtime_edit" style="width:150px;display: inline;" placeholder="请输入断开时间" type="text">
+                                            <!--<input id="outtime_edit" class="form-control" name="outtime_edit" style="width:150px;display: inline;" placeholder="请输入断开时间" type="text">-->
+                                            <input id="outtime_edit" name="outtime_edit" style=" height: 34px; width: 150px;  "  class="easyui-timespinner">
                                         </td>
                                         </td>
                                     </tr>                                   
