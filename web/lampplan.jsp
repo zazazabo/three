@@ -10,7 +10,6 @@
     <head>
         <%@include  file="js.jspf" %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
         <script type="text/javascript" src="js/genel.js"></script>
         <script>
             function layerAler(str) {
@@ -22,36 +21,58 @@
             function checkPlanLampAdd() {
 
                 var a = $("#Form_Add").serializeObject();
-                var obj1 = {"time": a.time1, "value": parseInt(a.val1)};
-                var obj2 = {"time": a.time2, "value": parseInt(a.val2)};
-                var obj3 = {"time": a.time3, "value": parseInt(a.val3)};
-                var obj4 = {"time": a.time4, "value": parseInt(a.val4)};
-                var obj5 = {"time": a.time5, "value": parseInt(a.val5)};
-                var obj6 = {"time": a.time6, "value": parseInt(a.val6)};
-                a.p_name = a.txt_p_name;
-                a.p_type = a.select_type;
-                a.p_time1 = JSON.stringify(obj1);
-                a.p_time2 = JSON.stringify(obj2);
-                a.p_time3 = JSON.stringify(obj3);
-                a.p_time4 = JSON.stringify(obj4);
-                a.p_time5 = JSON.stringify(obj5);
-                a.p_time6 = JSON.stringify(obj6);
-                var ret = false;
-                ;
-                $.ajax({async: false, url: "test1.plan.addlamp.action", type: "get", datatype: "JSON", data: a,
-                    success: function (data) {
-                        var arrlist = data.rs;
-                        if (arrlist.length == 1) {
-                            ret = true;
-                            $("#table_lamp").bootstrapTable('refresh');
-                        }
-                    },
-                    error: function () {
-                        alert("提交失败！");
-                    }
-                });
+                console.log(a);
+                if (a.p_type == "0") {
+                    var obj1 = {"time": a.time1, "value": parseInt(a.val1)};
+                    var obj2 = {"time": a.time2, "value": parseInt(a.val2)};
+                    var obj3 = {"time": a.time3, "value": parseInt(a.val3)};
+                    var obj4 = {"time": a.time4, "value": parseInt(a.val4)};
+                    var obj5 = {"time": a.time5, "value": parseInt(a.val5)};
+                    var obj6 = {"time": a.time6, "value": parseInt(a.val6)};
 
-                return ret;
+                    a.p_time1 = JSON.stringify(obj1);
+                    a.p_time2 = JSON.stringify(obj2);
+                    a.p_time3 = JSON.stringify(obj3);
+                    a.p_time4 = JSON.stringify(obj4);
+                    a.p_time5 = JSON.stringify(obj5);
+                    a.p_time6 = JSON.stringify(obj6);
+                    var ret = false;
+                    $.ajax({async: false, url: "test1.plan.addlamp.action", type: "get", datatype: "JSON", data: a,
+                        success: function (data) {
+                            var arrlist = data.rs;
+                            if (arrlist.length == 1) {
+                                ret = true;
+                                $("#table_lamp").bootstrapTable('refresh');
+                            }
+                        },
+                        error: function () {
+                            alert("提交失败！");
+                        }
+                    });
+
+                    return ret;
+                }
+                if (a.p_type == "1") {
+                    console.log("场景方案");
+                    var ret = false;
+                    $.ajax({async: false, url: "test1.plan.addscene.action", type: "get", datatype: "JSON", data: a,
+                        success: function (data) {
+                            var arrlist = data.rs;
+                            if (arrlist.length == 1) {
+                                ret = true;
+                                $("#tablescene").bootstrapTable('refresh');
+                            }
+                        },
+                        error: function () {
+                            alert("提交失败！");
+                        }
+                    });
+
+                    return ret;
+
+                }
+                return  false;
+
             }
 
 
@@ -59,43 +80,69 @@
 
                 $("#select_type_edit").attr("disabled", false);
                 var a = $("#Form_EDIT").serializeObject();
-                console.log(a);
-                var obj1 = {"time": a.time1_edit, "value": parseInt(a.val1)};
-                var obj2 = {"time": a.time2_edit, "value": parseInt(a.val2)};
-                var obj3 = {"time": a.time3_edit, "value": parseInt(a.val3)};
-                var obj4 = {"time": a.time4_edit, "value": parseInt(a.val4)};
-                var obj5 = {"time": a.time5_edit, "value": parseInt(a.val5)};
-                var obj6 = {"time": a.time6_edit, "value": parseInt(a.val6)};
-                a.p_name = a.txt_p_name_edit;
-
-                a.p_time1 = JSON.stringify(obj1);
-                a.p_time2 = JSON.stringify(obj2);
-                a.p_time3 = JSON.stringify(obj3);
-                a.p_time4 = JSON.stringify(obj4);
-                a.p_time5 = JSON.stringify(obj5);
-                a.p_time6 = JSON.stringify(obj6);
                 a.id = a.txt_hidden_id_edit;
+                console.log(a);
+                if (a.p_type == "0") {
+                    var obj1 = {"time": a.time1, "value": parseInt(a.val1)};
+                    var obj2 = {"time": a.time2, "value": parseInt(a.val2)};
+                    var obj3 = {"time": a.time3, "value": parseInt(a.val3)};
+                    var obj4 = {"time": a.time4, "value": parseInt(a.val4)};
+                    var obj5 = {"time": a.time5, "value": parseInt(a.val5)};
+                    var obj6 = {"time": a.time6, "value": parseInt(a.val6)};
 
-                var ret = false;
-                $.ajax({async: false, url: "test1.plan.editlamp.action", type: "get", datatype: "JSON", data: a,
-                    success: function (data) {
-                        var arrlist = data.rs;
-                        if (arrlist.length == 1) {
-                            ret = true;
-                            $("#table_lamp").bootstrapTable('refresh');
+                    a.p_time1 = JSON.stringify(obj1);
+                    a.p_time2 = JSON.stringify(obj2);
+                    a.p_time3 = JSON.stringify(obj3);
+                    a.p_time4 = JSON.stringify(obj4);
+                    a.p_time5 = JSON.stringify(obj5);
+                    a.p_time6 = JSON.stringify(obj6);
+
+                    var ret = false;
+                    $.ajax({async: false, url: "test1.plan.editlamp.action", type: "get", datatype: "JSON", data: a,
+                        success: function (data) {
+                            var arrlist = data.rs;
+                            if (arrlist.length == 1) {
+                                ret = true;
+                                $("#table_lamp").bootstrapTable('refresh');
+                            }
+                        },
+                        error: function () {
+                            alert("提交失败！");
                         }
-                    },
-                    error: function () {
-                        alert("提交失败！");
-                    }
-                });
-
-                return ret;
+                    });
+                }
+                if (a.p_type == 1) {
+                    var ret = false;
+                    $.ajax({async: false, url: "test1.plan.editlampscene.action", type: "get", datatype: "JSON", data: a,
+                        success: function (data) {
+                            var arrlist = data.rs;
+                            if (arrlist.length == 1) {
+                                ret = true;
+                                $("#tablescene").bootstrapTable('refresh');
+                            }
+                        },
+                        error: function () {
+                            alert("提交失败！");
+                        }
+                    });
+                }
+                return false;
 
             }
 
             function editlampplan() {
-                var selects = $('#table_lamp').bootstrapTable('getSelections');
+
+                var v = $(".bootstrap-table");
+                var v1 = $(v[0]).css('display');
+                var v2 = $(v[1]).css('display');
+                var b = "";
+                if (v1 == "block") {
+                    b = "#table_lamp";
+                }
+                if (v2 == "block") {
+                    b = "#tablescene";
+                }
+                var selects = $(b).bootstrapTable('getSelections');
                 if (selects.length == 0) {
                     layerAler("请选择表格数据");
                     return false;
@@ -103,81 +150,155 @@
                     layerAler("只能编辑单行数据");
                     return false;
                 }
-
                 var select = selects[0];
-                $("#select_type_edit").attr("disabled", false);
-                $("#select_type_edit").val(select.p_type);
-                $("#select_type_edit").attr("disabled", true);
+                console.log(select);
+
                 $("#txt_hidden_id_edit").val(select.id);
-                $("#txt_p_name_edit").val(select.p_name);
-                var obj1 = eval('(' + select.p_time1 + ')');
-                var obj2 = eval('(' + select.p_time2 + ')');
-                var obj3 = eval('(' + select.p_time3 + ')');
-                var obj4 = eval('(' + select.p_time4 + ')');
-                var obj5 = eval('(' + select.p_time5 + ')');
-                var obj6 = eval('(' + select.p_time6 + ')');
+                $("#p_type2").combobox('readonly', true);
+                $("#p_type2").combobox('select', select.p_type);
 
-                var valinput = $("input[name='val1']")[1];
-                $(valinput).val(obj1.value);
-                var valinput = $("input[name='val2']")[1];
-                $(valinput).val(obj2.value);
-                var valinput = $("input[name='val3']")[1];
-                $(valinput).val(obj3.value);
-                var valinput = $("input[name='val4']")[1];
-                $(valinput).val(obj4.value);
-                var valinput = $("input[name='val5']")[1];
-                $(valinput).val(obj5.value);
-                var valinput = $("input[name='val6']")[1];
-                $(valinput).val(obj6.value);
-                $('#time1_edit').timespinner('setValue', obj1.time);
-                $('#time2_edit').timespinner('setValue', obj2.time);
-                $('#time3_edit').timespinner('setValue', obj3.time);
-                $('#time4_edit').timespinner('setValue', obj4.time);
-                $('#time5_edit').timespinner('setValue', obj5.time);
-                $('#time6_edit').timespinner('setValue', obj6.time);
+                var u = $("input[name='p_name']");
+                $(u).val(select.p_name);
+                if (select.p_type == "0") {
+                    $('#scen1').hide();
+                    $('#time_').show();
+                    console.log('时间方式')
+                    var obj1 = eval('(' + select.p_time1 + ')');
+                    var obj2 = eval('(' + select.p_time2 + ')');
+                    var obj3 = eval('(' + select.p_time3 + ')');
+                    var obj4 = eval('(' + select.p_time4 + ')');
+                    var obj5 = eval('(' + select.p_time5 + ')');
+                    var obj6 = eval('(' + select.p_time6 + ')');
+                    var valinput = $("input[name='val1']")[1];
+                    $(valinput).val(obj1.value);
+                    var valinput = $("input[name='val2']")[1];
+                    $(valinput).val(obj2.value);
+                    var valinput = $("input[name='val3']")[1];
+                    $(valinput).val(obj3.value);
+                    var valinput = $("input[name='val4']")[1];
+                    $(valinput).val(obj4.value);
+                    var valinput = $("input[name='val5']")[1];
+                    $(valinput).val(obj5.value);
+                    var valinput = $("input[name='val6']")[1];
+                    $(valinput).val(obj6.value);
+                    $('#time1_').timespinner('setValue', obj1.time);
+                    $('#time2_').timespinner('setValue', obj2.time);
+                    $('#time3_').timespinner('setValue', obj3.time);
+                    $('#time4_').timespinner('setValue', obj4.time);
+                    $('#time5_').timespinner('setValue', obj5.time);
+                    $('#time6_').timespinner('setValue', obj6.time);
+
+                }
+                if (select.p_type == "1") {
+                    $('#scen1').show();
+                    $('#time_').hide();
+                    console.log('场景方式');
+
+                    for (var i = 0; i < 8; i++) {
+                        var attr = 'p_scene' + (i + 1).toString();
+                        var u = $("input[name='" + attr + "']");
+                        $(u).val(select[attr]);
+                    }
 
 
-                // $('#ss').timespinner('setValue', '17:45');  
-                // $('#box').timespinner
-                // $("input[name='time1']")[1].timespinner('setValue','10:11');
-                // var inputtime=$(".easyui-timespinner'")[
-                // $(inputtime).timespinner('setValue','10:20');
-                // $(valinput).val(obj1.time);
-                // var valinput= $("input[name='time2']")[1];
-                // $(valinput).val(obj2.time);
-                // var valinput= $("input[name='time3']")[1];
-                // $(valinput).val(obj3.time);
-                // var valinput= $("input[name='time4']")[1];
-                // $(valinput).val(obj4.time);
-                // var valinput= $("input[name='time5']")[1];
-                // $(valinput).val(obj5.time);
-                // var valinput= $("input[name='time6']")[1];
-                // $(valinput).val(obj6.time);
+                }
                 $("#MODAL_EDIT").modal();
                 return false;
             }
 
             function deletelampplan() {
-                var selects = $('#table_lamp').bootstrapTable('getSelections');
-                for (var i = 0; i < selects.length; i++) {
-                    var select = selects[i];
-                    $.ajax({async: false, url: "test1.plan.deleteloop.action", type: "get", datatype: "JSON", data: {id: select.id},
-                        success: function (data) {
-                            var arrlist = data.rs;
-                            if (arrlist.length == 1) {
-                                $('#table_lamp').bootstrapTable('refresh');
-                            }
-
-                        },
-                        error: function () {
-                            alert("提交失败！");
-                        }
-                    });
+                var v = $(".bootstrap-table");
+                var v1 = $(v[0]).css('display');
+                var v2 = $(v[1]).css('display');
+                var b = "";
+                if (v1 == "block") {
+                    b = "#table_lamp";
                 }
+                if (v2 == "block") {
+                    b = "#tablescene";
+                }
+                var selects = $(b).bootstrapTable('getSelections');
+
+                layer.confirm('您确定要删除吗？', {
+                    btn: ['确定', '取消'], //按钮
+                    icon: 3,
+                    offset: 'center',
+                    title: '提示'
+                }, function (index) {
+                    for (var i = 0; i < selects.length; i++) {
+                        var select = selects[i];
+                        $.ajax({async: false, url: "test1.plan.deleteloop.action", type: "get", datatype: "JSON", data: {id: select.id},
+                            success: function (data) {
+                                var arrlist = data.rs;
+                                if (arrlist.length == 1) {
+                                    $(b).bootstrapTable('refresh');
+                                }
+
+                            },
+                            error: function () {
+                                alert("提交失败！");
+                            }
+                        });
+                    }
+                    layer.close(index);
+                });
+
+
             }
 
-
             $(function () {
+
+                $("#p_type").combobox(
+                        {
+                            onSelect: function (record) {
+                                if (record.value == "0") {
+                                    $("#scen").hide();
+                                    $("#time").show();
+                                }
+                                if (record.value == "1")
+                                {
+                                    $("#scen").show();
+                                    $("#time").hide();
+                                }
+                            }
+                        }
+                )
+                $("#p_type").combobox('select', '0');
+                $('#p_type1').combobox({
+                    onSelect: function (record) {
+                        if (record.value == 0) {
+                            var v = $(".bootstrap-table");
+                            $(v[0]).show();
+                            $(v[1]).hide();
+                            var url = "test1.plan.getLoopPlan.action";
+                            var obj = {p_type: record.value, p_attr: 1};
+                            var opt = {
+                                url: url,
+                                silent: true,
+                                query: obj
+                            };
+
+                            $("#table_lamp").bootstrapTable('refresh', opt);
+
+                        } else if (record.value == 1) {
+                            var v = $(".bootstrap-table");
+                            $(v[1]).show();
+                            $(v[0]).hide();
+
+                            var url = "test1.plan.getLoopPlan.action";
+                            var obj = {p_type: record.value, p_attr: 1};
+                            var opt = {
+                                url: url,
+                                silent: true,
+                                query: obj
+                            };
+
+                            $("#tablescene").bootstrapTable('refresh', opt);
+
+
+                        }
+                    }
+                })
 
                 $("#add").attr("disabled", true);
                 $("#update").attr("disabled", true);
@@ -190,7 +311,6 @@
                         var rs = data.rs;
                         if (rs.length > 0) {
                             for (var i = 0; i < rs.length; i++) {
-
                                 if (rs[i].code == "400201" && rs[i].enable != 0) {
                                     $("#add").attr("disabled", false);
                                     continue;
@@ -211,15 +331,13 @@
                         alert("提交失败！");
                     }
                 });
+
                 $("#modal_add").on("hidden.bs.modal", function () {
                     $(this).removeData("bs.modal");
                 });
 
-
-
-
                 $('#table_lamp').bootstrapTable({
-                    url: 'test1.plan.getLoopPlan.action?p_attr=1',
+                    url: 'test1.plan.getLoopPlan.action',
                     clickToSelect: true,
                     columns: [
                         [
@@ -545,11 +663,179 @@
                             search: params.search,
                             skip: params.offset,
                             limit: params.limit,
+                            p_attr: "1",
+                            p_type: 0,
                             type_id: "1"    
                         };      
                         return temp;  
                     },
                 });
+
+
+
+                $('#tablescene').bootstrapTable({
+                    url: 'test1.plan.getLoopPlan.action',
+                    clickToSelect: true,
+                    columns: [{
+                            title: '单选',
+                            field: 'select',
+                            //复选框
+                            checkbox: true,
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: 'p_name',
+                            title: '方案名',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle',
+                        }, {
+                            field: 'p_code',
+                            title: '方案编号',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle',
+                        },
+                        {
+                            field: 'p_scene1',
+                            title: '场景1',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle',
+                            formatter: function (value, row, index, field) {
+                                if (value != null) {
+                                    return value.toString();
+                                }
+
+                            }
+                        },
+                        {
+                            field: 'p_scene2',
+                            title: '场景2',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle',
+                            formatter: function (value, row, index, field) {
+                                if (value != null) {
+                                    return value.toString();
+                                }
+
+                            }
+                        },
+                        {
+                            field: 'p_scene3',
+                            title: '场景3',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle',
+                            formatter: function (value, row, index, field) {
+                                if (value != null) {
+                                    return value.toString();
+                                }
+
+                            }
+                        },
+                        {
+                            field: 'p_scene4',
+                            title: '场景4',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle',
+                            formatter: function (value, row, index, field) {
+                                if (value != null) {
+                                    return value.toString();
+                                }
+
+                            }
+                        },
+                        {
+                            field: 'p_scene5',
+                            title: '场景5',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle',
+                            formatter: function (value, row, index, field) {
+                                if (value != null) {
+                                    return value.toString();
+                                }
+
+                            }
+                        },
+                        {
+                            field: 'p_scene6',
+                            title: '场景6',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle',
+                            formatter: function (value, row, index, field) {
+                                if (value != null) {
+                                    return value.toString();
+                                }
+
+                            }
+                        },
+                        {
+                            field: 'p_scene7',
+                            title: '场景7',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle',
+                            formatter: function (value, row, index, field) {
+                                if (value != null) {
+                                    return value.toString();
+                                }
+
+                            }
+                        },
+                        {
+                            field: 'p_scene8',
+                            title: '场景8',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle',
+                            formatter: function (value, row, index, field) {
+                                if (value != null) {
+                                    return value.toString();
+                                }
+
+                            }
+                        }
+                    ],
+                    singleSelect: false,
+                    sortName: 'id',
+                    locale: 'zh-CN', //中文支持,
+                    showColumns: true,
+                    sortOrder: 'desc',
+                    pagination: true,
+                    sidePagination: 'server',
+                    pageNumber: 1,
+                    pageSize: 5,
+                    showRefresh: true,
+                    showToggle: true,
+                    // 设置默认分页为 50
+                    pageList: [5, 10, 15, 20, 25],
+                    onLoadSuccess: function () {  //加载成功时执行  表格加载完成时 获取集中器在线状态
+//                        console.info("加载成功");
+                    },
+                    //服务器url
+                    queryParams: function (params)  {   //配置参数     
+                        var temp  =   {    //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的 
+                            search: params.search,
+                            skip: params.offset,
+                            limit: params.limit,
+                            p_attr: 1,
+                            p_type: 1,
+                            type_id: "1"    
+                        };      
+                        return temp;  
+                    },
+                });
+
+
+
+                var tables = $(".bootstrap-table");
+                $(tables[1]).hide();
 
 
             })
@@ -564,11 +850,6 @@
     <body>
 
 
-
-
-
-
-
         <div class="btn-group zuheanniu" id="zuheanniu" style="float:left;position:relative;z-index:100;margin:12px 0 0 10px;">
             <button class="btn btn-success ctrol" data-toggle="modal" data-target="#modal_add" id="add">
                 <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;添加
@@ -581,19 +862,16 @@
             </button>
             <span style="margin-left:20px;">方案类型&nbsp;</span>
             <span class="menuBox">
-                <select name="select_type_query" id="select_type_query" class="input-sm" style="width:150px;">
+                <select class="easyui-combobox" data-options="editable:false" id="p_type1" name="p_type1" style="width:150px; height: 30px; margin-left: 3px;">
                     <option value="0">时间</option>
-                    <option value="1">场景</option>
+                    <option value="1">场景</option>           
                 </select>
             </span> 
         </div>
-        <div class="bootstrap-table">
-            <div class="fixed-table-container" style="height: 350px; padding-bottom: 0px;">
-                <table id="table_lamp" style="width:100%;" class="text-nowrap table table-hover table-striped">
-                </table>  
-            </div>
-        </div>
-
+        <table id="table_lamp" style="width:100%;" class="text-nowrap table table-hover table-striped">
+        </table>  
+        <table id="tablescene" style="width:100%; " class="text-nowrap table table-hover table-striped">
+        </table> 
 
         <!-- 添加灯具方案 -->
         <div class="modal" id="modal_add">
@@ -608,95 +886,164 @@
 
                     <form action="" method="POST" id="Form_Add" onsubmit="return checkPlanLampAdd()">      
                         <div class="modal-body">
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <span style="margin-left:20px;">方案类型&nbsp;</span>
-                                            <span class="menuBox">
-                                                <select name="select_type" id="select_type" class="input-sm" style="width:150px;">
-                                                    <option value="0">时间</option>
-                                                    <option value="1">场景</option>
-                                                </select>
-                                            </span>  
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                            <span style="margin-left:20px;">方案名字</span>&nbsp;
-                                            <input id="txt_p_name" class="form-control"  name="txt_p_name" style="width:150px;display: inline;" placeholder="请输入方案名" type="text"></td>
 
-                                        </td>
-                                    </tr>
+                            <div class="row">
+                                <div class="col-xs-12">
 
-                                    <tr>
-                                        <td>
-                                            <span style="margin-left:20px;">时 &nbsp; 间一</span>&nbsp;
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <span >&nbsp;&nbsp;&nbsp;&nbsp;方案类型&nbsp;</span>
+                                                    <span class="menuBox">
+                                                        <select class="easyui-combobox" data-options="editable:false" id="p_type" name="p_type" style="width:150px; height: 30px; margin-left: 3px;">
+                                                            <option value="0">时间</option>
+                                                            <option value="1">场景</option>           
+                                                        </select>
+                                                    </span>  
+                                                </td>
+                                                <td></td>
+                                                <td>
 
-                                            <input id="time1"  name="time1" style=" height: 30px; width: 150px" class="easyui-timespinner">
-                                        </td> 
-                                        <td></td>
-                                        <td>
-                                            <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
-                                            <input id="val1" class="form-control" name="val1" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
-                                        </td>
-                                    </tr>                                   
-                                    <tr>
-                                        <td>
-                                            <span style="margin-left:20px;">时 &nbsp; 间二</span>&nbsp;
-                                            <input id="time2" name="time2" style=" height: 30px; width: 150px" class="easyui-timespinner">
-                                        </td> 
-                                        <td></td>
-                                        <td>
-                                            <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
-                                            <input id="val2" class="form-control" name="val2" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
-                                        </td>
-                                    </tr> 
-                                    <tr>
-                                        <td>
-                                            <span style="margin-left:20px;">时 &nbsp; 间三</span>&nbsp;
-                                            <input id="time3" name="time3" style=" height: 30px; width: 150px" class="easyui-timespinner">
-                                        </td> 
-                                        <td></td>
-                                        <td>
-                                            <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
-                                            <input id="val3" class="form-control" name="val3" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
-                                        </td>
-                                    </tr> 
-                                    <tr>
-                                        <td>
-                                            <span style="margin-left:20px;">时 &nbsp; 间四</span>&nbsp;
-                                            <input id="time4" name="time4" style=" height: 30px; width: 150px" class="easyui-timespinner">
-                                        </td> 
-                                        <td></td>
-                                        <td>
-                                            <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
-                                            <input id="val4" class="form-control" name="val4" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
-                                        </td>
-                                    </tr> 
-                                    <tr>
-                                        <td>
-                                            <span style="margin-left:20px;">时 &nbsp; 间五</span>&nbsp;
-                                            <input id="time5" name="time5" style=" height: 30px; width: 150px" class="easyui-timespinner">
-                                        </td> 
-                                        <td></td>
-                                        <td>
-                                            <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
-                                            <input id="val5" class="form-control" name="val5" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
-                                        </td>
-                                    </tr> 
-                                    <tr>
-                                        <td>
-                                            <span style="margin-left:20px;">时 &nbsp; 间六</span>&nbsp;
-                                            <input id="time6" name="time6" style=" height: 30px; width: 150px" class="easyui-timespinner">
-                                        </td> 
-                                        <td></td>
-                                        <td>
-                                            <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
-                                            <input id="val6" class="form-control" name="val6" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
-                                        </td>
-                                    </tr> 
-                                </tbody>
-                            </table>
+                                                    <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;方案名</span>&nbsp;
+                                                    <input id="p_name1" class="form-control"  name="p_name" style="width:150px;display: inline;" placeholder="请输入方案名" type="text"></td>
+
+                                                </td>
+                                            </tr>
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+
+                            </div>
+                            <div class="row">
+
+                                <table  id="time" class="aaa">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <span style="margin-left:20px;">时间一</span>&nbsp;
+
+                                                <input id="time1"  name="time1" style=" height: 30px; width: 150px" class="easyui-timespinner">
+                                            </td> 
+                                            <td></td>
+                                            <td>
+                                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
+                                                <input id="val1" class="form-control" name="val1" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
+                                            </td>
+                                        </tr>                                   
+                                        <tr>
+                                            <td>
+                                                <span style="margin-left:20px;">时间二</span>&nbsp;
+                                                <input id="time2" name="time2" style=" height: 30px; width: 150px" class="easyui-timespinner">
+                                            </td> 
+                                            <td></td>
+                                            <td>
+                                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
+                                                <input id="val2" class="form-control" name="val2" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
+                                            </td>
+                                        </tr> 
+                                        <tr>
+                                            <td>
+                                                <span style="margin-left:20px;">时间三</span>&nbsp;
+                                                <input id="time3" name="time3" style=" height: 30px; width: 150px" class="easyui-timespinner">
+                                            </td> 
+                                            <td></td>
+                                            <td>
+                                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
+                                                <input id="val3" class="form-control" name="val3" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
+                                            </td>
+                                        </tr> 
+                                        <tr>
+                                            <td>
+                                                <span style="margin-left:20px;">时间四</span>&nbsp;
+                                                <input id="time4" name="time4" style=" height: 30px; width: 150px" class="easyui-timespinner">
+                                            </td> 
+                                            <td></td>
+                                            <td>
+                                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
+                                                <input id="val4" class="form-control" name="val4" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
+                                            </td>
+                                        </tr> 
+                                        <tr>
+                                            <td>
+                                                <span style="margin-left:20px;">时间五</span>&nbsp;
+                                                <input id="time5" name="time5" style=" height: 30px; width: 150px" class="easyui-timespinner">
+                                            </td> 
+                                            <td></td>
+                                            <td>
+                                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
+                                                <input id="val5" class="form-control" name="val5" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
+                                            </td>
+                                        </tr> 
+                                        <tr>
+                                            <td>
+                                                <span style="margin-left:20px;">时间六</span>&nbsp;
+                                                <input id="time6" name="time6" style=" height: 30px; width: 150px" class="easyui-timespinner">
+                                            </td> 
+                                            <td></td>
+                                            <td>
+                                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
+                                                <input id="val6" class="form-control" name="val6" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
+                                            </td>
+                                        </tr> 
+                                    </tbody>
+                                </table>
+
+
+
+                                <table id="scen"  class="aaa" style=" display: none">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <span style="margin-left:20px;">场景1</span>&nbsp;
+                                                <input id="p_scene1" class="form-control" name="p_scene1" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                            </td> 
+                                            <td></td>
+                                            <td>
+                                                <span style="margin-left:20px;">场景2</span>&nbsp;
+                                                <input id="p_scene2" class="form-control" name="p_scene2" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                            </td>
+                                        </tr> 
+                                        <tr>
+                                            <td>
+                                                <span style="margin-left:20px;">场景3</span>&nbsp;
+                                                <input id="p_scene3" class="form-control" name="p_scene3" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                            </td> 
+                                            <td></td>
+                                            <td>
+                                                <span style="margin-left:20px;">场景4</span>&nbsp;
+                                                <input id="p_scene4" class="form-control" name="p_scene4" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                            </td>
+                                        </tr> 
+                                        <tr>
+                                            <td>
+                                                <span style="margin-left:20px;">场景5</span>&nbsp;
+                                                <input id="p_scene5" class="form-control" name="p_scene5" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                            </td> 
+                                            <td></td>
+                                            <td>
+                                                <span style="margin-left:20px;">场景6</span>&nbsp;
+                                                <input id="p_scene6" class="form-control" name="p_scene6" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                            </td>
+                                        </tr> 
+                                        <tr>
+                                            <td>
+                                                <span style="margin-left:20px;">场景7</span>&nbsp;
+                                                <input id="p_scene7" class="form-control" name="p_scene7" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                            </td> 
+                                            <td></td>
+                                            <td>
+                                                <span style="margin-left:20px;">场景8</span>&nbsp;
+                                                <input id="p_scene8" class="form-control" name="p_scene8" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                            </td>
+                                        </tr> 
+
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                         <!--注脚--> 
                         <div class="modal-footer">
@@ -725,97 +1072,169 @@
                     </div>
 
                     <form action="" method="POST" id="Form_EDIT" onsubmit="return checkPlanLampEdit()">  
-                        <input type="hidden" id="txt_hidden_id_edit" name="txt_hidden_id_edit">    
+                        <input type="hidden" id="txt_hidden_id_edit" name="txt_hidden_id_edit">  
                         <div class="modal-body">
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <span style="margin-left:20px;">方案类型&nbsp;</span>
-                                            <span class="menuBox">
-                                                <select name="select_type_edit" disabled="true" id="select_type_edit" class="input-sm" style="width:150px;">
-                                                    <option value="0">时间</option>
-                                                    <option value="1">场景</option>
-                                                </select>
-                                            </span>  
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                            <span style="margin-left:20px;">方案名字</span>&nbsp;
-                                            <input id="txt_p_name_edit" class="form-control"  name="txt_p_name_edit" style="width:150px;display: inline;" placeholder="请输入方案名" type="text"></td>
 
-                                        </td>
-                                    </tr>
+                            <div class="row">
+                                <div class="col-xs-12">
 
-                                    <tr>
-                                        <td>
-                                            <span style="margin-left:20px;">时 &nbsp; 间一</span>&nbsp;
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <span >&nbsp;&nbsp;&nbsp;&nbsp;方案类型&nbsp;</span>
+                                                    <span class="menuBox">
+                                                        <select class="easyui-combobox" data-options="editable:false" id="p_type2" name="p_type" style="width:150px; height: 30px; margin-left: 3px;">
+                                                            <option value="0">时间</option>
+                                                            <option value="1">场景</option>           
+                                                        </select>
+                                                    </span>  
+                                                </td>
+                                                <td></td>
+                                                <td>
 
-                                            <input id="time1_edit"  name="time1_edit" style=" height: 30px; width: 150px" class="easyui-timespinner">
-                                        </td> 
-                                        <td></td>
-                                        <td>
-                                            <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
-                                            <input id="val1" value="" class="form-control" name="val1" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
-                                        </td>
-                                    </tr>                                   
-                                    <tr>
-                                        <td>
-                                            <span style="margin-left:20px;">时 &nbsp; 间二</span>&nbsp;
-                                            <input id="time2_edit" name="time2_edit" style=" height: 30px; width: 150px" class="easyui-timespinner">
-                                        </td> 
-                                        <td></td>
-                                        <td>
-                                            <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
-                                            <input id="val2" class="form-control" name="val2" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
-                                        </td>
-                                    </tr> 
-                                    <tr>
-                                        <td>
-                                            <span style="margin-left:20px;">时 &nbsp; 间三</span>&nbsp;
-                                            <input id="time3_edit" name="time3_edit" style=" height: 30px; width: 150px" class="easyui-timespinner">
-                                        </td> 
-                                        <td></td>
-                                        <td>
-                                            <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
-                                            <input id="val3" class="form-control" name="val3" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
-                                        </td>
-                                    </tr> 
-                                    <tr>
-                                        <td>
-                                            <span style="margin-left:20px;">时 &nbsp; 间四</span>&nbsp;
-                                            <input id="time4_edit" name="time4_edit" style=" height: 30px; width: 150px" class="easyui-timespinner">
-                                        </td> 
-                                        <td></td>
-                                        <td>
-                                            <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
-                                            <input id="val4" class="form-control" name="val4" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
-                                        </td>
-                                    </tr> 
-                                    <tr>
-                                        <td>
-                                            <span style="margin-left:20px;">时 &nbsp; 间五</span>&nbsp;
-                                            <input id="time5_edit" name="time5_edit" style=" height: 30px; width: 150px" class="easyui-timespinner">
-                                        </td> 
-                                        <td></td>
-                                        <td>
-                                            <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
-                                            <input id="val5" class="form-control" name="val5" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
-                                        </td>
-                                    </tr> 
-                                    <tr>
-                                        <td>
-                                            <span style="margin-left:20px;">时 &nbsp; 间六</span>&nbsp;
-                                            <input id="time6_edit" name="time6_edit" style=" height: 30px; width: 150px" class="easyui-timespinner">
-                                        </td> 
-                                        <td></td>
-                                        <td>
-                                            <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
-                                            <input id="val6" class="form-control" name="val6" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
-                                        </td>
-                                    </tr> 
-                                </tbody>
-                            </table>
+                                                    <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;方案名</span>&nbsp;
+                                                    <input id="p_name1" class="form-control"  name="p_name" style="width:150px;display: inline;" placeholder="请输入方案名" type="text"></td>
+
+                                                </td>
+                                            </tr>
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+
+                            </div>
+                            <div class="row">
+
+                                <table  id="time_">
+                                    <tbody>
+
+                                        <tr>
+                                            <td>
+                                                <span style="margin-left:20px;">时间一</span>&nbsp;
+
+                                                <input id="time1_"  name="time1" style=" height: 30px; width: 150px" class="easyui-timespinner">
+                                            </td> 
+                                            <td></td>
+                                            <td>
+                                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
+                                                <input id="val1_" class="form-control" name="val1" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
+                                            </td>
+                                        </tr>                                   
+                                        <tr>
+                                            <td>
+                                                <span style="margin-left:20px;">时间二</span>&nbsp;
+                                                <input id="time2_" name="time2" style=" height: 30px; width: 150px" class="easyui-timespinner">
+                                            </td> 
+                                            <td></td>
+                                            <td>
+                                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
+                                                <input id="val2_" class="form-control" name="val2" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
+                                            </td>
+                                        </tr> 
+                                        <tr>
+                                            <td>
+                                                <span style="margin-left:20px;">时间三</span>&nbsp;
+                                                <input id="time3_" name="time3" style=" height: 30px; width: 150px" class="easyui-timespinner">
+                                            </td> 
+                                            <td></td>
+                                            <td>
+                                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
+                                                <input id="val3_" class="form-control" name="val3" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
+                                            </td>
+                                        </tr> 
+                                        <tr>
+                                            <td>
+                                                <span style="margin-left:20px;">时间四</span>&nbsp;
+                                                <input id="time4_" name="time4" style=" height: 30px; width: 150px" class="easyui-timespinner">
+                                            </td> 
+                                            <td></td>
+                                            <td>
+                                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
+                                                <input id="val4_" class="form-control" name="val4" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
+                                            </td>
+                                        </tr> 
+                                        <tr>
+                                            <td>
+                                                <span style="margin-left:20px;">时间五</span>&nbsp;
+                                                <input id="time5_" name="time5" style=" height: 30px; width: 150px" class="easyui-timespinner">
+                                            </td> 
+                                            <td></td>
+                                            <td>
+                                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
+                                                <input id="val5_" class="form-control" name="val5" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
+                                            </td>
+                                        </tr> 
+                                        <tr>
+                                            <td>
+                                                <span style="margin-left:20px;">时间六</span>&nbsp;
+                                                <input id="time6_" name="time6" style=" height: 30px; width: 150px" class="easyui-timespinner">
+                                            </td> 
+                                            <td></td>
+                                            <td>
+                                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
+                                                <input id="val6_" class="form-control" name="val6" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
+                                            </td>
+                                        </tr> 
+                                    </tbody>
+                                </table>
+
+
+
+                                <table id="scen1"  style=" display: none">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <span style="margin-left:20px;">场景1</span>&nbsp;
+                                                <input id="p_scene1" class="form-control" name="p_scene1" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                            </td> 
+                                            <td></td>
+                                            <td>
+                                                <span style="margin-left:20px;">场景2</span>&nbsp;
+                                                <input id="p_scene2" class="form-control" name="p_scene2" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                            </td>
+                                        </tr> 
+                                        <tr>
+                                            <td>
+                                                <span style="margin-left:20px;">场景3</span>&nbsp;
+                                                <input id="p_scene3" class="form-control" name="p_scene3" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                            </td> 
+                                            <td></td>
+                                            <td>
+                                                <span style="margin-left:20px;">场景4</span>&nbsp;
+                                                <input id="p_scene4" class="form-control" name="p_scene4" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                            </td>
+                                        </tr> 
+                                        <tr>
+                                            <td>
+                                                <span style="margin-left:20px;">场景5</span>&nbsp;
+                                                <input id="p_scene5" class="form-control" name="p_scene5" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                            </td> 
+                                            <td></td>
+                                            <td>
+                                                <span style="margin-left:20px;">场景6</span>&nbsp;
+                                                <input id="p_scene6" class="form-control" name="p_scene6" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                            </td>
+                                        </tr> 
+                                        <tr>
+                                            <td>
+                                                <span style="margin-left:20px;">场景7</span>&nbsp;
+                                                <input id="p_scene7" class="form-control" name="p_scene7" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                            </td> 
+                                            <td></td>
+                                            <td>
+                                                <span style="margin-left:20px;">场景8</span>&nbsp;
+                                                <input id="p_scene8" class="form-control" name="p_scene8" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                            </td>
+                                        </tr> 
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+
                         </div>
                         <!--注脚--> 
                         <div class="modal-footer">
@@ -825,8 +1244,6 @@
                             <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                         </div>
                     </form>
-
-
                 </div>
             </div>
         </div>

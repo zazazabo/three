@@ -23,15 +23,36 @@
             function editloopplan_finish() {
 //                $("#select_type_edit").attr("disabled", false);
                 var obj = $("#Form_edit").serializeObject();
+
                 obj.p_outtime = obj.outtime_edit;
                 obj.p_name = obj.txt_p_name_edit;
                 obj.p_intime = obj.intime_edit;
                 obj.id = obj.txt_hidden_id;
-                $.ajax({async: false, url: "test1.plan.editloop.action", type: "get", datatype: "JSON", data: obj,
+                obj.p_Longitude = obj.longitudem26d_edit + "." + obj.longitudem26m_edit + "." + obj.longitudem26s_edit;
+                obj.p_latitude = obj.latitudem26d_edit + "." + obj.latitudem26m_edit + "." + obj.latitudem26s_edit;
+
+                console.log(obj);
+                var url = "";
+                if (obj.select_type_edit == "0") {
+                    url = "test1.plan.editlooptime.action";
+                }
+                if (obj.select_type_edit == "1") {
+                    url = "test1.plan.editloopjw.action";
+                }
+                console.log(url);
+
+                $.ajax({async: false, url: url, type: "get", datatype: "JSON", data: obj,
                     success: function (data) {
                         var arrlist = data.rs;
                         if (arrlist.length == 1) {
-                            $("#table_loop").bootstrapTable('refresh');
+                            var url = "test1.plan.getLoopPlan.action";
+                            var obj1 = {p_type: obj.select_type_edit};
+                            var opt = {
+                                url: url,
+                                silent: true,
+                                query: obj1
+                            };
+                            $("#table_loop").bootstrapTable('refresh', opt);
                         }
                     },
                     error: function () {
@@ -52,7 +73,7 @@
                     layerAler("只能编辑单行数据");
                     return false;
                 }
-
+                $("#select_type_edit").combobox('readonly', true);
 
 //
                 var select = selects[0];
@@ -61,18 +82,28 @@
                 $('#outtime_edit').timespinner('setValue', select.p_outtime);
                 $("#txt_hidden_id").val(select.id);
                 if (select.p_type == "0") {
-//                    layerAler("bbb");
+                    $("#tr_time_hide").show();
                     $("#tr_jw_hide").hide();
-//                    $("#select_type_edit").combobox({disabled: false});
                     $('#select_type_edit').combobox('select', '0');
-                    $("#select_type_edit").combobox({disabled: true});
+
                 } else if (select.p_type == "1") {
-//                    layerAler("ddd");
-                        console.log("经纬度");
+                    console.log("经纬度");
                     $("#tr_time_hide").hide();
-                    $("#select_type_edit").combobox({disabled: true});
-                    $('#select_type_edit').combobox('setValue', '1');
-                    $("#select_type_edit").combobox({disabled: false});
+                    $("#tr_jw_hide").show();
+                    $('#select_type_edit').combobox('select', "1");
+                    var long = select.p_Longitude;
+                    var lati = select.p_latitude;
+                    var l1 = long.split(".");
+                    var l2 = lati.split(".");
+                    $("#longitudem26d_edit").val(l1[0]);
+                    $("#longitudem26m_edit").val(l1[1]);
+                    $("#longitudem26s_edit").val(l1[2]);
+
+                    $("#latitudem26d_edit").val(l2[0]);
+                    $("#latitudem26m_edit").val(l2[1]);
+                    $("#latitudem26s_edit").val(l2[2]);
+
+
                 }
                 $("#modal_plan_loop").modal();
                 return false;
@@ -101,18 +132,17 @@
             function checkPlanLoopAdd() {
                 var obj = $("#addform").serializeObject();
                 console.log(obj);
-                obj.p_outtime = "";
-                obj.p_outtime = "";
-                obj.p_Longitude = "";
-                obj.p_latitude = "";
+
 
                 obj.p_name = obj.txt_p_name;
                 obj.p_type = obj.select_type;
+                obj.p_outtime = obj.outtime;
+                obj.p_intime = obj.intime;
+                obj.p_Longitude = obj.longitudem26m + "." + obj.longitudem26s + "." + obj.latitudem26d;
+                obj.p_latitude = obj.latitudem26d + "." + obj.latitudem26m + "." + obj.latitudem26s;
 
 
-
-
-
+                var url = "";
                 if (obj.p_type == 1) {
 
                     if (obj.longitudem26m == "" || obj.longitudem26s == "" || obj.latitudem26d == "") {
@@ -124,24 +154,19 @@
                         layerAler("纬度不能为空");
                         return;
                     }
-                    obj.p_Longitude = obj.longitudem26m + "." + obj.longitudem26s + "." + obj.latitudem26d;
-                    obj.p_latitude = obj.latitudem26d + "." + obj.latitudem26m + "." + obj.latitudem26s;
-
+                    url = "test1.plan.addlooplt.action";
 
                 }
-
-
-
                 if (obj.p_type == 0) {
                     if (obj.p_intime == "" || obj.p_outtime == "") {
                         layerAler("断开和闭合时间不能为空");
                         return false;
                     }
-                    obj.p_outtime = obj.outtime;
-                    obj.p_intime = obj.intime;
+                    url = "test1.plan.addlooptime.action";
                 }
+
                 var ret = false;
-                $.ajax({async: false, url: "test1.plan.addloop.action", type: "get", datatype: "JSON", data: obj,
+                $.ajax({async: false, url: url, type: "get", datatype: "JSON", data: obj,
                     success: function (data) {
                         var arrlist = data.rs;
                         if (arrlist.length == 1) {
@@ -152,12 +177,47 @@
                         alert("提交失败！");
                     }
                 });
-                return ret;
+//                return ret;
             }
 
 
 
             $(function () {
+
+
+//                $("#add").attr("disabled", true);
+//                $("#update").attr("disabled", true);
+//                $("#del").attr("disabled", true);
+//                var obj = {};
+//                obj.code = ${param.m_parent};
+//                obj.roletype = ${param.role};
+//                $.ajax({async: false, url: "login.usermanage.power.action", type: "get", datatype: "JSON", data: obj,
+//                    success: function (data) {
+//                        var rs = data.rs;
+//                        if (rs.length > 0) {
+//                            for (var i = 0; i < rs.length; i++) {
+//                                if (rs[i].code == "400101" && rs[i].enable != 0) {
+//                                    $("#add").attr("disabled", false);
+//                                    continue;
+//                                }
+//                                if (rs[i].code == "400102" && rs[i].enable != 0) {
+//                                    $("#update").attr("disabled", false);
+//                                    continue;
+//                                }
+//                                if (rs[i].code == "400103" && rs[i].enable != 0) {
+//                                    $("#del").attr("disabled", false);
+//                                    continue;
+//                                }
+//                            }
+//                        }
+//                    },
+//                    error: function () {
+//                        alert("提交失败！");
+//                    }
+//                });
+
+
+
 
                 $('#intime').timespinner('setValue', '00:00');
                 $('#outtime').timespinner('setValue', '23:00');
@@ -194,24 +254,24 @@
                         $("#table_loop").bootstrapTable('refresh', opt);
 
 
-                        if (record.value == "0") {
-                            $("#table_loop").bootstrapTable('hideColumn', 'p_Longitude');
-                            $("#table_loop").bootstrapTable('hideColumn', 'p_latitude');
-                            $("#table_loop").bootstrapTable('showColumn', 'p_outtime');
-                            $("#table_loop").bootstrapTable('showColumn', 'p_intime');
-                        }
-                        if (record.value == "1")
-                        {
-                            $("#table_loop").bootstrapTable('hideColumn', 'p_outtime');
-                            $("#table_loop").bootstrapTable('hideColumn', 'p_intime');
-
-                            $("#table_loop").bootstrapTable('showColumn', 'p_Longitude');
-                            $("#table_loop").bootstrapTable('showColumn', 'p_latitude');
-                        }
+//                        if (record.value == "0") {
+//                            $("#table_loop").bootstrapTable('hideColumn', 'p_Longitude');
+//                            $("#table_loop").bootstrapTable('hideColumn', 'p_latitude');
+//                            $("#table_loop").bootstrapTable('showColumn', 'p_outtime');
+//                            $("#table_loop").bootstrapTable('showColumn', 'p_intime');
+//                        }
+//                        if (record.value == "1")
+//                        {
+//                            $("#table_loop").bootstrapTable('hideColumn', 'p_outtime');
+//                            $("#table_loop").bootstrapTable('hideColumn', 'p_intime');
+//
+//                            $("#table_loop").bootstrapTable('showColumn', 'p_Longitude');
+//                            $("#table_loop").bootstrapTable('showColumn', 'p_latitude');
+//                        }
 //                        console.log(record);
                     }
                 })
-
+                $("#select_type_query").combobox('select', '0');
                 var p_type = $("#select_type_query").combobox('getValue');
 //                console.log(p_type);
                 var url = "test1.plan.getLoopPlan.action";
@@ -326,19 +386,20 @@
 
         <div class="btn-group zuheanniu" id="btn_add" style="float:left;position:relative;z-index:100;margin:12px 0 0 10px;">
             <!-- data-toggle="modal" data-target="#pjj" -->
-            <button class="btn btn-success ctrol" data-toggle="modal" data-target="#modal_add"  >
+            <button class="btn btn-success ctrol" data-toggle="modal" data-target="#modal_add" id="add" >
                 <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;添加
             </button>
-            <button class="btn btn-primary ctrol" type="button"   onclick="editloopplan();"  >
+            <button class="btn btn-primary ctrol" type="button"   onclick="editloopplan();" id="update" >
                 <span class="glyphicon glyphicon-pencil"></span>&nbsp;编辑
             </button>
-            <button class="btn btn-danger ctrol" onclick="deleteloopplan();" >
+            <button class="btn btn-danger ctrol" onclick="deleteloopplan();" id="del">
                 <span class="glyphicon glyphicon-trash"></span>&nbsp;删除
             </button>
+
             <span style="margin-left:20px;">方案类型&nbsp;</span>
             <span class="menuBox">
 
-                <select class="easyui-combobox" data-options="editable:false" id="select_type_query" name="select_type_query" style="width:150px; height: 34px">
+                <select class="easyui-combobox" data-options="editable:false" id="select_type_query" name="select_type_query" style="width:150px; height: 30px">
                     <option value="0">时间</option>
                     <option value="1">经纬度</option>           
                 </select>
@@ -350,12 +411,12 @@
             </span>  
 
         </div>
-        <div class="bootstrap-table">
-            <div class="fixed-table-container" style="height: 350px; padding-bottom: 0px;">
-                <table id="table_loop" style="width:100%;" class="text-nowrap table table-hover table-striped">
-                </table> 
-            </div>
-        </div>
+        <!--        <div class="bootstrap-table">
+                    <div class="fixed-table-container" style="height: 350px; padding-bottom: 0px;">-->
+        <table id="table_loop" style="width:100%;" class="text-nowrap table table-hover table-striped">
+        </table> 
+        <!--            </div>
+                </div>-->
 
 
         <!--</div>-->
@@ -383,7 +444,7 @@
                                         <td>
                                             <span style="margin-left:20px;">方案类型&nbsp;</span>
                                             <span class="menuBox">
-                                                <select class="easyui-combobox" data-options="editable:false" id="select_type" name="select_type" style="width:150px; height: 34px">
+                                                <select class="easyui-combobox" data-options="editable:false" id="select_type" name="select_type" style="width:150px; height: 30px">
                                                     <option value="0">时间</option>
                                                     <option value="1">经纬度</option>           
                                                 </select>
