@@ -199,6 +199,18 @@
             </xsql>
         </xhandle>
 
+
+                <xhandle desc="" id="getPlanlist" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT   tl.p_code as id,tl.p_code as text,p_outtime,p_intime,p_Longitude,p_latitude,p_type FROM t_plan tl where  @CONDITION " var="list">
+            <xflt id="CONDITION" nrp=""  tpl="@attr ">
+                    <xfltpara id="attr" nrp="1=1" para="attr" sql="p_attr=:attr"> 
+                    </xfltpara>  
+                </xflt>
+            </xsql>
+        </xhandle> 
+
+
+
     </xform>
     
 
@@ -286,9 +298,9 @@
         
         
         <xhandle desc="" id="getlampcomaddr" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT   tl.l_comaddr as id,tl.l_comaddr as text FROM t_lamp tl where @CONDITION  " var="list">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT DISTINCT  tl.l_comaddr as id,tl.l_comaddr as text FROM t_lamp tl where @CONDITION  " var="list">
                 <xflt id="CONDITION" nrp="" tpl="@l_comaddr ">
-                    <xfltpara id="l_comaddr" nrp="1=1" para="l_comaddr" sql="l_comaddr = ':l_comaddr' ">
+                    <xfltpara id="l_comaddr" nrp="1=1" para="l_comaddr" sql="l_comaddr = ':l_comaddr' "> 
                     </xfltpara>
                 </xflt>
             </xsql>
@@ -396,7 +408,7 @@
         <xhandle desc="" id="getlampcomaddr" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT   tl.l_comaddr as id,tl.l_comaddr as text FROM t_loop tl where @CONDITION  " var="list">
                 <xflt id="CONDITION" nrp="" tpl="@l_comaddr ">
-                    <xfltpara id="l_comaddr" nrp="1=1" para="l_comaddr" sql="l_comaddr = ':l_comaddr' ">
+                    <xfltpara id="l_comaddr" nrp="1=1" para="l_comaddr" sql="l_comaddr = ':l_comaddr' "> 
                     </xfltpara>
                 </xflt>
             </xsql>

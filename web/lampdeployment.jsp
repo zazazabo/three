@@ -336,6 +336,147 @@
         </script>
     </head>
     <body>
+
+        <form id="form1">
+            <div class="row">
+                <div class="col-xs-6">
+
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <span style="margin-left:10px;">网关地址&nbsp;</span>
+                                    <span class="menuBox">
+
+                                        <input id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 34px" 
+                                               data-options="onLoadSuccess:function(data){
+                                               if(Array.isArray(data)&&data.length>0){
+                                               $(this).combobox('select', data[0].id);
+
+                                               }else{
+                                               $(this).combobox('select',);
+                                               }
+                                               console.log(data);
+                                               },editable:false,valueField:'id', textField:'text',url:'test1.lamp.getlampcomaddr.action' " />
+
+                                        <!--<select name="l_comaddr_lamp" id="l_comaddr_lamp" placeholder="回路" class="input-sm" style="width:150px;">-->
+                                    </span>   
+                                </td>
+
+                                <td>
+                                    <!--&nbsp;&nbsp;  <button id="btndeploy" onclick="deployloop()" class="btn btn-success">部署回路</button>-->
+                                </td>
+                                <td>
+                                    <!--&nbsp;&nbsp;  <button id="btnremove" onclick="removeloop()" class="btn btn-success">移除回路</button>-->
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-xs-6">
+                    <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; ">
+                        <tr>
+                            <td colspan="4" align="center">
+                                <span >方案列表&nbsp;</span>
+                                <span class="menuBox">
+
+                                    <input id="p_plan" class="easyui-combobox" name="p_plan" style="width:150px; height: 30px" 
+                                           data-options="onLoadSuccess:function(data){
+                                           if(Array.isArray(data)&&data.length>0){
+                                           $(this).combobox('select', data[0].id);
+
+                                           }else{
+                                           $(this).combobox('select',);
+                                           }
+                                           console.log(data);
+                                           },editable:false,valueField:'id', textField:'text',url:'test1.plan.getPlanlist.action?attr=1' " />
+                            </td>
+                        </tr>
+                        <input type="hidden" id="p_type" name="p_type" />
+                        <tr id="type0">
+                            <td>
+                                <span style="margin-left:20px;">闭合时间</span>&nbsp;
+                            </td>
+                            <td> <input id="intime" name="intime" style=" height: 30px; width: 150px;  "  class="easyui-timespinner">
+                            </td>
+                            <td>
+                                <span style="margin-left:20px;">断开时间&nbsp;</span>
+                            </td>
+                            <td>
+                                <input id="outtime" name="outtime" style=" height: 30px; width: 150px;  "  class="easyui-timespinner">
+                            </td>
+                        </tr>
+                        <tr id="type0">
+                            <td>
+                                <span style="margin-left:20px;">闭合时间</span>&nbsp;
+                            </td>
+                            <td> <input id="intime1" readonly="true" name="intime1" style=" height: 30px; width: 150px;  "  class="easyui-timespinner">
+                            </td>
+                            <td>
+                                <span style="margin-left:20px;">断开时间&nbsp;</span>
+                            </td>
+                            <td>
+                                <input id="outtime1" readonly="true" name="outtime1" style=" height: 30px; width: 150px;  "  class="easyui-timespinner"> &nbsp;
+                            </td>
+                        </tr>                     
+
+                        <tr id="type1" style=" display: none" >
+                            <td>
+                                <span style="margin-left:20px;">区域经度</span>&nbsp;
+                            </td>
+                            <td>
+                                <input id="longitudem26d" class="form-control" name="longitudem26d" style="width:51px;display: inline;" type="text">&nbsp;°
+                                <input id="longitudem26m" class="form-control" name="longitudem26m" style="width:45px;display: inline;" type="text">&nbsp;'
+                                <input id="longitudem26s" class="form-control" name="longitudem26s" style="width:45px;display: inline;" type="text">&nbsp;"
+                            </td>
+                            <td>
+                                <span style="margin-left:20px;">区域纬度&nbsp;</span>
+
+                            </td>
+                            <td>
+                                <input id="latitudem26d" class="form-control" name="latitudem26d" style="width:51px;display: inline;" type="text">&nbsp;°
+                                <input id="latitudem26m" class="form-control" name="latitudem26m" style="width:45px;display: inline;" type="text">&nbsp;'
+                                <input id="latitudem26s" class="form-control" name="latitudem26s" style="width:45px;display: inline;" type="text">&nbsp;"
+                            </td>
+                        </tr>
+                        <!--                    <tr>
+                                                <td colspan="4">
+                                                    <button id="btndeploy" style=" margin-left: 40px;" onclick="setPlan()" class="btn btn-success">设置</button>
+                        
+                                                    <button id="btndeploy" onclick="setPlan()" class="btn btn-success">部署回路方案</button>
+                        
+                                                    <button id="btndeploy" onclick="setPlan()" class="btn btn-success">读取回路时间表</button>
+                                                </td>
+                                            </tr>-->
+
+                    </table>
+
+                </div>
+            </div>
+            <div class="row"  style=" margin-top: 20px;">
+                <div class="col-xs-6">
+                             <button id="btndeploylamp" class="btn btn-success">部署灯具</button>
+                </div>
+                <div class="col-xs-6">
+                    <!--<button style=" margin-left: 40px;" type="button" onclick="setPlan()" class="btn btn-success">设置</button>-->
+
+                    <button style=" margin-left: 40px;" onclick="setLoopPlan()" type="button" class="btn btn-success">部署回路方案</button>
+
+                   <button id="btnremovelamp" class="btn btn-success">移除灯具</button>
+                </div>
+            </div>
+
+        </form> 
+
+
+
+
+
+
+<!--
+
         <div class="modal-body">
             <table>
                 <tbody>
@@ -360,7 +501,7 @@
                                        console.log(data);
                                        },editable:false,valueField:'id', textField:'text',url:'test1.lamp.getlampcomaddr.action' " />
 
-                                <!--<select name="l_comaddr_lamp" id="l_comaddr_lamp" placeholder="回路" class="input-sm" style="width:150px;">-->
+                                <select name="l_comaddr_lamp" id="l_comaddr_lamp" placeholder="回路" class="input-sm" style="width:150px;">
                             </span>    
                         </td>
                         <td> 
@@ -389,7 +530,8 @@
 
                 </tbody>
             </table>
-        </div>
+        </div>-->
+
         <table id="lampTable" style="width:100%;" class="text-nowrap table table-hover table-striped">
         </table>
 
