@@ -54,8 +54,19 @@
                 }
                 if (a.p_type == "1") {
                     console.log("场景方案");
+                    var o = {};
+                    for (var i = 0; i < 8; i++) {
+                        var f = "p_scene" + (i + 1).toString();
+                        var num = "num" + (i + 1).toString();
+                        var val = "_val" + (i + 1).toString();
+                        var o1 = {"num": a[num], "value": a[val]};
+                        o[f] = JSON.stringify(o1);
+                    }
+                    o.p_name = a.p_name;
+                    o.p_type = a.p_type;
+                    console.log(o);
                     var ret = false;
-                    $.ajax({async: false, url: "test1.plan.addscene.action", type: "get", datatype: "JSON", data: a,
+                    $.ajax({async: false, url: "test1.plan.addscene.action", type: "get", datatype: "JSON", data: o,
                         success: function (data) {
                             var arrlist = data.rs;
                             if (arrlist.length == 1) {
@@ -112,8 +123,20 @@
                     });
                 }
                 if (a.p_type == 1) {
+
+                    var o = {};
+                    for (var i = 0; i < 8; i++) {
+                        var f = "p_scene" + (i + 1).toString();
+                        var num = "num" + (i + 1).toString();
+                        var val = "_val" + (i + 1).toString();
+                        var o1 = {"num": a[num], "value": a[val]};
+                        o[f] = JSON.stringify(o1);
+                    }
+                    o.p_name = a.p_name;
+                    o.p_type = a.p_type;
+
                     var ret = false;
-                    $.ajax({async: false, url: "test1.plan.editlampscene.action", type: "get", datatype: "JSON", data: a,
+                    $.ajax({async: false, url: "test1.plan.editlampscene.action", type: "get", datatype: "JSON", data: o,
                         success: function (data) {
                             var arrlist = data.rs;
                             if (arrlist.length == 1) {
@@ -193,11 +216,32 @@
                     $('#scen1').show();
                     $('#time_').hide();
                     console.log('场景方式');
-
+//                    console.log(select['p_scene1']);
                     for (var i = 0; i < 8; i++) {
+
+//                        p_scene1
+
+
                         var attr = 'p_scene' + (i + 1).toString();
-                        var u = $("input[name='" + attr + "']");
-                        $(u).val(select[attr]);
+                        var scene = select[attr];
+
+                        if (isJSON(scene)) {
+                            var obj = eval('(' + scene + ')');
+                            var num = "#__num" + (i + 1).toString();
+                            var val = "#__val" + (i + 1).toString();
+                            $(num).val(obj.num);
+                            $(val).val(obj.value);
+                        }
+
+
+
+//                        console.log(attr);
+//
+//                        console.log(select[attr]);
+//                        var o = select[attr];
+//                        console.log(o);
+////                        var u = $("input[name='" + attr + "']");
+////                        $(u).val(select[attr]);
                     }
 
 
@@ -676,131 +720,395 @@
                 $('#tablescene').bootstrapTable({
                     url: 'test1.plan.getLoopPlan.action',
                     clickToSelect: true,
-                    columns: [{
-                            title: '单选',
-                            field: 'select',
-                            //复选框
-                            checkbox: true,
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
-                            field: 'p_name',
-                            title: '方案名',
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle',
-                        }, {
-                            field: 'p_code',
-                            title: '方案编号',
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle',
-                        },
-                        {
-                            field: 'p_scene1',
-                            title: '场景1',
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle',
-                            formatter: function (value, row, index, field) {
-                                if (value != null) {
-                                    return value.toString();
-                                }
+                    columns: [
+                        [
+                            {
+                                title: '单选',
+                                field: 'select',
+                                //复选框
+                                checkbox: true,
+                                width: 25,
+                                align: 'center',
+                                valign: 'middle',
+                                rowspan: 2,
+                                colspan: 1
+
+                            },
+                            {
+                                field: 'p_name',
+                                title: '方案名',
+                                width: 25,
+                                align: 'center',
+                                valign: 'middle',
+                                rowspan: 2,
+                                colspan: 1
+                            },
+                            {
+                                field: 'p_code',
+                                title: '方案编号',
+                                width: 25,
+                                align: 'center',
+                                valign: 'middle',
+                                rowspan: 2,
+                                colspan: 1
+                            },
+                            {
+                                field: 'p_scene',
+                                title: '场景一',
+                                width: 25,
+                                align: 'center',
+                                valign: 'middle',
+                                colspan: 2,
+                                rowspan: 1
+
+                            },
+                            {
+                                field: 'p_scene',
+                                title: '场景二',
+                                width: 25,
+                                align: 'center',
+                                valign: 'middle',
+                                colspan: 2,
+                                rowspan: 1
+
+                            },
+                            {
+                                field: 'p_scene',
+                                title: '场景三',
+                                width: 25,
+                                align: 'center',
+                                valign: 'middle',
+                                colspan: 2,
+                                rowspan: 1
+
+                            },
+                            {
+                                field: 'p_scene',
+                                title: '场景四',
+                                width: 25,
+                                align: 'center',
+                                valign: 'middle',
+                                colspan: 2,
+                                rowspan: 1
+
+                            },
+                            {
+                                field: 'p_scene',
+                                title: '场景五',
+                                width: 25,
+                                align: 'center',
+                                valign: 'middle',
+                                colspan: 2,
+                                rowspan: 1
+
+                            },
+                            {
+                                field: 'p_scene',
+                                title: '场景六',
+                                width: 25,
+                                align: 'center',
+                                valign: 'middle',
+                                colspan: 2,
+                                rowspan: 1
+
+                            },
+                            {
+                                field: 'p_scene',
+                                title: '场景七',
+                                width: 25,
+                                align: 'center',
+                                valign: 'middle',
+                                colspan: 2,
+                                rowspan: 1
+
+                            },
+                            {
+                                field: 'p_scene',
+                                title: '场景八',
+                                width: 25,
+                                align: 'center',
+                                valign: 'middle',
+                                colspan: 2,
+                                rowspan: 1
 
                             }
-                        },
-                        {
-                            field: 'p_scene2',
-                            title: '场景2',
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle',
-                            formatter: function (value, row, index, field) {
-                                if (value != null) {
-                                    return value.toString();
+                        ], [
+                            {
+                                field: 'p_scene1',
+                                title: '场景',
+                                width: 25,
+                                align: 'center',
+                                valign: 'middle',
+                                colspan: 1,
+                                formatter: function (value, row, index, field) {
+
+                                    if (isJSON(value)) {
+                                        var obj = eval('(' + value + ')');
+                                        return obj.num;
+                                    }
+
+                                }
+                            },
+                            {
+                                field: 'p_val1',
+                                title: '调光值',
+                                width: 25,
+                                align: 'center',
+                                valign: 'middle',
+                                colspan: 1,
+                                formatter: function (value, row, index, field) {
+                                    // console.log(row);
+                                    if (isJSON(row.p_scene1)) {
+                                        var obj = eval('(' + row.p_scene1 + ')');
+                                        if (obj.value != null) {
+                                            return obj.value.toString();
+                                        }
+
+
+                                    }
+
                                 }
 
-                            }
-                        },
-                        {
-                            field: 'p_scene3',
-                            title: '场景3',
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle',
-                            formatter: function (value, row, index, field) {
-                                if (value != null) {
-                                    return value.toString();
-                                }
+                            }, {
+                                field: 'p_scene2',
+                                title: '场景',
+                                width: 25,
+                                align: 'center',
+                                valign: 'middle',
+                                colspan: 1,
+                                formatter: function (value, row, index, field) {
 
-                            }
-                        },
-                        {
-                            field: 'p_scene4',
-                            title: '场景4',
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle',
-                            formatter: function (value, row, index, field) {
-                                if (value != null) {
-                                    return value.toString();
-                                }
+                                    if (isJSON(value)) {
+                                        var obj = eval('(' + value + ')');
+                                        return obj.num;
+                                    }
 
-                            }
-                        },
-                        {
-                            field: 'p_scene5',
-                            title: '场景5',
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle',
-                            formatter: function (value, row, index, field) {
-                                if (value != null) {
-                                    return value.toString();
                                 }
+                            },
+                            {
+                                field: 'p_val2',
+                                title: '调光值',
+                                width: 25,
+                                align: 'center',
+                                valign: 'middle',
+                                colspan: 1,
+                                formatter: function (value, row, index, field) {
+                                    // console.log(row);
+                                    if (isJSON(row.p_scene2)) {
+                                        var obj = eval('(' + row.p_scene2 + ')');
 
-                            }
-                        },
-                        {
-                            field: 'p_scene6',
-                            title: '场景6',
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle',
-                            formatter: function (value, row, index, field) {
-                                if (value != null) {
-                                    return value.toString();
+                                        if (obj.value != null) {
+                                            return obj.value.toString();
+                                        }
+                                    }
+
                                 }
+                            }, {
+                                field: 'p_scene3',
+                                title: '场景',
+                                width: 25,
+                                align: 'center',
+                                valign: 'middle',
+                                colspan: 1,
+                                formatter: function (value, row, index, field) {
 
-                            }
-                        },
-                        {
-                            field: 'p_scene7',
-                            title: '场景7',
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle',
-                            formatter: function (value, row, index, field) {
-                                if (value != null) {
-                                    return value.toString();
+                                    if (isJSON(value)) {
+                                        var obj = eval('(' + value + ')');
+                                        return obj.num;
+                                    }
+
                                 }
+                            },
+                            {
+                                field: 'p_val3',
+                                title: '调光值',
+                                width: 25,
+                                align: 'center',
+                                valign: 'middle',
+                                colspan: 1,
+                                formatter: function (value, row, index, field) {
+                                    // console.log(row);
+                                    if (isJSON(row.p_scene3)) {
+                                        var obj = eval('(' + row.p_scene3 + ')');
 
-                            }
-                        },
-                        {
-                            field: 'p_scene8',
-                            title: '场景8',
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle',
-                            formatter: function (value, row, index, field) {
-                                if (value != null) {
-                                    return value.toString();
+                                        if (obj.value != null) {
+                                            return obj.value.toString();
+                                        }
+                                    }
+
                                 }
+                            }, {
+                                field: 'p_scene4',
+                                title: '场景',
+                                width: 25,
+                                align: 'center',
+                                valign: 'middle',
+                                colspan: 1,
+                                formatter: function (value, row, index, field) {
 
+                                    if (isJSON(value)) {
+                                        var obj = eval('(' + value + ')');
+                                        return obj.num;
+                                    }
+
+                                }
+                            },
+                            {
+                                field: 'p_val4',
+                                title: '调光值',
+                                width: 25,
+                                align: 'center',
+                                valign: 'middle',
+                                colspan: 1,
+                                formatter: function (value, row, index, field) {
+                                    // console.log(row);
+                                    if (isJSON(row.p_scene4)) {
+                                        var obj = eval('(' + row.p_scene4 + ')');
+
+                                        if (obj.value != null) {
+                                            return obj.value.toString();
+                                        }
+                                    }
+
+                                }
+                            }, {
+                                field: 'p_scene5',
+                                title: '场景',
+                                width: 25,
+                                align: 'center',
+                                valign: 'middle',
+                                colspan: 1,
+                                formatter: function (value, row, index, field) {
+
+                                    if (isJSON(value)) {
+                                        var obj = eval('(' + value + ')');
+                                        return obj.num;
+                                    }
+
+                                }
+                            },
+                            {
+                                field: 'p_val5',
+                                title: '调光值',
+                                width: 25,
+                                align: 'center',
+                                valign: 'middle',
+                                colspan: 1,
+                                formatter: function (value, row, index, field) {
+                                    // console.log(row);
+                                    if (isJSON(row.p_scene5)) {
+                                        var obj = eval('(' + row.p_scene5 + ')');
+
+                                        if (obj.value != null) {
+                                            return obj.value.toString();
+                                        }
+                                    }
+
+                                }
+                            }, {
+                                field: 'p_scene6',
+                                title: '场景',
+                                width: 25,
+                                align: 'center',
+                                valign: 'middle',
+                                colspan: 1,
+                                formatter: function (value, row, index, field) {
+
+                                    if (isJSON(value)) {
+                                        var obj = eval('(' + value + ')');
+                                        return obj.num;
+                                    }
+
+                                }
+                            },
+                            {
+                                field: 'p_val6',
+                                title: '调光值',
+                                width: 25,
+                                align: 'center',
+                                valign: 'middle',
+                                colspan: 1,
+                                formatter: function (value, row, index, field) {
+                                    // console.log(row);
+                                    if (isJSON(row.p_scene6)) {
+                                        var obj = eval('(' + row.p_scene6 + ')');
+
+                                        if (obj.value != null) {
+                                            return obj.value.toString();
+                                        }
+                                    }
+
+                                }
+                            }, {
+                                field: 'p_scene6',
+                                title: '场景',
+                                width: 25,
+                                align: 'center',
+                                valign: 'middle',
+                                colspan: 1,
+                                formatter: function (value, row, index, field) {
+
+                                    if (isJSON(value)) {
+                                        var obj = eval('(' + value + ')');
+                                        return obj.num;
+                                    }
+
+                                }
+                            },
+                            {
+                                field: 'p_val6',
+                                title: '调光值',
+                                width: 25,
+                                align: 'center',
+                                valign: 'middle',
+                                colspan: 1,
+                                formatter: function (value, row, index, field) {
+                                    // console.log(row);
+                                    if (isJSON(row.p_scene6)) {
+                                        var obj = eval('(' + row.p_scene6 + ')');
+
+                                        if (obj.value != null) {
+                                            return obj.value.toString();
+                                        }
+                                    }
+
+                                }
+                            }, {
+                                field: 'p_scene6',
+                                title: '场景',
+                                width: 25,
+                                align: 'center',
+                                valign: 'middle',
+                                colspan: 1,
+                                formatter: function (value, row, index, field) {
+
+                                    if (isJSON(value)) {
+                                        var obj = eval('(' + value + ')');
+                                        return obj.num;
+                                    }
+
+                                }
+                            },
+                            {
+                                field: 'p_val6',
+                                title: '调光值',
+                                width: 25,
+                                align: 'center',
+                                valign: 'middle',
+                                colspan: 1,
+                                formatter: function (value, row, index, field) {
+                                    // console.log(row);
+                                    if (isJSON(row.p_scene6)) {
+                                        var obj = eval('(' + row.p_scene6 + ')');
+
+                                        if (obj.value != null) {
+                                            return obj.value.toString();
+                                        }
+                                    }
+
+                                }
                             }
-                        }
+                        ]
                     ],
                     singleSelect: false,
                     sortName: 'id',
@@ -998,48 +1306,94 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                <span style="margin-left:20px;">场景1</span>&nbsp;
-                                                <input id="p_scene1" class="form-control" name="p_scene1" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                                <input id="num1" class="form-control" name="num1" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
                                             </td> 
                                             <td></td>
                                             <td>
-                                                <span style="margin-left:20px;">场景2</span>&nbsp;
-                                                <input id="p_scene2" class="form-control" name="p_scene2" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                                <input id="_val1" class="form-control" name="_val1" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
                                             </td>
                                         </tr> 
                                         <tr>
                                             <td>
-                                                <span style="margin-left:20px;">场景3</span>&nbsp;
-                                                <input id="p_scene3" class="form-control" name="p_scene3" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                                <input id="num2" class="form-control" name="num2" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
                                             </td> 
                                             <td></td>
                                             <td>
-                                                <span style="margin-left:20px;">场景4</span>&nbsp;
-                                                <input id="p_scene4" class="form-control" name="p_scene4" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                                <input id="_val2" class="form-control" name="_val2" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
                                             </td>
                                         </tr> 
                                         <tr>
                                             <td>
-                                                <span style="margin-left:20px;">场景5</span>&nbsp;
-                                                <input id="p_scene5" class="form-control" name="p_scene5" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                                <input id="num3" class="form-control" name="num3" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
                                             </td> 
                                             <td></td>
                                             <td>
-                                                <span style="margin-left:20px;">场景6</span>&nbsp;
-                                                <input id="p_scene6" class="form-control" name="p_scene6" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                                <input id="_val3" class="form-control" name="_val3" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
                                             </td>
                                         </tr> 
                                         <tr>
                                             <td>
-                                                <span style="margin-left:20px;">场景7</span>&nbsp;
-                                                <input id="p_scene7" class="form-control" name="p_scene7" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                                <input id="num4" class="form-control" name="num4" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
                                             </td> 
                                             <td></td>
                                             <td>
-                                                <span style="margin-left:20px;">场景8</span>&nbsp;
-                                                <input id="p_scene8" class="form-control" name="p_scene8" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                                <input id="_val4" class="form-control" name="_val4" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
                                             </td>
                                         </tr> 
+                                        <tr>
+                                            <td>
+                                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                                <input id="num5" class="form-control" name="num5" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
+                                            </td> 
+                                            <td></td>
+                                            <td>
+                                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                                <input id="_val5" class="form-control" name="_val5" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                            </td>
+                                        </tr> 
+                                        <tr>
+                                            <td>
+                                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                                <input id="num6" class="form-control" name="num6" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
+                                            </td> 
+                                            <td></td>
+                                            <td>
+                                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                                <input id="_val6" class="form-control" name="_val6" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                            </td>
+                                        </tr> 
+
+                                        <tr>
+                                            <td>
+                                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                                <input id="num7" class="form-control" name="num7" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
+                                            </td> 
+                                            <td></td>
+                                            <td>
+                                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                                <input id="_val7" class="form-control" name="_val7" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                            </td>
+                                        </tr> 
+                                        <tr>
+                                            <td>
+                                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                                <input id="num8" class="form-control" name="num8" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
+                                            </td> 
+                                            <td></td>
+                                            <td>
+                                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                                <input id="_val8" class="form-control" name="_val8" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                            </td>
+                                        </tr> 
+
 
                                     </tbody>
                                 </table>
@@ -1103,8 +1457,6 @@
                                         </tbody>
                                     </table>
                                 </div>
-
-
                             </div>
                             <div class="row">
 
@@ -1114,7 +1466,6 @@
                                         <tr>
                                             <td>
                                                 <span style="margin-left:20px;">时间一</span>&nbsp;
-
                                                 <input id="time1_"  name="time1" style=" height: 30px; width: 150px" class="easyui-timespinner">
                                             </td> 
                                             <td></td>
@@ -1185,50 +1536,97 @@
 
                                 <table id="scen1"  style=" display: none">
                                     <tbody>
+
                                         <tr>
                                             <td>
-                                                <span style="margin-left:20px;">场景1</span>&nbsp;
-                                                <input id="p_scene1" class="form-control" name="p_scene1" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                                <input id="__num1" class="form-control" name="num1" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
                                             </td> 
                                             <td></td>
                                             <td>
-                                                <span style="margin-left:20px;">场景2</span>&nbsp;
-                                                <input id="p_scene2" class="form-control" name="p_scene2" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                                <input id="__val1" class="form-control" name="_val1" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
                                             </td>
                                         </tr> 
                                         <tr>
                                             <td>
-                                                <span style="margin-left:20px;">场景3</span>&nbsp;
-                                                <input id="p_scene3" class="form-control" name="p_scene3" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                                <input id="__num2" class="form-control" name="num2" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
                                             </td> 
                                             <td></td>
                                             <td>
-                                                <span style="margin-left:20px;">场景4</span>&nbsp;
-                                                <input id="p_scene4" class="form-control" name="p_scene4" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                                <input id="__val2" class="form-control" name="_val2" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
                                             </td>
                                         </tr> 
                                         <tr>
                                             <td>
-                                                <span style="margin-left:20px;">场景5</span>&nbsp;
-                                                <input id="p_scene5" class="form-control" name="p_scene5" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                                <input id="__num3" class="form-control" name="num3" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
                                             </td> 
                                             <td></td>
                                             <td>
-                                                <span style="margin-left:20px;">场景6</span>&nbsp;
-                                                <input id="p_scene6" class="form-control" name="p_scene6" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                                <input id="__val3" class="form-control" name="_val3" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
                                             </td>
                                         </tr> 
                                         <tr>
                                             <td>
-                                                <span style="margin-left:20px;">场景7</span>&nbsp;
-                                                <input id="p_scene7" class="form-control" name="p_scene7" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                                <input id="__num4" class="form-control" name="num4" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
                                             </td> 
                                             <td></td>
                                             <td>
-                                                <span style="margin-left:20px;">场景8</span>&nbsp;
-                                                <input id="p_scene8" class="form-control" name="p_scene8" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                                <input id="__val4" class="form-control" name="_val4" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
                                             </td>
                                         </tr> 
+                                        <tr>
+                                            <td>
+                                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                                <input id="__num5" class="form-control" name="num5" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
+                                            </td> 
+                                            <td></td>
+                                            <td>
+                                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                                <input id="__val5" class="form-control" name="_val5" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                            </td>
+                                        </tr> 
+                                        <tr>
+                                            <td>
+                                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                                <input id="__num6" class="form-control" name="num6" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
+                                            </td> 
+                                            <td></td>
+                                            <td>
+                                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                                <input id="__val6" class="form-control" name="_val6" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                            </td>
+                                        </tr> 
+
+                                        <tr>
+                                            <td>
+                                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                                <input id="__num7" class="form-control" name="num7" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
+                                            </td> 
+                                            <td></td>
+                                            <td>
+                                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                                <input id="__val7" class="form-control" name="_val7" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                            </td>
+                                        </tr> 
+                                        <tr>
+                                            <td>
+                                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                                <input id="__num8" class="form-control" name="num8" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
+                                            </td> 
+                                            <td></td>
+                                            <td>
+                                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                                <input id="__val8" class="form-control" name="_val8" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                            </td>
+                                        </tr>                   
+
 
                                     </tbody>
                                 </table>

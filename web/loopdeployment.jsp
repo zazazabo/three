@@ -58,6 +58,7 @@
                 console.log(user);
                 parent.parent.sendData(user);
             }
+            
             function deployloop() {
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
                 if (selects.length == 0) {
@@ -514,20 +515,6 @@
                         $('#intime').timespinner('setValue', record.p_intime);
                         $('#outtime').timespinner('setValue', record.p_outtime);
 
-//                        layerAler("dd");
-//                        var v1 = 1 - parseInt(record.p_type);
-//                        var v = "type" + record.p_type;
-//                        $("type" + v1.toString()).hide();
-//                        $(v).show();
-//                        var obj = {};
-//                        obj.l_comaddr = record.id;
-//                        console.log(obj);
-//                        var opt = {
-//                            url: "test1.loop.getloop.action",
-//                            silent: true,
-//                            query: obj
-//                        };
-//                        $("#gravidaTable").bootstrapTable('refresh', opt);
                     }
                 });
 
@@ -544,11 +531,8 @@
     </head>
     <body>
         <form id="form1">
-
-
             <div class="row">
                 <div class="col-xs-6">
-
                     <table>
                         <tbody>
                             <tr>

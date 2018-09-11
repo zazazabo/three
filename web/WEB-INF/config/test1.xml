@@ -95,14 +95,13 @@
         </xhandle>
         
         <xhandle desc="" id="GroupeLamp" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT tl.l_groupe,l_comaddr,l_plan FROM  t_lamp tl,t_plan WHERE @CONDITION     GROUP BY l_groupe,l_comaddr,l_plan" var="bootstrap">
-                <xflt id="CONDITION" nrp="" tpl="@l_comaddr   AND @l_groupe AND @l_deplayment ">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT tl.l_groupe,l_comaddr,l_plan FROM  t_lamp tl,t_plan WHERE l_deplayment=1 AND @CONDITION     GROUP BY l_groupe,l_comaddr,l_plan" var="bootstrap">
+                <xflt id="CONDITION" nrp="" tpl="@l_comaddr   AND @l_groupe ">
                     <xfltpara id="l_comaddr" nrp="1=1" para="l_comaddr" sql="l_comaddr = ':l_comaddr'">
                     </xfltpara>
                     <xfltpara id="l_groupe" nrp="1=1" para="l_groupe" sql="l_groupe = :l_groupe">
                     </xfltpara>
-                    <xfltpara id="l_deplayment" nrp="1=1" para="l_deplayment" sql="l_deplayment = :l_deplayment">
-                    </xfltpara>   
+       
                 </xflt>
             </xsql>
         </xhandle>     
@@ -201,7 +200,7 @@
 
 
                 <xhandle desc="" id="getPlanlist" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT   tl.p_code as id,tl.p_code as text,p_outtime,p_intime,p_Longitude,p_latitude,p_type FROM t_plan tl where  @CONDITION " var="list">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT   tl.p_code as id,tl.p_code as text,p_outtime,p_intime,p_Longitude,p_latitude,p_type,* FROM t_plan tl where  @CONDITION " var="list">
             <xflt id="CONDITION" nrp=""  tpl="@attr ">
                     <xfltpara id="attr" nrp="1=1" para="attr" sql="p_attr=:attr"> 
                     </xfltpara>  
