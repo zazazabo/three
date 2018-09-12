@@ -39,7 +39,7 @@
                     layerAler("角色名不能为空");
                     return;
                 }
-                $.ajax({async: false, url: "formuser.role.getrole.action", type: "POST", datatype: "JSON", data: {roletype: 1, name: name},
+                $.ajax({async: false, url: "login.rolemanage.getrole.action", type: "POST", datatype: "JSON", data: {roletype: ${param.role}, name: name,enable:1},
                     success: function (data) {
                         console.log(data);
                         if (data != null) {
@@ -50,12 +50,13 @@
                             }
                             var list = data.rs;
                             for (var i = 0; i < list.length; i++) {
-
+                                var role  = ${param.role}; //当前登陆的用户角色Id
                                 var obj = list[i];
                                 obj.enable = 0;
                                 obj.roletype = parseInt(data.rsmax[0].maxtype) + 1;
                                 obj.name = name;
-                                $.ajax({async: false, url: "formuser.role.addrole.action", type: "get", datatype: "JSON", data: obj,
+                                obj.parent_id =role;
+                                $.ajax({async: false, url: "login.rolemanage.addrole.action", type: "get", datatype: "JSON", data: obj,
                                     success: function (data) {
                                         console.log(data);
                                     },
@@ -85,9 +86,11 @@
                 if (treeNode == null) {
                     var a = 1; // 什么都不做
                 } else if (treeNode && treeNode.name) {
-
                     curName = treeNode.name;
-                    if (treeNode.checked == true && treeNode.isParent == false) {
+                    //&& treeNode.isParent == false
+                    if (treeNode.checked == true) {
+                        //再判断是否为父节点
+                        //将当前点击的节点id存起来
                         $("#treeid").val(treeNode.id);
                         showRMenu("root", event.clientX, event.clientY);
                     }
@@ -146,7 +149,6 @@
                                 str = delendchar(str);
                                 //console.log("ddd");
                                 if (str != author) {
-                                    console.log(author);
                                     $.ajax({async: false, url: "formuser.user.editUserAuthor.action", type: "get", datatype: "JSON", data: {id: select.id, author: str},
                                         success: function (data) {
                                             console.log(data);
@@ -284,11 +286,12 @@
 
 
             $(function () {
-
+                var obj = {};
+                obj.roletype =  ${param.role};
                 var zNodes = [
                 ];
                 var lang = "zh_CN";
-                $.ajax({async: false, url: "formuser.mainmenu.queryZtree.action", type: "get", datatype: "JSON", data: {},
+                $.ajax({async: false, url: "login.rolemanage.queryZtree.action", type: "get", datatype: "JSON", data:obj,
                     success: function (data) {
                         for (var i = 0; i < data.length; i++) {
 //                            console.log(data[i]);
@@ -296,15 +299,14 @@
 //                            console.log(obj1);
                             data[i].name = obj1[lang];
                         }
-                        var obj = {id: "0", pId: 0, name: "菜单目录", open: true};
-                        data.push(obj);
+                        var obj2 = {id: "0", pId: 0, name: "菜单目录", open: true};
+                        data.push(obj2);
                         zNodes = data;
                     },
                     error: function () {
                         alert("提交失败！");
                     }
                 });
-                console.log("finish ztree");
                 var setting = {
                     callback: {
                         onRightClick: OnRightClick
@@ -321,92 +323,6 @@
                 $.fn.zTree.init($("#treeDemo"), setting, zNodes);
 
                 $("#btnauthor").show(true);
-
-//                $('#gravidaTable').bootstrapTable({
-//                    url: 'formuser.user.query.action',
-//                    columns: [
-//                        {
-//                            title: '单选',
-//                            field: 'select',
-//                            //复选框
-//                            checkbox: true,
-//                            width: 25,
-//                            align: 'center',
-//                            valign: 'middle'
-//                        },
-//                        {
-//                            field: 'name',
-//                            title: '姓名',
-//                            width: 25,
-//                            align: 'center',
-//                            valign: 'middle'
-//                        }, {
-//                            field: 'department',
-//                            title: '部门',
-//                            width: 25,
-//                            align: 'center',
-//                            valign: 'middle'
-//                        }, {
-//                            field: 'author',
-//                            title: '权限',
-//                            width: 25,
-//                            align: 'center',
-//                            valign: 'middle',
-//                            formatter: function (value, row, index, field) {
-//                                console.log(value);
-//                                
-//                                return value;
-//                            }
-//                        }],
-//                    clickToSelect: true,
-//                    singleSelect: true,
-//                    sortName: 'id',
-//                    locale: 'zh-CN', //中文支持,
-//                    sortOrder: 'desc',
-//                    pagination: true,
-//                    sidePagination: 'server',
-//                    pageNumber: 1,
-//                    pageSize: 50,
-//                    showRefresh: true,
-//                    search: true,
-//                    showToggle: true,
-//                    // 设置默认分页为 50
-//                    pageList: [50, 100, 150],
-//                    onLoadSuccess: function () {  //加载成功时执行  表格加载完成时 获取集中器在线状态
-////                        console.info("加载成功");
-//                    },
-//                    //服务器url
-//                    queryParams: function (params)  {   //配置参数     
-//                        var temp  =   {    //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的 
-//                            search: params.search,
-//                            skip: params.offset,
-//                            limit: params.limit,
-//                            type_id: "1"    
-//                        };      
-//                        return temp;  
-//                    },
-//                });
-//                $('#gravidaTable').on("dbl-click-row.bs.table", function (field, value, row, element) {
-//                    var zTreeOjb = $.fn.zTree.getZTreeObj("treeDemo");
-//                    zTreeOjb.checkAllNodes(false);
-//                    var str = value.author;
-//                    
-//                    if (str != "" && str != null) {
-//                        str = delendchar(str);
-//                        var arr = str.split("|");
-//                        for (var i = 0; i < arr.length; i++) {
-//                            var node = zTreeOjb.getNodeByParam("id", arr[i]);
-//                            zTreeOjb.checkNode(node, true, true);
-//                        }
-//                        
-//                    }
-//                    
-//                    var index = row.data('index');
-//                    value.index = index;
-//                    $('#gravidaTable').bootstrapTable("check", index);
-//                    
-//                    
-//                });
 
 
 
@@ -487,7 +403,7 @@
 
                         <div class="col-xs-3">
                             <span class="label label-success label-lg ">角色列表1</span>
-                            <input id="role" class="easyui-combobox" name="role" style="width:150px; height: 34px" data-options="editable:true,valueField:'id', textField:'text',url:'formuser.mainmenu.rolemenu.action'" />
+                            <input id="role" class="easyui-combobox" name="role" style="width:150px; height: 34px" data-options="editable:true,valueField:'id', textField:'text',url:'login.usermanage.rolemenu.action?parent_id=${param.role}'" />
 
 
                             <!--                            <table id="gravidaTable" style="width:100%;" class="text-nowrap table table-hover table-striped">

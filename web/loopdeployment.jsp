@@ -216,8 +216,8 @@
                         var intime1 = sprintf("%s:%s", h, m);
                         var outtime1 = sprintf("%s:%s", h1, m1);
 
-                        $('#intime1').timespinner('setValue', intime1);
-                        $('#outtime1').timespinner('setValue', outtime1);
+                        $('#intime').timespinner('setValue', intime1);
+                        $('#outtime').timespinner('setValue', outtime1);
                     }
 
                 }
@@ -599,20 +599,7 @@
                                 <input id="outtime" name="outtime" style=" height: 30px; width: 150px;  "  class="easyui-timespinner">
                             </td>
                         </tr>
-                        <tr id="type0">
-                            <td>
-                                <span style="margin-left:20px;">闭合时间</span>&nbsp;
-                            </td>
-                            <td> <input id="intime1" readonly="true" name="intime1" style=" height: 30px; width: 150px;  "  class="easyui-timespinner">
-                            </td>
-                            <td>
-                                <span style="margin-left:20px;">断开时间&nbsp;</span>
-                            </td>
-                            <td>
-                                <input id="outtime1" readonly="true" name="outtime1" style=" height: 30px; width: 150px;  "  class="easyui-timespinner"> &nbsp;
-                            </td>
-                        </tr>                     
-
+                    
                         <tr id="type1" style=" display: none" >
                             <td>
                                 <span style="margin-left:20px;">区域经度</span>&nbsp;

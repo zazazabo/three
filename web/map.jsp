@@ -103,9 +103,10 @@
                                         <td></td>
                                         <td>
                                             <span style="margin-left:70px;">所属网关&nbsp;</span>
-                                            <select name="comaddr" id="comaddrlist"  style="width:150px;">
+<!--                                            <select name="comaddr" id="comaddrlist"  style="width:150px;">
 
-                                            </select>
+                                            </select>-->
+                                           <input id="comaddrlist" class="easyui-combobox" name="up_role" style="width:150px; height: 34px" data-options="editable:true,valueField:'comaddr', textField:'comaddr',url:'login.map.getallcomaddr.action'"/>
                                         </td>
                                     </tr>                                   
                                 </tbody>
@@ -387,6 +388,7 @@
             function getComaddr(tagId) {
                 $.ajax({async: false, url: "login.map.getallcomaddr.action", type: "get", datatype: "JSON",
                     success: function (data) {
+                        console.log(data);
                         if (data.rs != null) {
 
                             var options = "<option value=\"0\">请选择</option>";
@@ -648,7 +650,7 @@
                         var tagid = "#comaddrlist2";
                         getComaddr(tagid);
                         //加载所有灯具信息
-                        getAllLampInfo();
+                       // getAllLampInfo();
                         layer.open({
                             type: 1,
                             closeBtn: 1, //关闭按钮是否显示 1显示0不显示
@@ -685,7 +687,7 @@
                             type: 1,
                             shade: false,
                             title: false, //显示标题
-                            content: $('#addwanguang'), //显示内容
+                            content:$('#addwanguang'), //显示内容
                             shadeClose: true, //右上角显示X
                             area: ['700px', '600px'], //设置宽高
                             move: '#addwanguang'
