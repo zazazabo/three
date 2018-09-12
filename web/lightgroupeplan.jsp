@@ -41,6 +41,7 @@
                 console.log(user);
                 parent.parent.sendData(user);
             }
+            
             function deployPlan(obj) {
                 console.log(obj)
                 if (obj.status == "fail") {
@@ -218,10 +219,83 @@
                 }
             }
 
+            function readLampPlanCB(obj) {
+                console.log(obj);
+                var data = Str2BytesH(obj.data);
+                var v = "";
+                for (var i = 0; i < data.length; i++) {
+
+                    v = v + sprintf("%02x", data[i]) + " ";
+                }
+                console.log(v);
+                if (obj.status == "success") {
+                    if (obj.fn == 402) {
+                        //读场景方案
+                        for (var i = 0; i < 8; i++) {
+                            var t0 = 20 + (i * 2);
+                            var t1 = 20 + (i * 2) + 1;
+                            $("#__num" + (i + 1).toString()).val(data[t0].toString());
+                            $("#__val" + (i + 1).toString()).val(data[t1].toString());
+                        }
+
+                    } else if (obj.fn == 401) {
+                        //读时间方案
+                        for (var i = 0; i < 6; i++) {
+                            var t0 = 20 + (i * 3);
+                            var t1 = 20 + (i * 3) + 1;
+                            var t2 = 20 + (i * 3) + 2;
+                            var time=sprintf("%02x:%02x",data[t1],data[t0]);
+                            $("#time" + (i + 1).toString()).timespinner('setValue', time);
+                            $("#val" + (i + 1).toString()).val(data[t2].toString());     
+                                  
+                        }
+
+                    }
+                }
+            }
+
+
+            function readLampPlan() {
+                var selects = $('#gravidaTable').bootstrapTable('getSelections');
+                if (selects.length == 0) {
+                    layerAler("请勾选列表读取");
+                    return;
+                }
+                var obj = $("#form1").serializeObject();
+                console.log(obj);
+                var v = obj.p_type;
+                var s = selects[0];
+//                console.log(s);
+                if (s.l_deplayment == 0) {
+                    layerAler("部署后的灯具才能设置回路运行方案");
+                    return;
+                }
+                if (v == "0") {
+                    console.log('读取分组时间方案');
+                    var vv = [];
+                    vv.push(1);
+                    vv.push(parseInt(s.l_groupe));
+                    var comaddr = s.l_comaddr;
+                    var num = randnum(0, 9) + 0x70;
+                    var data = buicode(comaddr, 0x04, 0xAA, num, 0, 401, vv); //01 03 F24    
+                    dealsend2("AA", data, 401, "readLampPlanCB", comaddr, 0, obj.p_type, 0, 0);
+                }
+
+                if (v == "1") {
+                    console.log('读取分组场景方案');
+                    var vv = [];
+                    vv.push(1);
+                    vv.push(parseInt(s.l_groupe));
+                    var comaddr = s.l_comaddr;
+                    var num = randnum(0, 9) + 0x70;
+                    var data = buicode(comaddr, 0x04, 0xAA, num, 0, 402, vv); //01 03 F24    
+                    dealsend2("AA", data, 402, "readLampPlanCB", comaddr, 0, obj.p_type, 0, 0);
+                }
+            }
 
 
 
-            function setLampTimePlan() {
+            function setLampPlan() {
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
                 if (selects.length == 0) {
                     layerAler("请勾选列表读取");
@@ -283,6 +357,14 @@
 
             $(function () {
                 $('#l_comaddr').combobox({
+                      onLoadSuccess: function (data) {
+                        if (Array.isArray(data) && data.length > 0) {
+                            $(this).combobox('select', data[0].id);
+
+                        } else {
+                            $(this).combobox('select', );
+                        }
+                    },
                     onSelect: function (record) {
                         var obj = {l_comaddr: record.id};
                         var opt = {
@@ -296,6 +378,22 @@
 
 
                 $('#p_plan').combobox({
+                    formatter: function (row) {
+                        var v1 = row.p_type == 0 ? "(时间)" : "(场景)";
+                        var v = row.text + v1;
+                        row.id = row.id + v1;
+                        row.text = v;
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
+                    },
+                    onLoadSuccess: function (data) {
+                        if (Array.isArray(data) && data.length > 0) {
+                            $(this).combobox('select', data[0].id);
+
+                        } else {
+                            $(this).combobox('select', );
+                        }
+                    },
                     onSelect: function (record) {
                         $('#type' + record.p_type).show();
 
@@ -511,16 +609,8 @@
                                     <span style="margin-left:10px;">网关地址&nbsp;</span>
                                     <span class="menuBox">
 
-                                        <input id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 34px" 
-                                               data-options="onLoadSuccess:function(data){
-                                               if(Array.isArray(data)&&data.length>0){
-                                               $(this).combobox('select', data[0].id);
-
-                                               }else{
-                                               $(this).combobox('select',);
-                                               }
-                                               console.log(data);
-                                               },editable:false,valueField:'id', textField:'text',url:'test1.lamp.getlampcomaddr.action' " />
+                                        <input id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 
+                                               data-options="editable:false,valueField:'id', textField:'text',url:'test1.lamp.getlampcomaddr.action' " />
 
                                         <!--<select name="l_comaddr_lamp" id="l_comaddr_lamp" placeholder="回路" class="input-sm" style="width:150px;">-->
                                     </span>   
@@ -532,7 +622,7 @@
                                 <td>
                                     <span style="margin-left:10px;">组号&nbsp;</span>
                                     <span class="menuBox">
-                                        <input id="l_groupe" class="easyui-combobox" name="l_groupe" style="width:150px; height: 34px" 
+                                        <input id="l_groupe" class="easyui-combobox" name="l_groupe" style="width:150px; height: 30px" 
                                                data-options="editable:true,valueField:'id', textField:'text',url:'test1.lamp.getGroupe.action' " />
                                     </span> 
                                     <!--&nbsp;&nbsp;  <button id="btnremove" onclick="removeloop()" class="btn btn-success">移除回路</button>-->
@@ -552,15 +642,7 @@
                                 <span class="menuBox">
 
                                     <input id="p_plan" class="easyui-combobox" name="p_plan" style="width:150px; height: 30px" 
-                                           data-options="onLoadSuccess:function(data){
-                                           if(Array.isArray(data)&&data.length>0){
-                                           $(this).combobox('select', data[0].id);
-
-                                           }else{
-                                           $(this).combobox('select',);
-                                           }
-                                           console.log(data);
-                                           },editable:false,valueField:'id', textField:'text',url:'test1.plan.getPlanlist.action?attr=1' " />
+                                           data-options="editable:false,valueField:'id', textField:'text',url:'test1.plan.getPlanlist.action?attr=1' " />
                                     <span style=" margin-left: 120px;" ></span>
                             </td>
                         </tr>
@@ -751,8 +833,8 @@
                 <div class="col-xs-6">
                     <!--<button style=" margin-left: 40px;" type="button" onclick="setPlan()" class="btn btn-success">设置</button>-->
 
-                    <button style=" margin-left: 40px;" onclick="setLampTimePlan()" type="button" class="btn btn-success">部署灯具时间方案</button>
-                    <button style=" margin-left: 40px;" onclick="setLampScenePlan()" type="button" class="btn btn-success">部署灯具场景方案</button>
+                    <button style=" margin-left: 40px;" onclick="setLampPlan()" type="button" class="btn btn-success">部署灯具时间方案</button>
+                    <button style=" margin-left: 40px;" onclick="readLampPlan()" type="button" class="btn btn-success">读取分组灯具方案</button>
                 </div>
             </div>
 

@@ -18,49 +18,124 @@
                     offset: 'center'
                 });
             }
-            var websocket = null;
-            function gz(param) {
-                if (websocket.readyState == 3) {
-                    layerAler("服务端没连接上");
+
+
+
+            function checkLoopAdd() {
+                var o = $("#formadd").serializeObject();
+                if (o.l_code == "" || o.l_comaddr == "") {
+                    layerAler("网关或回路和编号不能为空");
+                    return  false;
+                }
+                o.name = o.comaddrname;
+                console.log(o);
+                var namesss = false;
+                $.ajax({async: false, cache: false, url: "test1.loop.getloop.action", type: "GET", data: o,
+                    success: function (data) {
+                        console.log(data);
+                        if (data.total > 0) {
+                            layer.alert('此回路已存在', {
+                                icon: 6,
+                                offset: 'center'
+                            });
+                            return false;
+                        }
+                        if (data.total == 0) {
+                            $.ajax({async: false, cache: false, url: "test1.loop.addloop.action", type: "GET", data: o,
+                                success: function (data) {
+//                                    console.log(data);
+                                    $("#gravidaTable").bootstrapTable('refresh');
+                                    namesss = true;
+                                },
+                                error: function () {
+                                    layer.alert('系统错误，刷新后重试', {
+                                        icon: 6,
+                                        offset: 'center'
+                                    });
+                                }
+                            });
+                            return  false;
+                        }
+                    },
+                    error: function () {
+                        layer.alert('系统错误，刷新后重试', {icon: 6, offset: 'center'
+                        });
+                        return namesss;
+                    }
+
+                })
+
+                return  namesss;
+            }
+
+
+
+            function switchWorkTypeCB(obj) {
+                console.log(obj);
+                if (obj.status == "success") {
+                    layerAler("切换成功");
+                }
+
+            }
+            function switchWorkType() {
+//                alert("ddd");
+                var o = $("#form2").serializeObject();
+                if (o.l_deployment == "0") {
+                    layerAler("部署后能能切换");
                     return;
                 }
-                if (param == 0) {
+                console.log(o);
+                var vv = [];
 
-                    var selects = $('#gravidaTable').bootstrapTable('getSelections');
-                    console.log(selects);
-                } else if (param == 1) {
-                }
-                //alert(param);
+                var l_code = parseInt(o.l_code);
+                console.log(l_code);
+
+                var a = l_code >> 8 & 0x00FF;
+                var b = l_code & 0x00ff;
+                vv.push(b);
+                vv.push(a);
+                vv.push(parseInt(o.l_worktype));
+                var comaddr = o.l_comaddr;
+                var num = randnum(0, 9) + 0x70;
+                var data = buicode(comaddr, 0x04, 0xA4, num, 0, 380, vv); //01 03 F24    
+                dealsend2("A4", data, 380, "switchWorkTypeCB", comaddr, o.l_worktype, 0, 0);
             }
 
-            function addLoopModal() {
-                $("#modal_addloop").modal({
-                    remote: "addloop.jsp"
-                });
+
+            function dealsend2(msg, data, fn, func, comaddr, type, param, val) {
+                var user = new Object();
+                user.begin = '6A';
+                user.res = 1;
+                user.status = "";
+                user.comaddr = comaddr;
+                user.fn = fn;
+                user.function = func;
+                user.param = param;
+                user.page = 2;
+                user.msg = msg;
+                user.val = val;
+                user.type = type;
+                user.addr = getComAddr(comaddr); //"02170101";
+                user.data = data;
+                user.len = data.length;
+                user.end = '6A';
+                console.log(user);
+                parent.parent.sendData(user);
             }
+
 
             function modifyLoopName() {
-                var formobj = $("#Form_Modify").serializeObject();
-                console.log(formobj.select_l_groupe);
-                formobj.id = formobj.txt_hide_id
-                formobj.l_name = formobj.txt_l_name;
-                formobj.l_groupe = formobj.select_l_groupe;
-
-                $.ajax({
-                    url: "test1.loop.modifyname.action",
-                    type: "POST",
-                    datatype: "JSON",
-                    data: formobj,
+                var o = $("#form2").serializeObject();
+                o.id = o.hide_id;
+                console.log(o);
+                $.ajax({async: false, url: "test1.loop.modifyname.action", type: "get", datatype: "JSON", data: o,
                     success: function (data) {
                         var arrlist = data.rs;
                         if (arrlist.length == 1) {
-                            layer.open({
-                                content: '修改成功',
-                                icon: 1,
+                            layer.open({content: '修改成功', icon: 1,
                                 yes: function (index, layero) {
                                     $("#gravidaTable").bootstrapTable('refresh');
                                     layer.close(index);
-                                    // layer.close(index) window.parent.document.getElementsByClassName('J_iframe')[0].src = "device/gatewayConfig.action";
                                 }
                             });
                         }
@@ -75,125 +150,124 @@
 
             function modifyModal() {
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
-                var num = ""
-                if (selects.length == 1) {
-                    num = selects[0];
-                } else {
-                    for (var i = 0; i < selects.length; i++) {
-                        num += selects[i].id + ",";
-                    }
-                }
 
-                if (num == 0) {
+                if (selects.length == 0) {
                     layer.alert('请选择您要编辑的记录', {
                         icon: 6,
                         offset: 'center'
                     });
-                } else if (num > 1) {
-                    layerAler("只能选一条数据");
-                } else {
-                    var select = selects[0];
-                    $("#txt_l_code").val(select.l_code);
-                    $("#txt_l_comaddr").val(select.comaddr);
-
-                    $("#txt_name").val(select.name);
-                    $("#txt_l_name").val(select.l_name);
-                    $("#txt_hide_id").val(select.id);
-                    if (select.l_deplayment == 0) {
-                        $("#tr_iddeploy").hide();
-                    }
-
-                    $("#select_l_groupe").empty();
-                    for (var i = 1; i < 19; i++) {
-                        if (select.l_groupe == i.toString()) {
-                            var str = "<option selected='true'  value='" + i.toString() + "'>" + i.toString() + "</option>";
-                            $("#select_l_groupe").append(str);
-                        } else {
-                            var str = "<option   value='" + i.toString() + "'>" + i.toString() + "</option>";
-                            $("#select_l_groupe").append(str);
-                        }
-                    }
-                    $("#select_l_groupe").attr("enabled", false);
-
-
-                    //$("#txt_l_groupe").val(select.l_groupe);
-                    $("#pjj2").modal();
-
-
+                    return;
                 }
+                var select = selects[0];
+                console.log(select);
+                $("#l_code1").val(select.l_code);
+                $("#l_comaddr1").combobox('setValue', select.l_comaddr);
+                $("#l_deployment").val(select.l_deplayment);
+                $("#comaddrname1").val(select.name);
+                $("#l_name1").val(select.l_name);
+
+                $("#hide_id").val(select.uid);
+                $('#l_worktype1').combobox('setValue', select.l_worktype);
+                $("#l_groupe1").combobox('setValue', select.l_groupe);
+                if (select.l_deplayment == "1") {
+                    $("#l_groupe1").attr('readonly', true);
+                } else if (select.l_deplayment == "0") {
+                    $("#l_groupe1").attr('readonly', false);
+                }
+
+//l_code1
+
+//                if (select.l_deplayment == 0) {
+//                    
+////                    $("#tr_iddeploy").hide();
+//                }
+//
+//                $("#select_l_groupe").empty();
+//                for (var i = 1; i < 19; i++) {
+//                    if (select.l_groupe == i.toString()) {
+//                        var str = "<option selected='true'  value='" + i.toString() + "'>" + i.toString() + "</option>";
+//                        $("#select_l_groupe").append(str);
+//                    } else {
+//                        var str = "<option   value='" + i.toString() + "'>" + i.toString() + "</option>";
+//                        $("#select_l_groupe").append(str);
+//                    }
+//                }
+//                $("#select_l_groupe").attr("enabled", false);
+
+
+                //$("#txt_l_groupe").val(select.l_groupe);
+                $("#pjj2").modal();
+
 
             }
 
-
-
-
             $(function () {
-
-                $("#add").attr("disabled", true);
-                $("#update").attr("disabled", true);
-                $("#shanchu").attr("disabled", true);
-                var obj = {};
-                obj.code = ${param.m_parent};
-                obj.roletype = ${param.role};
-                $.ajax({async: false, url: "login.usermanage.power.action", type: "get", datatype: "JSON", data: obj,
-                    success: function (data) {
-                        var rs = data.rs;
-                        if (rs.length > 0) {
-                            for (var i = 0; i < rs.length; i++) {
-
-                                if (rs[i].code == "600201" && rs[i].enable != 0) {
-                                    $("#add").attr("disabled", false);
-                                    continue;
-                                }
-                                if (rs[i].code == "600202" && rs[i].enable != 0) {
-                                    $("#update").attr("disabled", false);
-                                    continue;
-                                }
-                                if (rs[i].code == "600203" && rs[i].enable != 0) {
-                                    $("#shanchu").attr("disabled", false);
-                                    continue;
-                                }
-                            }
+                $('#comaddr').combobox({
+                    url: "test1.gayway.comaddr.action",
+                    onLoadSuccess: function (data) {
+                        console.log("load 网关完成");
+                        console.log(data);
+                        if (Array.isArray(data) && data.length > 0) {
+                            $(this).combobox("select", data[0].id);
+                            $("#comaddrname").val(data[0].name);
                         }
-
                     },
-                    error: function () {
-                        alert("提交失败！");
+                    onSelect: function (record) {
+                        console.log("load 网关完成33");
+                        console.log(record);
+                        $("#comaddrname").val(record.name);
+
                     }
                 });
 
-                $("#pjj2").on("show.bs.modal", function () {
-                    var selects = $('#gravidaTable').bootstrapTable('getSelections');
-                    var num = ""
-                    if (selects.length == 1) {
-                        num = selects[0];
-                    } else {
-                        for (var i = 0; i < selects.length; i++) {
-                            num += selects[i].id + ",";
-                        }
-                    }
+                var d = [];
+                for (var i = 0; i < 19; i++) {
+                    var o = {"id": i + 1, "text": i + 1};
+                    d.push(o);
+                }
 
-                    if (num == 0) {
-                        layer.alert('请选择您要编辑的记录', {
-                            icon: 6,
-                            offset: 'center'
-                        });
-                    } else if (num > 1) {
-                        layerAler("只能选一条数据");
-                    } else {
+                $("#l_groupe").combobox({data: d, onLoadSuccess: function (data) {
+                        $(this).combobox("select", data[0].id);
+                    }, });
 
-                        var select = selects[0];
-                        console.log(select);
+                $("#l_groupe1").combobox({data: d, onLoadSuccess: function (data) {
+                        $(this).combobox("select", data[0].id);
+                    }, });
 
-//                        console.log(select);
-//                        var param = "id=" + select.id + "&comaddr=" + select.comaddr + "&name=" + select.name + "&l_code=" + select.l_code + "&l_deplayment=" + select.l_deplayment
-//                                + "&l_name=" + select.l_name + "&.l_worktype=" + select.l_worktype + "&l_plan=" + select.l_plan + "&l_groupe=" + select.l_groupe;
+
+//                $("#add").attr("disabled", true);
+//                $("#update").attr("disabled", true);
+//                $("#shanchu").attr("disabled", true);
+//                var obj = {};
+//                obj.code = ${param.m_parent};
+//                obj.roletype = ${param.role};
+//                $.ajax({async: false, url: "login.usermanage.power.action", type: "get", datatype: "JSON", data: obj,
+//                    success: function (data) {
+//                        var rs = data.rs;
+//                        if (rs.length > 0) {
+//                            for (var i = 0; i < rs.length; i++) {
 //
-//                        param = encodeURI(param);
-//                        console.log(param);
+//                                if (rs[i].code == "600201" && rs[i].enable != 0) {
+//                                    $("#add").attr("disabled", false);
+//                                    continue;
+//                                }
+//                                if (rs[i].code == "600202" && rs[i].enable != 0) {
+//                                    $("#update").attr("disabled", false);
+//                                    continue;
+//                                }
+//                                if (rs[i].code == "600203" && rs[i].enable != 0) {
+//                                    $("#shanchu").attr("disabled", false);
+//                                    continue;
+//                                }
+//                            }
+//                        }
+//
+//                    },
+//                    error: function () {
+//                        alert("提交失败！");
+//                    }
+//                });
 
-                    }
-                })
 
 
                 $('#gravidaTable').bootstrapTable({url: 'test1.f5.loop.action',
@@ -233,18 +307,13 @@
                             valign: 'middle'
                         }, {
                             field: 'l_groupe',
-                            title: '组号',
+                            title: '回路组号',
                             width: 25,
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
-
-                                if (value == 0) {
-                                    value = "0";
-                                    return value;
-                                } else {
-                                    value = value.toString()
-                                    return value;
+                                if (value != null) {
+                                    return value.toString();
                                 }
                             }
                         }, {
@@ -254,7 +323,6 @@
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
-                                console.log(value);
                                 if (value == 0) {
                                     value = "0(时间)";
                                     return value;
@@ -263,12 +331,6 @@
                                     return value;
                                 }
                             }
-                        }, {
-                            field: 'l_plan',
-                            title: '控制方案',
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
                         }, {
                             field: 'l_deployment',
                             title: '部署情况',
@@ -292,6 +354,8 @@
                     showColumns: true,
                     sortOrder: 'desc',
                     pagination: true,
+                    showExport: true, //是否显示导出
+                    exportDataType: "basic", //basic', 'a
                     sidePagination: 'server',
                     pageNumber: 1,
                     pageSize: 5,
@@ -314,122 +378,11 @@
                 });
 
 
-
-
-
-
-                $("#select_l_comaddr").change(function () {
-                    var name1 = $(this).find("option:selected").attr("detail");
-                    $("#txt_name").val(name1);
-                })
-                $("#select_p_plan").change(function () {
-                    var val1 = $("#select_l_worktype").val();
-                    $("#txt_plan_detail").val("");
-                    var options = $("#select_p_plan option:selected");
-                    var detail = $(options).attr("detail");
-                    if (detail == undefined) {
-                        return;
-                    }
-                    var obj = eval('(' + detail + ')');
-                    if (obj.hasOwnProperty("loop")) {
-                        var obj1 = obj.loop[0];
-                        if (val1 == 0) {   //回路的时间方案
-                            var str = "闭合时间:" + obj1.start + "断开时间:" + obj1.end;
-                            $("#txt_plan_detail").val(str);
-                        } else if (val1 == 1) {
-
-                        }
-
-                    }
-                });
-                $("#select_l_worktype").change(function () {
-
-                    var val1 = $("#select_l_worktype").val();
-                    $.ajax({
-                        url: "test1.gayway.comaddr.action", type: 'get', dataType: 'JSON', data: {p_type: val1},
-                        error: function () {
-                            layerAler("获取方案列表制作")
-                        },
-                        success: function (data) {
-                            $("#select_p_plan").empty();
-                            console.log(data.pl);
-                            var arrlist = data.pl;
-                            for (var i = 0; i < arrlist.length; i++) {
-                                var objlist = arrlist[i];
-                                var str = "<option detail='" + objlist.p_content + "' value='" + objlist.p_code + "'>" + objlist.p_name + "</option>";
-                                console.log(str);
-                                $("#select_p_plan").append(str); //添加option
-
-                            }
-                            $("#txt_plan_detail").val("");
-                            var options = $("#select_p_plan option:selected");
-                            var detail = $(options).attr("detail");
-                            var obj = eval('(' + detail + ')');
-                            console.log(obj);
-                            if (obj.hasOwnProperty("loop")) {
-                                var obj1 = obj.loop[0];
-                                if (val1 == 0) {   //回路的时间方案
-                                    var str = "闭合时间:" + obj1.start + "断开时间:" + obj1.end;
-                                    $("#txt_plan_detail").val(str);
-                                } else if (val1 == 1) {
-
-                                }
-
-                            }
-                        }
-                    })
-
-
-
-
-                });
-                $('#pjj').on('show.bs.modal', function () {
-                    $("#select_l_groupe").empty();
-                    for (var i = 1; i < 19; i++) {
-                        var str = "<option value=\"" + i.toString() + "\">" + i.toString() + "</option>";
-                        $("#select_l_groupe").append(str);
-                    }
-                    $("#select_l_groupe").find("option[value=\"1\"]").attr("selected", true);
-                    $.ajax({
-                        url: "test1.gayway.comaddr.action",
-                        type: "get",
-                        datatype: "JSON",
-                        data: {p_type: 0},
-                        success: function (data) {
-                            console.log(data);
-                            $("#select_l_comaddr").empty();
-                            var arrlist = data.rs;
-                            for (var i = 0; i < arrlist.length; i++) {
-                                var objlist = arrlist[i];
-                                console.log(objlist.model); //comaddr
-                                // var str = "<option value='" + objlist.name + "'>" + objlist.comaddr + "</option>";
-                                var str = "<option detail='" + objlist.name + "' value='" + objlist.comaddr + "'>" + objlist.comaddr + "</option>";
-                                $("#select_l_comaddr").append(str); //添加option
-                            }
-                            $("#txt_name").val($("#select_l_comaddr option:selected").attr("detail")); //设置网关名
-
-
-                            $("#select_p_plan").empty();
-                            var arrlist = data.pl;
-                            for (var i = 0; i < arrlist.length; i++) {
-                                var objlist = arrlist[i];
-                                var str = "<option detail='" + objlist.p_content + "' value='" + objlist.p_code + "'>" + objlist.p_name + "</option>";
-                                console.log(str);
-                                $("#select_p_plan").append(str); //添加option
-                            }
-                        },
-                        error: function () {
-                            alert("提交失败！");
-                        }
-                    });
-                })
-
                 $("#shanchu").click(function () {
                     var selects = $('#gravidaTable').bootstrapTable('getSelections');
                     if (selects.length == 0) {
                         layerAler("请选择要删除的数据");
                         return;
-
                     }
                     layer.confirm('您确定要删除吗？', {
                         btn: ['确定', '取消'], //按钮
@@ -437,11 +390,9 @@
                         offset: 'center',
                         title: '提示'
                     }, function (index) {
-
                         for (var i = 0; i < selects.length; i++) {
                             var select = selects[i];
                             console.log(select);
-
                             var l_deployment = select.l_deplayment;
                             console.log(l_deployment);
                             if (l_deployment == 1) {
@@ -478,140 +429,103 @@
 
                     });
                 });
-                $("#btnmodify1").click(function () {
+//                $("#btnmodify1").click(function () {
+//
+//                    var l_id = $("#txt_hide_id").val();
+//                    var l_plan = $("#select_p_plan1").val();
+//                    $.ajax({
+//                        url: "test1.loop.modifyplan.action", type: 'get', dataType: 'JSON', data: {id_: l_id, l_plan: l_plan},
+//                        success: function (data) {
+//
+//                            $("#gravidaTable").bootstrapTable('refresh');
+////                            $('#timestrategy').modal('hide');
+//                        },
+//                        error: function () {
+//                            layerAler("修改回路方案错误");
+//                        }
+//                    });
+////                      $('#timestrategy').modal('hide');
+//                });
+//                $('#select_p_plan1').change(function () {
+//                    var p_code = $(this).val();
+//                    $.ajax({
+//                        url: "test1.loop.getPlan.action", type: 'get', dataType: 'JSON', data: {p_code: p_code},
+//                        success: function (data) {
+//                            var arrlist = data.rs;
+//                            if (arrlist.length == 1) {
+//                                var objlist = arrlist[0];
+//                                var jsonstr = objlist.p_content;
+//                                var obj = eval('(' + jsonstr + ')');
+//                                if (obj.hasOwnProperty("loop")) {
+//                                    var val = obj.loop[0];
+//                                    $("#txttimein").val(val.start);
+//                                    $("#txttimeout").val(val.end);
+//                                }
+//
+//
+//                            }
+//                        }, error: function () {
+//
+//                        }
+//                    })
+//
+//                });
 
-                    var l_id = $("#txt_hide_id").val();
-                    var l_plan = $("#select_p_plan1").val();
-                    $.ajax({
-                        url: "test1.loop.modifyplan.action", type: 'get', dataType: 'JSON', data: {id_: l_id, l_plan: l_plan},
-                        success: function (data) {
-
-                            $("#gravidaTable").bootstrapTable('refresh');
-//                            $('#timestrategy').modal('hide');
-                        },
-                        error: function () {
-                            layerAler("修改回路方案错误");
-                        }
-                    });
-//                      $('#timestrategy').modal('hide');
-                });
-                $('#select_p_plan1').change(function () {
-                    var p_code = $(this).val();
-                    $.ajax({
-                        url: "test1.loop.getPlan.action", type: 'get', dataType: 'JSON', data: {p_code: p_code},
-                        success: function (data) {
-                            var arrlist = data.rs;
-                            if (arrlist.length == 1) {
-                                var objlist = arrlist[0];
-                                var jsonstr = objlist.p_content;
-                                var obj = eval('(' + jsonstr + ')');
-                                if (obj.hasOwnProperty("loop")) {
-                                    var val = obj.loop[0];
-                                    $("#txttimein").val(val.start);
-                                    $("#txttimeout").val(val.end);
-                                }
-
-
-                            }
-                        }, error: function () {
-
-                        }
-                    })
-
-                });
-                $('#gravidaTable').on("dbl-click-cell.bs.table", function (field, value, row, element) {
-
-                    if (value == "l_plan") {
-
-                        if (element.l_deplayment != 1) {
-                            layerAler("请部署好回路,才能更改方案");
-                            return;
-                        }
-                        console.log(element);
-                        $("#txt_hide_id").val(element.uid);
-                        $.ajax({
-                            url: "test1.loop.getPlan.action", type: 'get', dataType: 'JSON', data: {p_attr: 0, p_type: element.l_worktype},
-                            success: function (data) {
-                                var arrlist = data.rs;
-                                $('#select_p_plan1').empty();
-                                for (var i = 0; i < arrlist.length; i++) {
-                                    var objlist = arrlist[i];
-                                    var jsonstr = objlist.p_content;
-                                    var strselect = "";
-                                    if (element.l_plan == objlist.p_code) {
-
-                                        var obj = eval('(' + jsonstr + ')');
-                                        if (obj.hasOwnProperty("loop")) {
-                                            var val = obj.loop[0];
-                                            $("#txttimein").val(val.start);
-                                            $("#txttimeout").val(val.end);
-                                        }
-                                    }
-                                    var str = "<option   +  value='" + objlist.p_code + "' >" + objlist.p_name + "</option>";
-                                    console.log(str);
-                                    $("#select_p_plan1").append(str);
-                                }
-
-                                // $("#select_p_plan1").find("option[value=\"" + element.l_plan +"\"]").attr("selected",true);
-                                var strattr = "option[value=\"" + element.l_plan + "\"]";
-                                //console.log(strattr);
-                                $("#select_p_plan1").find(strattr).attr("selected", true);
-                            }, error: function () {
-                                layerAler("获取回路列表失败");
-                            }
-                        })
-                        $("#timestrategy").modal();
-                    }
+//                $('#gravidaTable').on("dbl-click-cell.bs.table", function (field, value, row, element) {
+//                    if (value == "l_plan") {
+//
+//                        if (element.l_deplayment != 1) {
+//                            layerAler("请部署好回路,才能更改方案");
+//                            return;
+//                        }
+//                        console.log(element);
+//                        $("#txt_hide_id").val(element.uid);
+//                        $.ajax({
+//                            url: "test1.loop.getPlan.action", type: 'get', dataType: 'JSON', data: {p_attr: 0, p_type: element.l_worktype},
+//                            success: function (data) {
+//                                var arrlist = data.rs;
+//                                $('#select_p_plan1').empty();
+//                                for (var i = 0; i < arrlist.length; i++) {
+//                                    var objlist = arrlist[i];
+//                                    var jsonstr = objlist.p_content;
+//                                    var strselect = "";
+//                                    if (element.l_plan == objlist.p_code) {
+//
+//                                        var obj = eval('(' + jsonstr + ')');
+//                                        if (obj.hasOwnProperty("loop")) {
+//                                            var val = obj.loop[0];
+//                                            $("#txttimein").val(val.start);
+//                                            $("#txttimeout").val(val.end);
+//                                        }
+//                                    }
+//                                    var str = "<option   +  value='" + objlist.p_code + "' >" + objlist.p_name + "</option>";
+//                                    console.log(str);
+//                                    $("#select_p_plan1").append(str);
+//                                }
+//
+//                                // $("#select_p_plan1").find("option[value=\"" + element.l_plan +"\"]").attr("selected",true);
+//                                var strattr = "option[value=\"" + element.l_plan + "\"]";
+//                                //console.log(strattr);
+//                                $("#select_p_plan1").find(strattr).attr("selected", true);
+//                            }, error: function () {
+//                                layerAler("获取回路列表失败");
+//                            }
+//                        })
+//                        $("#timestrategy").modal();
+//                    }
+//                    console.log(element);
+//                });
 
 
 
-                    console.log(element);
-                });
-            })
 
-            $(function () {
-
-                if ('WebSocket' in window) {
-                    websocket = new WebSocket("ws://zhizhichun.eicp.net:18414/");
-                } else {
-                    alert('当前浏览器不支持websocket')
-                }
-//                // 连接成功建立的回调方法
-                websocket.onopen = function (e) {
-
-                }
-
-                //接收到消息的回调方法
-                websocket.onmessage = function (e) {
-                    console.log("loop onmessage");
-                    var ArrData = JSON.parse(e.data);
-                    console.log(ArrData);
-                }
-                //连接关闭的回调方法
-                websocket.onclose = function () {
-                    console.log("websocket close");
-                    websocket.close();
-                }
-
-                //连接发生错误的回调方法
-                websocket.onerror = function () {
-                    console.log("Webscoket连接发生错误");
-                }
-
-                //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
-                window.onbeforeunload = function () {
-                    websocket.close();
-                }
 
             })
-
-
-
 
 
         </script>
 
-        <link rel="stylesheet" href="gatewayconfig_files/layer.css" id="layui_layer_skinlayercss" style="">
+        <!--<link rel="stylesheet" href="gatewayconfig_files/layer.css" id="layui_layer_skinlayercss" style="">-->
         <style>* { margin: 0; padding: 0; } body, html { width: 100%; height: 100%; } .zuheanniu { margin-top: 2px; margin-left: 10px; } table { font-size: 14px; } .modal-body input[type="text"], .modal-body select, .modal-body input[type="radio"] { height: 30px; } .modal-body table td { line-height: 40px; } .menuBox { position: relative; background: skyblue; } .getMenu { z-index: 1000; display: none; background: white; list-style: none; border: 1px solid skyblue; width: 150px; height: auto; max-height: 200px; position: absolute; left: 0; top: 25px; overflow: auto; } .getMenu li { width: 148px; padding-left: 10px; line-height: 22px; font-size: 14px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; } .getMenu li:hover { background: #eee; cursor: pointer; } .a-upload { padding: 4px 10px; height: 30px; line-height: 20px; position: relative; cursor: pointer; color: #888; background: #fafafa; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; display: inline-block; *display: inline; *zoom: 1 } .a-upload input { position: absolute; font-size: 100px; right: 0; top: 0; opacity: 0; filter: alpha(opacity = 0); cursor: pointer } .a-upload:hover { color: #444; background: #eee; border-color: #ccc; text-decoration: none } .pagination-info { float: left; margin-top: -4px; } .modal-body { text-align: -webkit-center; text-align: -moz-center; width: 600px; margin: auto; } .btn-primary { color: #fff; background-color: #0099CC; border-color: #0099CC; }</style>
 
 
@@ -627,35 +541,17 @@
 
 
         <!-- 页面中的弹层代码 -->
-        <div class="modal" id="modal_addloop">
-            <div class="modal-dialog">
-                <div class="modal-content"></div>
-            </div>
-        </div>
-
-
         <div class="btn-group zuheanniu" id="zuheanniu" style="float:left;position:relative;z-index:100;margin:12px 0 0 10px;">
-            <!--data-toggle="modal" data-target="#pjj"-->
-            <!--onclick="addLoopModal()-->
-            <button class="btn btn-success ctrol" onclick="addLoopModal()" id="add" >  
+            <button class="btn btn-success ctrol" data-toggle="modal" data-target="#pjj" id="add" >  
                 <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;添加
             </button>
-            <!--id="xiugai1"-->
-            <!--onclick="modifyModal()-->
+
             <button class="btn btn-primary ctrol"  onclick="modifyModal();" id="update" >
                 <span class="glyphicon glyphicon-pencil"></span>&nbsp;编辑
             </button>
             <button class="btn btn-danger ctrol" id="shanchu">
                 <span class="glyphicon glyphicon-trash"></span>&nbsp;删除
             </button>
-            <!--        <button class="btn btn-danger ctrol" id="closews">
-                        <span class="glyphicon glyphicon-trash"></span>&nbsp;关闭websocket
-                    </button>         
-                    <button class="btn btn-danger ctrol" id="addback">
-                        <span class="glyphicon glyphicon-trash"></span>&nbsp;添加回路
-                    </button>       -->
-
-
         </div>
         <!--        <form id="importForm" action="importGateway.action" method="post" enctype="multipart/form-data" onsubmit="return check()">
                     <div style="float:left;margin:12px 0 0 10px;border-radius:5px 0 0 5px;position:relative;z-index:100;width:230px;height:30px;">
@@ -670,119 +566,93 @@
                 </form>-->
 
         <div style="width:100%;">
-
-            <div class="bootstrap-table">
-
-                <div class="fixed-table-container" style="height: 214px; padding-bottom: 0px;">
-
-                    <table id="gravidaTable" style="width:100%;" class="text-nowrap table table-hover table-striped">
-                    </table>
-
-
-                    <!--                    <div class="fixed-table-header">
-                                            <table></table>
-                                        </div>
-                                        <div class="fixed-table-body">
-                                            <div class="fixed-table-loading" style="top: 42px; display: none;">正在努力地加载数据中，请稍候……</div>
-                          
-                                        </div>-->
-                </div
-            </div>
-        </div>
-
-
+            <table id="gravidaTable" style="width:100%;" class="text-nowrap table table-hover table-striped">
+            </table>
+        </div
 
 
         <!-- 添加 -->
-        <!--        <div class="modal" id="pjj">
-                    <div class="modal-dialog">
-                        <div class="modal-content" style="min-width:700px;">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal">
-                                    <span style="font-size:20px ">×</span></button>
-                                <span class="glyphicon glyphicon-floppy-disk" style="font-size: 20px"></span>
-                                <h4 class="modal-title" style="display: inline;">添加回路配置</h4></div>
-        
-                            <form action="" method="POST" id="eqpTypeForm" onsubmit="return checkLoopAdd()">      
-                                <div class="modal-body">
-                                    <table>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <span style="margin-left:20px;">网关名称</span>&nbsp;
-                                                    <input id="txt_name" readonly="true"   class="form-control"  name="txt_name" style="width:150px;display: inline;" placeholder="请输入网关名称" type="text"></td>
-                                                <td></td>
-                                                <td>
-                                                    <span style="margin-left:10px;">网关地址&nbsp;</span>
-                                                    <span class="menuBox">
-                                                        <select name="select_l_comaddr" id="select_l_comaddr" class="input-sm" style="width:150px;">
-                                                    </span>    
-                                                </td>
-                                            </tr>
-        
-                                            <tr>
-                                                <td>
-                                                    <span style="margin-left:20px;">回路名称</span>&nbsp;
-                                                    <input id="l_name" class="form-control"  name="l_name" style="width:150px;display: inline;" placeholder="请输入回路名称" type="text"></td>
-                                                <td></td>
-                                                <td>
-                                                    <span style="margin-left:10px;">回路编号&nbsp;</span>
-                                                    <input id="l_code" class="form-control" name="l_code" style="width:150px;display: inline;" placeholder="请输入回路名称" type="text">
-                                                </td>
-                                                </td>
-                                            </tr>                                   
-        
-                                            <tr>
-                                                <td>
-                                                    <span style="margin-left:20px;">控制方式</span>&nbsp;
-                                                    <span class="menuBox">
-                                                        <select name="select_l_worktype" id="select_l_worktype" class="input-sm" style="width:150px;">
-                                                            <option value="0" selected="selected">走时间</option>
-                                                            <option value="1" >走经纬度</option>
-                                                        </select>
-                                                    </span> 
-        
-                                                </td>
-                                                <td></td>
-                                                <td>
-                                                    <span style="margin-left:10px;">控制方案&nbsp;</span>
-                                                    <span class="menuBox">
-                                                        <select name="select_p_plan" id="select_p_plan" class="input-sm" style="width:150px;">
-                                                        </select>
-                                                    </span>    
-                                                </td>
-                                            </tr>                                   
-        
-                                            <tr>
-                                                <td>
-                                                    <span style="margin-left:20px;">回路组号</span>&nbsp;
-                                                    <span class="menuBox">
-                                                        <select name="select_l_groupe" id="select_l_groupe" class="input-sm" style="width:150px;">
-                                                        </select>
-                                                    </span> 
-        
-                                                </td>
-                                                <td></td>
-                                                <td>
-                                                    <span style="margin-left:10px;">方案内容&nbsp;</span>
-                                                    <input id="txt_plan_detail" readonly="true" class="form-control" name="txt_plan_detail" style="width:150px;display: inline;" placeholder="方案详情" type="text">
-                                                </td>
-                                            </tr>                 
-        
-        
-                                        </tbody>
-                                    </table>
-                                </div>
-                                注脚 
-                                <div class="modal-footer">
-                                    添加按钮 
-                                    <button id="tianjia1" type="submit" class="btn btn-primary">添加</button>
-                                                                         关闭按钮 
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button></div>
-                            </form>
-                        </div>
+        <div class="modal" id="pjj">
+            <div class="modal-dialog">
+                <div class="modal-content" style="min-width:700px;">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span style="font-size:20px ">×</span></button>
+                        <span class="glyphicon glyphicon-floppy-disk" style="font-size: 20px"></span>
+                        <h4 class="modal-title" style="display: inline;">添加回路配置</h4>
                     </div>
-                </div>-->
+
+                    <form action="" method="POST" id="formadd" onsubmit="return checkLoopAdd()">      
+                        <div class="modal-body">
+                            <table >
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <span style="margin-left:20px;">网关名称</span>&nbsp;
+                                            <input id="comaddrname" readonly="true"   class="form-control"  name="comaddrname" style="width:150px;display: inline;" placeholder="请输入网关名称" type="text"></td>
+                                        <td></td>
+                                        <td>
+                                            <span style="margin-left:10px;">网关地址&nbsp;</span>
+                                            <span class="menuBox">
+
+                                                <input id="comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 
+                                                       data-options='editable:false,valueField:"id", textField:"text"' />
+                                            </span>  
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <span style="margin-left:20px;">回路名称</span>&nbsp;
+                                            <input id="l_name" class="form-control"  name="l_name" style="width:150px;display: inline;" placeholder="请输入回路名称" type="text"></td>
+                                        <td></td>
+                                        <td>
+                                            <span style="margin-left:10px;">回路编号&nbsp;</span>
+                                            <input id="l_code" class="form-control" name="l_code" style="width:150px;display: inline;" placeholder="请输入回路名称" type="text">
+                                        </td>
+                                        </td>
+                                    </tr>                                   
+                                    <tr>
+                                        <td>
+
+                                            <span style="margin-left:20px;">控制方式</span>&nbsp;
+                                            <span class="menuBox">
+                                                <select class="easyui-combobox" id="switch" name="l_worktype" data-options='editable:false' style="width:150px; height: 34px">
+                                                    <option value="0" selected="true">走时间</option>
+                                                    <option value="1">走经纬度</option>           
+                                                </select>
+                                            </span>
+
+
+
+                                        </td>
+                                        <td></td>
+                                        <td>
+                                            <span style="margin-left:10px;">所属组号</span>&nbsp;
+                                            <span class="menuBox">
+                                                <select class="easyui-combobox" id="l_groupe" name="l_groupe"  data-options='editable:false,valueField:"id", textField:"text"' style="width:150px; height: 34px">          
+                                                </select>
+                                            </span>
+                                        </td>
+                                    </tr>                 
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--注脚--> 
+                        <div class="modal-footer">
+                            <!--添加按钮--> 
+                            <button id="tianjia1" type="submit" class="btn btn-primary">添加</button>
+                            <!--                                     关闭按钮 -->
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        </div>
+                    </form>                        
+
+                </div>
+            </div>
+        </div>
 
 
 
@@ -795,85 +665,81 @@
                 <div class="modal-content" style="min-width:700px;">
                     <div class="modal-header">
                     </div>
-                    <form action="" method="POST" id="Form_Modify" onsubmit="return modifyLoopName()">  
-                        <input type="hidden" id="txt_hide_id" name="txt_hide_id" />
+                    <form action="" method="POST" id="form2" onsubmit="return modifyLoopName()">  
+                        <input type="hidden" id="hide_id" name="hide_id" />
+                        <input type="hidden" id="l_deployment" name="l_deployment" />
                         <div class="modal-body">
-                            <table>
+
+
+                            <table >
                                 <tbody>
                                     <tr>
                                         <td>
                                             <span style="margin-left:20px;">网关名称</span>&nbsp;
-                                            <input id="txt_name" readonly="true" value=""   class="form-control"  name="txt_name" style="width:150px;display: inline;" placeholder="请输入网关名称" type="text"></td>
+                                            <input id="comaddrname1" readonly="true"   class="form-control"  name="comaddrname" style="width:150px;display: inline;" placeholder="请输入网关名称" type="text">
+                                        </td>
                                         <td></td>
                                         <td>
                                             <span style="margin-left:10px;">网关地址&nbsp;</span>
                                             <span class="menuBox">
-                                                <input id="txt_l_comaddr" readonly="true" value=""   class="form-control"  name="txt_l_comaddr" style="width:150px;display: inline;" placeholder="网关地址" type="text"></td>
 
-                                            </span>    
+                                                <input id="l_comaddr1" readonly="true" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 
+                                                       data-options='editable:false,valueField:"id", textField:"text"' />
+                                            </span>  
+
                                         </td>
                                     </tr>
 
                                     <tr>
                                         <td>
                                             <span style="margin-left:20px;">回路名称</span>&nbsp;
-                                            <input id="txt_l_name" class="form-control" value=""  name="txt_l_name" style="width:150px;display: inline;" placeholder="请输入回路名称" type="text"></td>
+                                            <input id="l_name1" class="form-control"   name="l_name" style="width:150px;display: inline;" placeholder="请输入回路名称" type="text"></td>
                                         <td></td>
                                         <td>
                                             <span style="margin-left:10px;">回路编号&nbsp;</span>
-                                            <input id="txt_l_code" readonly="true" class="form-control" value="" name="txt_l_code" style="width:150px;display: inline;" placeholder="请输入回路名称" type="text">
+                                            <input id="l_code1" readonly="true" class="form-control" name="l_code"  style="width:150px;display: inline;" placeholder="回路编号" type="text">
                                         </td>
                                         </td>
                                     </tr>                                   
-
-                                    <tr id="tr_iddeploy" >
-                                        <td>
-                                            <span style="margin-left:20px;">控制方式</span>&nbsp;
-                                            <span class="menuBox">
-                                                <select name="select_l_worktype" id="select_l_worktype"  class="input-sm" style="width:150px;">
-                                                    <option value="0" selected="selected">走时间</option>
-                                                    <option value="1" >走经纬度</option>
-                                                </select>
-                                            </span> 
-
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                            <span style="margin-left:10px;">控制方案&nbsp;</span>
-                                            <span class="menuBox">
-                                                <select name="select_p_plan" id="select_p_plan" class="input-sm" style="width:150px;">
-                                                </select>
-                                            </span>    
-                                        </td>
-                                    </tr>                                   
-
                                     <tr>
                                         <td>
-                                            <span style="margin-left:20px;">回路组号</span>&nbsp;
-                                            <span class="menuBox">
 
-                                                <!--                                                <input id="txt_l_groupe" readonly="true" class="form-control" value="" name="txt_l_groupe" style="width:150px;display: inline;" placeholder="请输入回路名称" type="text">-->
-                                                <select name="select_l_groupe" id="select_l_groupe" class="input-sm" style="width:150px;">
+                                            <span style="margin-left:20px;">控制方式</span>&nbsp;
+                                            <span class="menuBox">
+                                                <select class="easyui-combobox" id="l_worktype1" name="l_worktype" data-options='editable:false' style="width:150px; height: 34px">
+                                                    <option value="0" selected="true">走时间</option>
+                                                    <option value="1">走经纬度</option>           
                                                 </select>
-                                            </span> 
+                                            </span>
 
                                         </td>
-                                        <td></td>
                                         <td>
-                                            <!--                                <span style="margin-left:10px;">方案内容&nbsp;</span>
-                                                                            <input id="txt_plan_detail" readonly="true" class="form-control" name="txt_plan_detail" style="width:150px;display: inline;" placeholder="方案详情" type="text">-->
+                                            <span style=" margin-left: 10px;" class="label label-success" onclick="switchWorkType()" >切换控制方式</span>
+
+                                        </td>
+                                        <td>
+
+
+                                            <span style="margin-left:10px;">所属组号</span>&nbsp;
+                                            <span class="menuBox">
+                                                <select class="easyui-combobox" id="l_groupe1" name="l_groupe"  data-options='editable:false,valueField:"id", textField:"text"' style="width:150px; height: 34px">          
+                                                </select>
+                                            </span>
                                         </td>
                                     </tr>                 
 
 
                                 </tbody>
                             </table>
+
+
+
                         </div>
-                        <!-- 注脚 -->
+
                         <div class="modal-footer">
-                            <!-- 添加按钮 -->
+
                             <button id="btn_modify"  class="btn btn-primary">修改</button>
-                            <!-- 关闭按钮 -->
+
                             <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                         </div>
                     </form>
@@ -882,102 +748,5 @@
         </div>
 
 
-
-        <!-- 修改时间方案 -->
-        <div class="modal" id="timestrategy">
-            <div class="modal-dialog">
-                <div class="modal-content" style="min-width:700px;">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">
-                            <span style="font-size:20px ">×</span></button>
-                        <span class="glyphicon glyphicon-floppy-disk" style="font-size: 20px"></span>
-                        <h4 class="modal-title" style="display: inline;">修改时间方案</h4></div>
-
-
-
-                    <div class="modal-body">
-                        <table>
-                            <tbody>
-                            <input type="hidden" name="txt_hide_comaddr" id="txt_hide_comaddr" value=""> 
-                            <input type="hidden" name="txt_hide_loopcode" id="txt_hide_loopcode" value=""> 
-                            <input type="hidden" name="txt_hide_id" id="txt_hide_id" value=""> 
-                            <tr>
-                                <td>
-                                    <span style="margin-left:20px;">方案列表&nbsp;</span>
-                                    <span class="menuBox">
-                                        <select name="select_p_plan1" id="select_p_plan1" class="input-sm" style="width:150px;">
-                                        </select>
-                                    </span>  
-
-                                </td>
-
-                                <td>
-
-
-                                </td>
-                            </tr>     
-
-                            <tr>
-                                <td>
-                                    <span style="margin-left:20px;">闭合时间</span>&nbsp;
-                                    <input id="txttimein" class="form-control" readonly="true" name="txttimein" style="width:150px;display: inline;" placeholder="请输入网关名称" type="text"></td>
-                                <td></td>
-                                <td>
-                                    <span style="margin-left:10px;">断开时间&nbsp;</span>
-                                    <input id="txttimeout" class="form-control" name="txttimeout" readonly="true" style="width:150px;display: inline;" placeholder="请输入网关地址" type="text">
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- 注脚 -->
-                    <div class="modal-footer">
-                        <!-- 添加按钮 -->
-                        <button id="btnmodify1"  class="btn btn-primary">修改</button>
-                        <!-- 关闭按钮 -->
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button></div>
-                </div>
-            </div>
-        </div> 
-
-
-        <!-- 修改时间方案 -->
-        <div class="modal" id="jwstrategy">
-            <div class="modal-dialog">
-                <div class="modal-content" style="min-width:700px;">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">
-                            <span style="font-size:20px ">×</span></button>
-                        <span class="glyphicon glyphicon-floppy-disk" style="font-size: 20px"></span>
-                        <h4 class="modal-title" style="display: inline;">修改方案</h4></div>
-                    <div class="modal-body">
-                        <table>
-                            <tbody>
-
-                                <tr>
-                                    <td>
-                                        <span style="margin-left:20px;">日落偏移</span>&nbsp;
-                                        <input id="timein" class="form-control" name="timein" style="width:150px;display: inline;" placeholder="请输入网关名称" type="text"></td>
-                                    <td></td>
-                                    <td>
-                                        <span style="margin-left:10px;">日出偏移&nbsp;</span>
-                                        <input id="timeout" class="form-control" name="timeou  t" style="width:150px;display: inline;" placeholder="请输入网关地址" type="text">
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- 注脚 -->
-                    <div class="modal-footer">
-                        <!-- 添加按钮 -->
-                        <button id="xiugai" class="btn btn-primary">确定</button>
-                        <!-- 关闭按钮 -->
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button></div>
-                </div>
-            </div>
-        </div> 
-        <div id="planconten">
-
-        </div>
     </body>
 </html>
