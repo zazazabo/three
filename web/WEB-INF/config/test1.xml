@@ -507,6 +507,25 @@
             </xsql>
         </xhandle>
     </xform>
+    
+        <xForm id="Mail" desc="test">
+        <xHand id="h1" rtnype="EMAIL" >  <!--邮件发送：rtnype:EMAIL  var 为发送者邮箱  <xflt的参数为发送到的人邮箱  -->
+            <xSql id="a1" tpe="SQL"  tpl="@CONDITION " var="smtp.126.com*__*z277402131*__*z277402131*__*z277402131@126.com">     <!-- 发送邮件tpl发送邮件参数，前台传过来  var:发送者信息 -->
+                <xFlt id="CONDITION" tpl="@subject_ AND @content_ AND @to_ AND @attach_" nrp="1=1">
+                    <xFltPara id="subject_" para="subject_" sql="1=1"/>
+                    <xFltPara id="content_" para="content_" sql="1=1"/>
+                    <xFltPara id="to_" para="to_" sql="1=1"/>
+                    <xFltPara id="attach_" para="attach_" sql="1=1"/>
+                </xFlt>
+            </xSql>
+        </xHand>
+    </xForm> 
+    
+    
+    
+    
+    
+    
     <xform desc="重载配置" id="reset">
         <xhand id="xml" rtnype="RELOAD">
         </xhand>

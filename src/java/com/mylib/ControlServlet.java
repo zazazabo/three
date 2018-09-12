@@ -57,7 +57,7 @@ public class ControlServlet extends HttpServlet {
         if (info1.rtnype.equals("PGE")) {
             String url = dealpage(request, response, info1);
             request.getRequestDispatcher(url).forward(request, response);
-        }else if (info1.rtnype.equals("ACTION")) {
+        } else if (info1.rtnype.equals("ACTION")) {
             try {
                 dealAction(request, response, info1);
             } catch (ClassNotFoundException ex) {
@@ -113,35 +113,44 @@ public class ControlServlet extends HttpServlet {
                 if (info1.var.equals("bootstrap")) {
                     List aa = list3.get(info1.var);
                     Map docType = new HashMap();
-                    docType.put("total", aa.size());
+
                     List listpage = new ArrayList();
                     String limit = request.getParameter("limit");
                     String skip = request.getParameter("skip");
-                    int ilimit = 0;
-                    int iskip = 0;
-                    if (limit != null && !limit.equals("")) {
-                        if (skip != null && !skip.equals("")) {
-                            ilimit = Integer.parseInt(limit);
-                            iskip = Integer.parseInt(skip);
+                    String type = request.getParameter("page");
+                    if (type!=null&&type.equals("ALL")) {
+                        docType.put("total", aa.size());
+                        docType.put("rows", aa);
+                        
+                    } else {
+                        int ilimit = 0;
+                        int iskip = 0;
+                        if (limit != null && !limit.equals("")) {
+                            if (skip != null && !skip.equals("")) {
+                                ilimit = Integer.parseInt(limit);
+                                iskip = Integer.parseInt(skip);
+                            }
                         }
-                    }
 
-                    int subend = iskip + ilimit;
-                    if (subend > aa.size()) {
-                        subend = aa.size();
+                        int subend = iskip + ilimit;
+                        if (subend > aa.size()) {
+                            subend = aa.size();
+                        }
+                        listpage = aa.subList(iskip, subend);
+                        docType.put("total", aa.size());
+                        docType.put("rows", listpage);
+
                     }
-                    listpage = aa.subList(iskip, subend);
-                    docType.put("rows", listpage);
                     jsonstr = JSONObject.fromObject(docType).toString();
 
                 } else if (info1.var.equals("list")) {
                     List aa = list3.get(info1.var);
                     jsonstr = JSONArray.fromObject(aa).toString();
-                    
+
                 } else {
-                      List aa = list3.get(info1.var);
+                    List aa = list3.get(info1.var);
                     jsonstr = JSONObject.fromObject(list3).toString();
-             
+
                 }
             } else {
                 try {
@@ -151,8 +160,8 @@ public class ControlServlet extends HttpServlet {
                 }
             }
             Logger.getLogger(ControlServlet.class.getName()).log(Level.INFO, jsonstr);
-             response.setContentType("text/json; charset=UTF-8");
-            response.getOutputStream().write(jsonstr.getBytes("UTF-8"));       
+            response.setContentType("text/json; charset=UTF-8");
+            response.getOutputStream().write(jsonstr.getBytes("UTF-8"));
         }
     }
 
