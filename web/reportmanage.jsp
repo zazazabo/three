@@ -12,6 +12,11 @@
     <head>
         <%@include  file="js.jspf" %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="pragma" content="no-cache">
+        <meta http-equiv="cache-control" content="no-cache"> 
+        <link rel="stylesheet" type="text/css" href="bootstrap-datetimepicker/bootstrap-datetimepicker.css">
+
+        <script src="bootstrap-datetimepicker/bootstrap-datetimepicker.js"></script>
         <style type="text/css">
             #div2{
                 display: none;
@@ -560,10 +565,10 @@
 
             function getMoth() {
                 var year;
-                if($("#year").val()=="0"){
+                if ($("#year").val() == "0") {
                     var myDate = new Date();
                     year = myDate.getFullYear();
-                }else{
+                } else {
                     year = $("#year").val();
                 }
                 var obj = {};
@@ -1053,6 +1058,15 @@
                     <option value="2020">2020</option>
                 </select>
             </span>
+            <!--                <form action="" id="formyear" class="form-horizontal" role="form" style="margin-left:440px;border: 1px solid; margin-top: 5px">
+                                <label for="dtp_input2" class="control-label" style="float: left;"></label>
+                                <input id="dtp_input2" value="" type="hidden">
+                                <span class="input-group date form_date col-md-2" style="float:initial;" data-date="" data-date-format="yyyy" data-link-field="dtp_input2" data-link-format="yyyy">
+                                    <input id="day" name="day"  class="form-control" style="width:100px;" size="16" readonly="readonly" type="text">
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                </span>
+                            </form>-->
             <span style="margin-left:0px;">
                 <button type="button" class="btn btn-sm btn-success" onclick="getMoth()" >按年份显示数据</button>
             </span>

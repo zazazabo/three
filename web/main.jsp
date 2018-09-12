@@ -31,6 +31,11 @@
                 }
             }
             
+            function  getuserId(){
+                var userid = $("#userid").val();
+                return  userid;
+            }
+            
             //退出
             function getout() {
                 if (confirm("确定退出吗？")) {
@@ -376,7 +381,8 @@
                 /* 加载左边菜单 */
                 //传角色权限 获取菜单 
                 var rotype = $("#m_code").val(); //角色id
-                var objrole = {role: rotype};
+                var u_id = $("#userid").val(); //用户id
+                var objrole = {role: rotype,uid:u_id};
 
                 $.ajax({type: "post", url: "formuser.mainmenu.querysub.action", dataType: "json", data: objrole,
                     success: function (data) {

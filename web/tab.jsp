@@ -73,7 +73,7 @@
                             var objlang = eval('(' + data.m_title + ')');
                             var u1 = action + "?m_parent=" + data.m_code + "&role=" + ${param.role};
                             //console.log(u1);
-                            htmls += '<li class="layui-nav-item" name="' + action + '">'
+//                            htmls += '<li class="layui-nav-item" name="' + action + '">'
 
                             htmls += '<li class="layui-nav-item" name="' + u1 + '">'
                                     + '<a href="javascript:;">'
