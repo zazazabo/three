@@ -1,6 +1,7 @@
 $.fn.serializeObject = function () {
     var o = {};
     var a = this.serializeArray();
+//    console.log(a);
     $.each(a, function () {
         if (o[this.name]) {
             if (!o[this.name].push) {
@@ -264,6 +265,7 @@ function  buicode(comaddr, C, AFN, SEQ, DA, DT, paraArr) {
     for (var j = 0; j < paraArr.length; j++) {
         hexData.push(paraArr[j]);
     }
+
     var len1 = 18 - 6 + paraArr.length;   //18是固定长度  6报文头  
     var len2 = len1 << 2 | 2;
 

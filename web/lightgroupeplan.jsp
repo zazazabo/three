@@ -20,6 +20,27 @@
                 });
             }
 
+
+            function dealsend2(msg, data, fn, func, comaddr, type, param, val) {
+                var user = new Object();
+                user.begin = '6A';
+                user.res = 1;
+                user.status = "";
+                user.comaddr = comaddr;
+                user.fn = fn;
+                user.function = func;
+                user.param = param;
+                user.page = 2;
+                user.msg = msg;
+                user.val = val;
+                user.type = type;
+                user.addr = getComAddr(comaddr); //"02170101";
+                user.data = data;
+                user.len = data.length;
+                user.end = '6A';
+                console.log(user);
+                parent.parent.sendData(user);
+            }
             function deployPlan(obj) {
                 console.log(obj)
                 if (obj.status == "fail") {
@@ -146,7 +167,7 @@
                 user.res = 1;
                 user.addr = getComAddr(comaddr1); //"02170101";
                 var num = randnum(0, 9) + 0x70;
-                num=0x71;
+                num = 0x71;
                 var sss = buicode(comaddr1, 0x04, 0xA4, num, 0, 140, vv); //01 03 F24        
                 user.data = sss;
                 $datajson = JSON.stringify(user);
@@ -189,48 +210,129 @@
                 }
 
             }
+            function setLampTimePlanCB(obj) {
+                console.log(obj);
+//                               console.log(obj)
+                if (obj.status == "success") {
+
+                }
+            }
+
+
+
+
+            function setLampTimePlan() {
+                var selects = $('#gravidaTable').bootstrapTable('getSelections');
+                if (selects.length == 0) {
+                    layerAler("请勾选列表读取");
+                    return;
+                }
+                var obj = $("#form1").serializeObject();
+                console.log(obj);
+                var v = obj.p_type;
+                var s = selects[0];
+//                console.log(s);
+                if (s.l_deplayment == 0) {
+                    layerAler("部署后的灯具才能设置回路运行方案");
+                    return;
+                }
+                if (v == "0") {
+                    console.log('部署分组时间方案');
+                    var vv = [];
+                    vv.push(1);
+                    vv.push(parseInt(s.l_groupe));
+                    for (var i = 0; i < 6; i++) {
+                        var a = "time" + (i + 1).toString();
+                        var b = "val" + (i + 1).toString();
+                        var time = obj[a];
+                        var val = obj[b];
+                        var a1 = time.split(":");
+                        var m = parseInt(a1[1], 16);
+                        var h = parseInt(a1[0], 16);
+                        vv.push(m);
+                        vv.push(h);
+                        vv.push(parseInt(val));
+                    }
+
+                    var comaddr = s.l_comaddr;
+                    var num = randnum(0, 9) + 0x70;
+                    var data = buicode(comaddr, 0x04, 0xA4, num, 0, 140, vv); //01 03 F24    
+                    dealsend2("A4", data, 140, "setLampTimePlanCB", comaddr, s.index, obj.p_type, 0, s.id);
+                }
+
+                if (v == "1") {
+                    var vv = [];
+                    vv.push(1);
+                    vv.push(parseInt(s.l_groupe));
+                    console.log(obj);
+                    for (var i = 0; i < 8; i++) {
+                        var a = "__num" + (i + 1).toString();
+                        var b = "__val" + (i + 1).toString();
+                        var num = parseInt(obj[a]);
+                        var val = parseInt(obj[b]);
+                        vv.push(num);
+                        vv.push(val);
+                    }
+                    var comaddr = s.l_comaddr;
+                    var num = randnum(0, 9) + 0x70;
+                    var data = buicode(comaddr, 0x04, 0xA4, num, 0, 480, vv); //01 03 F24    
+                    dealsend2("A4", data, 480, "setLampTimePlanCB", comaddr, 0, obj.p_type, 0, s.id);
+                }
+            }
+
 
             $(function () {
-                $('#txt_l_plan').combobox({
-                    onSelect: function (param) {
-                        if (param.p_type == 0) {
-
-                            var time1 = param.p_time1;
-                            var time2 = param.p_time2;
-                            var time3 = param.p_time3;
-                            var time4 = param.p_time4;
-                            var time5 = param.p_time5;
-                            var time6 = param.p_time6;
-                            var str = "";
-                            if (isJSON(time1)) {
-                                var obj = eval('(' + time1 + ')');
-                                str = str + obj.time + "=" + obj.value + " | ";
-                            }
-                            if (isJSON(time2)) {
-                                var obj = eval('(' + time2 + ')');
-                                str = str + obj.time + "=" + obj.value + " | ";
-                            }
-                            if (isJSON(time3)) {
-                                var obj = eval('(' + time3 + ')');
-                                str = str + obj.time + "=" + obj.value + " | ";
-                            }
-                            if (isJSON(time4)) {
-                                var obj = eval('(' + time4 + ')');
-                                str = str + obj.time + "=" + obj.value + " | ";
-                            }
-                            if (isJSON(time5)) {
-                                var obj = eval('(' + time5 + ')');
-                                str = str + obj.time + "=" + obj.value + " | ";
-                            }
-                            if (isJSON(time5)) {
-                                var obj = eval('(' + time5 + ')');
-                                str = str + obj.time + "=" + obj.value + " | ";
-                            }
-                            $("#txt_p_detail").val(str);
-                        }
-//                        console.log(param);
+                $('#l_comaddr').combobox({
+                    onSelect: function (record) {
+                        var obj = {l_comaddr: record.id};
+                        var opt = {
+                            url: "test1.lamp.Groupe.action",
+                            silent: true,
+                            query: obj
+                        };
+                        $('#gravidaTable').bootstrapTable('refresh', opt);
                     }
                 });
+
+
+                $('#p_plan').combobox({
+                    onSelect: function (record) {
+                        $('#type' + record.p_type).show();
+
+                        var v = 1 - parseInt(record.p_type);
+                        $('#type' + v.toString()).hide();
+                        $('#p_type').val(record.p_type);
+                        if (record.p_type == 0) {
+                            for (var i = 0; i < 6; i++) {
+                                var a = "p_time" + (i + 1).toString();
+                                var b = "#time" + (i + 1).toString();
+                                var c = "#val" + (i + 1).toString();
+                                var o = eval('(' + record[a] + ')');
+                                if (o.hasOwnProperty('time') == false || o.hasOwnProperty('value') == false) {
+                                    continue;
+                                }
+                                $(b).timespinner('setValue', o.time);
+                                $(c).val(o.value);
+                            }
+                        }
+
+                        if (record.p_type == 1) {
+                            for (var i = 0; i < 8; i++) {
+                                var a = "p_scene" + (i + 1).toString();
+                                var b = record[a];
+                                if (isJSON(b)) {
+                                    var obj = eval('(' + b + ')');
+                                    var num = "#__num" + (i + 1).toString();
+                                    var val = "#__val" + (i + 1).toString();
+                                    $(num).val(obj.num);
+                                    $(val).val(obj.value);
+                                }
+                            }
+                        }
+
+                    }
+                });
+
 
                 $("#gravidaTable").on("dbl-click-cell.bs.table", function (field, value, row, element) {
 
@@ -369,6 +471,8 @@
                     },
                 });
 
+
+
 //                $('#l_groupe').combobox({
 //                    onSelect: function (record) {
 //                        var obj = $("#tosearch").serializeObject();
@@ -383,206 +487,277 @@
 //                        $("#gravidaTable").bootstrapTable('refresh', opt);
 //                    }
 //                });
-//                $('#l_comaddr').combobox({
-//                    onSelect: function (record) {
-//                        var obj = $("#tosearch").serializeObject();
-//                        obj.l_comaddr = record.id;
-//                        obj.l_deplayment = 1;
-//                        console.log(obj);
-//                        var opt = {
-//                            url: "test1.lamp.Groupe.action",
-//                            silent: true,
-//                            query: obj
-//                        };
-//                        $('#gravidaTable').bootstrapTable('refresh', opt);
-//                    }
-//                });
 
 
             })
 
-
-            $(function () {
-
-                if ('WebSocket' in window) {
-                    websocket = new WebSocket("ws://zhizhichun.eicp.net:18414/");
-                } else {
-                    alert('当前浏览器不支持websocket')
-                }
-//                // 连接成功建立的回调方法
-                websocket.onopen = function (e) {
-
-                }
-
-                //接收到消息的回调方法
-                websocket.onmessage = function (e) {
-                    console.log("onmessage");
-                    var jsoninfo = JSON.parse(e.data);
-                    console.log(jsoninfo);
-                    if (jsoninfo.hasOwnProperty("function")) {
-                        var vvv = jsoninfo.function;
-                        var obj = jsoninfo.parama;
-                        obj.status = jsoninfo.status;
-                        obj.errcode = jsoninfo.errcode;
-                        obj.frame = jsoninfo.frame;
-                        window[vvv](obj);
-                    }
-
-                }
-                //连接关闭的回调方法
-                websocket.onclose = function () {
-                    console.log("websocket close");
-                    websocket.close();
-                }
-
-                //连接发生错误的回调方法
-                websocket.onerror = function () {
-                    console.log("Webscoket连接发生错误");
-                }
-
-                //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
-                window.onbeforeunload = function () {
-                    websocket.close();
-                }
-
-            })
 
         </script>
-        <style>* { margin: 0; padding: 0; } body, html { width: 100%; height: 100%; } .zuheanniu { margin-top: 2px; margin-left: 10px; } table { font-size: 14px; } .modal-body input[type="text"], .modal-body select, .modal-body input[type="radio"] { height: 30px; } .modal-body table td { line-height: 40px; } .menuBox { position: relative; background: skyblue; } .getMenu { z-index: 1000; display: none; background: white; list-style: none; border: 1px solid skyblue; width: 150px; height: auto; max-height: 200px; position: absolute; left: 0; top: 25px; overflow: auto; } .getMenu li { width: 148px; padding-left: 10px; line-height: 22px; font-size: 14px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; } .getMenu li:hover { background: #eee; cursor: pointer; } .a-upload { padding: 4px 10px; height: 30px; line-height: 20px; position: relative; cursor: pointer; color: #888; background: #fafafa; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; display: inline-block; *display: inline; *zoom: 1 } .a-upload input { position: absolute; font-size: 100px; right: 0; top: 0; opacity: 0; filter: alpha(opacity = 0); cursor: pointer } .a-upload:hover { color: #444; background: #eee; border-color: #ccc; text-decoration: none } .pagination-info { float: left; margin-top: -4px; } .modal-body { text-align: -webkit-center; text-align: -moz-center; width: 600px; margin: auto; } .btn-primary { color: #fff; background-color: #0099CC; border-color: #0099CC; }</style>
-
 
     </head>
     <body>
-        <div style="width:100%;">
 
-            <form id="tosearch">
-                <table>
-                    <tbody>
+        <form id="form1">
+            <input name="p_type" type="hidden" id="p_type" />
+            <div class="row">
+                <div class="col-xs-6">
+
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <span style="margin-left:10px;">网关地址&nbsp;</span>
+                                    <span class="menuBox">
+
+                                        <input id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 34px" 
+                                               data-options="onLoadSuccess:function(data){
+                                               if(Array.isArray(data)&&data.length>0){
+                                               $(this).combobox('select', data[0].id);
+
+                                               }else{
+                                               $(this).combobox('select',);
+                                               }
+                                               console.log(data);
+                                               },editable:false,valueField:'id', textField:'text',url:'test1.lamp.getlampcomaddr.action' " />
+
+                                        <!--<select name="l_comaddr_lamp" id="l_comaddr_lamp" placeholder="回路" class="input-sm" style="width:150px;">-->
+                                    </span>   
+                                </td>
+
+                                <td>
+                                    <!--&nbsp;&nbsp;  <button id="btndeploy" onclick="deployloop()" class="btn btn-success">部署回路</button>-->
+                                </td>
+                                <td>
+                                    <span style="margin-left:10px;">组号&nbsp;</span>
+                                    <span class="menuBox">
+                                        <input id="l_groupe" class="easyui-combobox" name="l_groupe" style="width:150px; height: 34px" 
+                                               data-options="editable:true,valueField:'id', textField:'text',url:'test1.lamp.getGroupe.action' " />
+                                    </span> 
+                                    <!--&nbsp;&nbsp;  <button id="btnremove" onclick="removeloop()" class="btn btn-success">移除回路</button>-->
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table id="gravidaTable" style="width:100%;"  class="text-nowrap table table-hover table-striped">
+                    </table>
+                </div>
+                <div class="col-xs-6">
+                    <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; ">
+                        <tr>
+                            <td colspan="4" align="right">
+                                <span style=" margin-left: 20px;" >方案列表</span>
+                                <span class="menuBox">
+
+                                    <input id="p_plan" class="easyui-combobox" name="p_plan" style="width:150px; height: 30px" 
+                                           data-options="onLoadSuccess:function(data){
+                                           if(Array.isArray(data)&&data.length>0){
+                                           $(this).combobox('select', data[0].id);
+
+                                           }else{
+                                           $(this).combobox('select',);
+                                           }
+                                           console.log(data);
+                                           },editable:false,valueField:'id', textField:'text',url:'test1.plan.getPlanlist.action?attr=1' " />
+                                    <span style=" margin-left: 120px;" ></span>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <table id="type0" style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; display: none ">
+
+                        <tr >
+                            <td>
+                                <span style="margin-left:20px;">时间1</span>&nbsp;
+                            </td>
+                            <td> <input id="time1"  name="time1" style=" height: 30px; width: 150px" class="easyui-timespinner">
+                            </td>
+                            <td>
+                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
+                            </td>
+                            <td>
+                                <input id="val1" class="form-control" name="val1" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">&nbsp;
+                            </td>
+                        </tr>
+                        <tr >
+                            <td>
+                                <span style="margin-left:20px;">时间2</span>&nbsp;
+                            </td>
+                            <td> <input id="time2"  name="time2" style=" height: 30px; width: 150px" class="easyui-timespinner">
+                            </td>
+                            <td>
+                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
+                            </td>
+                            <td>
+                                <input id="val2" class="form-control" name="val2" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">&nbsp;
+                            </td>
+                        </tr>
+                        <tr >
+                            <td>
+                                <span style="margin-left:20px;">时间3</span>&nbsp;
+                            </td>
+                            <td> <input id="time3"  name="time3" style=" height: 30px; width: 150px" class="easyui-timespinner">
+                            </td>
+                            <td>
+                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
+                            </td>
+                            <td>
+                                <input id="val3" class="form-control" name="val3" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">&nbsp;
+                            </td>
+                        </tr>
+                        <tr >
+                            <td>
+                                <span style="margin-left:20px;">时间4</span>&nbsp;
+                            </td>
+                            <td> <input id="time4"  name="time4" style=" height: 30px; width: 150px" class="easyui-timespinner">
+                            </td>
+                            <td>
+                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
+                            </td>
+                            <td>
+                                <input id="val4" class="form-control" name="val4" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">&nbsp;
+                            </td>
+                        </tr>
+                        <tr >
+                            <td>
+                                <span style="margin-left:20px;">时间5</span>&nbsp;
+                            </td>
+                            <td> <input id="time5"  name="time5" style=" height: 30px; width: 150px" class="easyui-timespinner">
+                            </td>
+                            <td>
+                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
+                            </td>
+                            <td>
+                                <input id="val5" class="form-control" name="val5" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">&nbsp;
+                            </td>
+                        </tr>
+                        <tr >
+                            <td>
+                                <span style="margin-left:20px;">时间6</span>&nbsp;
+                            </td>
+                            <td> <input id="time6"  name="time6" style=" height: 30px; width: 150px" class="easyui-timespinner">
+                            </td>
+                            <td>
+                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
+                            </td>
+                            <td>
+                                <input id="val6" class="form-control" name="val6" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">&nbsp;
+                            </td>
+                        </tr>    
+
+                    </table>
+
+                    <table id="type1" style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; display: none ">
                         <tr>
                             <td>
-                            </td>
+                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                <input id="__num1" class="form-control" name="__num1" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
+                            </td> 
+                            <td></td>
                             <td>
-
+                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                <input id="__val1" class="form-control" name="__val1" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
                             </td>
+                        </tr> 
+                        <tr>
                             <td>
-                                <span style="margin-left:10px;">网关地址&nbsp;</span>
-                                <span class="menuBox">
-                                    <input id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 34px" 
-                                           data-options="editable:true,valueField:'id', textField:'text',url:'test1.lamp.getComaddr.action' " />
-                                </span>  
-                            </td>
+                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                <input id="__num2" class="form-control" name="__num2" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
+                            </td> 
+                            <td></td>
                             <td>
-
+                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                <input id="__val2" class="form-control" name="__val2" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
                             </td>
+                        </tr> 
+                        <tr>
                             <td>
-                                <span style="margin-left:10px;">组号&nbsp;</span>
-                                <span class="menuBox">
-                                    <input id="l_groupe" class="easyui-combobox" name="l_groupe" style="width:150px; height: 34px" 
-                                           data-options="editable:true,valueField:'id', textField:'text',url:'test1.lamp.getGroupe.action' " />
-                                </span>         
-                            </td>
+                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                <input id="__num3" class="form-control" name="__num3" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
+                            </td> 
+                            <td></td>
                             <td>
-
+                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                <input id="__val3" class="form-control" name="__val3" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
                             </td>
+                        </tr> 
+                        <tr>
                             <td>
-
-                            </td>
-
+                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                <input id="__num4" class="form-control" name="__num4" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
+                            </td> 
+                            <td></td>
                             <td>
-
+                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                <input id="__val4" class="form-control" name="__val4" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
                             </td>
+                        </tr> 
+                        <tr>
                             <td>
-                                <button id="btn_groupe_lamp_val" type="button" style="margin-left:20px;" onclick="sendPlan();" class="btn btn-success">部署灯控方案</button>
+                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                <input id="__num5" class="form-control" name="__num5" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
+                            </td> 
+                            <td></td>
+                            <td>
+                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                <input id="__val5" class="form-control" name="__val5" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
                             </td>
+                        </tr> 
+                        <tr>
+                            <td>
+                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                <input id="__num6" class="form-control" name="__num6" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
+                            </td> 
+                            <td></td>
+                            <td>
+                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                <input id="__val6" class="form-control" name="__val6" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                            </td>
+                        </tr> 
 
-
-
-
-                        </tr>
-
-
-                    </tbody>
-                </table>
-            </form>
-            <!--<div class="bootstrap-table">-->
-            <!--<div class="fixed-table-container" style="height: 214px; padding-bottom: 0px;">-->     
-
-
-            <table id="gravidaTable" style="width:100%;"  class="text-nowrap table table-hover table-striped">
-
-            </table>
-            <!--</div>-->
-            <!--</div>-->
-        </div>
-
-        <!-- 添加灯具方案 -->
-        <div class="modal" id="modal_plan_set">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">
-                            <span style="font-size:20px ">×</span></button>
-                        <span class="glyphicon glyphicon-floppy-disk" style="font-size: 20px"></span>
-                        <h4 class="modal-title" style="display: inline;">灯控方案设置</h4>
-                    </div>
-
-                    <form action="" method="POST" id="eqpTypeForm" onsubmit="return checkPlanLoopAdd()">      
-                        <div class="modal-body">
-                            <table>
-                                <tbody>
-                                    <tr id="tr_time_hide_add">
-                                        <td>
-                                            <span style="margin-left:20px;">方案列表&nbsp;</span>
-                                            <span class="menuBox">
-                                                <input id="txt_l_plan" class="easyui-combobox" name="txt_l_plan" style="width:150px; height: 34px" 
-                                                       data-options="editable:true,valueField:'id', textField:'text',url:'test1.plan.l_groupe.action?p_attr=1' " />
-                                            </span>                                           
-                                        </td>
-                                        <td>     </td>
-                                        <td>
-
-                                        </td>
-
-                                    </tr>
-                                    <tr><td></td><td></td><td></td></tr>
-                                    <tr>
-                                        <td>
-                                            <span style="margin-left:20px;">网关地址</span>&nbsp;
-                                            <input id="txt_l_comaddr" readonly="true" class="form-control"  name="txt_l_comaddr" style="width:150px;display: inline;" placeholder="网关" type="text">
-                                        </td>
-
-
-                                        <td></td>
-                                        <td>
-                                            <span style="margin-left:20px;">灯控组号</span>&nbsp;
-                                            <input id="txt_l_groupe" readonly="true" class="form-control"  name="txt_l_groupe" style="width:150px;display: inline;" placeholder="灯控组号" type="text"></td>
-
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="3">
-                                            <span style="margin-left:20px;">方案详细</span>&nbsp;
-                                            <input id="txt_p_detail" readonly="true" class="form-control"  name="txt_p_detail" style="width:400px;display: inline;" placeholder="内容" type="text">
-                                        </td>
-                                    </tr>
-
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <div class="modal-footer">
-
-                            <button id="tianjia1" type="button" onclick="setPlan()" class="btn btn-primary">设置</button>
-
-                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        </div>
-                    </form>
-
-
+                        <tr>
+                            <td>
+                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                <input id="__num7" class="form-control" name="__num7" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
+                            </td> 
+                            <td></td>
+                            <td>
+                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                <input id="__val7" class="form-control" name="__val7" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                            </td>
+                        </tr> 
+                        <tr>
+                            <td>
+                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                <input id="__num8" class="form-control" name="__num8" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
+                            </td> 
+                            <td></td>
+                            <td>
+                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                <input id="__val8" class="form-control" name="__val8" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                            </td>
+                        </tr> 
+                    </table>
 
                 </div>
             </div>
-        </div> 
+            <div class="row"  style=" margin-top: 20px;">
+                <div class="col-xs-6">
+                    <!--                    <button id="btndeploylamp" class="btn btn-success">部署灯具</button>
+                                        <button id="btnremovelamp" class="btn btn-success">移除灯具</button>-->
+                </div>
+                <div class="col-xs-6">
+                    <!--<button style=" margin-left: 40px;" type="button" onclick="setPlan()" class="btn btn-success">设置</button>-->
+
+                    <button style=" margin-left: 40px;" onclick="setLampTimePlan()" type="button" class="btn btn-success">部署灯具时间方案</button>
+                    <button style=" margin-left: 40px;" onclick="setLampScenePlan()" type="button" class="btn btn-success">部署灯具场景方案</button>
+                </div>
+            </div>
+
+        </form> 
+
 
     </body>
 </html>

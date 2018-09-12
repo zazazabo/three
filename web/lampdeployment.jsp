@@ -47,6 +47,26 @@
             }
 
 
+            function dealsend2(msg, data, fn, func, comaddr, type, param, val) {
+                var user = new Object();
+                user.begin = '6A';
+                user.res = 1;
+                user.status = "";
+                user.comaddr = comaddr;
+                user.fn = fn;
+                user.function = func;
+                user.param = param;
+                user.page = 2;
+                user.msg = msg;
+                user.val = val;
+                user.type = type;
+                user.addr = getComAddr(comaddr); //"02170101";
+                user.data = data;
+                user.len = data.length;
+                user.end = '6A';
+                console.log(user);
+                parent.parent.sendData(user);
+            }
 
 
             //  var websocket = null;
@@ -113,9 +133,44 @@
             }
 
 
-
-
             $(function () {
+                $('#p_plan').combobox({
+                    onSelect: function (record) {
+
+                        console.log(record);
+                        $('#type' + record.p_type).show();
+
+                        var v = 1 - parseInt(record.p_type);
+                        $('#type' + v.toString()).hide();
+
+                        if (record.p_type == 0) {
+                            for (var i = 0; i < 6; i++) {
+                                var a = "p_time" + (i + 1).toString();
+                                var b = "#time" + (i + 1).toString();
+                                var c = "#val" + (i + 1).toString();
+                                var o = eval('(' + record[a] + ')');
+
+                                if (o.hasOwnProperty('time') == false || o.hasOwnProperty('value') == false) {
+                                    continue;
+                                }
+                                $(b).timespinner('setValue', o.time);
+                                $(c).val(o.value);
+                                console.log(o);
+                            }
+                        }
+
+
+                        if (record.p_type == 1) {
+
+                            for (var i = 0; i < 8; i++) {
+                                var a = "p_scene" + (i + 1).toString();
+                                $("#" + a).val(record[a]);
+                            }
+                        }
+
+                    }
+                });
+                
                 $('#l_comaddr').combobox({
                     onSelect: function (record) {
                         var obj = {};
@@ -336,60 +391,291 @@
         </script>
     </head>
     <body>
-        <div class="modal-body">
-            <table>
-                <tbody>
-                    <tr>
-                        <td>
-                        </td>
-                        <td>
 
-                        </td>
-                        <td>
-                            <span style="margin-left:10px;">网关地址&nbsp;</span>
-                            <span class="menuBox">
+        <form id="form1">
+            <div class="row">
+                <div class="col-xs-6">
 
-                                <input id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 34px" 
-                                       data-options="onLoadSuccess:function(data){
-                                       if(Array.isArray(data)&&data.length>0){
-                                       $(this).combobox('select', data[0].id);
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <span style="margin-left:10px;">网关地址&nbsp;</span>
+                                    <span class="menuBox">
 
-                                       }else{
-                                       $(this).combobox('select',);
-                                       }
-                                       console.log(data);
-                                       },editable:false,valueField:'id', textField:'text',url:'test1.lamp.getlampcomaddr.action' " />
+                                        <input id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 34px" 
+                                               data-options="onLoadSuccess:function(data){
+                                               if(Array.isArray(data)&&data.length>0){
+                                               $(this).combobox('select', data[0].id);
 
-                                <!--<select name="l_comaddr_lamp" id="l_comaddr_lamp" placeholder="回路" class="input-sm" style="width:150px;">-->
-                            </span>    
-                        </td>
-                        <td> 
-                            &nbsp;
-                        </td>
-                        <td>
-                            <button id="btndeploylamp" class="btn btn-success">部署灯具</button>
-                        </td>
-                        <td> 
-                            &nbsp;&nbsp;&nbsp;
-                        </td>
-                        <td>
-                            <button id="btnremovelamp" class="btn btn-success">移除灯具</button>
-                        </td>
+                                               }else{
+                                               $(this).combobox('select',);
+                                               }
+                                               console.log(data);
+                                               },editable:false,valueField:'id', textField:'text',url:'test1.lamp.getlampcomaddr.action' " />
+
+                                        <!--<select name="l_comaddr_lamp" id="l_comaddr_lamp" placeholder="回路" class="input-sm" style="width:150px;">-->
+                                    </span>   
+                                </td>
+
+                                <td>
+                                    <!--&nbsp;&nbsp;  <button id="btndeploy" onclick="deployloop()" class="btn btn-success">部署回路</button>-->
+                                </td>
+                                <td>
+                                    &nbsp;    <button id="btndeploylamp" class="btn btn-success">部署灯具</button>
+                    <button id="btnremovelamp" class="btn btn-success">移除灯具</button>
+                                    <!--&nbsp;&nbsp;  <button id="btnremove" onclick="removeloop()" class="btn btn-success">移除回路</button>-->
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-xs-6">
+<!--                    <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; ">
+                        <tr>
+                            <td colspan="4" align="right">
+                                <span style=" margin-left: 20px;" >方案列表</span>
+                                <span class="menuBox">
+
+                                    <input id="p_plan" class="easyui-combobox" name="p_plan" style="width:150px; height: 30px" 
+                                           data-options="onLoadSuccess:function(data){
+                                           if(Array.isArray(data)&&data.length>0){
+                                           $(this).combobox('select', data[0].id);
+
+                                           }else{
+                                           $(this).combobox('select',);
+                                           }
+                                           console.log(data);
+                                           },editable:false,valueField:'id', textField:'text',url:'test1.plan.getPlanlist.action?attr=1' " />
+                                    <span style=" margin-left: 120px;" ></span>
+                            </td>
+                        </tr>
+                    </table>
+
+
+                    <table id="type0" style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; display: none ">
+
+                        <tr >
+                            <td>
+                                <span style="margin-left:20px;">时间1</span>&nbsp;
+                            </td>
+                            <td> <input id="time1"  name="time1" style=" height: 30px; width: 150px" class="easyui-timespinner">
+                            </td>
+                            <td>
+                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
+                            </td>
+                            <td>
+                                <input id="val1" class="form-control" name="val1" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">&nbsp;
+                            </td>
+                        </tr>
+                        <tr >
+                            <td>
+                                <span style="margin-left:20px;">时间2</span>&nbsp;
+                            </td>
+                            <td> <input id="time2"  name="time1" style=" height: 30px; width: 150px" class="easyui-timespinner">
+                            </td>
+                            <td>
+                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
+                            </td>
+                            <td>
+                                <input id="val2" class="form-control" name="val2" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">&nbsp;
+                            </td>
+                        </tr>
+                        <tr >
+                            <td>
+                                <span style="margin-left:20px;">时间3</span>&nbsp;
+                            </td>
+                            <td> <input id="time3"  name="time1" style=" height: 30px; width: 150px" class="easyui-timespinner">
+                            </td>
+                            <td>
+                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
+                            </td>
+                            <td>
+                                <input id="val3" class="form-control" name="val3" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">&nbsp;
+                            </td>
+                        </tr>
+                        <tr >
+                            <td>
+                                <span style="margin-left:20px;">时间4</span>&nbsp;
+                            </td>
+                            <td> <input id="time4"  name="time1" style=" height: 30px; width: 150px" class="easyui-timespinner">
+                            </td>
+                            <td>
+                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
+                            </td>
+                            <td>
+                                <input id="val4" class="form-control" name="val4" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">&nbsp;
+                            </td>
+                        </tr>
+                        <tr >
+                            <td>
+                                <span style="margin-left:20px;">时间5</span>&nbsp;
+                            </td>
+                            <td> <input id="time5"  name="time1" style=" height: 30px; width: 150px" class="easyui-timespinner">
+                            </td>
+                            <td>
+                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
+                            </td>
+                            <td>
+                                <input id="val5" class="form-control" name="val5" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">&nbsp;
+                            </td>
+                        </tr>
+                        <tr >
+                            <td>
+                                <span style="margin-left:20px;">时间6</span>&nbsp;
+                            </td>
+                            <td> <input id="time6"  name="time1" style=" height: 30px; width: 150px" class="easyui-timespinner">
+                            </td>
+                            <td>
+                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
+                            </td>
+                            <td>
+                                <input id="val6" class="form-control" name="val6" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">&nbsp;
+                            </td>
+                        </tr>    
+
+                    </table>
+                    <table id="type1" style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; display: none ">
+                        <tr >
+                            <td>
+                                <span style="margin-left:20px;">场景1</span>&nbsp;
+
+                            </td> 
+                            <td>
+                                <input id="p_scene1" class="form-control" name="p_scene1" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                            </td>
+                            <td>
+                                &nbsp;&nbsp;&nbsp;
+                                <span style="margin-left:22px;">场景2</span>&nbsp;
+
+                            </td>
+                            <td> <input id="p_scene2" class="form-control" name="p_scene2" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">&nbsp;</td>
+                        </tr> 
+                        <tr>
+                            <td>
+                                <span style="margin-left:20px;">场景3</span>&nbsp;
+
+                            </td> 
+                            <td><input id="p_scene3" class="form-control" name="p_scene3" style="width:150px;display: inline;" placeholder="请输入场景值" type="text"></td>
+                            <td>
+
+                                &nbsp;&nbsp;&nbsp;
+                                <span style="margin-left:22px;">场景4</span>&nbsp;
+
+                            </td>
+                            <td><input id="p_scene4" class="form-control" name="p_scene4" style="width:150px;display: inline;" placeholder="请输入场景值" type="text"></td>
+                        </tr> 
+                        <tr >
+                            <td>
+                                <span style="margin-left:20px;">场景5</span>&nbsp;
+
+                            </td> 
+                            <td><input id="p_scene5" class="form-control" name="p_scene5" style="width:150px;display: inline;" placeholder="请输入场景值" type="text"></td>
+                            <td>
+                                &nbsp;&nbsp;&nbsp;
+                                <span style="margin-left:22px;">场景6</span>&nbsp;
+
+                            </td>
+                            <td><input id="p_scene6" class="form-control" name="p_scene6" style="width:150px;display: inline;" placeholder="请输入场景值" type="text"></td>
+                        </tr> 
+                        <tr >
+                            <td>
+                                <span style="margin-left:20px;">场景7</span>&nbsp;
+
+                            </td> 
+                            <td><input id="p_scene7" class="form-control" name="p_scene7" style="width:150px;display: inline;" placeholder="请输入场景值" type="text"></td>
+                            <td>
+                                &nbsp;&nbsp;&nbsp;
+                                <span style="margin-left:22px;">场景8</span>&nbsp;
+
+                            </td>
+                            <td>
+                                <input id="p_scene8" class="form-control" name="p_scene8" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                            </td>
+                        </tr> 
+                    </table>-->
+
+                </div>
+            </div>
+            <div class="row"  style=" margin-top: 20px;">
+                <div class="col-xs-6">
+<!--                    <button id="btndeploylamp" class="btn btn-success">部署灯具</button>
+                    <button id="btnremovelamp" class="btn btn-success">移除灯具</button>-->
+                </div>
+<!--                <div class="col-xs-6">
+                    <button style=" margin-left: 40px;" type="button" onclick="setPlan()" class="btn btn-success">设置</button>
+
+                    <button style=" margin-left: 40px;" onclick="setLampTimePlan()" type="button" class="btn btn-success">部署灯具时间方案</button>
+                    <button style=" margin-left: 40px;" onclick="setLampScenePlan()" type="button" class="btn btn-success">部署灯具场景方案</button>
+                </div>-->
+            </div>
+
+        </form> 
 
 
 
-                        <td>
-                        </td>
 
 
 
+        <!--
+        
+                <div class="modal-body">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>
+                                </td>
+                                <td>
+        
+                                </td>
+                                <td>
+                                    <span style="margin-left:10px;">网关地址&nbsp;</span>
+                                    <span class="menuBox">
+        
+                                        <input id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 34px" 
+                                               data-options="onLoadSuccess:function(data){
+                                               if(Array.isArray(data)&&data.length>0){
+                                               $(this).combobox('select', data[0].id);
+        
+                                               }else{
+                                               $(this).combobox('select',);
+                                               }
+                                               console.log(data);
+                                               },editable:false,valueField:'id', textField:'text',url:'test1.lamp.getlampcomaddr.action' " />
+        
+                                        <select name="l_comaddr_lamp" id="l_comaddr_lamp" placeholder="回路" class="input-sm" style="width:150px;">
+                                    </span>    
+                                </td>
+                                <td> 
+                                    &nbsp;
+                                </td>
+                                <td>
+                                    <button id="btndeploylamp" class="btn btn-success">部署灯具</button>
+                                </td>
+                                <td> 
+                                    &nbsp;&nbsp;&nbsp;
+                                </td>
+                                <td>
+                                    <button id="btnremovelamp" class="btn btn-success">移除灯具</button>
+                                </td>
+        
+        
+        
+                                <td>
+                                </td>
+        
+        
+        
+        
+                            </tr>
+        
+        
+                        </tbody>
+                    </table>
+                </div>-->
 
-                    </tr>
-
-
-                </tbody>
-            </table>
-        </div>
         <table id="lampTable" style="width:100%;" class="text-nowrap table table-hover table-striped">
         </table>
 
