@@ -16,13 +16,13 @@
         <script>
 
 
-            $(function () {
-                $('#toolbar').find('select').change(function () {
-                    $('#gravidaTable').bootstrapTable('refreshOptions', {
-                        exportDataType: $(this).val()
-                    });
-                });
-            })
+//            $(function () {
+//                $('#toolbar').find('select').change(function () {
+//                    $('#gravidaTable').bootstrapTable('refreshOptions', {
+//                        exportDataType: $(this).val()
+//                    });
+//                });
+//            })
 
 
 
@@ -71,10 +71,10 @@
             $(document).ready(function ()
             {
 
-                $('#gravidaTable').bootstrapTable('refreshOptions', {
-                    exportOptions: {ignoreColumn: [0, 1], // or as string array: ['0','checkbox']
-                        onCellHtmlData: DoOnCellHtmlData}
-                });
+//                $('#gravidaTable').bootstrapTable('refreshOptions', {
+//                    exportOptions: {ignoreColumn: [0, 1], // or as string array: ['0','checkbox']
+//                        onCellHtmlData: DoOnCellHtmlData}
+//                });
             });
 
             var colums = [{

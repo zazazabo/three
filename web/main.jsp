@@ -381,14 +381,9 @@
                 /* 加载左边菜单 */
                 //传角色权限 获取菜单 
                 var rotype =1;// $("#m_code").val(); //角色id
-<<<<<<< HEAD
-                rotype=1;
                 var objrole = {role: rotype};
-=======
                 var u_id = $("#userid").val(); //用户id
                 var objrole = {role: rotype,uid:u_id};
->>>>>>> 38bb683460c8f27bc97e572bc95903b240d666af
-
                 $.ajax({type: "post", url: "formuser.mainmenu.querysub.action", dataType: "json", data: objrole,
                     success: function (data) {
                         var htmls = '';

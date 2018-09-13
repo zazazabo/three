@@ -405,7 +405,7 @@
                                     <span style="margin-left:10px;">网关地址&nbsp;</span>
                                     <span class="menuBox">
 
-                                        <input id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 34px" 
+                                        <input id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 
                                                data-options="onLoadSuccess:function(data){
                                                if(Array.isArray(data)&&data.length>0){
                                                $(this).combobox('select', data[0].id);
@@ -634,7 +634,7 @@
                                     <span style="margin-left:10px;">网关地址&nbsp;</span>
                                     <span class="menuBox">
         
-                                        <input id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 34px" 
+                                        <input id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 
                                                data-options="onLoadSuccess:function(data){
                                                if(Array.isArray(data)&&data.length>0){
                                                $(this).combobox('select', data[0].id);

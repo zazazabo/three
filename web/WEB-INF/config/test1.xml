@@ -225,6 +225,16 @@
                 </xflt>
             </xsql>
         </xhandle>
+
+
+                <xhandle desc="修改灯具基本信息" id="modifylamp" rtnype="JSON">
+            <xsql id="a1" para="l_name,l_groupe,l_worktype" tpe="DDL" tpl="update t_lamp set l_name=':l_name',l_groupe=:l_groupe,l_worktype=:l_worktype where @CONDITION " var="rs">
+                <xflt id="CONDITION"  tpl="@id ">
+                    <xfltpara id="id" nrp="1=1" para="id" sql="id=':id'">
+                    </xfltpara>
+                </xflt>
+            </xsql>
+        </xhandle>
         
         <xhandle desc="修改灯具调光值" id="modifyvalue" rtnype="JSON">
             <xsql id="a1" para="l_value" tpe="DDL" tpl="update t_lamp set l_value=:l_value where @CONDITION " var="rs">

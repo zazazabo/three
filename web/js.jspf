@@ -1,14 +1,14 @@
-<!--<link rel="stylesheet" type="text/css" href="js3.4/themes/default/easyui.css">
-<link rel="stylesheet" type="text/css" href="js3.4/themes/icon.css">
-<script type="text/javascript" src="js3.4/jquery.min.js"></script>
-<script type="text/javascript" src="js3.4/jquery.easyui.min.js"></script>
-<script type="text/javascript" src="js3.4/locale/easyui-lang-zh_CN.js"></script>
-<script type="text/javascript" src="js3.4/myjs.js"></script>-->
+
 
 <link rel="stylesheet" type="text/css" href="bootstrap-3.3.7-dist/css/bootstrap.css">
 <link rel="stylesheet" type="text/css" href="bootstrap-table/src/bootstrap-table.css">
-<script type="text/javascript" src="jquery/jquery-3.3.1.min.js"></script>
+<!--<script type="text/javascript" src="jquery/jquery-1.8.3.min.js"></script>-->
+<!--<script type="text/javascript" src="jquery/jquery-3.3.1.min.js"></script>-->
+<!--<script type="text/javascript" src="jquery/jquery-1.8.3.min.js"></script>-->
+<!--<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>-->
 
+<!--<script type="text/javascript" src="jquery/jquery-3.1.1.min.js"></script>-->
+<script type="text/javascript" src="jquery/jquery-2.1.4.min.js"></script>
 
 
 <script type="text/javascript" src="bootstrap-3.3.7-dist/js/bootstrap.js"></script>

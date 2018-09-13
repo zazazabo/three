@@ -174,28 +174,6 @@
                 } else if (select.l_deplayment == "0") {
                     $("#l_groupe1").attr('readonly', false);
                 }
-
-//l_code1
-
-//                if (select.l_deplayment == 0) {
-//                    
-////                    $("#tr_iddeploy").hide();
-//                }
-//
-//                $("#select_l_groupe").empty();
-//                for (var i = 1; i < 19; i++) {
-//                    if (select.l_groupe == i.toString()) {
-//                        var str = "<option selected='true'  value='" + i.toString() + "'>" + i.toString() + "</option>";
-//                        $("#select_l_groupe").append(str);
-//                    } else {
-//                        var str = "<option   value='" + i.toString() + "'>" + i.toString() + "</option>";
-//                        $("#select_l_groupe").append(str);
-//                    }
-//                }
-//                $("#select_l_groupe").attr("enabled", false);
-
-
-                //$("#txt_l_groupe").val(select.l_groupe);
                 $("#pjj2").modal();
 
 
@@ -618,7 +596,7 @@
 
                                             <span style="margin-left:20px;">控制方式</span>&nbsp;
                                             <span class="menuBox">
-                                                <select class="easyui-combobox" id="switch" name="l_worktype" data-options='editable:false' style="width:150px; height: 34px">
+                                                <select class="easyui-combobox" id="switch" name="l_worktype" data-options='editable:false' style="width:150px; height: 30px">
                                                     <option value="0" selected="true">走时间</option>
                                                     <option value="1">走经纬度</option>           
                                                 </select>
@@ -631,7 +609,7 @@
                                         <td>
                                             <span style="margin-left:10px;">所属组号</span>&nbsp;
                                             <span class="menuBox">
-                                                <select class="easyui-combobox" id="l_groupe" name="l_groupe"  data-options='editable:false,valueField:"id", textField:"text"' style="width:150px; height: 34px">          
+                                                <select class="easyui-combobox" id="l_groupe" name="l_groupe"  data-options='editable:false,valueField:"id", textField:"text"' style="width:150px; height: 30px">          
                                                 </select>
                                             </span>
                                         </td>
@@ -706,7 +684,7 @@
 
                                             <span style="margin-left:20px;">控制方式</span>&nbsp;
                                             <span class="menuBox">
-                                                <select class="easyui-combobox" id="l_worktype1" name="l_worktype" data-options='editable:false' style="width:150px; height: 34px">
+                                                <select class="easyui-combobox" id="l_worktype1" name="l_worktype" data-options='editable:false' style="width:150px; height: 30px">
                                                     <option value="0" selected="true">走时间</option>
                                                     <option value="1">走经纬度</option>           
                                                 </select>
@@ -722,7 +700,7 @@
 
                                             <span style="margin-left:10px;">所属组号</span>&nbsp;
                                             <span class="menuBox">
-                                                <select class="easyui-combobox" id="l_groupe1" name="l_groupe"  data-options='editable:false,valueField:"id", textField:"text"' style="width:150px; height: 34px">          
+                                                <select class="easyui-combobox" id="l_groupe1" name="l_groupe"  data-options='editable:false,valueField:"id", textField:"text"' style="width:150px; height: 30px">          
                                                 </select>
                                             </span>
                                         </td>
