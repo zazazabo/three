@@ -299,59 +299,6 @@
     </div>
 
 
-
-
-
-
-
-    <form id="form1">
-
-
-
-
-
-
-        <!--
-        
-                <table  style=" margin-top: 10px;">
-                    <tbody>
-                        <tr >
-        
-                            <td>
-                                <input type="checkbox" id="radio1" checked="checked" name="group1" />灯控器故障预警开关参数设置 
-                                <input type="checkbox" id="radio2"  name="group1" />温度预警故障开关 
-                                <input type="checkbox" id="radio3" name="group1" />漏电流预警故障开关
-                                <input type="checkbox" id="radio3" name="group1" />相位不符预警故障开关
-        
-                                <input type="checkbox" id="radio3" name="group1" />线路不符预警故障开关
-                            </td>
-                            <td><span class="label label-success" style="margin-left: 10px;" >灯具故障预警</span></td>
-                            <td>
-                                &nbsp;
-                                <select class="easyui-combobox" id="prewarning" name="prewarning" style="width:150px; height: 34px">
-                                    <option value="0">开启</option>
-                                    <option value="1">关闭</option>           
-                                </select>
-        
-                            </td>
-                            <td>
-                                <button  type="button" style="margin-left:20px;" onclick="setPreWarning()" class="btn btn-success">设置灯具预警</button>
-                            </td>
-                            <td>
-                                <button  type="button" style="margin-left:20px;" onclick="setWarning()" class="btn btn-success">设置灯具报警</button>
-                            </td>
-                        </tr> 
-                    </tbody>
-                </table>-->
-
-
-
-
-    </form>
-
-
-
-
     <!-- 添加 -->
 
     <!-- 修改 -->

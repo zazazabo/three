@@ -95,15 +95,6 @@
                 </xflt>        
             </xsql>               
         </xhandle>  
-        
-        
-
-        
-        
-        
-        
-        
-        
        
         <xhandle desc="" id="rolemenu" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT DISTINCT roletype as id,name as text FROM t_role " var="list">

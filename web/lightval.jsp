@@ -545,7 +545,7 @@
                             <td>
                                 <span style="margin-left:10px;">网关地址&nbsp;</span>
                                 <span class="menuBox">
-                                    <input id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 34px" 
+                                    <input id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 
                                            data-options="onLoadSuccess:function(data){
                                            if(Array.isArray(data)&&data.length>0){
                                            $(this).combobox('select', data[0].id);
@@ -560,7 +560,7 @@
                             <td>
                                 <span style="margin-left:10px;">调光方式&nbsp;</span>
 
-                                <select class="easyui-combobox" id="switch" name="switch" style="width:150px; height: 34px">
+                                <select class="easyui-combobox" id="switch" name="switch" style="width:150px; height: 30px">
                                     <option value="0">立即调光</option>
                                     <option value="1">场景调光</option>           
                                 </select>
@@ -569,7 +569,7 @@
                             <td>
                                 <span style="margin-left:10px;">分组方式&nbsp;</span>
 
-                                <select class="easyui-combobox" id="switchgroupe" id="lighttype" name="lighttype" style="width:150px; height: 34px">
+                                <select class="easyui-combobox" id="switchgroupe" id="lighttype" name="lighttype" style="width:150px; height: 30px">
                                     <option value="0">单灯调光</option>
                                     <option value="1">组号调光</option>           
                                 </select>   
@@ -599,7 +599,7 @@
                             <td>
                                 <span style="margin-left:10px;">灯具组号&nbsp;</span>
                                 <span class="menuBox">
-                                    <input id="l_groupe" class="easyui-combobox" name="l_groupe" style="width:150px; height: 34px" 
+                                    <input id="l_groupe" class="easyui-combobox" name="l_groupe" style="width:150px; height: 30px" 
                                            data-options="editable:false,valueField:'id', textField:'text',url:'test1.lamp.getGroupe.action' " />
                                 </span>  
                             </td>

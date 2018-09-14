@@ -60,11 +60,11 @@
             $(function () {
                 $(".secondMenu").children('li').remove();
                 var objrole = {role: ${param.role}, m_parent:${param.m_parent}};
-                
+
                 $.ajax({
                     type: "post", async: false, url: "formuser.mainmenu.querysub.action", dataType: "json", data: objrole,
                     success: function (datas) {
-                        //console.log(datas);
+//                        console.log(datas);
                         var htmls = "";
                         var i = 0;
                         datas.forEach(function (data) {
@@ -82,29 +82,27 @@
                                     + '</li>'
                         });
                         htmls += '<span class="layui-nav-bar" style="width: 0px; left: 484px; opacity: 0; top: 45px;"></span>';
-//                        console.log(htmls);
+                       // console.log(htmls);
                         $(".secondMenu").html(htmls);
                     }
-
-
                 });
 
 
                 /* 初始化加载三级菜单 */
                 var htmlFirst = $(".secondMenu li:eq(0)").attr('name');
+                console.log(htmlFirst);
                 $(".J_iframe").attr('src', htmlFirst);
 
                 $(".secondMenu li:eq(0)").addClass("layui-this active").siblings("li").removeClass("layui-this active");
                 /* 结束 */
 
                 $(".secondMenu li").click(function () {
-
                     $(this).addClass("layui-this active").siblings("li").removeClass("layui-this active");
                     var html = $(this).attr('name');
                     $(".J_iframe").attr('src', html);
                 })
                 function size() {
-                    var height = $(document.body).height() - 65;
+                    var height = $(document.body).height() - 60;
                     $(".J_mainContent").height(height);
                 }
                 size();
