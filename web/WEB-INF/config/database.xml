@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xdatabases>
+  <xinfo class="com.microsoft.jdbc.sqlserver.SQLServerDriver" url="jdbc:microsoft:sqlserver://192.168.1.107;databaseName=data" psw="123" uname="sa">
+    sqlserve
+  </xinfo>
+<!--  <xinfo class="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost:3306/nyjy?useUnicode=true&amp;characterEncoding=UTF8" psw="root" uname="root">
+    mysql
+  </xinfo>-->
+<!--  <xinfo class="oracle.jdbc.OracleDriver" url="jdbc:oracle:thin:@localhost:1521:orcl" psw="zazaza" uname="zazaza">
+    oracle
+  </xinfo>-->
+</xdatabases>

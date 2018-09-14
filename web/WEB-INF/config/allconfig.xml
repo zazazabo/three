@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xFiles>
+  <xfile id="/WEB-INF/config/test1.xml" desc="path" ></xfile>
+  <xfile id="/WEB-INF/config/test2.xml" desc="path" ></xfile>
+    <xfile id="/WEB-INF/config/formuser.xml" desc="path" ></xfile>
+     <xfile id="/WEB-INF/config/login.xml" desc="path" ></xfile>
+       <xfile id="/WEB-INF/config/param.xml" desc="参数设置" ></xfile>
+</xFiles>
