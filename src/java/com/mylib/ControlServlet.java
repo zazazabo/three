@@ -422,6 +422,10 @@ public class ControlServlet extends HttpServlet {
             String MailMutiAttach[] = patternAttach.split(MailAttachString);
             String MailMutiTo[] = patternAttach.split(MialToString);
             for (int j = 0; j < MailMutiAttach.length; j++) {
+                 
+                 if(MailMutiAttach[j].indexOf("\\")==-1){
+                     continue;
+                 }
                 sendmail.attachfile(MailMutiAttach[j]);
             }
             for (int z = 0; z < MailMutiTo.length; z++) {
