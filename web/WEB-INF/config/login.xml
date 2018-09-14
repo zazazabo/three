@@ -16,26 +16,49 @@
     </xform>
     
     <xform desc="主页" id="main">
-        <xhand id="home" rtn="main.jsp" rtnype="PGE">
-            
+        <xhand id="home" rtn="main.jsp" rtnype="PGE">           
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_user WHERE   @CONDITION " var="rs">
                 <xflt id="CONDITION" nrp="" tpl="@id">
                     <xfltpara id="id" nrp="1=1" para="id" sql="id = ':id'">
                     </xfltpara>
                 </xflt>      
-            </xsql>       
-
-             
+            </xsql>                    
         </xhand>
+        
+         <xhandle desc="查看故障信息数量" id="fualtCount" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select count(f_state) as number from t_fault where f_state = 1" var="rs">
+            </xsql>
+        </xhandle>
+        
+        <xhandle desc="修改故障信息为已读" id="updfualt" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="update t_fault set f_state = 0 where @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@id">
+                    <xfltpara id="id" nrp="1=1" para="id" sql="id=:id">
+                    </xfltpara>
+                </xflt>
+            </xsql>
+        </xhandle>
+              
+        <xhandle desc="查询所有故障信息" id="faultInfo" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_fault where f_state = 1" var="bootstrap"> 
+            </xsql>
+        </xhandle>
+        
+        <xhandle desc="查询所有故障管理人员信息" id="peopleInfo" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_people" var="bootstrap"> 
+            </xsql>
+        </xhandle>
     </xform>
     
-    <xform desc="" id="map">
+    <xform desc="地图导航" id="map">
         <xhandle desc="查询所有网关信息" id="map" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_baseinfo where @CONDITION " var="bootstrap">
-                <xflt id="CONDITION" nrp="" tpl="@comaddr AND @name">
+                <xflt id="CONDITION" nrp="" tpl="@comaddr AND @name AND @pid">
                     <xfltpara id="comaddr" nrp="1=1" para="comaddr" sql="comaddr = ':comaddr'">
                     </xfltpara>
                     <xfltpara id="name" nrp="1=1" para="name" sql="name = ':name'">
+                    </xfltpara>
+                    <xfltpara id="pid" nrp="1=1" para="pid" sql="pid = ':pid'">
                     </xfltpara>
                 </xflt>
             </xsql>
@@ -83,6 +106,11 @@
                 </xflt>      
             </xsql>               
         </xhandle>
+         <xhandle desc="获取所有项目" id="getProject" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT   tl.code as id,tl.name as text FROM t_project as tl" var="list">
+               
+            </xsql>
+        </xhandle> 
     </xform>
     
     
@@ -288,6 +316,38 @@
                     </xfltpara>             
                 </xflt>        
             </xsql>               
+        </xhandle> 
+        
+         <xhandle desc="查询角色是否拥有该权限" id="iscode" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select code from t_role where enable = 1 and @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@roletype AND @code ">
+                    <xfltpara id="roletype" nrp="1=1" para="roletype" sql="roletype = ':roletype' ">
+                    </xfltpara>
+                    <xfltpara id="code" nrp="1=1" para="code" sql="code = ':code' ">
+                    </xfltpara>
+                </xflt>
+            </xsql>
+        </xhandle>   
+        
+        <xhandle desc="取消单个权限" id="updaterole" rtn="rs" rtnype="JSON">
+            <xsql id="a1" para="" tpe="DDL" tpl="update t_role set enable = 0 where @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@code AND @roletype ">
+                    <xfltpara id="code" nrp="1=1" para="code" sql="code=:code">
+                    </xfltpara>
+                    <xfltpara id="roletype" nrp="1=1" para="roletype" sql="roletype=:roletype">
+                    </xfltpara>
+                </xflt>
+            </xsql>
+        </xhandle>
+        <xhandle desc="取消多个权限" id="updateMrole" rtn="rs" rtnype="JSON">
+            <xsql id="a1" para="" tpe="DDL" tpl="update t_role set enable = 0 where @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@code AND @roletype ">
+                    <xfltpara id="code" nrp="1=1" para="code" sql="code like ':code%'">
+                    </xfltpara>
+                    <xfltpara id="roletype" nrp="1=1" para="roletype" sql="roletype=:roletype">
+                    </xfltpara>
+                </xflt>
+            </xsql>
         </xhandle>    
     </xform>
     
@@ -323,6 +383,30 @@
         </xhandle> 
     </xform>
     
+    <xform desc="报警记录" id="policereord">
+        <xhandle desc="查看报警记录信息" id="reordInfo" rtn="rs" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_fault where @CONDITION order by f_day desc " var="bootstrap">
+                <xflt id="CONDITION" nrp="" tpl="@f_day">
+                    <xfltpara id="f_day" nrp="1=1" para="statr,end" sql="f_day between  ':statr' and ':end'">
+                    </xfltpara>
+                </xflt>
+            </xsql> 
+        </xhandle>               
+    </xform>
+    <xform desc="操作记录" id="oplog">
+        <xhandle desc="查看报警记录信息" id="oplogInfo" rtn="rs" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_oplog where  @CONDITION order by o_time desc" var="bootstrap">
+                <xflt id="CONDITION" nrp="" tpl="@o_time">
+                    <xfltpara id="o_time" nrp="1=1" para="statr,end" sql="f_day between  ':statr' and ':end'">
+                    </xfltpara>
+                </xflt>
+            </xsql> 
+        </xhandle>  
+        <xhandle desc="添加操作日志" id="addoplog" rtn="rs" rtnype="JSON">
+            <xsql id="a1" para="name,time,comment" tpe="DDL" tpl="insert into t_oplog(o_name,o_time,o_comment) values(':name',':time',':comment') " var="rs">
+            </xsql>
+        </xhandle>              
+    </xform>
     
     
 </xforms>

@@ -554,7 +554,7 @@
                                            $(this).combobox('select',);
                                            }
                                            console.log(data);
-                                           },editable:true,valueField:'id', textField:'text',url:'test1.lamp.getComaddr.action' " />
+                                           },editable:true,valueField:'comaddr', textField:'comaddr',url:'login.map.getallcomaddr.action' " />
                                 </span>  
                             </td>
                             <td>

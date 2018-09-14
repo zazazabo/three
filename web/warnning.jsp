@@ -77,7 +77,7 @@
                                 align: 'center',
                                 valign: 'middle',
                                 colspan: 6
-                            }], [
+                            }],[
                             {
                                 title: '单选',
                                 field: 'select',
@@ -205,20 +205,7 @@
                         }
                     });
                 });
-                $("#goinfo").click(function () {
-                    var selects = $('#gravidaTable').bootstrapTable('getSelections');
-                    if (selects.length < 1) {
-                        alert("请勾选要编辑的数据");
-                        return;
-                    }
-                    var select = selects[0];
-                    var who = select.u_email;
-                    var what = "告警信息";
-                    var body = select.u_warntype;
-                    if (confirm("你确定要向" + who + "发送主题为 " + what + "的邮件么?") == true) {
-                        parent.location.href = 'mailto:' + who + '?subject=' + what + '&body='+body+'';
-                    }
-                });
+               
             });
 
             function updatepeople() {
@@ -339,9 +326,6 @@
             <button class="btn btn-danger ctrol" onclick="deletepeople();"  id="del">
                 <span class="glyphicon glyphicon-trash"></span>&nbsp;删除
             </button> 
-<!--            <button class="btn btn-success ctrol" data-toggle="modal" id="goinfo">
-                <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;发送邮件
-            </button>-->
            
         </div>
         <div class="bootstrap-table">

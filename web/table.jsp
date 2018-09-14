@@ -149,7 +149,7 @@
                             search: params.search,
                             skip: params.offset,
                             limit: params.limit,
-//                            page: "ALL",
+                            page: "ALL",
                             type_id: "1"    
                         };      
                         return temp;  

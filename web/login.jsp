@@ -455,6 +455,7 @@
         <%@include  file="js.jspf" %>
         <script type="text/javascript" src="js/genel.js"></script>
         <script type="text/javascript" src="js/md5.js"></script>
+        <script type="text/javascript" src="js/getdate.js"></script>
         <script type="text/javascript">
             function layerAler(str) {
                 layer.alert(str, {
@@ -490,7 +491,19 @@
                             if (arrlist.length == 1) {
                                 var id = arrlist[0].id;
                                 window.location = "login.main.home.action?id=" + id;
-                                // window.location ="${pageContext.request.contextPath }/main.jsp";
+                                var nobj = {};
+                                nobj.name = name;
+                                var day =getNowFormatDate2();
+                                nobj.time = day;
+                                nobj.comment = "登陆";
+                                $.ajax({async: false, url: "login.oplog.addoplog.action", type: "get", datatype: "JSON", data: nobj,
+                                    success: function (data) {
+                                        var arrlist = data.rs;
+                                        if (arrlist.length > 0) {
+                                          
+                                        }
+                                    }
+                                });
                             } else if (arrlist.length == 0) {
                                 //alert("用户名或密码错误！");
                                 layerAler("用户名或密码错误！");
@@ -515,7 +528,7 @@
                         //var pass = $("#password").val();
                         // var name = $("#username").val();               
                         //var password = hex_md5(pass);
-                       //  var obj = $("#myfrom").serializeObject();
+                        //  var obj = $("#myfrom").serializeObject();
                         //记住密码前先清除原先记住的密码
                         addCookie("rmbUser", "false", -1);
                         addCookie("username", "", -1);

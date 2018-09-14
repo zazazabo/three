@@ -39,7 +39,7 @@
                     layerAler("角色名不能为空");
                     return;
                 }
-                $.ajax({async: false, url: "login.rolemanage.getrole.action", type: "POST", datatype: "JSON", data: {roletype: ${param.role}, name: name,enable:1},
+                $.ajax({async: false, url: "login.rolemanage.getrole.action", type: "POST", datatype: "JSON", data: {roletype: ${param.role}, name: name, enable: 1},
                     success: function (data) {
                         console.log(data);
                         if (data != null) {
@@ -50,15 +50,15 @@
                             }
                             var list = data.rs;
                             for (var i = 0; i < list.length; i++) {
-                                var role  = ${param.role}; //当前登陆的用户角色Id
+                                var role = ${param.role}; //当前登陆的用户角色Id
                                 var obj = list[i];
                                 obj.enable = 0;
                                 obj.roletype = parseInt(data.rsmax[0].maxtype) + 1;
                                 obj.name = name;
-                                obj.parent_id =role;
+                                obj.parent_id = role;
                                 $.ajax({async: false, url: "login.rolemanage.addrole.action", type: "get", datatype: "JSON", data: obj,
                                     success: function (data) {
-                                        console.log(data);
+                                        //console.log(data);
                                     },
                                     error: function () {
                                         alert("提交失败！");
@@ -90,6 +90,11 @@
                     //&& treeNode.isParent == false
                     if (treeNode.checked == true) {
                         //再判断是否为父节点
+                        if (treeNode.isParent) {
+                            $("#isParent").val("1");
+                        } else {
+                            $("#isParent").val("2");
+                        }
                         //将当前点击的节点id存起来
                         $("#treeid").val(treeNode.id);
                         showRMenu("root", event.clientX, event.clientY);
@@ -129,49 +134,69 @@
                                 btn: ['确定', '取消']//按钮
                             }, function (index) {
                                 layer.close(index);
-                                var selects = $('#gravidaTable').bootstrapTable('getSelections');
-                                if (selects.length == 0) {
-                                    layerAler("请勾选要取消权限的用户");
+                                var role = $("#role").val();
+                                var isparent = $("#isParent").val();
+                                if (role == "") {
+                                    layerAler("请选择要取消权限的角色");
                                     return;
                                 }
-                                var select = selects[0];
-
-                                var author = select.author == null ? "" : select.author;
-                                var arr = author.split("|");
-                                var str = "";
-                                for (var i = 0; i < arr.length; i++) {
-                                    if (id == arr[i]) {
-                                        continue;
-                                    }
-                                    str = str + arr[i] + "|";
-                                }
-                                //console.log("abc");
-                                str = delendchar(str);
-                                //console.log("ddd");
-                                if (str != author) {
-                                    $.ajax({async: false, url: "formuser.user.editUserAuthor.action", type: "get", datatype: "JSON", data: {id: select.id, author: str},
-                                        success: function (data) {
-                                            console.log(data);
-                                            var arrlist = data.rs;
-                                            if (arrlist.length > 0) {
-
-                                                $("#gravidaTable").bootstrapTable('updateCell', {index: select.index, field: "author", value: str});
-                                                zTreeOjb.checkNode(node, false, false);
-                                                //zTreeOjb.cancelSelectedNode(node);
-
-                                                //var index = row.data('index');
-
-                                                // $('#gravidaTable').bootstrapTable("check", index);
-
-
-                                            }
-                                        },
-                                        error: function () {
-                                            alert("提交失败！");
+                                var iscodeobj = {};
+                                iscodeobj.code = id;
+                                iscodeobj.roletype = role;
+                                //判断是否拥有该权限
+                                var isok = false;
+                                $.ajax({async: false, url: "login.rolemanage.iscode.action", type: "get", datatype: "JSON", data: iscodeobj,
+                                    success: function (data) {
+                                        if (data.rs.length > 0) {
+                                            isok = true;
+                                        } else {
+                                            layerAler("该角色不拥有该权限");
                                         }
-                                    });
+                                        freshenTree(role);
+                                    },
+                                    error: function () {
+                                        alert("提交失败！");
+                                    }
+                                });
+                                if (isok) {
+                                    //选中父节点
+                                    if (isparent == "1") {
+                                        var obj = {};
+                                        obj.code = id;
+                                        obj.roletype = role;
+                                        $.ajax({async: false, url: "login.rolemanage.updateMrole.action", type: "get", datatype: "JSON", data: obj,
+                                            success: function (data) {
+                                                if (data.rs.length > 0) {
+                                                    layerAler("取消成功");
+                                                } else {
+                                                    layerAler("取消失败");
+                                                }
+                                                freshenTree(role);
+                                            },
+                                            error: function () {
+                                                alert("提交失败！");
+                                            }
+                                        });
+                                    } else if (isparent == "2") { //选中子节点
+                                        var obj = {};
+                                        obj.code = id;
+                                        obj.roletype = role;
+                                        $.ajax({async: false, url: "login.rolemanage.updaterole.action", type: "get", datatype: "JSON", data: obj,
+                                            success: function (data) {
+                                                if (data.rs.length > 0) {
+                                                    layerAler("取消成功");
+                                                } else {
+                                                    layerAler("取消失败");
+                                                }
+                                                freshenTree(role);
+                                            },
+                                            error: function () {
+                                                alert("提交失败！");
+                                            }
+                                        });
+                                    }
                                 }
-
+                                $("#isParent").val("");
                                 $("#treeid").val("");
                             });
 
@@ -192,7 +217,7 @@
                 var roletype = $("#role").combobox('getValue');
                 var name = $("#role").combobox('getText');
 
-                if ($("#role").val()=="") {
+                if ($("#role").val() == "") {
                     layerAler("请选择要分配权限的角色");
                     return;
                 }
@@ -200,7 +225,7 @@
                     layerAler("请勾选菜单列表");
                     return;
                 }
-               
+
                 //console.log(nodes);
                 layer.confirm('确认要分配权限吗？', {
                     btn: ['确定', '取消']//按钮
@@ -211,75 +236,22 @@
                         if (nodes[i].id == "0") {
                             continue;
                         }
-                            var obj1 = {};
-                            obj1.enable = 1;
-                            obj1.name = name;
-                            obj1.code = nodes[i].id;
-                            obj1.roletype = roletype;
-                            //console.log(obj1);
-                            $.ajax({async: false, url: "login.rolemanage.getpower.action", type: "POST", datatype: "JSON", data: obj1,
-                                success: function (data) {
-                                    console.log(data);
-                                },
-                                error: function () {
-                                    alert("提交失败！");
-                                }
-                            });                          
+                        var obj1 = {};
+                        obj1.enable = 1;
+                        obj1.name = name;
+                        obj1.code = nodes[i].id;
+                        obj1.roletype = roletype;
+                        //console.log(obj1);
+                        $.ajax({async: false, url: "login.rolemanage.getpower.action", type: "POST", datatype: "JSON", data: obj1,
+                            success: function (data) {
+                                //console.log(data);
+                            },
+                            error: function () {
+                                alert("提交失败！");
+                            }
+                        });
                     }
-                     layerAler("权限分配成功！");
-
-
-
-
-
-
-//                    for (var i = 0; i < selects.length; i++) {
-//                        var select = selects[i];
-//                        var str = select.author == null ? "" : select.author;
-//                        if (str != "") {
-//                            var arr = str.split("|");
-//                            for (var j = 0; j < arr.length; j++) {
-//                                var node = zTreeOjb.getNodeByParam("id", arr[j]);
-////                                console.log(node.checked);
-//                                if (node.checked) {
-//                                    var index = nodes.indexOf(node);
-////                                    console.log(index);
-//                                    if (index > -1) {
-//                                        nodes.splice(index, 1);
-//                                    }
-//                                }
-//
-//                            }
-//                        }
-//                        str = delendchar(str);
-//                        var str1 = "";
-//                        for (var i = 0; i < nodes.length; i++) {
-//                            if (nodes[i].id == "0") {
-//                                continue;
-//                            }
-//
-//                            str1 = str1 + nodes[i].id + "|";
-//                        }
-//
-//                        str1 = delendchar(str1);
-//
-//                        var strauthor = str == "" ? str1 : str + "|" + str1;
-//
-//                        $.ajax({async: false, url: "formuser.user.editUserAuthor.action", type: "get", datatype: "JSON", data: {id: select.id, author: strauthor},
-//                            success: function (data) {
-//                                console.log(data);
-//                                var arrlist = data.rs;
-//                                if (arrlist.length > 0) {
-//                                    $("#gravidaTable").bootstrapTable('refresh');
-//                                    layer.close(index);
-//                                }
-//                            },
-//                            error: function () {
-//                                alert("提交失败！");
-//                            }
-//                        });
-//                    }
-//                    
+                    layerAler("权限分配成功！");
                     layer.close(index);
                 });
             }
@@ -287,11 +259,11 @@
 
             $(function () {
                 var obj = {};
-                obj.roletype =  ${param.role};
+                obj.roletype = ${param.role};
                 var zNodes = [
                 ];
                 var lang = "zh_CN";
-                $.ajax({async: false, url: "login.rolemanage.queryZtree.action", type: "get", datatype: "JSON", data:obj,
+                $.ajax({async: false, url: "login.rolemanage.queryZtree.action", type: "get", datatype: "JSON", data: obj,
                     success: function (data) {
                         for (var i = 0; i < data.length; i++) {
 //                            console.log(data[i]);
@@ -342,11 +314,11 @@
                         var objrole = {role: record.id};
                         $.ajax({type: "post", url: "formuser.mainmenu.querysub.action", dataType: "json", data: objrole,
                             success: function (datas) {
-                                console.log(datas);
+                                //console.log(datas);
                                 var zTreeOjb = $.fn.zTree.getZTreeObj("treeDemo");
                                 zTreeOjb.checkAllNodes(false);
                                 datas.forEach(function (data) {
-                                    console.log(data);
+                                    //console.log(data);
                                     var m_code = data.m_code;
                                     var node = zTreeOjb.getNodeByParam("id", m_code);
                                     zTreeOjb.checkNode(node, true, false);
@@ -354,27 +326,27 @@
                                 });
                             }
                         });
-
-
-
-
-
-
-
-
-//                        var obj = $("#tosearch").serializeObject();
-//                        obj.l_comaddr = record.id;
-//                        obj.l_deplayment = 1;
-//                        console.log(obj);
-//                        var opt = {
-//                            url: "test1.lamp.Groupe.action",
-//                            silent: true,
-//                            query: obj
-//                        };
-//                        $('#gravidaTable').bootstrapTable('refresh', opt);
                     }
                 });
             })
+            //修改权限后刷新权限树形图
+            function  freshenTree(roleid) {
+                var objrole = {role: roleid};
+                $.ajax({type: "post", url: "formuser.mainmenu.querysub.action", dataType: "json", data: objrole,
+                    success: function (datas) {
+                        //console.log(datas);
+                        var zTreeOjb = $.fn.zTree.getZTreeObj("treeDemo");
+                        zTreeOjb.checkAllNodes(false);
+                        datas.forEach(function (data) {
+                            //console.log(data);
+                            var m_code = data.m_code;
+                            var node = zTreeOjb.getNodeByParam("id", m_code);
+                            zTreeOjb.checkNode(node, true, false);
+                            zTreeOjb.updateNode(node);
+                        });
+                    }
+                });
+            }
 
         </script>
 
@@ -422,6 +394,7 @@
 
         <div id="rMenu">
             <input id="treeid" type="hidden" value="" />
+            <input id="isParent" type="hidden" value="" />
             <a href="#" class="list-group-item" type="m_expand" name="cancel" >取消权限</a>
         </div>
 

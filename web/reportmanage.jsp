@@ -11,11 +11,11 @@
 <html xmlns:f="http://java.sun.com/jsf/core">
     <head>
         <%@include  file="js.jspf" %>
+        <script type="text/javascript" src="js/genel.js"></script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta http-equiv="pragma" content="no-cache">
         <meta http-equiv="cache-control" content="no-cache"> 
         <link rel="stylesheet" type="text/css" href="bootstrap-datetimepicker/bootstrap-datetimepicker.css">
-
         <script src="bootstrap-datetimepicker/bootstrap-datetimepicker.js"></script>
         <style type="text/css">
             #div2{
@@ -48,7 +48,6 @@
                 border-radius:5px;
             }
         </style>
-        <script type="text/javascript" src="js/genel.js"></script>
         <script>
             var websocket = null;
             function layerAler(str) {

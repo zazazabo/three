@@ -23,55 +23,22 @@
                 height: 60px;
                 font-size: 20px;
             }
+
         </style>
         <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=Uppxai1CT7jTHF9bjKFx0WGTs7nCyHMr"></script>
+        <script type="text/javascript" src="js/getdate.js"></script>
 
     </head>
     <body>
-        <!--<a style=" margin-left: 5px"></a>-->
-        <!--        <div id="findSheBei" style="z-index: 0; position: absolute; right: 0px; top: 0px;">
-                    <div class="findSheBei1 findSheBeis" style="width: 59px;">
-                        <div class="imgShebeiLittle" style="background:url(imgs/mapSearch/eqp2.png) center center no-repeat;">
-        
-                        </div>
-                        <div class="SheMess">网关</div>
-        
-                    </div>
-                    <div class="findSheBei2 findSheBeis" style="width: 67px;">
-                        <div class="imgShebeiLittle" style="background:url(imgs/mapSearch/maplight.jpg) center center no-repeat;">
-        
-                        </div><div class="SheMess">灯具</div>
-        
-                    </div>
-                    <div class="findSheBei3 findSheBeis" style="width: 123px;">
-                        <div class="imgShebeiLittle" style="background:url(imgs/mapSearch/mapGroup.png) center center no-repeat;"></div>
-                        <div class="SheMess">分组</div>
-                        <select id="group" style="float: left;width: 61px;margin-top: 10px;margin-left: 4px;">
-                            <option value="">全部</option><option value="5ab89bf81d41ec4263e12ac4">第二组</option><option value="5b4806f21d41ec5474c3e952">233</option>
-                        </select>
-                    </div>
-                    <div class="findSheBei5 findSheBeis">
-                        <div class="imgShebeiLittle" style="background:url(imgs/mapSearch/mapLamppost.png) center center no-repeat;"></div>
-                        <div class="SheMess">灯杆</div>
-                    </div>
-        
-                </div>-->
         <div id="allmap">
 
         </div>
         <!-- 添加 网关-->
-        <div  id="addwanguang" >
+        <div  id="addwanguang" style="display: none;">
             <div class="">
                 <div  style="min-width:700px;">
                     <br/>
-                    <div >
-                        <button type="button">
-                            <span style="font-size:20px "></span></button>
-                        <span class="glyphicon glyphicon-floppy-disk" style="font-size: 20px"></span>
-                        <h4 style="display: inline;">添加网关</h4>
 
-                    </div>
-                    <hr/>
                     <form  id="Form_comaddr">      
                         <div class="">
                             <table>
@@ -79,34 +46,25 @@
                                     <tr>
                                         <td>
                                             <span style="margin-left:50px;">所属区划</span>&nbsp;
-                                            <select name="qh" id="qh"  style="width:150px;">
+                                            <select name="qh" id="qh"  style="width:150px; height: 30px;">
                                                 <option value="1">广东</option>
                                                 <option value="2">福建</option>
                                             </select>
                                         </td>
                                         <td></td>
                                         <td>
-                                            <span style="margin-left:70px;">所属机构&nbsp;</span>
-                                            <select name="sex" id="sex"  style="width:150px;">
-                                                <option value="1">华明科技</option>
-                                                <option value="2">华明科技</option>
-                                            </select> 
+                                            <span style="margin-left:70px;">网关名称&nbsp;</span>
+                                            <input type="text" id="name" style="width:150px; height: 30px;" >
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
                                             <span style="margin-left:50px;">所属项目</span>&nbsp;
-                                            <select name="sex" id="sex"  style="width:150px;">
-                                                <option value="1">华明光电</option>
-                                                <option value="2">华明科技</option>
-                                            </select>
+                                            <input id="project" class="easyui-combobox" name="up_role" style="width:150px; height: 34px" data-options="editable:true,valueField:'id', textField:'text',url:'login.map.getProject.action'" />
                                         <td></td>
                                         <td>
                                             <span style="margin-left:70px;">所属网关&nbsp;</span>
-<!--                                            <select name="comaddr" id="comaddrlist"  style="width:150px;">
-
-                                            </select>-->
-                                           <input id="comaddrlist" class="easyui-combobox" name="up_role" style="width:150px; height: 34px" data-options="editable:true,valueField:'comaddr', textField:'comaddr',url:'login.map.getallcomaddr.action'"/>
+                                            <input id="comaddrlist" class="easyui-combobox" name="up_role" style="width:150px; height: 34px" data-options="editable:true,valueField:'comaddr', textField:'comaddr',url:'login.map.getallcomaddr.action'"/>
                                         </td>
                                     </tr>                                   
                                 </tbody>
@@ -129,17 +87,9 @@
             </div>
         </div>
         <!--添加灯具-->
-        <div  id="addlamp" >
+        <div  id="addlamp" style="display: none;">
             <div class="">
                 <div  style="min-width:700px;">
-                    <br/>
-                    <div >
-                        <button type="button" class="close" data-dismiss="modal">
-                            <span style="font-size:20px "></span></button>
-                        <span class="glyphicon glyphicon-floppy-disk" style="font-size: 20px"></span>
-                        <h4 class="modal-title" style="display: inline;">添加灯具</h4>
-                    </div>
-                    <hr/>
                     <form  id="Form_comaddr">      
                         <div class="">
                             <table>
@@ -199,32 +149,9 @@
         </div>
 
         <script type="text/javascript">
-            //加载所有已有经纬度的网关并在地图上标记
-//            function freshen() {
-//                //加载所有已有经纬度的网关并在地图上标记
-//                $.ajax({async: false, url: "login.map.lnglat.action", type: "get", datatype: "JSON",
-//                    success: function (data) {
-//                        if (data.rs != null) {
-//                            for (var i = 0; i < data.rs.length; i++) {
-//                                if (data.rs[i].longitude != ".." && data.rs[i].latitude != "..") {
-//                                    var now_point = new BMap.Point(data.rs[i].longitude, data.rs[i].latitude);
-//                                    var marker = addMarker(now_point);
-//                                    var opts = {title: '<span style="font-size:14px;color:#0A8021">要显示的内容</span>'};
-//                                    var infoWindow = new BMap.InfoWindow("<div style='line-height:1.8em;font-size:12px;'>显示内容</div>", opts); // 创建信息窗口对象，引号里可以书写任意的html语句。
-//                                    marker.addEventListener("mouseover", function () {
-//                                        this.openInfoWindow(infoWindow);
-//                                    });
-//                                    map.addOverlay(marker); // 添加标注
-//                                }
-//                            }
-//                        }
-//                    },
-//                    error: function () {
-//                        alert("提交失败！");
-//                    }
-//                });
-//            }
-//            
+            //调用父页面的方法获取用户名
+            var u_name = parent.getusername();
+
             //加载所有灯具信息
             function  getAllLampInfo() {
                 $('#lamptable').bootstrapTable({
@@ -406,16 +333,28 @@
 
             //根据所属网关查询网关信息
             function getInfoByComaddr() {
-                var text = $("#comaddrlist").val();
-                if (text != "0") {
-                    var obj = {comaddr: text};
-                    var opt = {
-                        url: "login.map.map.action",
-                        silent: true,
-                        query: obj
-                    };
-                    $("#wgtable").bootstrapTable('refresh', opt);
+                var comaddr = $("#comaddrlist").val();
+                var name = $("#name").val();
+                var poject = $("#project").val();
+                var obj = {};
+                if (comaddr != "") {
+                    obj.comaddr = comaddr;
                 }
+                if (name != "") {
+                    name = decodeURIComponent(name, true);
+                    name = encodeURI(encodeURI(name));
+                    obj.name = name;
+                }
+                if (poject != "") {
+                    obj.pid = poject;
+                }
+
+                var opt = {
+                    url: "login.map.map.action",
+                    silent: true,
+                    query: obj
+                };
+                $("#wgtable").bootstrapTable('refresh', opt);
             }
             //关闭添加灯具弹窗
             function  lampout() {
@@ -509,7 +448,7 @@
                             map.removeOverlay(allOver[j]);
                         }
                         if (allOver[j].toString().indexOf("Polyline") > 0) {//删除折线
-                                map.removeOverlay(allOver[j]);
+                            map.removeOverlay(allOver[j]);
                         }
                     }
                     $.ajax({async: false, url: "login.map.lnglat.action", type: "get", datatype: "JSON", data: {},
@@ -536,22 +475,36 @@
                 };
                 //
                 button2.onclick = function (e) {
+                    var allOver = map.getOverlays(); //获取全部标注
+                    for (var j = 0; j < allOver.length; j++) {
+                        if (allOver[j].toString() == "[object Marker]") {
+                            //清除所有标记
+                            map.removeOverlay(allOver[j]);
+                        }
+                        if (allOver[j].toString().indexOf("Polyline") > 0) {//删除折线
+                            map.removeOverlay(allOver[j]);
+                        }
+                    }
                     var comaddr = $("#seartxt").val();
-                    console.log(comaddr);
                     $.ajax({async: false, url: "test1.map.queryData.action", type: "get", datatype: "JSON", data: {comaddr: comaddr},
                         success: function (data) {
                             console.log(data);
                             var arrlist = data.rs;
-                            for (var i = 0; i < arrlist.length; i++) {
-                                var obj = arrlist[i];
-                                var Longitude = obj.Longitude;
-                                var latitude = obj.latitude;
-                                if (Longitude != "" && latitude != "") {
-                                    var point = new BMap.Point(Longitude, latitude);
-                                    var marker1 = new BMap.Marker(point);
-                                    map.addOverlay(marker1);
-                                    map.panTo(point);
+                            if (arrlist.length > 0) {
+                                for (var i = 0; i < arrlist.length; i++) {
+                                    var obj = arrlist[i];
+                                    var Longitude = obj.Longitude;
+                                    var latitude = obj.latitude;
+                                    if (Longitude != "" && latitude != "") {
+                                        var point = new BMap.Point(Longitude, latitude);
+                                        var marker1 = new BMap.Marker(point);
+                                        marker1.setTitle(obj.comaddr);   //这里设置maker的title (鼠标放到marker点上,会出现它的title,所以我这里把name,放到title里)
+                                        map.addOverlay(marker1);
+                                        map.panTo(point);
+                                    }
                                 }
+                            } else {
+                                alert("不存在该网关");
                             }
                         },
                         error: function () {
@@ -569,7 +522,7 @@
                             map.removeOverlay(allOver[j]);
                         }
                         if (allOver[j].toString().indexOf("Polyline") > 0) {//删除折线
-                                map.removeOverlay(allOver[j]);
+                            map.removeOverlay(allOver[j]);
                         }
                     }
                     //map.removeOverlay(allOver);
@@ -650,15 +603,15 @@
                         var tagid = "#comaddrlist2";
                         getComaddr(tagid);
                         //加载所有灯具信息
-                       // getAllLampInfo();
+                        getAllLampInfo();
                         layer.open({
                             type: 1,
-                            closeBtn: 1, //关闭按钮是否显示 1显示0不显示
+                            closeBtn: 1,
                             shade: false,
-                            title: false, //显示标题
+                            title: ['添加灯具', 'font-size:18px;'], //显示标题
                             content: $('#addlamp'), //显示内容
-                            area: ['700px', '600px'], //设置宽高
-                             move: '#addlamp'
+                            area: ['700px', '600px'] //设置宽高
+                                    // move: '#addlamp'
 
                         });
 
@@ -686,14 +639,15 @@
                         layer.open({
                             type: 1,
                             shade: false,
-                            title: false, //显示标题
-                            content:$('#addwanguang'), //显示内容
+                            title: ['添加网关', 'font-size:18px;'], //显示标题
+                            content: $('#addwanguang'), //显示内容
                             shadeClose: true, //右上角显示X
-                            area: ['700px', '600px'], //设置宽高
-                            move: '#addwanguang'
-                            //move: 'true' //是否可以拖动，默认可以拖动
-                            //moveOut: true
+                            area: ['700px', '600px'] //设置宽高
+                                    // move: '#addwanguang'
+                                    //move: 'true' //是否可以拖动，默认可以拖动
+                                    //moveOut: true
                         });
+                        // $("#addwanguang").draggable({axis:null,handle:'#addwanguang'});
                     }
                 }
             ];
@@ -745,6 +699,19 @@
                         success: function (data) {
                             var arrlist = data.rs;
                             if (arrlist.length == 1) {
+                                var nobj = {};
+                                nobj.name = u_name;
+                                var day = getNowFormatDate2();
+                                nobj.time = day;
+                                nobj.comment = "修改网关" + obj.comaddr + "的经纬度";
+                                $.ajax({async: false, url: "login.oplog.addoplog.action", type: "get", datatype: "JSON", data: nobj,
+                                    success: function (data) {
+                                        var arrlist = data.rs;
+                                        if (arrlist.length > 0) {
+
+                                        }
+                                    }
+                                });
                                 $("#wgtable").bootstrapTable('refresh');
                                 var now_point = new BMap.Point(lng, lat);
                                 marker = new BMap.Marker(now_point); //addMarker(now_point, myIcon, comaddr);
@@ -767,6 +734,7 @@
                                                 var arrlist = data.rs;
                                                 if (arrlist.length == 1) {
                                                     $("#wgtable").bootstrapTable('refresh');
+
                                                 } else {
                                                     alert("修改失败");
                                                 }
@@ -813,6 +781,19 @@
                         success: function (data) {
                             var arrlist = data.rs;
                             if (arrlist.length == 1) {
+                                var nobj2 = {};
+                                nobj2.name = u_name;
+                                var day = getNowFormatDate2();
+                                nobj2.time = day;
+                                nobj2.comment = "批量单灯具的经纬度";
+                                $.ajax({async: false, url: "login.oplog.addoplog.action", type: "get", datatype: "JSON", data: nobj2,
+                                    success: function (data) {
+                                        var arrlist = data.rs;
+                                        if (arrlist.length > 0) {
+
+                                        }
+                                    }
+                                });
                                 $("#lamptable").bootstrapTable('refresh');
                                 var now_point = new BMap.Point(lng, lat);
                                 marker = new BMap.Marker(now_point); //addMarker(now_point, myIcon, comaddr);
@@ -941,6 +922,19 @@
                                     updateMayLamplnglat(array[i].x, array[i].y, idlist[i]);
                                 }
                                 alert("配置经纬度成功！");
+                                var nobj = {};
+                                nobj.name = u_name;
+                                var day = getNowFormatDate2();
+                                nobj.time = day;
+                                nobj.comment = "批量修改灯具的经纬度";
+                                $.ajax({async: false, url: "login.oplog.addoplog.action", type: "get", datatype: "JSON", data: nobj,
+                                    success: function (data) {
+                                        var arrlist = data.rs;
+                                        if (arrlist.length > 0) {
+
+                                        }
+                                    }
+                                });
                                 //刷新，重置
                                 array = [];
                                 draw = false;

@@ -12,7 +12,9 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
         <script type="text/javascript" src="js/genel.js"></script>
+        <script type="text/javascript" src="js/getdate.js"></script>
         <script>
+            var u_name = parent.parent.getusername();
             function layerAler(str) {
                 layer.alert(str, {
                     icon: 6,
@@ -30,8 +32,7 @@
                 obj.id = obj.txt_hidden_id;
                 obj.p_Longitude = obj.longitudem26d_edit + "." + obj.longitudem26m_edit + "." + obj.longitudem26s_edit;
                 obj.p_latitude = obj.latitudem26d_edit + "." + obj.latitudem26m_edit + "." + obj.latitudem26s_edit;
-
-                console.log(obj);
+                var code = $("#p_code").val();
                 var url = "";
                 if (obj.select_type_edit == "0") {
                     url = "test1.plan.editlooptime.action";
@@ -39,12 +40,24 @@
                 if (obj.select_type_edit == "1") {
                     url = "test1.plan.editloopjw.action";
                 }
-                console.log(url);
 
                 $.ajax({async: false, url: url, type: "get", datatype: "JSON", data: obj,
                     success: function (data) {
                         var arrlist = data.rs;
                         if (arrlist.length == 1) {
+                            var nobj2 = {};
+                            nobj2.name = u_name;
+                            var day = getNowFormatDate2();
+                            nobj2.time = day;
+                            nobj2.comment = "对方案编号为：" + code + "进行修改";
+                            $.ajax({async: false, url: "login.oplog.addoplog.action", type: "get", datatype: "JSON", data: nobj2,
+                                success: function (data) {
+                                    var arrlist = data.rs;
+                                    if (arrlist.length > 0) {
+
+                                    }
+                                }
+                            });
                             var url = "test1.plan.getLoopPlan.action";
                             var obj1 = {p_type: obj.select_type_edit};
                             var opt = {
@@ -78,16 +91,17 @@
 //
                 var select = selects[0];
                 console.log(select);
+                $("#txt_p_name_edit").val(select.p_name);
                 $('#intime_edit').timespinner('setValue', select.p_intime);
                 $('#outtime_edit').timespinner('setValue', select.p_outtime);
                 $("#txt_hidden_id").val(select.id);
+                $("#p_code").val(select.p_code);
                 if (select.p_type == "0") {
                     $("#tr_time_hide").show();
                     $("#tr_jw_hide").hide();
                     $('#select_type_edit').combobox('select', '0');
 
                 } else if (select.p_type == "1") {
-                    console.log("经纬度");
                     $("#tr_time_hide").hide();
                     $("#tr_jw_hide").show();
                     $('#select_type_edit').combobox('select', "1");
@@ -113,11 +127,24 @@
                 var selects = $('#table_loop').bootstrapTable('getSelections');
                 for (var i = 0; i < selects.length; i++) {
                     var select = selects[i];
-
+                    var code = select.p_code;
                     $.ajax({async: false, url: "test1.plan.deleteloop.action", type: "get", datatype: "JSON", data: {id: select.id},
                         success: function (data) {
                             var arrlist = data.rs;
                             if (arrlist.length == 1) {
+                                var nobj2 = {};
+                                nobj2.name = u_name;
+                                var day = getNowFormatDate2();
+                                nobj2.time = day;
+                                nobj2.comment = "删除方案编号为：" + code + "的回路方案";
+                                $.ajax({async: false, url: "login.oplog.addoplog.action", type: "get", datatype: "JSON", data: nobj2,
+                                    success: function (data) {
+                                        var arrlist = data.rs;
+                                        if (arrlist.length > 0) {
+
+                                        }
+                                    }
+                                });
                                 $('#table_loop').bootstrapTable('refresh');
                             }
 
@@ -170,6 +197,19 @@
                     success: function (data) {
                         var arrlist = data.rs;
                         if (arrlist.length == 1) {
+                             var nobj2 = {};
+                                nobj2.name = u_name;
+                                var day = getNowFormatDate2();
+                                nobj2.time = day;
+                                nobj2.comment = "添加回路方案：" + obj.p_name;
+                                $.ajax({async: false, url: "login.oplog.addoplog.action", type: "get", datatype: "JSON", data: nobj2,
+                                    success: function (data) {
+                                        var arrlist = data.rs;
+                                        if (arrlist.length > 0) {
+
+                                        }
+                                    }
+                                });
                             ret = false;
                         }
                     },
@@ -520,6 +560,7 @@
 
                     <form action="" method="POST" id="Form_edit" onsubmit="return checkPlanLoopAdd()">      
                         <input type="hidden" id="txt_hidden_id" name="txt_hidden_id" />
+                        <input type="hidden" id="p_code"  />
                         <div class="modal-body">
                             <table>
                                 <tbody>
