@@ -288,7 +288,7 @@
 
 
 
-                $('#gravidaTable').bootstrapTable({url: 'test1.f5.loop.action',
+                $('#gravidaTable').bootstrapTable({url: 'test1.loop.getLoopList.action',
                     //服务器url
                     columns: [
                         {
@@ -448,8 +448,6 @@
                     });
                 });
 
-
-
             })
 
 
@@ -459,9 +457,8 @@
 
         <style>* { margin: 0; padding: 0; } body, html { width: 100%; height: 100%; } 
 
-            .input[type="text"],
-            .input[type="radio"] { height: 30px; } 
-            .table td { line-height: 40px; } 
+            input[type="text"],input[type="radio"] { height: 30px; } 
+            table td { line-height: 40px; } 
             .menuBox { position: relative; background: skyblue; } 
             .a-upload { padding: 4px 10px; height: 30px; line-height: 20px; position: relative; cursor: pointer; color: #888; background: #fafafa; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; display: inline-block; *display: inline; *zoom: 1 } 
             .a-upload input { position: absolute; font-size: 100px; right: 0; top: 0; opacity: 0; filter: alpha(opacity = 0); cursor: pointer } 
