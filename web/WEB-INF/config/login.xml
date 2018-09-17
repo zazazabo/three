@@ -387,22 +387,22 @@
         <xhandle desc="查看报警记录信息" id="reordInfo" rtn="rs" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_fault where @CONDITION order by f_day desc " var="bootstrap">
                 <xflt id="CONDITION" nrp="" tpl="@f_day1 AND @f_day2">
-                    <xflt id="CONDITION" tpl="@u_id ">
-                        <xfltpara id="f_day1" nrp="1=1" para="f_day1" sql="f_day >=  ':f_day1' ">
-                        </xfltpara>
+                    <xfltpara id="f_day1" nrp="1=1" para="statr" sql="f_day &gt;  ':statr' ">
+                    </xfltpara>
                     
-                        <xfltpara id="f_day2" nrp="1=1" para="f_day2" sql="f_day&lt; ':f_day2'">
-                        </xfltpara>
-                    </xflt>
+                    <xfltpara id="f_day2" nrp="1=1" para="end" sql="f_day &lt; ':end'">
+                    </xfltpara>
                 </xflt>
             </xsql> 
         </xhandle>               
     </xform>
-    <xform desc="操作记录" id="oplog">
-        <xhandle desc="查看报警记录信息" id="oplogInfo" rtn="rs" rtnype="JSON">
+    <xform desc="操作日志" id="oplog">
+        <xhandle desc="查看操作日志信息" id="oplogInfo" rtn="rs" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_oplog where  @CONDITION order by o_time desc" var="bootstrap">
-                <xflt id="CONDITION" nrp="" tpl="@o_time">
-                    <xfltpara id="o_time" nrp="1=1" para="statr,end" sql="f_day between  ':statr' and ':end'">
+                <xflt id="CONDITION" nrp="" tpl="@o_time AND @end">
+                    <xfltpara id="o_time" nrp="1=1" para="statr" sql="o_time &gt;  ':statr' ">
+                    </xfltpara>
+                    <xfltpara id="end" nrp="1=1" para="end" sql="o_time &lt;  ':end' ">
                     </xfltpara>
                 </xflt>
             </xsql> 

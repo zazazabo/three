@@ -487,9 +487,9 @@
                     $.ajax({async: false, url: "login.loginform.loginhand.action", type: "POST", datatype: "JSON", data: obj,
                         success: function (data) {
                             // console.log(data);
-                            var arrlist = data.rs;
-                            if (arrlist.length == 1) {
-                                var id = arrlist[0].id;
+                            var arrlist1 = data.rs;
+                            if (arrlist1.length == 1) {
+                                var id = arrlist1[0].id;
                                 window.location = "login.main.home.action?id=" + id;
                                 var nobj = {};
                                 nobj.name = name;
@@ -504,7 +504,7 @@
                                         }
                                     }
                                 });
-                            } else if (arrlist.length == 0) {
+                            } else if (arrlist1.length == 0) {
                                 //alert("用户名或密码错误！");
                                 layerAler("用户名或密码错误！");
 
@@ -521,7 +521,6 @@
                     var pwd = $("#password").val();
                     var username = $("#username").val();
                     if (pwd == "" || username == "") {
-                        //alert("请输入用户名和密码！");
                         $("#cc").prop("checked", false);
                     } else if ($("#cc").is(":checked")) {
 

@@ -19,8 +19,8 @@
                 padding-top: 20px;
             }
             #showtext{
-                width: 220px;
-                height: 60px;
+                width: 230px;
+                height: 50px;
                 font-size: 20px;
             }
 
@@ -341,8 +341,6 @@
                     obj.comaddr = comaddr;
                 }
                 if (name != "") {
-                    name = decodeURIComponent(name, true);
-                    name = encodeURI(encodeURI(name));
                     obj.name = name;
                 }
                 if (poject != "") {
@@ -350,6 +348,7 @@
                 }
 
                 var opt = {
+                    method: "post",
                     url: "login.map.map.action",
                     silent: true,
                     query: obj

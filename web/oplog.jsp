@@ -11,6 +11,7 @@
         <%@include  file="js.jspf" %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>操作日志</title>
+        <script type="text/javascript" src="js/getdate.js"></script>
         <script>
             $(function(){
                  $('#oplogtabel').bootstrapTable({
@@ -64,6 +65,33 @@
                         return temp;  
                     },
                 }); 
+                 $("#select").click(function () {
+                    var statr = $("#startime").val();
+                    var end = $("#endtime").val();
+                    var obj = {};
+
+                    if (statr == "" && end == "") {
+                        alert("请选择要查询的时间段");
+                        return;
+                    }
+                    if (statr == "") {
+                       
+                        obj.statr = "2017-01-01";
+                    } else {
+                        obj.statr = statr;
+                    }
+                    if (end == "") {      
+                        obj.end = getNowFormatDate2();
+                    } else {
+                        obj.end = end;
+                    }
+                    var opt = {
+                        url: "login.oplog.oplogInfo.action",
+                        silent: true,
+                        query: obj
+                    };
+                    $("#oplogtabel").bootstrapTable('refresh', opt);
+                });
             });
         </script>
     </head>

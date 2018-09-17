@@ -111,7 +111,8 @@
                         return;
                     }
                     if (statr == "") {
-                        obj.statr = "2000-00-00"
+                       
+                        obj.statr = "2017-01-01";
                     } else {
                         obj.statr = statr;
                     }

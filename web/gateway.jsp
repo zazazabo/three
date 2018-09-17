@@ -50,11 +50,11 @@
             var allTableData = $("#gravidaTable").bootstrapTable('getData'); //获取表格的所有内容行
             if (allTableData.length > vvvv) {
                 var obj = allTableData[vvvv];
-                var addrArea = Str2Bytes(obj.comaddr);
                 var straddr = sprintf("%02d", addrArea[1]) + sprintf("%02d", addrArea[0]) + sprintf("%02d", addrArea[3]) + sprintf("%02d", addrArea[2]);
                 var user = new Object();
                 var ele = {};
-                user.begin = '6A';
+               var addrArea = Str2Bytes(obj.comaddr);
+                 user.begin = '6A';
                 user.msg = "getStatus";
                 user.res = 1;
                 user.row = vvvv;
@@ -700,9 +700,6 @@
                     <div class="modal-body">
                         <table>
                             <tbody>
-
-
-
                                 <tr>
                                     <td>
                                         <span style="margin-left:20px;">网关名称</span>&nbsp;

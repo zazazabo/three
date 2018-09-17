@@ -309,6 +309,29 @@
                     //此处请求后台程序，下方是成功后的前台处理……
                 });
             }
+            //重置密码
+            function  chongzhimima(){
+                var selects = $('#gravidaTable').bootstrapTable('getSelections');
+                var select = selects[0];
+                var id = select.id;
+                var pwd = hex_md5("123");
+                var pwdobj = {};
+                pwdobj.id = id;
+                pwdobj.password =pwd ;
+                $.ajax({url: "login.usermanage.updatePwd.action", async: false, type: "get", datatype: "JSON", data: pwdobj,
+                    success: function (data) {
+                        var arrlist = data.rs;
+                        if (arrlist.length == 1) {
+                            layerAler("重置成功");
+                        } else {
+                            layerAler("重置失败");
+                        }
+                    },
+                    error: function () {
+                        alert("提交添加失败！");
+                    }
+                });
+            }
 
 
 
@@ -480,6 +503,8 @@
                         </div>
                         <!-- 注脚 -->
                         <div class="modal-footer" id="modal_footer_edit" >
+                            <!-- 添加按钮 -->
+                            <button  type="button" onclick="chongzhimima()" class="btn btn-primary">重置密码</button>
                             <!-- 添加按钮 -->
                             <button id="xiugai" type="button" onclick="editaction()" class="btn btn-primary">修改</button>
                             <!-- 关闭按钮 -->
