@@ -13,6 +13,11 @@
         <script type="text/javascript" src="js/genel.js"></script>
         <script>
 
+            function showDialog() {
+
+                $('#dialog-add').dialog('open');
+                return false;
+            }
 
             function layerAler(str) {
                 layer.alert(str, {
@@ -35,7 +40,7 @@
                 layer.confirm('确认要删除吗？', {
                     btn: ['确定', '取消']//按钮
                 }, function (index) {
-                    $.ajax({url: "test1.lamp.deleteLamp.action", type: "POST", datatype: "JSON", data: {id: select.uid},
+                    $.ajax({url: "test1.lamp.deleteLamp.action", type: "POST", datatype: "JSON", data: {id: select.id},
                         success: function (data) {
                             var arrlist = data.rs;
                             if (arrlist.length == 1) {
@@ -62,6 +67,7 @@
                         var a = data.rs;
                         if (a.length == 1) {
                             layerAler("修改成功");
+                            $("#gravidaTable").bootstrapTable('refresh');
                         }
                         console.log(data);
                     },
@@ -82,6 +88,7 @@
                 $("#l_deployment1").val(s.l_deplayment);
                 $("#l_code").val(s.l_code);
                 $("#l_worktype1").combobox('setValue', s.l_worktype);
+                $("#l_groupe1").combobox('setValue', s.l_groupe);
 
                 if (s.l_deplayment == "1") {    //判断是否部署
                     $("#trlamp").show();
@@ -103,15 +110,16 @@
                 $("#name").val(s.name);
                 $("#l_name1").val(s.l_name);
                 $("#hide_id").val(s.id);
-                $("#pjj2").modal();
-
+//                $("#pjj2").modal();
+                $('#dialog-edit').dialog('open');
+                return false;
 
 
             }
 
             function checkLampAdd() {
 
-                var o = $("#form1").serializeObject();
+                var o = $("#formadd").serializeObject();
                 o.name = o.comaddrname;
 
                 console.log(o);
@@ -153,36 +161,94 @@
             }
 
             function resetWowktypeCB(obj) {
+
+                var o = {};
+                o.l_comaddr = obj.comaddr;
+                o.l_worktype = obj.val;
                 if (obj.status == "success") {
+                    if (obj.type == "1") {
+
+                    } else if (obj.type == "2") {
+                        o.l_groupe = obj.param;  //旧组号
+                    } else if (obj.type == "3") {
+                        o.l_code = obj.param;      //装置序号
+                    }
+                    console.log(o);
+
+                    $.ajax({async: false, url: "test1.lamp.modifyworktype.action", type: "get", datatype: "JSON", data: o,
+                        success: function (data) {
+                            var arrlist = data.rs;
+                            if (arrlist.length == 1) {
+                                $("#gravidaTable").bootstrapTable('refresh');
+                            }
+                        },
+                        error: function () {
+                            alert("提交失败！");
+                        }
+                    });
+
                     layerAler("修改灯具组号成功");
+
                 }
             }
             function resetWowktype() {
                 var o = $("#form2").serializeObject();
                 console.log(o);
 
-
+                var oldlgroupe = ""
                 var vv = [];
                 vv.push(parseInt(o.type));  //灯控器组号  1 所有灯控器  2 按组   3 个个灯控器
+
                 if (o.type == "3") {
                     var l_code = parseInt(o.l_code);
                     var a = l_code >> 8 & 0x00FF;
                     var b = l_code & 0x00ff;
                     vv.push(b);//装置序号  2字节            
                     vv.push(a);//装置序号  2字节      
+                    oldlgroupe = o.l_code;
                 } else if (o.type == "2") {
                     vv.push(parseInt(o.l_groupe)); //新组号
+                    oldlgroupe = o.l_groupe;
                 }
 
-                vv.push(parseInt(o.worktype1)); //新组号  1字节            
+                vv.push(parseInt(o.l_worktype1)); //新工作方式  1字节            
                 var comaddr = o.l_comaddr;
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA4, num, 0, 120, vv); //01 03 F24    
-                dealsend2("A4", data, 120, "resetWowktypeCB", comaddr, o.type, 0, 0);
+
+                dealsend2("A4", data, 120, "resetWowktypeCB", comaddr, o.type, oldlgroupe, o.l_worktype1);
             }
             function resetGroupeCB(obj) {
+
+                var o = {};
+                o.l_comaddr = obj.comaddr;
+                o.l_groupe = obj.val;
                 if (obj.status == "success") {
+                    if (obj.type == "1") {
+                        o.l_groupe = obj.val;
+                    } else if (obj.type == "2") {
+                        o.oldlgroupe = obj.param;  //旧组号
+                    } else if (obj.type == "3") {
+                        o.l_code = obj.param;      //装置序号
+                    }
+
+//                    console.log(obj);
+                    console.log(o);
+
+                    $.ajax({async: false, url: "test1.lamp.modifygroup.action", type: "get", datatype: "JSON", data: o,
+                        success: function (data) {
+                            var arrlist = data.rs;
+                            if (arrlist.length == 1) {
+                                $("#gravidaTable").bootstrapTable('refresh');
+                            }
+                        },
+                        error: function () {
+                            alert("提交失败！");
+                        }
+                    });
+
                     layerAler("修改灯具组号成功");
+
                 }
             }
             function resetGroupe() {
@@ -193,8 +259,9 @@
 
                 var vv = [];
                 vv.push(parseInt(o.type));
-
+                var oldlgroupe = ""
                 if (o.type == "3") {
+                    oldlgroupe = o.l_code;
                     var l_code = parseInt(o.l_code);
                     var a = l_code >> 8 & 0x00FF;
                     var b = l_code & 0x00ff;
@@ -202,6 +269,7 @@
                     vv.push(a);//装置序号  2字节      
                 } else if (o.type == "2") {
                     vv.push(parseInt(o.l_groupe)); //新组号
+                    oldlgroupe = o.l_groupe;
                 }
 
 
@@ -211,7 +279,8 @@
                 var comaddr = o.l_comaddr;
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA4, num, 0, 110, vv); //01 03 F24    
-                dealsend2("A4", data, 110, "resetGroupeCB", comaddr, o.type, 0, 0);
+
+                dealsend2("A4", data, 110, "resetGroupeCB", comaddr, o.type, oldlgroupe, o.l_groupe2);
 
             }
 
@@ -237,6 +306,46 @@
             }
 
             $(function () {
+
+                $("#dialog-add").dialog({
+                    autoOpen: false,
+                    modal: true,
+                    width: 700,
+                    height: 300,
+                    position: ["top", "top"],
+                    buttons: {
+                        添加: function () {
+                            $("#formadd").submit();
+                        }, 关闭: function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
+
+                $("#dialog-edit").dialog({
+                    autoOpen: false,
+                    modal: true,
+                    width: 700,
+                    height: 350,
+                    position: "top",
+                    buttons: {
+                        修改: function () {
+                            modifyLoopName();
+                            //$(this).dialog("close");
+                        }, 关闭: function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
+
+
+
+
+
+
+
+
+
 
 //                
 //                
@@ -366,14 +475,22 @@
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
-                                console.log(value);
-                                if (value == 0) {
-                                    value = "0(时间)";
-                                    return value;
-                                } else if (value == 1) {
-                                    value = "1(场景)";
-                                    return value;
+                                if (value != null) {
+                                    if (value == 0) {
+                                        value = "0(时间)";
+                                        return value;
+                                    } else if (value == 1) {
+                                        value = "1(经纬度)";
+                                        return value;
+                                    } else if (value == 2) {
+                                        value = "1(场景)";
+                                        return value;
+                                    }
+
                                 }
+
+//                                console.log(value);
+
                             }
                         }, {
                             field: 'l_deployment',
@@ -528,16 +645,31 @@
 
         <style>
 
-            .table { font-size: 12px; } 
-            .modal-body input[type="text"], 
-            .modal-body select { height: 30px; } 
-            .modal-body input[type="radio"] { height: 30px; } 
-            .modal-body table td { line-height: 40px; }
+            input[type="text"],input[type="radio"] { height: 30px; } 
+            table td { line-height: 40px; } 
+            .menuBox { position: relative; background: skyblue; } 
             .a-upload { padding: 4px 10px; height: 30px; line-height: 20px; position: relative; cursor: pointer; color: #888; background: #fafafa; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; display: inline-block; *display: inline; *zoom: 1 } 
             .a-upload input { position: absolute; font-size: 100px; right: 0; top: 0; opacity: 0; filter: alpha(opacity = 0); cursor: pointer } 
             .a-upload:hover { color: #444; background: #eee; border-color: #ccc; text-decoration: none } 
-            .pagination-info { float: left; margin-top: -4px; } 
-            .modal-body { text-align: -webkit-center; text-align: -moz-center; width: 600px; margin: auto; }
+
+            .bodycenter { text-align: -webkit-center; text-align: -moz-center; width: 600px; margin: auto; }        
+
+
+
+
+
+
+
+            /*            .table { font-size: 12px; } 
+                        .modal-body input[type="text"], 
+                        .modal-body select { height: 30px; } 
+                        .modal-body input[type="radio"] { height: 30px; } 
+                        .modal-body table td { line-height: 40px; }
+                        .a-upload { padding: 4px 10px; height: 30px; line-height: 20px; position: relative; cursor: pointer; color: #888; background: #fafafa; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; display: inline-block; *display: inline; *zoom: 1 } 
+                        .a-upload input { position: absolute; font-size: 100px; right: 0; top: 0; opacity: 0; filter: alpha(opacity = 0); cursor: pointer } 
+                        .a-upload:hover { color: #444; background: #eee; border-color: #ccc; text-decoration: none } 
+                        .pagination-info { float: left; margin-top: -4px; } 
+                        .modal-body { text-align: -webkit-center; text-align: -moz-center; width: 600px; margin: auto; }*/
         </style>
 
     </head>
@@ -545,7 +677,7 @@
     <body>
 
         <div class="btn-group zuheanniu" id="zuheanniu" style="float:left;position:relative;z-index:100;margin:12px 0 0 10px;">
-            <button class="btn btn-success ctrol" data-toggle="modal" data-target="#pjj" id="add">
+            <button class="btn btn-success ctrol"  onclick="showDialog();" data-toggle="modal" data-target="#pjj33" id="add">
                 <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;添加
             </button>
             <button class="btn btn-primary ctrol" onclick="editlampInfo()"   id="xiugai1">
@@ -566,224 +698,400 @@
             <input id="daochu" class="btn btn-default" style="float:left;margin:12px 0 0 20px;" value="导出Excel" type="button" onclick="method5('gravidaTable')">
         </form>
 
-        <div style="width:100%;">
-            <div class="bootstrap-table">
-                <div class="fixed-table-container" style="height: 214px; padding-bottom: 0px;">
 
-                    <table id="gravidaTable" style="width:100%;" class="text-nowrap table table-hover table-striped">
-                    </table>
+
+        <table id="gravidaTable" style="width:100%;" class="text-nowrap table table-hover table-striped">
+        </table>
+
+        <!-- 添加 -->
+
+        <!--        <div class="modal" id="pjj">
+                    <div class="modal-dialog">
+                        <div class="modal-content" style="min-width:700px;">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">
+                                    <span style="font-size:20px ">×</span>
+                                </button>
+                                <span class="glyphicon glyphicon-floppy-disk" style="font-size: 20px"></span>
+                                <h4 class="modal-title" style="display: inline;">添加灯具配置</h4></div>
+        
+                            <form action="" method="POST" id="form1" onsubmit="return checkLampAdd()">      
+                                <div class="modal-body">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <span style="margin-left:20px;">网关名称</span>&nbsp;
+                                                    <input id="comaddrname" readonly="true"   class="form-control"  name="comaddrname" style="width:150px;display: inline;" placeholder="请输入网关名称" type="text">
+        
+                                                                                                <span style="margin-left:20px;">网关名称</span>&nbsp;
+                                                                                                <input id="txt_gayway_name" readonly="true"  class="form-control"  name="txt_gayway_name" style="width:150px;display: inline;" placeholder="请输入网关名称" type="text"></td>
+                                                <td></td>
+                                                <td>
+                                                    <span style="margin-left:10px;">网关地址&nbsp;</span>
+                                                    <span class="menuBox">
+        
+                                                        <input id="l_comaddr"  class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 
+                                                               data-options='editable:false,valueField:"id", textField:"text"' />
+                                                    </span>  
+                                                </td>
+                                            </tr>
+        
+                                            <tr>
+                                                <td>
+                                                    <span style="margin-left:20px;">灯具名称</span>&nbsp;
+                                                    <input id="l_name" class="form-control"  name="l_name" style="width:150px;display: inline;" placeholder="请输入灯具名称" type="text">
+                                                </td>
+                                                <td></td>
+                                                <td>
+                                                    <span style="margin-left:10px;">灯具编号&nbsp;</span>
+                                                    <input id="l_factorycode" class="form-control" name="l_factorycode" style="width:150px;display: inline;" placeholder="请输入灯具装置编号" type="text">
+                                                </td>
+                                                </td>
+                                            </tr>                                   
+        
+                                            <tr>
+                                                <td>
+        
+                                                    <span style="margin-left:20px;">灯具组号</span>&nbsp;
+                                                    <span class="menuBox">
+                                                        <select class="easyui-combobox" id="l_groupe" name="l_groupe"  data-options='editable:false,valueField:"id", textField:"text"' style="width:150px; height: 30px">          
+                                                        </select>
+                                                    </span> 
+        
+                                                    </span> 
+                                                </td>
+                                                <td></td>
+                                                <td>
+                                                    <span style="margin-left:10px;">控制方式</span>&nbsp;
+                                                    <span class="menuBox">
+                                                        <select class="easyui-combobox" id="l_worktype" name="l_worktype" data-options='editable:false' style="width:150px; height: 30px">
+                                                            <option value="0" >时间</option>
+                                                            <option value="1" >经纬度</option>
+                                                            <option value="2">场景</option>           
+                                                        </select>
+                                                    </span>
+                                                </td>
+                                            </tr>                  
+        
+        
+                                        </tbody>
+                                    </table>
+                                </div>
+                                 注脚 
+                                <div class="modal-footer">
+                                     添加按钮 
+                                    <button id="tianjia1" type="submit" class="btn btn-primary">添加</button>
+                                     关闭按钮 
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button></div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
+        -->
+        <!-- 修改 -->
+
+        <!--        <div class="modal" id="pjj2">
+                    <div class="modal-dialog">
+        
+                        <div class="modal-content" style="min-width:700px;">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">
+                                    <span style="font-size:20px ">×</span></button>
+                                <span class="glyphicon glyphicon-floppy-disk" style="font-size: 20px"></span>
+                                <h4 class="modal-title" style="display: inline;">修改灯具配置</h4></div>
+                            <form action="" method="POST" id="form2" >     
+                                <input type="hidden" id="hide_id" name="id" />
+                                <input type="hidden" id="l_code" name="l_code" />
+                                <input type="hidden" id="l_deployment1" name="l_deployment" />
+                                <div class="modal-body">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <span style="margin-left:20px;">网关名称</span>&nbsp;
+                                                    <input  id="name" readonly="true"  class="form-control"  name="nam" style="width:150px;display: inline;" placeholder="网关名称" type="text"></td>
+                                                <td></td>
+                                                <td>
+                                                    <span style="margin-left:20px;">网关地址&nbsp;</span>
+                                                    <span class="menuBox">
+                                                        <input  readonly="true"  id="l_comaddr1" readonly="true"  class="form-control"  name="l_comaddr" style="width:150px;display: inline;" placeholder="网关地址" type="text"></td>     
+                                                    </span>    
+                                                </td>
+                                            </tr>
+        
+                                            <tr>
+                                                <td>
+                                                    <span style="margin-left:20px;">灯具名称</span>&nbsp;
+                                                    <input id="l_name1"  class="form-control"  name="l_name" style="width:150px;display: inline;" placeholder="灯具名称" type="text"></td>
+                                                <td></td>
+                                                <td>
+                                                    <span style="margin-left:20px;">灯具编号&nbsp;</span>
+                                                    <input id="l_factorycode1" readonly="true" class="form-control" name="l_factorycode" style="width:150px;display: inline;" placeholder="灯具编号" type="text"></td>
+                                                </td>
+                                            </tr>                                   
+        
+        
+                                            <tr>
+                                                <td>
+                                                    <span style="margin-left:20px;">灯具组号</span>&nbsp;
+                                                    <span class="menuBox">
+                                                        <select class="easyui-combobox" id="l_groupe1"  readonly="true" name="l_groupe"  data-options='editable:false,valueField:"id", textField:"text"' style="width:150px; height: 30px">          
+                                                        </select>
+                                                    </span>   
+                                                </td>
+                                                <td></td>
+                                                <td>
+                                                    <span style="margin-left:20px;">控制方式</span>&nbsp;
+                                                    <span class="menuBox">
+                                                        <select class="easyui-combobox" readonly="true" id="l_worktype1" name="l_worktype" data-options='editable:false' style="width:150px; height: 30px">
+                                                            <option value="0" >时间</option>
+                                                            <option value="1">经纬度</option>
+                                                            <option value="2">场景</option>           
+                                                        </select>
+                                                    </span>  
+                                                </td>
+                                                <td>
+        
+                                                </td>
+                                            </tr>                  
+        
+                                            <tr id="trlamp">
+                                                <td>
+                                                    <span style="margin-left:8px;">灯具新组号</span>&nbsp;
+                                                    <span class="menuBox">
+                                                        <select class="easyui-combobox" id="l_groupe2" name="l_groupe2"  data-options='editable:false,valueField:"id", textField:"text"' style="width:150px; height: 30px">          
+                                                        </select>
+                                                    </span>     
+                                                </td>
+                                                <td>
+                                                    <span id="span_worktype" style=" margin-left: 2px;"  onclick="resetGroupe()" class="label label-success" >更换</span>
+                                                </td>
+                                                <td>
+                                                    <span style="margin-left:20px;">控制方式</span>&nbsp;
+                                                    <span class="menuBox">
+                                                        <select class="easyui-combobox" id="l_worktype1" name="l_worktype1" data-options='editable:false' style="width:150px; height: 30px">
+                                                            <option value="0" >时间</option>
+                                                            <option value="1">经纬度</option>
+                                                            <option value="2">场景</option>           
+                                                        </select>
+                                                    </span>   
+                                                </td>
+                                                <td>
+                                                    <span  onclick="resetWowktype()" style=" margin-left: 2px;" class="label label-success" >更换</span>
+                                                </td>
+                                            </tr> 
+                                            <tr id="trlamp1">
+                                                <td colspan="4">
+                                                    <label class="radio-inline">
+                                                        <input type="radio"  value="1" name="type">集中器下的所有灯具
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                        <input type="radio"  value="2" name="type">集中器下以组为单位的灯具
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                        <input type="radio"  value="3" checked="true" name="type">灯控器为单位
+                                                    </label>
+                                                </td>
+        
+                                            </tr> 
+        
+                                        </tbody>
+                                    </table>                            
+                                </div>
+        
+                                <div class="modal-footer"  >
+        
+                                    <button id="xiugai" type="button" onclick="editlamp()" class="btn btn-primary">修改</button>
+        
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                </div>
+                            </form>
+                        </div>
+        
+                    </div>
+                </div>
+        -->
 
 
         <!-- 添加 -->
-        <div class="modal" id="pjj">
-            <div class="modal-dialog">
-                <div class="modal-content" style="min-width:700px;">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">
-                            <span style="font-size:20px ">×</span>
-                        </button>
-                        <span class="glyphicon glyphicon-floppy-disk" style="font-size: 20px"></span>
-                        <h4 class="modal-title" style="display: inline;">添加灯具配置</h4></div>
 
-                    <form action="" method="POST" id="form1" onsubmit="return checkLampAdd()">      
-                        <div class="modal-body">
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <span style="margin-left:20px;">网关名称</span>&nbsp;
-                                            <input id="comaddrname" readonly="true"   class="form-control"  name="comaddrname" style="width:150px;display: inline;" placeholder="请输入网关名称" type="text">
+        <!--        <div id="dialog_simple" title="Dialog Simple Title">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                </div>-->
 
-                                            <!--                                            <span style="margin-left:20px;">网关名称</span>&nbsp;
-                                                                                        <input id="txt_gayway_name" readonly="true"  class="form-control"  name="txt_gayway_name" style="width:150px;display: inline;" placeholder="请输入网关名称" type="text"></td>-->
-                                        <td></td>
-                                        <td>
-                                            <span style="margin-left:10px;">网关地址&nbsp;</span>
-                                            <span class="menuBox">
+        <div id="dialog-add"  class="bodycenter"  style=" display: none" title="灯具添加">
 
-                                                <input id="l_comaddr"  class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 
-                                                       data-options='editable:false,valueField:"id", textField:"text"' />
-                                            </span>  
-                                        </td>
-                                    </tr>
+            <form action="" method="POST" id="formadd" onsubmit="return checkLampAdd()">      
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <span style="margin-left:20px;">网关名称</span>&nbsp;
+                                <input id="comaddrname" readonly="true"   class="form-control"  name="comaddrname" style="width:150px;display: inline;" placeholder="请输入网关名称" type="text">
 
-                                    <tr>
-                                        <td>
-                                            <span style="margin-left:20px;">灯具名称</span>&nbsp;
-                                            <input id="l_name" class="form-control"  name="l_name" style="width:150px;display: inline;" placeholder="请输入灯具名称" type="text">
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                            <span style="margin-left:10px;">灯具编号&nbsp;</span>
-                                            <input id="l_factorycode" class="form-control" name="l_factorycode" style="width:150px;display: inline;" placeholder="请输入灯具装置编号" type="text">
-                                        </td>
-                                        </td>
-                                    </tr>                                   
+                                <!--                                            <span style="margin-left:20px;">网关名称</span>&nbsp;
+                                                                            <input id="txt_gayway_name" readonly="true"  class="form-control"  name="txt_gayway_name" style="width:150px;display: inline;" placeholder="请输入网关名称" type="text"></td>-->
+                            <td></td>
+                            <td>
+                                <span style="margin-left:10px;">网关地址&nbsp;</span>
+                                <span class="menuBox">
 
-                                    <tr>
-                                        <td>
+                                    <input id="l_comaddr"  class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 
+                                           data-options='editable:false,valueField:"id", textField:"text"' />
+                                </span>  
+                            </td>
+                        </tr>
 
-                                            <span style="margin-left:20px;">灯具组号</span>&nbsp;
-                                            <span class="menuBox">
-                                                <select class="easyui-combobox" id="l_groupe" name="l_groupe"  data-options='editable:false,valueField:"id", textField:"text"' style="width:150px; height: 30px">          
-                                                </select>
-                                            </span> 
+                        <tr>
+                            <td>
+                                <span style="margin-left:20px;">灯具名称</span>&nbsp;
+                                <input id="l_name" class="form-control"  name="l_name" style="width:150px;display: inline;" placeholder="请输入灯具名称" type="text">
+                            </td>
+                            <td></td>
+                            <td>
+                                <span style="margin-left:10px;">灯具编号&nbsp;</span>
+                                <input id="l_factorycode" class="form-control" name="l_factorycode" style="width:150px;display: inline;" placeholder="请输入灯具装置编号" type="text">
+                            </td>
+                            </td>
+                        </tr>                                   
 
-                                            </span> 
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                            <span style="margin-left:10px;">控制方式</span>&nbsp;
-                                            <span class="menuBox">
-                                                <select class="easyui-combobox" id="l_worktype" name="l_worktype" data-options='editable:false' style="width:150px; height: 30px">
-                                                    <option value="0" >时间</option>
-                                                    <option value="1" >经纬度</option>
-                                                    <option value="2">场景</option>           
-                                                </select>
-                                            </span>
-                                        </td>
-                                    </tr>                  
+                        <tr>
+                            <td>
+
+                                <span style="margin-left:20px;">灯具组号</span>&nbsp;
+                                <span class="menuBox">
+                                    <select class="easyui-combobox" id="l_groupe" name="l_groupe"  data-options='editable:false,valueField:"id", textField:"text"' style="width:150px; height: 30px">          
+                                    </select>
+                                </span> 
+
+                                </span> 
+                            </td>
+                            <td></td>
+                            <td>
+                                <span style="margin-left:10px;">控制方式</span>&nbsp;
+                                <span class="menuBox">
+                                    <select class="easyui-combobox" id="l_worktype" name="l_worktype" data-options='editable:false' style="width:150px; height: 30px">
+                                        <option value="0" >时间</option>
+                                        <option value="1" >经纬度</option>
+                                        <option value="2">场景</option>           
+                                    </select>
+                                </span>
+                            </td>
+                        </tr>                  
 
 
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- 注脚 -->
-                        <div class="modal-footer">
-                            <!-- 添加按钮 -->
-                            <button id="tianjia1" type="submit" class="btn btn-primary">添加</button>
-                            <!-- 关闭按钮 -->
-                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button></div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <!-- 修改 -->
-        <div class="modal" id="pjj2">
-            <div class="modal-dialog">
-
-                <div class="modal-content" style="min-width:700px;">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">
-                            <span style="font-size:20px ">×</span></button>
-                        <span class="glyphicon glyphicon-floppy-disk" style="font-size: 20px"></span>
-                        <h4 class="modal-title" style="display: inline;">修改灯具配置</h4></div>
-                    <form action="" method="POST" id="form2" >     
-                        <input type="hidden" id="hide_id" name="id" />
-                        <input type="hidden" id="l_code" name="l_code" />
-                        <input type="hidden" id="l_deployment1" name="l_deployment" />
-                        <div class="modal-body">
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <span style="margin-left:20px;">网关名称</span>&nbsp;
-                                            <input  id="name" readonly="true"  class="form-control"  name="nam" style="width:150px;display: inline;" placeholder="网关名称" type="text"></td>
-                                        <td></td>
-                                        <td>
-                                            <span style="margin-left:20px;">网关地址&nbsp;</span>
-                                            <span class="menuBox">
-                                                <input  readonly="true"  id="l_comaddr1" readonly="true"  class="form-control"  name="l_comaddr" style="width:150px;display: inline;" placeholder="网关地址" type="text"></td>     
-                                            </span>    
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <span style="margin-left:20px;">灯具名称</span>&nbsp;
-                                            <input id="l_name1"  class="form-control"  name="l_name" style="width:150px;display: inline;" placeholder="灯具名称" type="text"></td>
-                                        <td></td>
-                                        <td>
-                                            <span style="margin-left:20px;">灯具编号&nbsp;</span>
-                                            <input id="l_factorycode1" readonly="true" class="form-control" name="l_factorycode" style="width:150px;display: inline;" placeholder="灯具编号" type="text"></td>
-                                        </td>
-                                    </tr>                                   
-
-
-                                    <tr>
-                                        <td>
-                                            <span style="margin-left:20px;">灯具组号</span>&nbsp;
-                                            <span class="menuBox">
-                                                <select class="easyui-combobox" id="l_groupe1"  readonly="true" name="l_groupe"  data-options='editable:false,valueField:"id", textField:"text"' style="width:150px; height: 30px">          
-                                                </select>
-                                            </span>   
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                            <span style="margin-left:20px;">控制方式</span>&nbsp;
-                                            <span class="menuBox">
-                                                <select class="easyui-combobox" readonly="true" id="l_worktype1" name="l_worktype" data-options='editable:false' style="width:150px; height: 30px">
-                                                    <option value="0" >时间</option>
-                                                    <option value="1">经纬度</option>
-                                                    <option value="2">场景</option>           
-                                                </select>
-                                            </span>  
-                                        </td>
-                                        <td>
-
-                                        </td>
-                                    </tr>                  
-
-                                    <tr id="trlamp">
-                                        <td>
-                                            <span style="margin-left:8px;">灯具新组号</span>&nbsp;
-                                            <span class="menuBox">
-                                                <select class="easyui-combobox" id="l_groupe2" name="l_groupe2"  data-options='editable:false,valueField:"id", textField:"text"' style="width:150px; height: 30px">          
-                                                </select>
-                                            </span>     
-                                        </td>
-                                        <td>
-                                            <span id="span_worktype" style=" margin-left: 2px;"  onclick="resetGroupe()" class="label label-success" >更换</span>
-                                        </td>
-                                        <td>
-                                            <span style="margin-left:20px;">控制方式</span>&nbsp;
-                                            <span class="menuBox">
-                                                <select class="easyui-combobox" id="l_worktype1" name="l_worktype1" data-options='editable:false' style="width:150px; height: 30px">
-                                                    <option value="0" >时间</option>
-                                                    <option value="1">经纬度</option>
-                                                    <option value="2">场景</option>           
-                                                </select>
-                                            </span>   
-                                        </td>
-                                        <td>
-                                            <span  onclick="resetWowktype()" style=" margin-left: 2px;" class="label label-success" >更换</span>
-                                        </td>
-                                    </tr> 
-                                    <tr id="trlamp1">
-                                        <td colspan="4">
-                                            <label class="radio-inline">
-                                                <input type="radio"  value="1" name="type">集中器下的所有灯具
-                                            </label>
-                                            <label class="radio-inline">
-                                                <input type="radio"  value="2" name="type">集中器下以组为单位的灯具
-                                            </label>
-                                            <label class="radio-inline">
-                                                <input type="radio"  value="3" checked="true" name="type">灯控器为单位
-                                            </label>
-                                        </td>
-
-                                    </tr> 
-
-                                </tbody>
-                            </table>                            
-                        </div>
-
-                        <div class="modal-footer"  >
-
-                            <button id="xiugai" type="button" onclick="editlamp()" class="btn btn-primary">修改</button>
-
-                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        </div>
-                    </form>
-                </div>
-
-            </div>
+                    </tbody>
+                </table>
+            </form>                        
         </div>
 
-        <!--修改组号-->
+        <div id="dialog-edit"  class="bodycenter" style=" display: none"  title="灯具修改">
+            <form action="" method="POST" id="form2" onsubmit="return modifyLoopName()">  
+                <input type="hidden" id="hide_id" name="hide_id" />
+                <input type="hidden" id="l_deployment" name="l_deployment" />
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <span style="margin-left:20px;">网关名称</span>&nbsp;
+                                <input  id="name" readonly="true"  class="form-control"  name="nam" style="width:150px;display: inline;" placeholder="网关名称" type="text"></td>
+                            <td></td>
+                            <td>
+                                <span style="margin-left:20px;">网关地址&nbsp;</span>
+                                <span class="menuBox">
+                                    <input  readonly="true"  id="l_comaddr1" readonly="true"  class="form-control"  name="l_comaddr" style="width:150px;display: inline;" placeholder="网关地址" type="text"></td>     
+                                </span>    
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <span style="margin-left:20px;">灯具名称</span>&nbsp;
+                                <input id="l_name1"  class="form-control"  name="l_name" style="width:150px;display: inline;" placeholder="灯具名称" type="text"></td>
+                            <td></td>
+                            <td>
+                                <span style="margin-left:20px;">灯具编号&nbsp;</span>
+                                <input id="l_factorycode1" readonly="true" class="form-control" name="l_factorycode" style="width:150px;display: inline;" placeholder="灯具编号" type="text"></td>
+                            </td>
+                        </tr>                                   
+
+
+                        <tr>
+                            <td>
+                                <span style="margin-left:20px;">灯具组号</span>&nbsp;
+                                <span class="menuBox">
+                                    <select class="easyui-combobox" id="l_groupe1"  readonly="true" name="l_groupe"  data-options='editable:false,valueField:"id", textField:"text"' style="width:150px; height: 30px">          
+                                    </select>
+                                </span>   
+                            </td>
+                            <td></td>
+                            <td>
+                                <span style="margin-left:20px;">控制方式</span>&nbsp;
+                                <span class="menuBox">
+                                    <select class="easyui-combobox" readonly="true" id="l_worktype1" name="l_worktype" data-options='editable:false' style="width:150px; height: 30px">
+                                        <option value="0" >时间</option>
+                                        <option value="1">经纬度</option>
+                                        <option value="2">场景</option>           
+                                    </select>
+                                </span>  
+                            </td>
+                            <td>
+
+                            </td>
+                        </tr>                  
+
+                        <tr id="trlamp">
+                            <td>
+                                <span style="margin-left:8px;">灯具新组号</span>&nbsp;
+                                <span class="menuBox">
+                                    <select class="easyui-combobox" id="l_groupe2" name="l_groupe2"  data-options='editable:false,valueField:"id", textField:"text"' style="width:150px; height: 30px">          
+                                    </select>
+                                </span>     
+                            </td>
+                            <td>
+                                <span id="span_worktype" style=" margin-left: 2px;"  onclick="resetGroupe()" class="label label-success" >更换</span>
+                            </td>
+                            <td>
+                                <span style="margin-left:20px;">控制方式</span>&nbsp;
+                                <span class="menuBox">
+                                    <select class="easyui-combobox" id="l_worktype1" name="l_worktype1" data-options='editable:false' style="width:150px; height: 30px">
+                                        <option value="0" >时间</option>
+                                        <option value="1">经纬度</option>
+                                        <option value="2">场景</option>           
+                                    </select>
+                                </span>   
+                            </td>
+                            <td>
+                                <span  onclick="resetWowktype()" style=" margin-left: 2px;" class="label label-success" >更换</span>
+                            </td>
+                        </tr> 
+                        <tr id="trlamp1">
+                            <td colspan="4">
+                                <label class="radio-inline">
+                                    <input type="radio"  value="1" name="type">集中器下的所有灯具
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio"  value="2" name="type">集中器下以组为单位的灯具
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio"  value="3" checked="true" name="type">灯控器为单位
+                                </label>
+                            </td>
+
+                        </tr> 
+
+                    </tbody>
+                </table>   
+            </form>
+        </div>  
+
+
+
+
+
+
+
 
     </body>
 </html>

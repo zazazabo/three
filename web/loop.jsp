@@ -10,9 +10,6 @@
     <head>
         <%@include  file="js.jspf" %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <!--        <link type="text/css" href="jquery-ui-bootstrap/css/custom-theme/jquery-ui-1.10.0.custom.css" rel="stylesheet" />
-                <script src="jquery-ui-bootstrap/assets/js/jquery-ui-1.10.0.custom.min.js" type="text/javascript"></script>-->
-
         <script type="text/javascript" src="js/genel.js"></script>
         <script>
             function layerAler(str) {
@@ -85,7 +82,6 @@
 
             }
             function switchWorkType() {
-//                alert("ddd");
                 var o = $("#form2").serializeObject();
                 if (o.l_deployment == "0") {
                     layerAler("部署后能能切换");
@@ -191,43 +187,37 @@
             }
 
             $(function () {
-
-
                 //####### Dialogs
                 $("#dialog-add").dialog({
                     autoOpen: false,
                     modal: true,
                     width: 700,
                     height: 300,
+                    position: ["top", "top"],
                     buttons: {
                         添加: function () {
                             $("#formadd").submit();
-                            //$(this).dialog("close");
-
                         }, 关闭: function () {
                             $(this).dialog("close");
                         }
                     }
                 });
-
 
                 $("#dialog-edit").dialog({
                     autoOpen: false,
                     modal: true,
                     width: 700,
                     height: 300,
+                    position: "top",
                     buttons: {
                         修改: function () {
                             modifyLoopName();
-                            //$("#formadd").submit();
                             //$(this).dialog("close");
-
                         }, 关闭: function () {
                             $(this).dialog("close");
                         }
                     }
                 });
-
 
 
                 $('#comaddr').combobox({
@@ -298,7 +288,7 @@
 
 
 
-                $('#gravidaTable').bootstrapTable({url: 'test1.f5.loop.action',
+                $('#gravidaTable').bootstrapTable({url: 'test1.loop.getLoopList.action',
                     //服务器url
                     columns: [
                         {
@@ -458,96 +448,6 @@
                     });
                 });
 
-
-//                $("#btnmodify1").click(function () {
-//
-//                    var l_id = $("#txt_hide_id").val();
-//                    var l_plan = $("#select_p_plan1").val();
-//                    $.ajax({
-//                        url: "test1.loop.modifyplan.action", type: 'get', dataType: 'JSON', data: {id_: l_id, l_plan: l_plan},
-//                        success: function (data) {
-//
-//                            $("#gravidaTable").bootstrapTable('refresh');
-////                            $('#timestrategy').modal('hide');
-//                        },
-//                        error: function () {
-//                            layerAler("修改回路方案错误");
-//                        }
-//                    });
-////                      $('#timestrategy').modal('hide');
-//                });
-//                $('#select_p_plan1').change(function () {
-//                    var p_code = $(this).val();
-//                    $.ajax({
-//                        url: "test1.loop.getPlan.action", type: 'get', dataType: 'JSON', data: {p_code: p_code},
-//                        success: function (data) {
-//                            var arrlist = data.rs;
-//                            if (arrlist.length == 1) {
-//                                var objlist = arrlist[0];
-//                                var jsonstr = objlist.p_content;
-//                                var obj = eval('(' + jsonstr + ')');
-//                                if (obj.hasOwnProperty("loop")) {
-//                                    var val = obj.loop[0];
-//                                    $("#txttimein").val(val.start);
-//                                    $("#txttimeout").val(val.end);
-//                                }
-//
-//
-//                            }
-//                        }, error: function () {
-//
-//                        }
-//                    })
-//
-//                });
-
-//                $('#gravidaTable').on("dbl-click-cell.bs.table", function (field, value, row, element) {
-//                    if (value == "l_plan") {
-//
-//                        if (element.l_deplayment != 1) {
-//                            layerAler("请部署好回路,才能更改方案");
-//                            return;
-//                        }
-//                        console.log(element);
-//                        $("#txt_hide_id").val(element.uid);
-//                        $.ajax({
-//                            url: "test1.loop.getPlan.action", type: 'get', dataType: 'JSON', data: {p_attr: 0, p_type: element.l_worktype},
-//                            success: function (data) {
-//                                var arrlist = data.rs;
-//                                $('#select_p_plan1').empty();
-//                                for (var i = 0; i < arrlist.length; i++) {
-//                                    var objlist = arrlist[i];
-//                                    var jsonstr = objlist.p_content;
-//                                    var strselect = "";
-//                                    if (element.l_plan == objlist.p_code) {
-//
-//                                        var obj = eval('(' + jsonstr + ')');
-//                                        if (obj.hasOwnProperty("loop")) {
-//                                            var val = obj.loop[0];
-//                                            $("#txttimein").val(val.start);
-//                                            $("#txttimeout").val(val.end);
-//                                        }
-//                                    }
-//                                    var str = "<option   +  value='" + objlist.p_code + "' >" + objlist.p_name + "</option>";
-//                                    console.log(str);
-//                                    $("#select_p_plan1").append(str);
-//                                }
-//
-//                                // $("#select_p_plan1").find("option[value=\"" + element.l_plan +"\"]").attr("selected",true);
-//                                var strattr = "option[value=\"" + element.l_plan + "\"]";
-//                                //console.log(strattr);
-//                                $("#select_p_plan1").find(strattr).attr("selected", true);
-//                            }, error: function () {
-//                                layerAler("获取回路列表失败");
-//                            }
-//                        })
-//                        $("#timestrategy").modal();
-//                    }
-//                    console.log(element);
-//                });
-
-
-
             })
 
 
@@ -557,18 +457,16 @@
 
         <style>* { margin: 0; padding: 0; } body, html { width: 100%; height: 100%; } 
 
-            input[type="text"], .modal-body select, .modal-body input[type="radio"] { height: 30px; } 
+            input[type="text"],input[type="radio"] { height: 30px; } 
             table td { line-height: 40px; } 
             .menuBox { position: relative; background: skyblue; } 
-            .getMenu { z-index: 1000; display: none; background: white; list-style: none; border: 1px solid skyblue; width: 150px; height: auto; max-height: 200px; position: absolute; left: 0; top: 25px; overflow: auto; } 
-            .getMenu li { width: 148px; padding-left: 10px; line-height: 22px; font-size: 14px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; } 
-            .getMenu li:hover { background: #eee; cursor: pointer; } 
             .a-upload { padding: 4px 10px; height: 30px; line-height: 20px; position: relative; cursor: pointer; color: #888; background: #fafafa; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; display: inline-block; *display: inline; *zoom: 1 } 
             .a-upload input { position: absolute; font-size: 100px; right: 0; top: 0; opacity: 0; filter: alpha(opacity = 0); cursor: pointer } 
             .a-upload:hover { color: #444; background: #eee; border-color: #ccc; text-decoration: none } 
-            .pagination-info { float: left; margin-top: -4px; } 
+
             .bodycenter { text-align: -webkit-center; text-align: -moz-center; width: 600px; margin: auto; } 
-            .btn-primary { color: #fff; background-color: #0099CC; border-color: #0099CC; }</style>
+
+        </style>
 
 
 
@@ -619,7 +517,7 @@
                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
                 </div>-->
 
-        <div id="dialog-add"  class="bodycenter"  style=" display: none" title="回路管理">
+        <div id="dialog-add"  class="bodycenter"  style=" display: none" title="回路添加">
 
             <form action="" method="POST" id="formadd" onsubmit="return checkLoopAdd()">      
                 <table >
@@ -686,7 +584,7 @@
 
         </div>
 
-        <div id="dialog-edit"  class="bodycenter" style=" display: none"  title="回路管理">
+        <div id="dialog-edit"  class="bodycenter" style=" display: none"  title="回路修改">
             <form action="" method="POST" id="form2" onsubmit="return modifyLoopName()">  
                 <input type="hidden" id="hide_id" name="hide_id" />
                 <input type="hidden" id="l_deployment" name="l_deployment" />

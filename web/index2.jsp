@@ -26,7 +26,7 @@
         <script type="text/javascript" src="jquery.md5.js"></script>  
         <script>
 
-            $(function() {
+            $(function () {
 
 
 
@@ -40,129 +40,129 @@
 
 
 
-            $("#uploadmobile").uploadify({
-            //指定swf文件
-            'swf': 'jquery.uploadify/uploadify.swf',
-            //后台处理的页面
-            'uploader': 'test1.UPLOAD.h1.action',
-            //按钮显示的文字
-            'buttonText': '上传图片',
-            //显示的高度和宽度，默认 height 30；width 120
-            //'height': 15,
-            //'width': 80,
-            //上传文件的类型  默认为所有文件    'All Files'  ;  '*.*'
-            //在浏览窗口底部的文件类型下拉菜单中显示的文本
-            'fileTypeDesc': 'Image Files',
-            //允许上传的文件后缀
-            'fileTypeExts': '*.gif; *.jpg; *.png',
-            //发送给后台的其他参数通过formData指定
-            //'formData': { 'someKey': 'someValue', 'someOtherKey': 1 },
-            //上传文件页面中，你想要用来作为文件队列的元素的id, 默认为false  自动生成,  不带#
-            //'queueID': 'fileQueue',
-            //选择文件后自动上传
-            'auto': true,
-            //设置为true将允许多文件上传
-            'multi': true,
-            'onUploadSuccess': function(file, data, response) {
-            alert(data);
-            var jsonDatas = eval("(" + data + ")");
-            var rs = jsonDatas[0];
-            var img1 = rs['attach'];
-            $("#imetest").attr("src", "<%=path%>/upload/" + img1);
-            rs['attach'];
-            //循环遍历数据
-            //                        $.each(jsonDatas, function(item) {
-            //                            alert(jsonDatas[0]['guid']);
-            //                            //循环
-            //                        });
+                $("#uploadmobile").uploadify({
+                    //指定swf文件
+                    'swf': 'jquery.uploadify/uploadify.swf',
+                    //后台处理的页面
+                    'uploader': 'test1.UPLOAD.h1.action',
+                    //按钮显示的文字
+                    'buttonText': '上传图片',
+                    //显示的高度和宽度，默认 height 30；width 120
+                    //'height': 15,
+                    //'width': 80,
+                    //上传文件的类型  默认为所有文件    'All Files'  ;  '*.*'
+                    //在浏览窗口底部的文件类型下拉菜单中显示的文本
+                    'fileTypeDesc': 'Image Files',
+                    //允许上传的文件后缀
+                    'fileTypeExts': '*.gif; *.jpg; *.png',
+                    //发送给后台的其他参数通过formData指定
+                    //'formData': { 'someKey': 'someValue', 'someOtherKey': 1 },
+                    //上传文件页面中，你想要用来作为文件队列的元素的id, 默认为false  自动生成,  不带#
+                    //'queueID': 'fileQueue',
+                    //选择文件后自动上传
+                    'auto': true,
+                    //设置为true将允许多文件上传
+                    'multi': true,
+                    'onUploadSuccess': function (file, data, response) {
+                        alert(data);
+                        var jsonDatas = eval("(" + data + ")");
+                        var rs = jsonDatas[0];
+                        var img1 = rs['attach'];
+                        $("#imetest").attr("src", "<%=path%>/upload/" + img1);
+                        rs['attach'];
+                        //循环遍历数据
+                        //                        $.each(jsonDatas, function(item) {
+                        //                            alert(jsonDatas[0]['guid']);
+                        //                            //循环
+                        //                        });
 
 
-            }
-            });
+                    }
+                });
 
             });
 
             function fromtojson() {
-            var url = "test1.f4.h4.action";
-            window.location = url;
+                var url = "test1.f4.h4.action";
+                window.location = url;
             }
             function out() {
-            var url = "test1.f3.h1.action?aid=1111&apassword=222";
-            window.location = url;
+                var url = "test1.f3.h1.action?aid=1111&apassword=222";
+                window.location = url;
             }
             function totable1() {
 
-            var url = "test1.f4.h1.action";
-            window.location = url;
+                var url = "test1.f4.h1.action";
+                window.location = url;
 
             }
             function ToThree() {
-            //                var url = "test1.Tree.h1.action";
-            //                window.location = url;
+                //                var url = "test1.Tree.h1.action";
+                //                window.location = url;
 
 
             }
-            function CheckCode(){
+            function CheckCode() {
 
             }
             function importhm() {
 
-            //
-            //                var url = "test1.f2.h1.action?aid=在此&apassword=b";
-            //                var url="/second/AdminLogin.action";
-            //               window.location = url;
-            //                $.ajax({
-            //                    url: "test1.f2.h2.action",
-            //                    data: $('#fm1').serialize(),
-            //                    type: "post",
-            //                    success: function(data) {
-            //                        alert(data);
-            //                    }
-            //                })
+                //
+                //                var url = "test1.f2.h1.action?aid=在此&apassword=b";
+                //                var url="/second/AdminLogin.action";
+                //               window.location = url;
+                //                $.ajax({
+                //                    url: "test1.f2.h2.action",
+                //                    data: $('#fm1').serialize(),
+                //                    type: "post",
+                //                    success: function(data) {
+                //                        alert(data);
+                //                    }
+                //                })
 
-            //             $('#fm1').submit();
+                //             $('#fm1').submit();
 
-            //                $.get("test1.f1.h2.action", "acct=" + "aa", function(data) {
-            //                    for (var m in data[0]) {
-            //                    }
-            //                }, "json");
+                //                $.get("test1.f1.h2.action", "acct=" + "aa", function(data) {
+                //                    for (var m in data[0]) {
+                //                    }
+                //                }, "json");
 
             }
             function sendMail() {
-            $.ajax({
-            url: "test1.Mail.h1.action",
-            data: $('#sendMail1').serialize(),
-            type: "post",
-            success: function(data) {
-            alert(data);
-            }
-            });
+                $.ajax({
+                    url: "test1.Mail.h1.action",
+                    data: $('#sendMail1').serialize(),
+                    type: "post",
+                    success: function (data) {
+                        alert(data);
+                    }
+                });
             }
             function download1() {
-            alert("sdfsdfdsf");
-            window.location = "test1.DownLoad.h1.action?filename_=1ur.txt";
+                alert("sdfsdfdsf");
+                window.location = "test1.DownLoad.h1.action?filename_=1ur.txt";
             }
             function getTree() {
-            $('#tree1').tree({
-            url: 'test1.Tree.h1.action'
-            });
+                $('#tree1').tree({
+                    url: 'test1.Tree.h1.action'
+                });
             }
-            function md5_pass(){
+            function md5_pass() {
 
 
-            var  val1 = $("input[name=md5]").val();
-            val1 =  $.md5(val1);
-            alert(val1);
+                var val1 = $("input[name=md5]").val();
+                val1 = $.md5(val1);
+                alert(val1);
 
             }
-            function getcheckcode(){
-             var data = getURLData("test1.Module.h1.action?rs=getCheckCode"); 
-              alert(data[0]['checkcode']);
+            function getcheckcode() {
+                var data = getURLData("test1.Module.h1.action?rs=getCheckCode");
+                alert(data[0]['checkcode']);
             }
-            function getssion(){
-                  var data = getURLData("test1.Module.h1.action?rs=dealPost"); 
-                      
-                
+            function getssion() {
+                var data = getURLData("test1.Module.h1.action?rs=dealPost");
+
+
             }
         </script>
 
@@ -234,15 +234,15 @@
         <input type = "button" value = "验证" onclick = "validate();"/>  
     </div> 
 
- 
+
     <input type="button" value="取sseion" onclick="getcheckcode();">
-    
-       <input type="button" value="季托调用取sseion值" onclick="getssion();"> 
-    
+
+    <input type="button" value="季托调用取sseion值" onclick="getssion();"> 
+
     <div id="img1">
         <input id="checkcode1" type="text"/>
         <iframe id="iframe1"  style=" border: 1px #11777C dashed;" src="test1.Module.h1.action?rs=setCheckCode" width="150" height="50">      
         </iframe>
-             
+
     </div>
 </html>

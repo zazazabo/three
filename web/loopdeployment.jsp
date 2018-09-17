@@ -58,7 +58,7 @@
                 console.log(user);
                 parent.parent.sendData(user);
             }
-            
+
             function deployloop() {
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
                 if (selects.length == 0) {
@@ -333,11 +333,6 @@
 
             $(function () {
 
-                var hh = "684e004e0068880217010102aa030000200301360001000021ce16";
-                var u = 27;
-                var v1 = Str2BytesH(hh);
-                console.log(v1);
-
 
                 $("#btnswitch").click(function () {
                     var selects = $('#gravidaTable').bootstrapTable('getSelections');
@@ -485,7 +480,16 @@
                     },
                 });
 
+
                 $('#l_comaddr').combobox({
+                    url: "test1.loop.getlampcomaddr.action",
+                    onLoadSuccess: function (data) {
+                        if (Array.isArray(data) && data.length > 0) {
+                            $(this).combobox("select", data[0].id);
+                        } else {
+                            $(this).combobox("select", );
+                        }
+                    },
                     onSelect: function (record) {
                         var obj = {};
                         obj.l_comaddr = record.id;
@@ -498,14 +502,26 @@
                         $("#gravidaTable").bootstrapTable('refresh', opt);
                     }
                 });
-
-
                 $('#p_plan').combobox({
+                    url: "test1.plan.getPlanlist.action?attr=0",
+                    formatter: function (row) {
+                        var v1 = row.p_type == 0 ? "(时间)" : "(经纬度)";
+                        var v = row.text + v1;
+                        row.id = row.id + v1;
+                        row.text = v;
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
+                    },
+                    onLoadSuccess: function (data) {
+                        if (Array.isArray(data) && data.length > 0) {
+                            $(this).combobox('select', data[0].id);
+
+                        } else {
+                            $(this).combobox('select', );
+                        }
+                    },
                     onSelect: function (record) {
-
-                        console.log(record);
                         $('#type' + record.p_type).show();
-
                         var v = 1 - parseInt(record.p_type);
                         $('#type' + v.toString()).hide();
 //                      
@@ -514,12 +530,8 @@
                         $("#intime").val(record.intime);
                         $('#intime').timespinner('setValue', record.p_intime);
                         $('#outtime').timespinner('setValue', record.p_outtime);
-
                     }
                 });
-
-
-
 
 
 
@@ -543,14 +555,7 @@
                                     <span class="menuBox">
 
                                         <input id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 
-                                               data-options='onLoadSuccess:function(data){
-                                               if(Array.isArray(data)&&data.length>0){
-                                               $(this).combobox("select", data[0].id);
-                                               }else{
-                                               $(this).combobox("select",);
-                                               }
-                                               <!--console.log(data);-->
-                                               },editable:false,valueField:"id", textField:"text",url:"test1.loop.getlampcomaddr.action" ' />
+                                               data-options='editable:false,valueField:"id", textField:"text" ' />
 
                                         <!--                                <select name="l_comaddr" id="l_comaddr" placeholder="回路" class="input-sm" style="width:150px;">-->
                                     </span>    
@@ -574,15 +579,7 @@
                                 <span class="menuBox">
 
                                     <input id="p_plan" class="easyui-combobox" name="p_plan" style="width:150px; height: 30px" 
-                                           data-options="onLoadSuccess:function(data){
-                                           if(Array.isArray(data)&&data.length>0){
-                                           $(this).combobox('select', data[0].id);
-
-                                           }else{
-                                           $(this).combobox('select',);
-                                           }
-                                           console.log(data);
-                                           },editable:false,valueField:'id', textField:'text',url:'test1.plan.getPlanlist.action?attr=0' " />
+                                           data-options="editable:false,valueField:'id', textField:'text' " />
                             </td>
                         </tr>
                         <input type="hidden" id="p_type" name="p_type" />
@@ -599,7 +596,7 @@
                                 <input id="outtime" name="outtime" style=" height: 30px; width: 150px;  "  class="easyui-timespinner">
                             </td>
                         </tr>
-                    
+
                         <tr id="type1" style=" display: none" >
                             <td>
                                 <span style="margin-left:20px;">区域经度</span>&nbsp;
