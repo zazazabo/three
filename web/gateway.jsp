@@ -74,18 +74,21 @@
                         offset: 'center'
                     });
                 } else {
-                    selectRow = $("#gravidaTable").bootstrapTable("getSelections")[0];
-                    console.log(selectRow);
-                    $("#name_").val(selectRow.name);
-                    $("#model_").combobox('setText', selectRow.model);
-                    $("#model_").combobox('setValue', selectRow.model);
-                    $("#id_").val(selectRow.id);
-                    $("#comaddr_").val(selectRow.comaddr);
+                    var s = $("#gravidaTable").bootstrapTable("getSelections")[0];
+                    console.log(s);
 
-                    var arrlatitude = selectRow.latitude.split(".");
-                    var arrLongitude = selectRow.Longitude.split(".");
-                    console.log(arrlatitude[0]);
-                    console.log(arrLongitude);
+                    $("#name_").val(s.name);
+
+                    $("#model_").combobox('setValue', s.model);
+                    $("#connecttype_").combobox('setValue', s.connecttype);
+                    $("#setupaddr_").val(s.setupaddr);
+
+                    $("#id_").val(s.id);
+                    $("#comaddr_").val(s.comaddr);
+                    $("#multpower_").val(s.multpower);
+
+                    var arrlatitude = s.latitude.split(".");
+                    var arrLongitude = s.Longitude.split(".");
                     $("#longitudem26d_").val(arrLongitude[0]);
                     $("#longitudem26m_").val(arrLongitude[1]);
                     $("#longitudem26s_").val(arrLongitude[2]);
@@ -100,16 +103,37 @@
                     return false;
                 }
             }
-            
-            
-            function  editComplete(){
-                    var o=$("#form2").serializeObject();
-                    console.log(o);
+
+
+            function  editComplete() {
+                var obj = $("#form2").serializeObject();
+
+
+                var latitudemstr = obj.latitudem26d + "." + obj.latitudem26m + "." + obj.latitudem26s;
+                obj.latitude = latitudemstr;
+                var longitudemstr = obj.longitudem26d + "." + obj.longitudem26m + "." + obj.longitudem26s;
+                obj.longitude = longitudemstr;
+                console.log(obj);
+
+                $.ajax({async: false, cache: false, url: "test1.gayway.modifyGateway.action", type: "GET", data: obj,
+                    success: function (data) {
+                        // namesss = true;
+                        $("#gravidaTable").bootstrapTable('refresh');
+                    },
+                    error: function () {
+                        layer.alert('系统错误，刷新后重试', {
+                            icon: 6,
+                            offset: 'center'
+                        });
+                    }
+                })
+
+                return false;
             }
-            
-            
-            
-            
+
+
+
+
             function dealsend() {
 
                 //            if (websocket != null && websocket.readyState == 1) {
@@ -173,45 +197,43 @@
                 });
 
 
-
-                $("#add").attr("disabled", true);
-                $("#xiugai").attr("disabled", true);
-                $("#shanchu").attr("disabled", true);
-                var obj = {};
-                obj.code = ${param.m_parent};
-                obj.roletype = ${param.role};
-                $.ajax({async: false, url: "login.usermanage.power.action", type: "get", datatype: "JSON", data: obj,
-                    success: function (data) {
-                        var rs = data.rs;
-                        if (rs.length > 0) {
-                            for (var i = 0; i < rs.length; i++) {
-
-                                if (rs[i].code == "600101" && rs[i].enable != 0) {
-                                    $("#add").attr("disabled", false);
-                                    continue;
-                                }
-                                if (rs[i].code == "600102" && rs[i].enable != 0) {
-                                    $("#xiugai").attr("disabled", false);
-                                    continue;
-                                }
-                                if (rs[i].code == "600103" && rs[i].enable != 0) {
-                                    $("#shanchu").attr("disabled", false);
-                                    continue;
-                                }
-                            }
-                        }
-
-                    },
-                    error: function () {
-                        alert("提交失败！");
-                    }
-                });
+//
+//                $("#add").attr("disabled", true);
+//                $("#xiugai").attr("disabled", true);
+//                $("#shanchu").attr("disabled", true);
+//                var obj = {};
+//                obj.code = ${param.m_parent};
+//                obj.roletype = ${param.role};
+//                $.ajax({async: false, url: "login.usermanage.power.action", type: "get", datatype: "JSON", data: obj,
+//                    success: function (data) {
+//                        var rs = data.rs;
+//                        if (rs.length > 0) {
+//                            for (var i = 0; i < rs.length; i++) {
+//
+//                                if (rs[i].code == "600101" && rs[i].enable != 0) {
+//                                    $("#add").attr("disabled", false);
+//                                    continue;
+//                                }
+//                                if (rs[i].code == "600102" && rs[i].enable != 0) {
+//                                    $("#xiugai").attr("disabled", false);
+//                                    continue;
+//                                }
+//                                if (rs[i].code == "600103" && rs[i].enable != 0) {
+//                                    $("#shanchu").attr("disabled", false);
+//                                    continue;
+//                                }
+//                            }
+//                        }
+//
+//                    },
+//                    error: function () {
+//                        alert("提交失败！");
+//                    }
+//                });
 
                 flag = setInterval("dealsend()", 1000);
 
                 var bb = $(window).height() - 20;
-                console.log(bb);
-
                 $('#gravidaTable').bootstrapTable({
                     columns: [
                         {
@@ -269,6 +291,7 @@
                             },
                         }],
                     singleSelect: true,
+                    clickToSelect:true,
                     sortName: 'id',
                     locale: 'zh-CN', //中文支持,
                     showColumns: true,
@@ -281,12 +304,7 @@
                     showToggle: true,
                     // 设置默认分页为 50
                     pageList: [5, 10, 15, 20, 25],
-                    onLoadSuccess: function () {  //加载成功时执行  表格加载完成时 获取集中器在线状态
-                        console.info("加载成功");
-                        //                    console.log(websocket.readyState);
-                        //                    if (websocket != null && websocket.readyState == 1) {
-                        //
-                        //                    }
+                    onLoadSuccess: function (data) {  //加载成功时执行  表格加载完成时 获取集中器在线状态
                     },
                     url: 'test1.f5.h1.action',
                     //服务器url
@@ -408,35 +426,10 @@
                     return false;
                 }
 
+                var obj = $("#formadd").serializeObject();
 
-                //            if ($("#longitudem26d").val().trim() != "" && $("#longitudem26m").val().trim() != "" && $("#longitudem26s").val().trim() != "" && $("#latitudem26d").val().trim() != "" && $("#latitudem26m").val().trim() != "" && $("#latitudem26s").val().trim() != "") {
-                //                if ((!enforceInputFloat("longitudem26d")) || (!enforceInputFloat("longitudem26m")) || (!enforceInputFloat("longitudem26s")) || (!enforceInputFloat("latitudem26d")) || (!enforceInputFloat("latitudem26m")) || (!enforceInputFloat("latitudem26s")) || (!enforceInputLongitudeDegree($("#longitudem26d").val().trim())) || (!enforceInputLatitudeDegree($("#latitudem26d").val().trim())) || (!enforceInputLteSixty($("#longitudem26m").val().trim())) || (!enforceInputLteSixty($("#longitudem26s").val().trim())) || (!enforceInputLteSixty($("#latitudem26m").val().trim())) || (!enforceInputLteSixty($("#latitudem26s").val().trim()))) {
-                //                    layer.alert('经纬度非法!', {
-                //                        icon: 1,
-                //                        offset: 'center'
-                //                    });
-                //                    return false;
-                //                } else {
-                //                    $("#longitude").val(parseLongitudeLatitudeFloat(parseInt($("#longitudem26d").val().trim()), parseInt($("#longitudem26m").val().trim()), parseFloat($("#longitudem26s").val().trim())));
-                //                    $("#latitude").val(parseLongitudeLatitudeFloat(parseInt($("#latitudem26d").val().trim()), parseInt($("#latitudem26m").val().trim()), parseFloat($("#latitudem26s").val().trim())));
-                //                }
-                //            }
-
-                var name = $("#name").val();
-                var addr = $("#comaddr").val();
-
-                var model = $('#model').combobox('getValue');
                 var namesss = false;
-                $.ajax({
-                    async: false,
-                    cache: false,
-                    url: "test1.f5.queryGateway.action",
-                    type: "GET",
-                    data: {
-                        name: name,
-                        comaddr: addr,
-                        model: model
-                    },
+                $.ajax({async: false, cache: false, url: "test1.f5.queryGateway.action", type: "GET", data: obj,
                     success: function (data) {
                         var arrlist = data.rs;
                         if (arrlist.length == 1) {
@@ -447,21 +440,14 @@
                             namesss = false;
                             return;
                         } else if (arrlist.length == 0) {
+                            var latitudemstr = obj.latitudem26d + "." + obj.latitudem26m + "." + obj.latitudem26s;
+                            obj.latitude = latitudemstr;
+                            var longitudemstr = obj.longitudem26d + "." + obj.longitudem26m + "." + obj.longitudem26s;
+                            obj.longitude = longitudemstr;
 
-                            var jsondata = $("#eqpTypeForm").serializeObject();
-                            var latitudemstr = jsondata.latitudem26d + "." + jsondata.latitudem26m + "." + jsondata.latitudem26s;
-                            jsondata.latitude = latitudemstr;
-                            var longitudemstr = jsondata.longitudem26d + "." + jsondata.longitudem26m + "." + jsondata.longitudem26s;
-                            jsondata.longitude = longitudemstr;
-                            console.log(jsondata);
-                            $.ajax({
-                                async: false,
-                                cache: false,
-                                url: "test1.f5.addGateway.action",
-                                type: "GET",
-                                data: jsondata,
+                            $.ajax({async: false, cache: false, url: "test1.f5.addGateway.action", type: "GET", data: obj,
                                 success: function (data) {
-                                    namesss = true;
+                                    // namesss = true;
                                     $("#gravidaTable").bootstrapTable('refresh');
                                 },
                                 error: function () {
@@ -753,7 +739,8 @@
 
         <div id="dialog-add"  class="bodycenter"  style=" display: none" title="网关添加">
 
-            <form action="" method="POST" id="formadd" onsubmit="return checkAdd()">      
+            <form action="" method="POST" id="formadd" onsubmit="return checkAdd()">   
+                   <input id="id" name="id" type="hidden">
                 <table>
                     <tbody>
                         <tr>
@@ -796,7 +783,7 @@
                         <tr>
                             <td>
                                 <span style="margin-left:20px;">安装位置</span>&nbsp;
-                                <input id="roadaddr" class="form-control" name="roadaddr" style="width:150px;display: inline;" placeholder="请输入网关位置" type="text">
+                                <input id="setupaddr" class="form-control" name="setupaddr" style="width:150px;display: inline;" placeholder="请输入网关位置" type="text">
                             </td>
 
                             <td></td>
@@ -813,7 +800,7 @@
                                 <span class="menuBox">
 
 
-                                    <select class="easyui-combobox" id="switch" name="connecttype" data-options='editable:false' style="width:150px; height: 30px">
+                                    <select class="easyui-combobox" id="connecttype" name="connecttype" data-options='editable:false' style="width:150px; height: 30px">
                                         <option value="0" selected="true">GPRS</option>
                                         <option value="1">网线</option>    
                                         <option value="2">485</option>           
@@ -866,17 +853,15 @@
         </div>
 
         <div id="dialog-edit"  class="bodycenter" style=" display: none"  title="网关修改">
-            <form action="" method="POST" id="form2" onsubmit="return modifyLoopName()">  
+            <form action="" method="POST" id="form2" onsubmit="return editComplete()">  
                 <table>
                     <tbody>
-
-
 
                         <tr>
                             <td>
                                 <span style="margin-left:20px;">网关名称</span>&nbsp;
-                                <input id="name_" class="form-control" name="name_" style="width:150px;display: inline;" placeholder="请输入网关名称" type="text">
-                                <input id="id_" name="id_" type="hidden">
+                                <input id="name_" class="form-control" name="name" style="width:150px;display: inline;" placeholder="请输入网关名称" type="text">
+                                <input id="id_" name="id" type="hidden">
                             </td>
                             <td>
 
@@ -887,7 +872,7 @@
 
                                 <span class="menuBox">
 
-                                    <input id="model_" class="easyui-combobox" name="model_" style="width:150px; height: 30px" data-options="editable:true,valueField:'id', textField:'text',url:'test1.f5.h2.action'" />
+                                    <input id="model_" class="easyui-combobox" name="model" style="width:150px; height: 30px" data-options="editable:true,valueField:'id', textField:'text',url:'test1.f5.h2.action'" />
 
                                 </span>
                             </td>
@@ -895,13 +880,13 @@
                         <tr>
                             <td>
                                 <span style="margin-left:20px;">安装位置</span>&nbsp;
-                                <input id="roadaddr_" class="form-control" name="roadaddr_" style="width:150px;display: inline;" placeholder="请输入网关位置" type="text">
+                                <input id="setupaddr_" class="form-control" name="setupaddr" style="width:150px;display: inline;" placeholder="请输入网关位置" type="text">
                             </td>
 
                             <td></td>
                             <td>
                                 <span style="margin-left:10px;">网关地址&nbsp;</span>
-                                <input id="comaddr_" readonly="true"  class="form-control" name="comaddr_" style="width:150px;display: inline;" placeholder="请输入网关地址" type="text"></td>
+                                <input id="comaddr_" readonly="true"  class="form-control" name="comaddr" style="width:150px;display: inline;" placeholder="请输入网关地址" type="text"></td>
                         </tr>
                         <tr>
                             <td>
@@ -909,10 +894,10 @@
 
 
                                 <span class="menuBox">
-                                    <select name="connecttype_" id="connecttype_" class="input-sm" style="width:150px;">
-                                        <option value="GPRS" selected="selected">GPRS</option>
-                                        <option value="net" selected="selected">网线</option>
-                                        <option value="485" selected="selected">485</option>
+                                    <select class="easyui-combobox" id="connecttype_" name="connecttype" data-options='editable:false' style="width:150px; height: 30px">
+                                        <option value="0" selected="true">GPRS</option>
+                                        <option value="1">网线</option>    
+                                        <option value="2">485</option>           
                                     </select>
                                 </span>
 
@@ -921,20 +906,20 @@
                             <td></td>
                             <td>
                                 <span style="margin-left:10px;">倍&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;率&nbsp;</span>
-                                <input id="powerrate_" class="form-control" name="powerrate_" style="width:150px;display: inline;" placeholder="请输入倍率" type="text"></td>
+                                <input id="multpower_" class="form-control" name="multpower" style="width:150px;display: inline;" placeholder="请输入倍率" type="text"></td>
                         </tr>
                         <tr>
                             <td>
                                 <span style="margin-left:20px;">区域经度</span>&nbsp;
-                                <input id="longitudem26d_" class="form-control" name="longitudem26d_" style="width:51px;display: inline;" type="text">&nbsp;°
-                                <input id="longitudem26m_" class="form-control" name="longitudem26m_" style="width:45px;display: inline;" type="text">&nbsp;'
-                                <input id="longitudem26s_" class="form-control" name="longitudem26s_" style="width:45px;display: inline;" type="text">&nbsp;"</td>
+                                <input id="longitudem26d_" class="form-control" name="longitudem26d" style="width:51px;display: inline;" type="text">&nbsp;°
+                                <input id="longitudem26m_" class="form-control" name="longitudem26m" style="width:45px;display: inline;" type="text">&nbsp;'
+                                <input id="longitudem26s_" class="form-control" name="longitudem26s" style="width:45px;display: inline;" type="text">&nbsp;"</td>
                             <td></td>
                             <td>
                                 <span style="margin-left:10px;">区域纬度&nbsp;</span>
-                                <input id="latitudem26d_" class="form-control" name="latitudem26d_" style="width:51px;display: inline;" type="text">&nbsp;°
-                                <input id="latitudem26m_" class="form-control" name="latitudem26m_" style="width:45px;display: inline;" type="text">&nbsp;'
-                                <input id="latitudem26s_" class="form-control" name="latitudem26s_" style="width:45px;display: inline;" type="text">&nbsp;"</td>
+                                <input id="latitudem26d_" class="form-control" name="latitudem26d" style="width:51px;display: inline;" type="text">&nbsp;°
+                                <input id="latitudem26m_" class="form-control" name="latitudem26m" style="width:45px;display: inline;" type="text">&nbsp;'
+                                <input id="latitudem26s_" class="form-control" name="latitudem26s" style="width:45px;display: inline;" type="text">&nbsp;"</td>
                         </tr>
 
                     </tbody>
