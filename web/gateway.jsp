@@ -36,7 +36,12 @@
             var vvvv = 0;
             var flag = null;
 
-
+            function layerAler(str) {
+                layer.alert(str, {
+                    icon: 6,
+                    offset: 'center'
+                });
+            }
             function getMessage(obj) {
                 console.log("getMessage");
                 console.log(obj);
@@ -107,14 +112,11 @@
 
             function  editComplete() {
                 var obj = $("#form2").serializeObject();
-
-
                 var latitudemstr = obj.latitudem26d + "." + obj.latitudem26m + "." + obj.latitudem26s;
                 obj.latitude = latitudemstr;
                 var longitudemstr = obj.longitudem26d + "." + obj.longitudem26m + "." + obj.longitudem26s;
                 obj.longitude = longitudemstr;
                 console.log(obj);
-
                 $.ajax({async: false, cache: false, url: "test1.gayway.modifyGateway.action", type: "GET", data: obj,
                     success: function (data) {
                         // namesss = true;
@@ -324,31 +326,20 @@
                     flag = setInterval("dealsend()", 1000);
                 });
 
-                $('#gravidaTable').on("click-row.bs.table", function (e, row, element) {
-                });
-                $("#gravidaTable").on('click-cell.bs.table', function (field, value, row, element) {
-                    if (value == "online") {
-                    }
-
-                })
-
-
-
-
                 $("#shanchu").click(function () {
 
                     var selects = $('#gravidaTable').bootstrapTable('getSelections');
-                    console.log(selects);
-                    var num = ""
-                    if (selects.length == 1) {
-                        num = selects[0];
-                    } else {
-                        for (var i = 0; i < selects.length; i++) {
-                            num += selects[i].id + ",";
-                        }
-                    }
+                    var num = selects.length;
+//                    console.log(selects);
+//                    var num = ""
+//                    if (selects.length == 1) {
+//                        num = selects[0];
+//                    } else {
+//                        for (var i = 0; i < selects.length; i++) {
+//                            num += selects[i].id + ",";
+//                        }
+//                    }
 
-                    console.log(num);
                     if (num == 0) {
                         layer.alert('请选择您要删除的记录', {
                             icon: 6,
@@ -361,43 +352,36 @@
                             offset: 'center',
                             title: '提示'
                         }, function (index) {
-
-                            if (selects.length == 1) {
-
-                                $.ajax({
-                                    url: "test1.f5.deleteGateway.action",
-                                    type: "POST",
-                                    datatype: "JSON",
-                                    data: {
-                                        id: num.id
-                                    },
-                                    success: function (data) {
-                                        var arrlist = data.rs;
-                                        if (arrlist.length == 1) {
-                                            layer.open({
-                                                content: '删除成功',
-                                                icon: 1,
-                                                yes: function (index, layero) {
-                                                    $("#gravidaTable").bootstrapTable('refresh');
-                                                    layer.close(index);
-                                                    // layer.close(index) window.parent.document.getElementsByClassName('J_iframe')[0].src = "device/gatewayConfig.action";
+                            var o = {l_comaddr: selects[0].comaddr, id: selects[0].id};
+                            $.ajax({url: "test1.gayway.existcomaddr.action", async: false, type: "POST", datatype: "JSON", data: o,
+                                success: function (data) {
+                                    if (data.length >= 1) {
+                                        layerAler("此网关在灯具或回路有数据,请先清空回路和灯具的网关");
+                                    } else if (data.length == 0) {
+                                        $.ajax({url: "test1.f5.deleteGateway.action", type: "POST", datatype: "JSON", data: o,
+                                            success: function (data) {
+                                                var arrlist = data.rs;
+                                                if (arrlist.length == 1) {
+                                                    layer.open({content: '删除成功', icon: 1,
+                                                        yes: function (index, layero) {
+                                                            $("#gravidaTable").bootstrapTable('refresh');
+                                                            layer.close(index);
+                                                            // layer.close(index) window.parent.document.getElementsByClassName('J_iframe')[0].src = "device/gatewayConfig.action";
+                                                        }
+                                                    });
                                                 }
-                                            });
-                                        }
-                                        layer.close(index);
-                                        //                                    
-                                    },
-                                    error: function () {
-                                        alert("提交失败！");
-                                    }
-                                });
-                            } else {
-                                layer.alert('只能选择一行进行修改', {
-                                    icon: 6,
-                                    offset: 'center'
-                                });
-                            }
 
+                                                //                                    
+                                            },
+                                            error: function () {
+                                                alert("提交失败！");
+                                            }
+                                        });
+                                    }
+                                }
+
+                            });
+                            layer.close(index);
 
                         });
                     }
@@ -444,7 +428,10 @@
                             obj.latitude = latitudemstr;
                             var longitudemstr = obj.longitudem26d + "." + obj.longitudem26m + "." + obj.longitudem26s;
                             obj.longitude = longitudemstr;
-
+                            obj.latitude = obj.latitude == ".." ? "" : obj.latitude;
+                            obj.longitude = obj.longitude == ".." ? "" : obj.longitude;
+                            obj.multpower = obj.multpower == "" ? 0 : obj.multpower;
+                            console.log(obj);
                             $.ajax({async: false, cache: false, url: "test1.f5.addGateway.action", type: "GET", data: obj,
                                 success: function (data) {
                                     // namesss = true;
@@ -549,8 +536,10 @@
 
                                 <span class="menuBox">
 
-                                    <input id="model" class="easyui-combobox" name="model" style="width:150px; height: 30px" data-options="editable:true,valueField:'id', textField:'text',url:'test1.f5.h2.action'" />
-
+                                    <!--<input id="model" class="easyui-combobox" readonly="true" name="model" style="width:150px; height: 30px" data-options="editable:false" />-->
+                                    <select class="easyui-combobox" readonly="true" id="model" name="model" style="width:150px; height: 30px">
+                                        <option value="lc001">lc001</option>
+                                    </select>
                                 </span>
                             </td>
                         </tr>
@@ -646,8 +635,10 @@
 
                                 <span class="menuBox">
 
-                                    <input id="model_" class="easyui-combobox" name="model" style="width:150px; height: 30px" data-options="editable:true,valueField:'id', textField:'text',url:'test1.f5.h2.action'" />
-
+                                    <!--<input id="model_" class="easyui-combobox" name="model" style="width:150px; height: 30px" data-options="editable:true,valueField:'id', textField:'text',url:'test1.f5.h2.action'" />-->
+                                    <select class="easyui-combobox" readonly="true" id="model_" name="model" style="width:150px; height: 30px">
+                                        <option value="lc001">lc001</option>
+                                    </select>
                                 </span>
                             </td>
                         </tr>

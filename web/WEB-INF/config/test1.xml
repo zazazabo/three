@@ -5,7 +5,7 @@
         </xhand>
         <xhand id="h2" rtnype="JSON">
         </xhand>
-    </xform>
+    </xform>  
     
     <xform desc="图表模块" id="main">
         <xhandle desc="查询历史数据报表" id="queryData" rtnype="JSON">
@@ -405,6 +405,15 @@
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT  comaddr as id,comaddr as text,name FROM t_baseinfo tl " var="list">
             </xsql>
         </xhandle>
+
+        <xhandle desc="回路和灯具是否存在网关" id="existcomaddr" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl=" SELECT * FROM (SELECT l_comaddr FROM t_lamp t1 UNION SELECT l_comaddr FROM t_loop t2) AS v WHERE @CONDITION  " var="list">
+                <xflt id="CONDITION" tpl="@l_comaddr ">
+                    <xfltpara id="l_comaddr" nrp="1=0" para="l_comaddr" sql="l_comaddr =  ':l_comaddr' ">
+                    </xfltpara>
+                </xflt>
+            </xsql>
+        </xhandle>
     </xform>
 
     <xform desc="回路模块" id="loop">
@@ -414,7 +423,11 @@
         </xhandle>
         
       <xhandle desc="" id="getLoopList" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT tl.id as uid,* FROM t_baseinfo tb,t_loop tl WHERE tb.comaddr = tl.l_comaddr " var="bootstrap">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT * FROM  t_loop tl where @CONDITION   " var="bootstrap">
+                 <xflt id="CONDITION" nrp="" tpl="@l_comaddr ">
+                    <xfltpara id="l_comaddr" nrp="1=1" para="l_comaddr" sql="l_comaddr =  ':l_comaddr' ">
+                    </xfltpara>
+                </xflt>
             </xsql>
       </xhandle>
 

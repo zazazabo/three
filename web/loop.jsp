@@ -163,19 +163,21 @@
                 }
                 var select = selects[0];
                 console.log(select);
+                
                 $("#l_code1").val(select.l_code);
                 $("#l_comaddr1").combobox('setValue', select.l_comaddr);
                 $("#l_deployment").val(select.l_deplayment);
                 $("#comaddrname1").val(select.name);
                 $("#l_name1").val(select.l_name);
 
-                $("#hide_id").val(select.uid);
+                $("#hide_id").val(select.id);
                 $('#l_worktype1').combobox('setValue', select.l_worktype);
                 $("#l_groupe1").combobox('setValue', select.l_groupe);
                 if (select.l_deplayment == "1") {
-                    $("#l_groupe1").attr('readonly', true);
+      
+                    $("#l_groupe1").combobox('readonly',true);
                 } else if (select.l_deplayment == "0") {
-                    $("#l_groupe1").attr('readonly', false);
+                    $("#l_groupe1").combobox('readonly',false);
                 }
 
                 $('#dialog-edit').dialog('open');
@@ -417,7 +419,7 @@
                                 layerAler("已部署不能删除");
                                 continue;
                             } else {
-                                $.ajax({url: "test1.loop.deleteLoop.action", type: "POST", datatype: "JSON", data: {id: select.uid},
+                                $.ajax({url: "test1.loop.deleteLoop.action", type: "POST", datatype: "JSON", data: {id: select.id},
                                     success: function (data) {
                                         var arrlist = data.rs;
                                         if (arrlist.length == 1) {
@@ -524,28 +526,31 @@
                     <tbody>
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">网关名称</span>&nbsp;
-                                <input id="comaddrname" readonly="true"   class="form-control"  name="comaddrname" style="width:150px;display: inline;" placeholder="请输入网关名称" type="text"></td>
-                            <td></td>
-                            <td>
-                                <span style="margin-left:10px;">网关地址&nbsp;</span>
+                                                          <span style="margin-left:20px;">网关地址&nbsp;</span>
                                 <span class="menuBox">
 
                                     <input id="comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 
                                            data-options='editable:false,valueField:"id", textField:"text"' />
                                 </span>  
+                                                          
+                          
+                            <td></td>
+                            <td>
+            <span style="margin-left:10px;">网关名称</span>&nbsp;
+                                <input id="comaddrname" readonly="true"   class="form-control"  name="comaddrname" style="width:150px;display: inline;" placeholder="请输入网关名称" type="text"></td>
 
                             </td>
                         </tr>
 
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">回路名称</span>&nbsp;
-                                <input id="l_name" class="form-control"  name="l_name" style="width:150px;display: inline;" placeholder="请输入回路名称" type="text"></td>
+                                          <span style="margin-left:20px;">回路编号&nbsp;</span>
+                                <input id="l_code" class="form-control" name="l_code" style="width:150px;display: inline;" placeholder="请输入回路名称" type="text">
+                                
                             <td></td>
                             <td>
-                                <span style="margin-left:10px;">回路编号&nbsp;</span>
-                                <input id="l_code" class="form-control" name="l_code" style="width:150px;display: inline;" placeholder="请输入回路名称" type="text">
+                      <span style="margin-left:10px;">回路名称</span>&nbsp;
+                                <input id="l_name" class="form-control"  name="l_name" style="width:150px;display: inline;" placeholder="请输入回路名称" type="text"></td>
                             </td>
                             </td>
                         </tr>                                   
@@ -556,7 +561,7 @@
                                 <span class="menuBox">
                                     <select class="easyui-combobox" id="switch" name="l_worktype" data-options='editable:false' style="width:150px; height: 30px">
                                         <option value="0" selected="true">走时间</option>
-                                        <option value="1">走经纬度</option>           
+                                        <!--<option value="1">走经纬度</option>-->           
                                     </select>
                                 </span>
 
@@ -592,29 +597,33 @@
                     <tbody>
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">网关名称</span>&nbsp;
-                                <input id="comaddrname1" readonly="true"   class="form-control"  name="comaddrname" style="width:150px;display: inline;" placeholder="请输入网关名称" type="text">
-                            </td>
-                            <td></td>
-                            <td>
-                                <span style="margin-left:10px;">网关地址&nbsp;</span>
+
+                                <span style="margin-left:20px;">网关地址&nbsp;</span>
                                 <span class="menuBox">
 
                                     <input id="l_comaddr1" readonly="true" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 
                                            data-options='editable:false,valueField:"id", textField:"text"' />
                                 </span>  
 
+
+                            </td>
+                            <td></td>
+                            <td>
+                                <span style="margin-left:10px;">网关名称</span>&nbsp;
+                                <input id="comaddrname1" readonly="true"   class="form-control"  name="comaddrname" style="width:150px;display: inline;" placeholder="请输入网关名称" type="text">
+
                             </td>
                         </tr>
 
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">回路名称</span>&nbsp;
-                                <input id="l_name1" class="form-control"   name="l_name" style="width:150px;display: inline;" placeholder="请输入回路名称" type="text"></td>
+                                <span style="margin-left:20px;">回路编号&nbsp;</span>
+                                <input id="l_code1" readonly="true" class="form-control" name="l_code"  style="width:150px;display: inline;" placeholder="回路编号" type="text">
+
                             <td></td>
                             <td>
-                                <span style="margin-left:10px;">回路编号&nbsp;</span>
-                                <input id="l_code1" readonly="true" class="form-control" name="l_code"  style="width:150px;display: inline;" placeholder="回路编号" type="text">
+                                <span style="margin-left:10px;">回路名称</span>&nbsp;
+                                <input id="l_name1" class="form-control"   name="l_name" style="width:150px;display: inline;" placeholder="请输入回路名称" type="text"></td>
                             </td>
                             </td>
                         </tr>                                   
@@ -623,23 +632,22 @@
 
                                 <span style="margin-left:20px;">控制方式</span>&nbsp;
                                 <span class="menuBox">
-                                    <select class="easyui-combobox" id="l_worktype1" name="l_worktype" data-options='editable:false' style="width:150px; height: 30px">
+                                    <select class="easyui-combobox" readonly="true" id="l_worktype1" name="l_worktype" data-options='editable:false' style="width:150px; height: 30px">
                                         <option value="0" selected="true">走时间</option>
-                                        <option value="1">走经纬度</option>           
+                                        <!--<option value="1">走经纬度</option>-->           
                                     </select>
                                 </span>
 
                             </td>
                             <td>
-                                <span style=" margin-left: 10px;" class="label label-success" onclick="switchWorkType()" >切换控制方式</span>
-
+                                <!--<span style=" margin-left: 10px;" class="label label-success" onclick="switchWorkType()" >切换控制方式</span>-->
                             </td>
                             <td>
 
 
                                 <span style="margin-left:10px;">所属组号</span>&nbsp;
                                 <span class="menuBox">
-                                    <select class="easyui-combobox" id="l_groupe1" name="l_groupe"  data-options='editable:false,valueField:"id", textField:"text"' style="width:150px; height: 30px">          
+                                    <select class="easyui-combobox" readonly="true" id="l_groupe1" name="l_groupe"  data-options='editable:false,valueField:"id", textField:"text"' style="width:150px; height: 30px">          
                                     </select>
                                 </span>
                             </td>
