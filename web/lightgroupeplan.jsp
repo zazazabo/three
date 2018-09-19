@@ -41,7 +41,7 @@
                 console.log(user);
                 parent.parent.sendData(user);
             }
-            
+
             function deployPlan(obj) {
                 console.log(obj)
                 if (obj.status == "fail") {
@@ -213,8 +213,72 @@
             }
             function setLampTimePlanCB(obj) {
                 console.log(obj);
+
+
+
 //                               console.log(obj)
                 if (obj.status == "success") {
+                    if (obj.fn == 140) {
+                        var a = $("#form1").serializeObject();
+                        var obj1 = {"time": a.time1, "value": parseInt(a.val1)};
+                        var obj2 = {"time": a.time2, "value": parseInt(a.val2)};
+                        var obj3 = {"time": a.time3, "value": parseInt(a.val3)};
+                        var obj4 = {"time": a.time4, "value": parseInt(a.val4)};
+                        var obj5 = {"time": a.time5, "value": parseInt(a.val5)};
+                        var obj6 = {"time": a.time6, "value": parseInt(a.val6)};
+
+                        a.p_time1 = JSON.stringify(obj1);
+                        a.p_time2 = JSON.stringify(obj2);
+                        a.p_time3 = JSON.stringify(obj3);
+                        a.p_time4 = JSON.stringify(obj4);
+                        a.p_time5 = JSON.stringify(obj5);
+                        a.p_time6 = JSON.stringify(obj6);
+                        $.ajax({async: false, url: "test1.plan.editlamp.action", type: "get", datatype: "JSON", data: a,
+                            success: function (data) {
+                                var arrlist = data.rs;
+                                if (arrlist.length == 1) {
+                                    $('#p_plan').combobox('reload');
+                                    // $('#p_plan').combobox('setValue', a.p_code);
+                                }
+                            },
+                            error: function () {
+                                alert("提交失败！");
+                            }
+                        });
+                    } else if (obj.fn == 480) {
+                        var a = $("#form1").serializeObject();
+                        console.log(a);
+                        var o = {};
+                        for (var i = 0; i < 8; i++) {
+                            var f = "p_scene" + (i + 1).toString();
+                            var num = "__num" + (i + 1).toString();
+                            var val = "__val" + (i + 1).toString();
+                            var o1 = {"num": a[num], "value": a[val]};
+                            o[f] = JSON.stringify(o1);
+                        }
+
+
+                        var ret = false;
+                        $.ajax({async: false, url: "test1.plan.editlampscene.action", type: "get", datatype: "JSON", data: o,
+                            success: function (data) {
+                                var arrlist = data.rs;
+                                if (arrlist.length == 1) {
+                                    $('#p_plan').combobox('reload');
+                                }
+                            },
+                            error: function () {
+                                alert("提交失败！");
+                            }
+                        });
+
+                    }
+
+
+
+
+
+
+
 
                 }
             }
@@ -244,10 +308,10 @@
                             var t0 = 20 + (i * 3);
                             var t1 = 20 + (i * 3) + 1;
                             var t2 = 20 + (i * 3) + 2;
-                            var time=sprintf("%02x:%02x",data[t1],data[t0]);
+                            var time = sprintf("%02x:%02x", data[t1], data[t0]);
                             $("#time" + (i + 1).toString()).timespinner('setValue', time);
-                            $("#val" + (i + 1).toString()).val(data[t2].toString());     
-                                  
+                            $("#val" + (i + 1).toString()).val(data[t2].toString());
+
                         }
 
                     }
@@ -335,6 +399,7 @@
                 }
 
                 if (v == "1") {
+                    console.log('部署分组场景方案');
                     var vv = [];
                     vv.push(1);
                     vv.push(parseInt(s.l_groupe));
@@ -357,7 +422,7 @@
 
             $(function () {
                 $('#l_comaddr').combobox({
-                      onLoadSuccess: function (data) {
+                    onLoadSuccess: function (data) {
                         if (Array.isArray(data) && data.length > 0) {
                             $(this).combobox('select', data[0].id);
 
@@ -381,7 +446,7 @@
                     formatter: function (row) {
                         var v1 = row.p_type == 0 ? "(时间)" : "(场景)";
                         var v = row.text + v1;
-                        row.id = row.id + v1;
+                        row.id = row.id;
                         row.text = v;
                         var opts = $(this).combobox('options');
                         return row[opts.textField];
@@ -395,11 +460,13 @@
                         }
                     },
                     onSelect: function (record) {
+                        console.log(record);
                         $('#type' + record.p_type).show();
-
                         var v = 1 - parseInt(record.p_type);
                         $('#type' + v.toString()).hide();
                         $('#p_type').val(record.p_type);
+                        $('#p_name').val(record.p_name);
+                        $('#p_code').val(record.id);
                         if (record.p_type == 0) {
                             for (var i = 0; i < 6; i++) {
                                 var a = "p_time" + (i + 1).toString();
@@ -445,6 +512,7 @@
 
                 $('#gravidaTable').bootstrapTable({
                     url: 'test1.plan.GroupeLamp.action',
+                    clickToSelect: true,
                     columns: [
                         {
                             title: '单选',
@@ -468,79 +536,83 @@
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
-                                return  value.toString();
+                                if (value != null) {
+                                    return  value.toString();
+                                }
+
                             }
-                        },
-                        {
-                            field: 'l_plan',
-                            title: '方案',
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
-                            field: 'l_content',
-                            title: '内容',
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle',
-                            formatter: function (value, row, index, field) {
-                                row.p_code = row.l_plan;
-                                var str = "";
-                                $.ajax({async: false, url: "test1.plan.getPlanContent.action", type: "get", datatype: "JSON", data: row,
-                                    success: function (data) {
-                                        var arrlist = data.rs;
-                                        if (arrlist.length == 1) {
-                                            var param = arrlist[0];
-                                            row.detail = param;
-                                            if (param.p_type == 0) {
-                                                var time1 = param.p_time1;
-                                                var time2 = param.p_time2;
-                                                var time3 = param.p_time3;
-                                                var time4 = param.p_time4;
-                                                var time5 = param.p_time5;
-                                                var time6 = param.p_time6;
-
-                                                if (isJSON(time1)) {
-                                                    var obj = eval('(' + time1 + ')');
-                                                    str = str + obj.time + "=" + obj.value + " | ";
-                                                }
-                                                if (isJSON(time2)) {
-                                                    var obj = eval('(' + time2 + ')');
-                                                    str = str + obj.time + "=" + obj.value + " | ";
-                                                }
-                                                if (isJSON(time3)) {
-                                                    var obj = eval('(' + time3 + ')');
-                                                    str = str + obj.time + "=" + obj.value + " | ";
-                                                }
-                                                if (isJSON(time4)) {
-                                                    var obj = eval('(' + time4 + ')');
-                                                    str = str + obj.time + "=" + obj.value + " | ";
-                                                }
-                                                if (isJSON(time5)) {
-                                                    var obj = eval('(' + time5 + ')');
-                                                    str = str + obj.time + "=" + obj.value + " | ";
-                                                }
-                                                if (isJSON(time5)) {
-                                                    var obj = eval('(' + time5 + ')');
-                                                    str = str + obj.time + "=" + obj.value + " | ";
-                                                }
-
-                                            }
-
-
-                                            // $("#table_loop").bootstrapTable('refresh');
-                                            // console.log(data);
-                                        }
-                                    },
-                                    error: function () {
-                                        alert("提交失败！");
-                                    }
-                                });
-
-                                return  str;
-//                                console.log(row.l_plan);
-                            }
-                        }],
+                        }
+//                        {
+//                            field: 'l_plan',
+//                            title: '方案',
+//                            width: 25,
+//                            align: 'center',
+//                            valign: 'middle'
+//                        }, {
+//                            field: 'l_content',
+//                            title: '内容',
+//                            width: 25,
+//                            align: 'center',
+//                            valign: 'middle',
+//                            formatter: function (value, row, index, field) {
+//                                row.p_code = row.l_plan;
+//                                var str = "";
+//                                $.ajax({async: false, url: "test1.plan.getPlanContent.action", type: "get", datatype: "JSON", data: row,
+//                                    success: function (data) {
+//                                        var arrlist = data.rs;
+//                                        if (arrlist.length == 1) {
+//                                            var param = arrlist[0];
+//                                            row.detail = param;
+//                                            if (param.p_type == 0) {
+//                                                var time1 = param.p_time1;
+//                                                var time2 = param.p_time2;
+//                                                var time3 = param.p_time3;
+//                                                var time4 = param.p_time4;
+//                                                var time5 = param.p_time5;
+//                                                var time6 = param.p_time6;
+//
+//                                                if (isJSON(time1)) {
+//                                                    var obj = eval('(' + time1 + ')');
+//                                                    str = str + obj.time + "=" + obj.value + " | ";
+//                                                }
+//                                                if (isJSON(time2)) {
+//                                                    var obj = eval('(' + time2 + ')');
+//                                                    str = str + obj.time + "=" + obj.value + " | ";
+//                                                }
+//                                                if (isJSON(time3)) {
+//                                                    var obj = eval('(' + time3 + ')');
+//                                                    str = str + obj.time + "=" + obj.value + " | ";
+//                                                }
+//                                                if (isJSON(time4)) {
+//                                                    var obj = eval('(' + time4 + ')');
+//                                                    str = str + obj.time + "=" + obj.value + " | ";
+//                                                }
+//                                                if (isJSON(time5)) {
+//                                                    var obj = eval('(' + time5 + ')');
+//                                                    str = str + obj.time + "=" + obj.value + " | ";
+//                                                }
+//                                                if (isJSON(time5)) {
+//                                                    var obj = eval('(' + time5 + ')');
+//                                                    str = str + obj.time + "=" + obj.value + " | ";
+//                                                }
+//
+//                                            }
+//
+//
+//                                            // $("#table_loop").bootstrapTable('refresh');
+//                                            // console.log(data);
+//                                        }
+//                                    },
+//                                    error: function () {
+//                                        alert("提交失败！");
+//                                    }
+//                                });
+//
+//                                return  str;
+////                                console.log(row.l_plan);
+//                            }
+//                        }
+                    ],
                     singleSelect: false,
                     sortName: 'id',
                     locale: 'zh-CN', //中文支持,
@@ -570,23 +642,6 @@
                 });
 
 
-
-//                $('#l_groupe').combobox({
-//                    onSelect: function (record) {
-//                        var obj = $("#tosearch").serializeObject();
-//                        obj.l_groupe = record.id;
-//                        obj.l_deplayment = 1;
-//                        console.log(obj);
-//                        var opt = {
-//                            url: "test1.lamp.Groupe.action",
-//                            silent: true,
-//                            query: obj
-//                        };
-//                        $("#gravidaTable").bootstrapTable('refresh', opt);
-//                    }
-//                });
-
-
             })
 
 
@@ -597,6 +652,8 @@
 
         <form id="form1">
             <input name="p_type" type="hidden" id="p_type" />
+            <input name="p_code" type="hidden" id="p_code" />
+            <input name="p_name" type="hidden" id="p_name" />
             <div class="row">
                 <div class="col-xs-6">
 

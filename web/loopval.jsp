@@ -13,77 +13,54 @@
         <script type="text/javascript" src="js/genel.js"></script>
         <script>
 
-            function loopVal(obj) {
+            function switchloopCB(obj) {
                 console.log(obj);
                 if (obj.status == "success") {
-                    var ar = obj.parama;
-                    for (var i = 0; i < ar.length; i++) {
-                        var o1 = {};
-                        var o = ar[i];
-                        o1.id = ar[i];
-                        o1.l_switch = obj.type;
-                        $.ajax({async: false, url: "test1.loop.modifySwitch.action", type: "get", datatype: "JSON", data: o1,
-                            success: function (data) {
-                                $("#gravidaTable").bootstrapTable('refresh');
-                            },
-                            error: function () {
-                                alert("提交失败！");
-                            }
-                        });
-
-                    }
+                    var param = obj.param;
+                    var o = {};
+                    o.id = param.id;
+                    o.l_switch = obj.val;
+                    $.ajax({async: false, url: "test1.loop.modifySwitch.action", type: "get", datatype: "JSON", data: o,
+                        success: function (data) {
+                            $("#gravidaTable").bootstrapTable('updateCell', {index: param.row, field: "l_switch", value: obj.val});
+                            //$("#gravidaTable").bootstrapTable('refresh');
+                        },
+                        error: function () {
+                            alert("提交失败！");
+                        }
+                    });
                 }
             }
-            function dealsend(data, type) {
-                var selects = $('#gravidaTable').bootstrapTable('getSelections');
-                var comaddr1 = $("#l_comaddr").combobox('getValue');
-                var arr = new Array();
-                for (var i = 0; i < selects.length; i++) {
-                    arr.push(selects[i].id);
-                }
-                var user = new Object();
-                 user.begin = '6A'
-                user.res = 1;
-                user.afn = 208;
-                user.status = "";
-                user.function = "loopVal";
-                user.parama = arr;
-                user.page = 2;
-                user.type = type;    //0移除   1是部署
-                user.msg = "A5";        //A5
-                user.res = 1;
-                user.addr = getComAddr(comaddr1); //"02170101";
-                user.data = data;
-                 user.end = '6A';
-                parent.parent.sendData(user);
-            }
-
             function switchloop() {
-                var comaddr = $("#l_comaddr").combobox('getValue');
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
-
-                var switchval = $("#switch").combobox('getValue');
-
-                var vv = new Array();
                 if (selects.length == 0) {
                     layerAler("请勾选表格数据");
                     return;
                 }
                 var select = selects[0];
-                if (select.l_deplayment == 0) {
-                    layerAler("请先部署上回路");
-                    return;
-                }
 
-                var setcode = select.l_code;
-                var dd = get2byte(setcode);
-                var set1 = Str2BytesH(dd);
-                vv.push(set1[1]);
-                vv.push(set1[0]); //装置序号  2字节
+                var comaddr = select.l_comaddr;
+                var switchval = $("#switch").combobox('getValue');
+
+                var vv = new Array();
+                var c = parseInt(select.l_code);
+                var h = c >> 8 & 0x00ff;
+                var l = c & 0x00ff;
+                vv.push(l);
+                vv.push(h); //装置序号  2字节
+
                 vv.push(parseInt(switchval));
                 var num = randnum(0, 9) + 0x70;
-                var sss = buicode(comaddr, 0x04, 0xA5, num, 0, 208, vv); //0320    
-                dealsend(sss, switchval);
+                var param = {};
+
+                param.row = select.index;
+                param.id = select.id;
+
+                var data = buicode(comaddr, 0x04, 0xA5, num, 0, 208, vv); //01 03 F24     
+                dealsend2(data, 302, "switchloopCB", comaddr, 0, param, switchval);
+
+//                var sss = buicode(comaddr, 0x04, 0xA5, num, 0, 208, vv); //0320    
+//                dealsend(sss, switchval);
             }
 
             function layerAler(str) {
@@ -93,8 +70,35 @@
                 });
             }
 
-            $(function () {
+            function dealsend2(data, fn, func, comaddr, type, param, val) {
+                var user = new Object();
+                user.begin = '6A';
+                user.res = 1;
+                user.status = "";
+                user.comaddr = comaddr;
+                user.fn = fn;
+                user.function = func;
+                user.param = param;
+                user.page = 2;
+                user.msg = "A5";
+                user.res = 1;
+                user.val = val;
+                user.type = type;
+                user.addr = getComAddr(comaddr); //"02170101";
+                user.data = data;
+                user.len = data.length;
+                user.end = '6A';
+                console.log(user);
+                parent.parent.sendData(user);
+            }
 
+
+            $(function () {
+                $('#gravidaTable').on("check.bs.table", function (field, value, row, element) {
+                    var index = row.data('index');
+                    value.index = index;
+                    console.log(value);
+                });
 
                 $('#gravidaTable').bootstrapTable({
                     columns: [

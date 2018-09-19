@@ -96,7 +96,7 @@
 
                     $("#l_groupe1").combobox("readonly", true);
                     $("#l_worktype1").combobox("readonly", true);
-                } else if (s.l_deplayment == "0") {
+                } else {
                     $("#trlamp").hide();
                     $("#trlamp1").hide();
                     $("#l_groupe1").combobox("readonly", false);
@@ -339,14 +339,6 @@
                 });
 
 
-
-
-
-
-
-
-
-
 //                
 //                
 //                $("#add").attr("disabled", true);
@@ -460,7 +452,10 @@
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
-                                return value.toString();
+                                if (value != null) {
+                                    return value.toString();
+                                }
+
                             }
                         }, {
                             field: 'l_code',

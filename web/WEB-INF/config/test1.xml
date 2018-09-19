@@ -182,12 +182,19 @@
 
         <xhandle desc="修改灯具方案时间" id="editlamp" rtn="rs" rtnype="JSON">
             <xsql id="a1" para="p_name,p_time1,p_time2,p_time3,p_time4,p_time5,p_time6" tpe="DDL" tpl="update t_plan set p_name=':p_name',p_time1=':p_time1',p_time2=':p_time2',p_time3=':p_time3',p_time4=':p_time4',p_time5=':p_time5',p_time6=':p_time6' where @CONDITION " var="rs">
-                <xflt id="CONDITION" nrp="" tpl="@id ">
+                <xflt id="CONDITION" nrp="" tpl="@id AND @p_code">
                     <xfltpara id="id" nrp="1=1" para="id" sql="id=:id">
+                    </xfltpara>
+
+                     <xfltpara id="p_code" nrp="1=1" para="p_code" sql="p_code=':p_code'">
                     </xfltpara>
                 </xflt>
             </xsql>
         </xhandle>
+
+
+
+
 
         <xhandle desc="修改灯具方案场景" id="editlampscene" rtn="rs" rtnype="JSON">
             <xsql id="a1" para="p_name,p_scene1,p_scene2,p_scene3,p_scene4,p_scene5,p_scene6,p_scene7,p_scene8" tpe="DDL" tpl="update t_plan set p_name=':p_name',p_scene1=':p_scene1',p_scene2=':p_scene2',p_scene3=':p_scene3',p_scene4=':p_scene4',p_scene5=':p_scene5',p_scene6=':p_scene6',p_scene7=':p_scene7',p_scene8=':p_scene8' where @CONDITION " var="rs">
@@ -224,8 +231,7 @@
             </xsql>
         </xhandle>
 
-
-                <xhandle desc="修改灯具基本信息" id="modifylamp" rtnype="JSON">
+         <xhandle desc="修改灯具基本信息" id="modifylamp" rtnype="JSON">
             <xsql id="a1" para="l_name,l_groupe,l_worktype" tpe="DDL" tpl="update t_lamp set l_name=':l_name',l_groupe=:l_groupe,l_worktype=:l_worktype where @CONDITION " var="rs">
                 <xflt id="CONDITION"  tpl="@id ">
                     <xfltpara id="id" nrp="1=1" para="id" sql="id=':id'">
@@ -336,10 +342,12 @@
         </xhandle>
         
         
-        <xhandle desc="" id="getlampcomaddr" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT DISTINCT  tl.l_comaddr as id,tl.l_comaddr as text FROM t_lamp tl where @CONDITION  " var="list">
-                <xflt id="CONDITION" nrp="" tpl="@l_comaddr ">
+        <xhandle desc="灯具的网关" id="getlampcomaddr" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT   tl.l_comaddr as id,tl.l_comaddr as text FROM t_lamp tl where @CONDITION  " var="list">
+                <xflt id="CONDITION" nrp="" tpl="@l_comaddr AND @l_deplayment ">
                     <xfltpara id="l_comaddr" nrp="1=1" para="l_comaddr" sql="l_comaddr = ':l_comaddr' "> 
+                    </xfltpara>
+                                   <xfltpara id="l_deplayment" nrp="1=1" para="l_deplayment" sql="l_deplayment = :l_deplayment "> 
                     </xfltpara>
                 </xflt>
             </xsql>
@@ -349,15 +357,15 @@
         
         
         <xhandle desc="" id="comaddr" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT DISTINCT  tl.l_comaddr as id,tl.l_comaddr as text,tl.l_comaddr as comaddr FROM t_lamp tl" var="rs">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT   tl.l_comaddr as id,tl.l_comaddr as text,tl.l_comaddr as comaddr FROM t_lamp tl" var="rs">
             </xsql>
         </xhandle>
         <xhandle desc="" id="getComaddr" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT DISTINCT  tl.l_comaddr as id,tl.l_comaddr as text,tl.l_comaddr as comaddr FROM t_lamp tl" var="list">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT   tl.l_comaddr as id,tl.l_comaddr as text,tl.l_comaddr as comaddr FROM t_lamp tl" var="list">
             </xsql>
         </xhandle>
         <xhandle desc="" id="getGroupe" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT DISTINCT  tl.l_groupe as id,tl.l_groupe as text,tl.l_groupe as l_groupe FROM t_lamp tl where @CONDITION " var="list">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT   tl.l_groupe as id,tl.l_groupe as text,tl.l_groupe as l_groupe FROM t_lamp tl where @CONDITION " var="list">
                 <xflt id="CONDITION" nrp="" tpl="@l_comaddr AND @l_deplayment">
                     <xfltpara id="l_comaddr" nrp="1=1" para="l_comaddr" sql="l_comaddr = ':l_comaddr'">
                     </xfltpara> 
@@ -394,27 +402,21 @@
             </xsql>
         </xhandle>
         <xhandle desc="获取网关列表" id="comaddr" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT DISTINCT comaddr as id,comaddr as text,name FROM t_baseinfo tl " var="list">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT  comaddr as id,comaddr as text,name FROM t_baseinfo tl " var="list">
             </xsql>
-<!--             <xsql id="a2" list="true" page="true" tpe="SQL" tpl="SELECT DISTINCT  p_code ,p_name,* FROM t_plan tp where p_attr=0  and @CONDITION " var="pl">
-                <xflt id="CONDITION" nrp="" tpl="@p_type">
-                    <xfltpara id="p_type" nrp="1=1" para="p_type" sql="p_type = :p_type">
-                    </xfltpara>
-                </xflt>
-            </xsql> -->
         </xhandle>
     </xform>
 
     <xform desc="回路模块" id="loop">
         <xhandle desc="从回路信息取网关列表" id="getGayway" rtn="rs" rtnype="JSON">
-            <xsql id="a1" tpe="SQL" tpl="SELECT DISTINCT tl.l_comaddr FROM t_loop tl " var="rs">
+            <xsql id="a1" tpe="SQL" tpl="SELECT  tl.l_comaddr FROM t_loop tl " var="rs">
             </xsql>
         </xhandle>
         
       <xhandle desc="" id="getLoopList" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT tl.id as uid,* FROM t_baseinfo tb,t_loop tl WHERE tb.comaddr = tl.l_comaddr " var="bootstrap">
             </xsql>
-</xhandle>
+      </xhandle>
 
    
         
@@ -510,7 +512,7 @@
             </xsql>
         </xhandle>
         <xhandle desc="" id="h2" rtnype="JSON">  
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT DISTINCT model as id,model as text FROM t_baseinfo " var="list">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT  model as id,model as text FROM t_baseinfo " var="list">
             </xsql>
         </xhandle>
 
