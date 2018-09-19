@@ -24,8 +24,11 @@
                 font-size: 20px;
             }
 
+            .bodycenter { text-align: -webkit-center; text-align: -moz-center; width: 600px; margin: auto; } 
+
         </style>
         <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=Uppxai1CT7jTHF9bjKFx0WGTs7nCyHMr"></script>
+        <script type="text/javascript" src="js/genel.js"></script>
         <script type="text/javascript" src="js/getdate.js"></script>
 
     </head>
@@ -34,116 +37,62 @@
 
         </div>
         <!-- 添加 网关-->
-        <div  id="addwanguang" style="display: none;">
+        <div  id="addwanguang" class="bodycenter"  style=" display: none" title="添加网关">
             <div class="">
-                <div  style="min-width:700px;">
-                    <br/>
+                <div class="">
+                    <table>
+                        <tbody class="search">
+                            <tr>
+                                <td>
+                                    <span style="margin-left:50px;">所属区划</span>&nbsp;
+                                    <select name="qh" id="qh"  style="width:150px; height: 30px;">
+                                        <option value="1">广东</option>
+                                        <option value="2">福建</option>
+                                    </select>
+                                </td>
+                                <td></td>
+                                <td>
+                                    <span style="margin-left:70px;">网关地址&nbsp;</span>
+                                    <input id="comaddrlist" data-options='editable:false,valueField:"id", textField:"text"' class="easyui-combobox"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <hr>
+                <div>
+                    <table id="wgtable">
 
-                    <form  id="Form_comaddr">      
-                        <div class="">
-                            <table>
-                                <tbody class="search">
-                                    <tr>
-                                        <td>
-                                            <span style="margin-left:50px;">所属区划</span>&nbsp;
-                                            <select name="qh" id="qh"  style="width:150px; height: 30px;">
-                                                <option value="1">广东</option>
-                                                <option value="2">福建</option>
-                                            </select>
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                            <span style="margin-left:70px;">网关名称&nbsp;</span>
-                                            <input type="text" id="name" style="width:150px; height: 30px;" >
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <span style="margin-left:50px;">所属项目</span>&nbsp;
-                                            <input id="project" class="easyui-combobox" name="up_role" style="width:150px; height: 34px" data-options="editable:true,valueField:'id', textField:'text',url:'login.map.getProject.action'" />
-                                        <td></td>
-                                        <td>
-                                            <span style="margin-left:70px;">所属网关&nbsp;</span>
-                                            <input id="comaddrlist" class="easyui-combobox" name="up_role" style="width:150px; height: 34px" data-options="editable:true,valueField:'comaddr', textField:'comaddr',url:'login.map.getallcomaddr.action'"/>
-                                        </td>
-                                    </tr>                                   
-                                </tbody>
-                            </table>
-                        </div>
-                        <hr>
-                        <div>
-                            <table id="wgtable">
-
-                            </table>
-                        </div>
-                        <!--                        注脚 -->
-                        <div class="modal-footer" >
-                            <!-- 搜索按钮 -->
-                            <button id="tianjia1" type="button" class="btn btn-primary" onclick="getInfoByComaddr()">搜索</button>
-                            <!-- 关闭按钮 -->
-                            <button type="button" class="btn btn-default" onclick="closeAddComaddr()">关闭</button></div>
-                    </form>
+                    </table>
                 </div>
             </div>
         </div>
         <!--添加灯具-->
-        <div  id="addlamp" style="display: none;">
+        <div  id="addlamp" class="bodycenter"  style=" display: none" title="添加灯具">
             <div class="">
-                <div  style="min-width:700px;">
-                    <form  id="Form_comaddr">      
-                        <div class="">
-                            <table>
-                                <tbody class="search">
-                                    <tr>
-                                        <td>
-                                            <span style="margin-left:50px;">所属区划</span>&nbsp;
-                                            <select name="qh" id="qh"  style="width:150px;">
-                                                <option value="1">广东</option>
-                                                <option value="2">福建</option>
-                                            </select>
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                            <span style="margin-left:70px;">所属机构&nbsp;</span>
-                                            <select name="sex" id="sex"  style="width:150px;">
-                                                <option value="1">华明科技</option>
-                                                <option value="2">华明科技</option>
-                                            </select> 
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <span style="margin-left:50px;">所属项目</span>&nbsp;
-                                            <select name="sex" id="sex"  style="width:150px;">
-                                                <option value="1">华明光电</option>
-                                                <option value="2">华明科技</option>
-                                            </select>
-                                        <td></td>
-                                        <td>
-                                            <span style="margin-left:70px;">所属网关&nbsp;</span>
-                                            <select name="comaddr" id="comaddrlist2"  style="width:150px;">
+                <div  style="min-width:700px;">   
+                    <div class="">
+                        <table>
+                            <tbody class="search">
+                                <tr>
+                                    <td>
+                                        <span style="margin-left:50px;">灯具名称</span>&nbsp;
+                                        <input type='text' id='lampname'>
+                                    <td></td>
+                                    <td>
+                                        <span style="margin-left:70px;">所属网关&nbsp;</span>
+                                        <input id="lampcomaddrlist" data-options='editable:false,valueField:"id", textField:"text"' class="easyui-combobox"/>
+                                    </td>
+                                </tr>                                   
+                            </tbody>
+                        </table>
+                    </div>
+                    <hr>
+                    <div>
+                        <table id="lamptable">
 
-                                            </select>
-                                        </td>
-                                    </tr>                                   
-                                </tbody>
-                            </table>
-                        </div>
-                        <hr>
-                        <div>
-                            <table id="lamptable">
-
-                            </table>
-                        </div>
-                        <!--                        注脚 -->
-                        <div class="modal-footer">
-                            <!---->
-                            <button  type="button" class="btn btn-primary" onclick="Drawing()">选点绘线</button>
-                            <!-- 搜索按钮 -->
-                            <button id="tianjia1" type="button" class="btn btn-primary" onclick="">搜索</button>
-                            <!-- 关闭按钮 -->
-                            <button type="button" class="btn btn-default" onclick="lampout()">关闭</button></div>
-                    </form>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -151,11 +100,10 @@
         <script type="text/javascript">
             //调用父页面的方法获取用户名
             var u_name = parent.getusername();
-
             //加载所有灯具信息
-            function  getAllLampInfo() {
+            function  getAllLampInfo(pid) {
                 $('#lamptable').bootstrapTable({
-                    url: 'login.map.lamp.action',
+                    url: 'login.map.lamp.action?pid=' + pid,
                     columns: [
                         {
                             title: 'id',
@@ -186,7 +134,8 @@
                             width: 25,
                             align: 'center',
                             valign: 'middle'
-                        }, {
+                        },
+                        {
                             field: 'Longitude',
                             title: '经度',
                             width: 25,
@@ -229,9 +178,9 @@
                 });
             }
             //加载所有所属网关信息
-            function getAllInfo() {
-                $('#wgtable').bootstrapTable({
-                    url: 'login.map.map.action',
+            function getAllInfo(pid) {
+                $("#wgtable").bootstrapTable({
+                    url: 'login.map.map.action?pid=' + pid,
                     columns: [
                         {
                             title: '单选',
@@ -311,44 +260,20 @@
                     }
                 });
             }
-            //加载所属网关
-            function getComaddr(tagId) {
-                $.ajax({async: false, url: "login.map.getallcomaddr.action", type: "get", datatype: "JSON",
-                    success: function (data) {
-                        console.log(data);
-                        if (data.rs != null) {
-
-                            var options = "<option value=\"0\">请选择</option>";
-                            for (var i = 0; i < data.rs.length; i++) {
-                                options += "<option value=\"" + data.rs[i].comaddr + "\">" + data.rs[i].comaddr + "</option>";
-                            }
-                            $(tagId).html(options);
-                        }
-                    },
-                    error: function () {
-                        alert("提交失败！");
-                    }
-                });
-            }
 
             //根据所属网关查询网关信息
             function getInfoByComaddr() {
+
                 var comaddr = $("#comaddrlist").val();
-                var name = $("#name").val();
-                var poject = $("#project").val();
                 var obj = {};
                 if (comaddr != "") {
                     obj.comaddr = comaddr;
                 }
-                if (name != "") {
-                    obj.name = name;
-                }
-                if (poject != "") {
-                    obj.pid = poject;
-                }
+                var pid = parent.getpojectId();
+                obj.pid = pid;
 
                 var opt = {
-                    method: "post",
+                    //method: "post",
                     url: "login.map.map.action",
                     silent: true,
                     query: obj
@@ -450,7 +375,10 @@
                             map.removeOverlay(allOver[j]);
                         }
                     }
-                    $.ajax({async: false, url: "login.map.lnglat.action", type: "get", datatype: "JSON", data: {},
+                    var pid = parent.getpojectId();
+                    var objw = {};
+                    objw.pid = pid;
+                    $.ajax({async: false, url: "login.map.lnglat.action", type: "get", datatype: "JSON", data: objw,
                         success: function (data) {
                             var arrlist = data.rs;
                             for (var i = 0; i < arrlist.length; i++) {
@@ -472,8 +400,9 @@
                         }
                     });
                 };
-                //
+                //搜索网关
                 button2.onclick = function (e) {
+                    var pid = parent.getpojectId();
                     var allOver = map.getOverlays(); //获取全部标注
                     for (var j = 0; j < allOver.length; j++) {
                         if (allOver[j].toString() == "[object Marker]") {
@@ -484,8 +413,13 @@
                             map.removeOverlay(allOver[j]);
                         }
                     }
+                    var obj = {};
                     var comaddr = $("#seartxt").val();
-                    $.ajax({async: false, url: "test1.map.queryData.action", type: "get", datatype: "JSON", data: {comaddr: comaddr},
+                    if(comaddr!=""){
+                        obj.comaddr = comaddr;
+                    }
+                    obj.pid = pid;
+                    $.ajax({async: false, url: "login.map.lnglat.action", type: "get", datatype: "JSON", data: obj,
                         success: function (data) {
                             console.log(data);
                             var arrlist = data.rs;
@@ -524,8 +458,8 @@
                             map.removeOverlay(allOver[j]);
                         }
                     }
-                    //map.removeOverlay(allOver);
-                    $.ajax({async: false, url: "login.map.queryLamp.action", type: "get", datatype: "JSON", data: {},
+                   var pid = parent.getpojectId();
+                    $.ajax({async: false, url: "login.map.queryLamp.action", type: "get", datatype: "JSON", data: {pid:pid},
                         success: function (data) {
 
                             var arrlist = data.rs;
@@ -598,21 +532,21 @@
                                 map.removeOverlay(allOver[j]);
                             }
                         }
-                        //加载所属网关
-                        var tagid = "#comaddrlist2";
-                        getComaddr(tagid);
-                        //加载所有灯具信息
-                        getAllLampInfo();
-                        layer.open({
-                            type: 1,
-                            closeBtn: 1,
-                            shade: false,
-                            title: ['添加灯具', 'font-size:18px;'], //显示标题
-                            content: $('#addlamp'), //显示内容
-                            area: ['700px', '600px'] //设置宽高
-                                    // move: '#addlamp'
 
-                        });
+                        //加载所有灯具信息
+                        var porjectId = parent.getpojectId();
+                        var obj = {};
+                        obj.l_plan = porjectId;
+                        var opt = {
+                            //method: "post",
+                            url: "login.map.lamp.action",
+                            silent: true,
+                            query: obj
+                        };
+                        $("#lamptable").bootstrapTable('refresh', opt);
+                        var id = "#lampcomaddrlist";
+                        combobox(id, porjectId);
+                        $("#addlamp").dialog("open");
 
 
                     }
@@ -631,22 +565,21 @@
                                 map.removeOverlay(allOver[j]);
                             }
                         }
-                        getAllInfo();
+                        var porjectId = parent.getpojectId();
+                        var obj = {};
+                        obj.pid = porjectId;
+                        //加载所有网关信息
+                        var opt = {
+                            //method: "post",
+                            url: "login.map.map.action",
+                            silent: true,
+                            query: obj
+                        };
+                        $("#wgtable").bootstrapTable('refresh', opt);
                         //加载所属网关
-                        var tagid = "#comaddrlist";
-                        getComaddr(tagid);
-                        layer.open({
-                            type: 1,
-                            shade: false,
-                            title: ['添加网关', 'font-size:18px;'], //显示标题
-                            content: $('#addwanguang'), //显示内容
-                            shadeClose: true, //右上角显示X
-                            area: ['700px', '600px'] //设置宽高
-                                    // move: '#addwanguang'
-                                    //move: 'true' //是否可以拖动，默认可以拖动
-                                    //moveOut: true
-                        });
-                        // $("#addwanguang").draggable({axis:null,handle:'#addwanguang'});
+                        var id = "#comaddrlist";
+                        combobox(id, porjectId);
+                        $('#addwanguang').dialog('open');
                     }
                 }
             ];
@@ -655,24 +588,81 @@
             var idlist = new Array();  //标记选中的id
             function  Drawing() {
                 var lampchecck2 = $("#lamptable").bootstrapTable('getSelections');
-                if (String(lampchecck2) != "") {   //选中数据列
-                    if (lampchecck2.length > 1) {
-                        draw = true;
-                        for (var i = 0; i < lampchecck2.length; i++) {
-                            idlist.push(lampchecck2[i].id);
-                        }
-                        $("#lamptable input:checkbox").each(function () {
-                            if ($(this).is(":checked")) {
-                                $(this).prop("checked", false);
-                            }
-                        });
-                        layer.close(layer.index);
-                    } else {
-                        alert("请选择您要配置经纬度的设备!并且至少两个!");
+                if (lampchecck2.length > 1) {
+                    draw = true;
+                    for (var i = 0; i < lampchecck2.length; i++) {
+                        idlist.push(lampchecck2[i].id);
                     }
+                    $("#lamptable input:checkbox").each(function () {
+                        if ($(this).is(":checked")) {
+                            $(this).prop("checked", false);
+                        }
+                    });
+                    $("#lamptable").bootstrapTable('refresh');
+                    $('#addlamp').dialog("close");
+                } else {
+                    alert("请选择您要配置经纬度的设备!并且至少两个!");
                 }
             }
+            //根据条件查询灯具
+            function selectlamp() {
+                var porjectId = parent.getpojectId();
+                var lampname = $("#lampname").val();
+                var l_commadr = $("#lampcomaddrlist").val();
+                var obj = {};
+                if (lampname != "") {
+                    obj.l_name = lampname;
+                }
+                obj.l_comaddr = l_commadr;
+                obj.l_plan = porjectId;
+                var opt = {
+                    //method: "post",
+                    url: "login.map.lamp.action",
+                    silent: true,
+                    query: obj
+                };
+                $("#lamptable").bootstrapTable('refresh', opt);
+            }
             $(function () {
+
+                var porjectId = parent.getpojectId();
+                //加载所有网关信息
+                getAllInfo(porjectId);
+                //加载灯具信息
+                getAllLampInfo(porjectId);
+                $("#addwanguang").dialog({
+                    autoOpen: false,
+                    modal: false,
+                    width: 600,
+                    height: 550,
+                    position: ["top", "top"],
+                    buttons: {
+                        搜索: function () {
+                            getInfoByComaddr();
+                        }, 关闭: function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
+
+                $("#addlamp").dialog({
+                    autoOpen: false,
+                    modal: false,
+                    width: 720,
+                    height: 550,
+                    position: ["top", "top"],
+                    buttons: {
+                        选点绘线: function () {
+                            Drawing();
+                        }, 搜索: function () {
+                            selectlamp();
+                        }, 关闭: function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
+
+
                 var marker; //创建标注对象
                 // 创建控件
                 var myZoomCtrl = new ZoomControl();
@@ -690,6 +680,7 @@
                 });
                 //修改网关经纬度
                 function updatelnglat(lng, lat, comaddr) {
+                    var porjectId = parent.getpojectId();
                     var obj = {};
                     obj.Longitude = lng;
                     obj.latitude = lat;
@@ -711,7 +702,16 @@
                                         }
                                     }
                                 });
-                                $("#wgtable").bootstrapTable('refresh');
+                                var obj = {};
+                                obj.pid = porjectId;
+                                //加载所有网关信息
+                                var opt = {
+                                    //method: "post",
+                                    url: "login.map.map.action",
+                                    silent: true,
+                                    query: obj
+                                };
+                                $("#wgtable").bootstrapTable('refresh', opt);
                                 var now_point = new BMap.Point(lng, lat);
                                 marker = new BMap.Marker(now_point); //addMarker(now_point, myIcon, comaddr);
                                 var label = new BMap.Label(comaddr, {offset: new BMap.Size(20, 0)}); //创建marker点的标记,这里注意下,因为百度地图可以对label样式做编辑,所以我这里吧重要的id放在了label(然后再隐藏)   
@@ -732,7 +732,16 @@
                                             success: function (data) {
                                                 var arrlist = data.rs;
                                                 if (arrlist.length == 1) {
-                                                    $("#wgtable").bootstrapTable('refresh');
+                                                    var obj = {};
+                                                    obj.pid = porjectId;
+                                                    //加载所有网关信息
+                                                    var opt = {
+                                                        //method: "post",
+                                                        url: "login.map.map.action",
+                                                        silent: true,
+                                                        query: obj
+                                                    };
+                                                    $("#wgtable").bootstrapTable('refresh', opt);
 
                                                 } else {
                                                     alert("修改失败");
@@ -793,7 +802,16 @@
                                         }
                                     }
                                 });
-                                $("#lamptable").bootstrapTable('refresh');
+                                var porjectId = parent.getpojectId();
+                                var obj = {};
+                                obj.l_plan = porjectId;
+                                var opt = {
+                                    //method: "post",
+                                    url: "login.map.lamp.action",
+                                    silent: true,
+                                    query: obj
+                                };
+                                $("#lamptable").bootstrapTable('refresh', opt);
                                 var now_point = new BMap.Point(lng, lat);
                                 marker = new BMap.Marker(now_point); //addMarker(now_point, myIcon, comaddr);
                                 var label = new BMap.Label(id, {offset: new BMap.Size(20, 0)}); //创建marker点的标记,这里注意下,因为百度地图可以对label样式做编辑,所以我这里吧重要的id放在了label(然后再隐藏)   
@@ -814,7 +832,15 @@
                                             success: function (data) {
                                                 var arrlist = data.rs;
                                                 if (arrlist.length == 1) {
-                                                    $("#lamptable").bootstrapTable('refresh');
+                                                    var obj = {};
+                                                    obj.l_plan = porjectId;
+                                                    var opt = {
+                                                        //method: "post",
+                                                        url: "login.map.lamp.action",
+                                                        silent: true,
+                                                        query: obj
+                                                    };
+                                                    $("#lamptable").bootstrapTable('refresh', opt);
                                                 } else {
                                                     alert("修改失败");
                                                 }
@@ -942,12 +968,19 @@
                         }
                     }
                 });
+            });
+
+
+            //网关下拉框
+            function combobox(id, pid) {
+                $(id).combobox({
+                    url: "login.map.getallcomaddr.action?pid=" + pid,
+                    onLoadSuccess: function (data) {
+                        $(this).combobox("select", data[0].id);
+                        $(this).val(data[0].text);
+                    }
+                });
             }
-
-
-
-            );
         </script>
-
     </body>
 </html>

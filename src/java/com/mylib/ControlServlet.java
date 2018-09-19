@@ -119,10 +119,10 @@ public class ControlServlet extends HttpServlet {
                     String limit = request.getParameter("limit");
                     String skip = request.getParameter("skip");
                     String type = request.getParameter("page");
-                    if (type!=null&&type.equals("ALL")) {
+                    if (type != null && type.equals("ALL")) {
                         docType.put("total", aa.size());
                         docType.put("rows", aa);
-                        
+
                     } else {
                         int ilimit = 0;
                         int iskip = 0;
@@ -423,6 +423,10 @@ public class ControlServlet extends HttpServlet {
             String MailMutiAttach[] = patternAttach.split(MailAttachString);
             String MailMutiTo[] = patternAttach.split(MialToString);
             for (int j = 0; j < MailMutiAttach.length; j++) {
+
+                if (MailMutiAttach[j].indexOf("\\") == -1) {
+                    continue;
+                }
                 sendmail.attachfile(MailMutiAttach[j]);
             }
             for (int z = 0; z < MailMutiTo.length; z++) {
