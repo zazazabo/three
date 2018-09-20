@@ -40,10 +40,18 @@
     
     <xform desc="主页" id="mainsub">
         <xhand id="home" rtn="mainsub.jsp" rtnype="PGE">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT COUNT(l_code) AS count FROM t_lamp WHERE l_deplayment = 1  " var="rs1">    
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT COUNT(l_code) AS count FROM t_lamp WHERE l_deplayment = 1 AND l_comaddr in (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE online=1 and @CONDITION   )" var="rs1">    
+                <xflt id="CONDITION" nrp="" tpl="@pid ">
+                    <xfltpara id="pid" nrp="1=2" para="pid" sql="pid = ':pid'">
+                    </xfltpara>
+                </xflt>  
             </xsql>           
             
             <xsql id="a2" list="true" page="true" tpe="SQL" tpl=" SELECT COUNT(f_lampset) AS count FROM t_fault WHERE f_type='ERC44' AND f_wanning=1 AND CONVERT(Nvarchar, f_day, 23) = CONVERT(Nvarchar, GETDATE(), 23)  " var="rs2">    
+                           <xflt id="CONDITION" nrp="" tpl="@pid ">
+                    <xfltpara id="pid" nrp="1=2" para="pid" sql="pid = ':pid'">
+                    </xfltpara>
+                </xflt>  
             </xsql> 
 
             <xsql id="a3" list="true" page="true" tpe="SQL" tpl=" SELECT power,month(day) AS month FROM t_records AS tr where datediff(month,day,getdate())=0     ORDER BY tr.[day] DESC " var="rs3">    

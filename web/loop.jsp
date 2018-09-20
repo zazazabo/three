@@ -545,7 +545,7 @@
                         <tr>
                             <td>
                                           <span style="margin-left:20px;">回路编号&nbsp;</span>
-                                <input id="l_code" class="form-control" name="l_code" style="width:150px;display: inline;" placeholder="请输入回路名称" type="text">
+                                <input id="l_code" class="form-control" name="l_code" style="width:150px;display: inline;" placeholder="请输入回路编号" type="text">
                                 
                             <td></td>
                             <td>

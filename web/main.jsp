@@ -17,7 +17,7 @@
         <script type="text/javascript" src="js/genel.js"></script>
         <script type="text/javascript" src="js/md5.js"></script>
         <script type="text/javascript"  src="js/getdate.js"></script>
-        
+
         <script>
             var websocket = null;
 
@@ -124,11 +124,11 @@
                 var pid = $("#pojects").val();
                 var obj = {};
                 obj.pid = pid;
-                $.ajax({url: "login.main.fualtCount.action", async: false, type: "get", datatype: "JSON", data:obj,
+                $.ajax({url: "login.main.fualtCount.action", async: false, type: "get", datatype: "JSON", data: obj,
                     success: function (data) {
                         if (data.rs[0].number == 0) {
                             $("#alarmNumber").html("0");
-                            $("#alarmNumber").css("color","white");
+                            $("#alarmNumber").css("color", "white");
                         } else {
                             $("#alarmNumber").html(data.rs[0].number);
                             $("#alarmNumber").css("color", "red");
@@ -154,24 +154,24 @@
             //点击告警信息
             function imgM() {
                 $("#faultDiv").modal("show");
-                 var pid = $("#pojects").val();
-                    var obj2 = {};
-                    obj2.pid = pid;
-                    var opt = {
-                        //method: "post",
-                        url: "login.main.faultInfo.action",
-                        silent: true,
-                        query: obj2
-                    };
-                    $("#fauttable").bootstrapTable('refresh', opt);
-                    var opt = {
-                        //method: "post",
-                        url: "login.main.peopleInfo.action",
-                        silent: true,
-                        query: obj2
-                    };
-                    $("#peopletable").bootstrapTable('refresh', opt);
-               
+                var pid = $("#pojects").val();
+                var obj2 = {};
+                obj2.pid = pid;
+                var opt = {
+                    //method: "post",
+                    url: "login.main.faultInfo.action",
+                    silent: true,
+                    query: obj2
+                };
+                $("#fauttable").bootstrapTable('refresh', opt);
+                var opt = {
+                    //method: "post",
+                    url: "login.main.peopleInfo.action",
+                    silent: true,
+                    query: obj2
+                };
+                $("#peopletable").bootstrapTable('refresh', opt);
+
             }
 
             //处理告警信息
@@ -275,7 +275,7 @@
                 window.onbeforeunload = function () {
                     websocket.close();
                 };
-         
+
                 var pid = $("#upid").val();
                 var pids = pid.split(",");   //项目编号
                 var pname = [];   //项目名称
@@ -478,23 +478,16 @@
                         $(this).parent(".eachMenu").siblings(".eachMenu").children(".list").removeClass("active");
                         $(this).parent(".eachMenu").siblings(".eachMenu").children(".secondMenu").children(".secondMenuList").removeClass("active");
                         var iframesrc = $(this).attr("name");
+                        if(iframesrc.indexOf("?")==-1){
+                            iframesrc+="?mmm=2";
+                        }
+                            
+                        iframesrc = iframesrc + "&pid=" + getpojectId(); 
                         console.log(iframesrc);
                         $("#iframe").attr("src", iframesrc);
 
 
                     }
-                });
-
-                $("body").delegate(".secondMenu .secondMenuList", "click", function () {
-                    $(this).addClass("active");
-                    $(this).parent(".secondMenu").siblings(".list").addClass("active");
-                    $(this).siblings(".secondMenuList").removeClass("active");
-                    $(this).parent(".secondMenu").parent(".eachMenu").siblings(".eachMenu").children(".list").removeClass("active");
-                    $(this).parent(".secondMenu").parent(".eachMenu").siblings(".eachMenu").children(".secondMenu").children(".secondMenuList").removeClass("active");
-                    var iframesrc = $(this).attr("name");
-                    $("#iframe").attr("src", iframesrc);
-                    var _this = $('#navTop');
-                    actionColor(iframesrc, _this);
                 });
 
                 function size() {
@@ -635,12 +628,12 @@
                     // $("#iframe").attr('src', html);
                     //导航栏颜色
                 });
-                
-                $("#pojects").change(function (){
+
+                $("#pojects").change(function () {
                     fualtCount();
                 });
                 var pid2 = $("#pojects").val();
-                 $('#fauttable').bootstrapTable({
+                $('#fauttable').bootstrapTable({
                     url: 'login.main.faultInfo.action?pid=' + pid2,
                     columns: [[{
                                 field: '',
@@ -714,7 +707,7 @@
                 });
 
                 $('#peopletable').bootstrapTable({
-                    url: 'login.main.peopleInfo.action?pid='+pid2,
+                    url: 'login.main.peopleInfo.action?pid=' + pid2,
                     columns: [[{
                                 field: '',
                                 title: '告警处理人员信息',

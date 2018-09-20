@@ -265,7 +265,8 @@
             var myChart, myChart2, myChart3, myChart4, myChart5;
             var echarts;
             $(function () {
-
+                //alert();
+                console.log("${param.pid}");
                 var truevalmap;
                 var status1 = "";
             <c:if test="${fn:length(rs3)==0 }">
@@ -835,7 +836,17 @@
                     <span class="redius" style="background:#fdd237;">
                         <img src="img/dp.png"></span>
                     <div class="Mess lightingRate">
-                        <span>${(rs1[0].count-rs2[0].count)/rs1[0].count * 100}%</span>
+                        <span>
+                            <c:if test="${rs1[0].count-rs2[0].count<=0}">
+                                0%
+                            </c:if>
+
+                            <c:if test="${rs1[0].count-rs2[0].count>0}">
+                                ${(rs1[0].count-rs2[0].count)/rs1[0].count * 100}%
+                            </c:if> 
+
+
+                        </span>
                         <span>亮灯率</span>
                     </div>
                 </div>
@@ -847,13 +858,13 @@
                         <span>节能率</span>
                     </div>
                 </div>
-                <div class="topLeftOneBox">
-                    <span class="redius" style="background:#68b928;"><img src="img/online.png"></span>
-                    <div class="Mess AlarmTimes">
-                        <span id="online">10%</span>
-                        <span>在线率</span>
-                    </div>
-                </div>
+                <!--                <div class="topLeftOneBox">
+                                    <span class="redius" style="background:#68b928;"><img src="img/online.png"></span>
+                                    <div class="Mess AlarmTimes">
+                                        <span id="online">10%</span>
+                                        <span>在线率</span>
+                                    </div>
+                                </div>-->
             </div>
 
             <!--用能计划-->
