@@ -23,7 +23,7 @@
             function search() {
                 var o = $("#formsearch").serializeObject();
                 var opt = {
-                    url: "test1.lamp.getlamp1.action",
+                    url: "lamp.lampform.getlampList.action",
                     query: o,
                     silent: false
                 };
@@ -131,7 +131,6 @@
                 dealsend2(data, 308, "sceneCB", l_comaddr, obj.lighttype, groupe, scenenum);
             }
 
-
             function scenesingle() {
                 var obj = $("#formsearch").serializeObject();
                 if (isNumber(obj.scennum) == false) {
@@ -201,10 +200,6 @@
                                 if (arrlist.length >= 1) {
 
                                     $('#gravidaTable').bootstrapTable('refresh');
-
-                                    // $("#gravidaTable").bootstrapTable('updateCell', {index: param.row, field: "l_value", value: obj.val});
-//                                    $('#groupegravidaTable').bootstrapTable('refresh');
-                                    //$("#groupegravidaTable").bootstrapTable('updateCell', {index: param.row, field: "l_value", value: obj.val});
                                 }
                             },
                             error: function () {
@@ -300,12 +295,9 @@
                 parent.parent.sendData(user);
             }
 
-
-
             $(function () {
-
                 $('#gravidaTable').bootstrapTable({
-                    url: 'test1.lamp.getlamp1.action',
+                    url: 'lamp.lampform.getlampList.action',
                     clickToSelect: true,
                     columns: [
                         {
@@ -424,7 +416,8 @@
                             skip: params.offset,
                             limit: params.limit,
                             type_id: "1",
-                            l_deplayment: 1  
+                            l_deplayment: 1,
+                            pid: "${param.pid}"
                         };      
                         return temp;  
                     },
@@ -461,7 +454,7 @@
                 })
 
                 $('#l_comaddr').combobox({
-                    url: "test1.lamp.getlampcomaddr.action?l_deplayment=1",
+                    url: "lamp.lampform.getComaddr.action?l_deplayment=1&pid=${param.pid}",
                     onLoadSuccess: function (data) {
                         if (Array.isArray(data) && data.length > 0) {
                             $(this).combobox('select', data[0].id);
@@ -543,7 +536,7 @@
 
 
         <form id="formsearch">
-
+            <input type="hidden" name="pid" value="${param.pid}">
             <div class="row" style=" margin-top: 10px;">
                 <div class="col-xs-12">
                     <table style="border-collapse:separate;  border-spacing:0px 10px;border: 1px solid #16645629; margin-left: 20px; align-content:  center">

@@ -71,7 +71,7 @@
                             var action = data.m_action;
                             var lang = "zh_CN";
                             var objlang = eval('(' + data.m_title + ')');
-                            var u1 = action + "?m_parent=" + data.m_code + "&role=" + ${param.role};
+                            var u1 = action + "?m_parent=" + data.m_code + "&role=${param.role}&pid=${param.pid}";
                             //console.log(u1);
 //                            htmls += '<li class="layui-nav-item" name="' + action + '">'
 
@@ -82,7 +82,7 @@
                                     + '</li>'
                         });
                         htmls += '<span class="layui-nav-bar" style="width: 0px; left: 484px; opacity: 0; top: 45px;"></span>';
-                       // console.log(htmls);
+                        // console.log(htmls);
                         $(".secondMenu").html(htmls);
                     }
                 });
@@ -90,7 +90,7 @@
 
                 /* 初始化加载三级菜单 */
                 var htmlFirst = $(".secondMenu li:eq(0)").attr('name');
-                console.log(htmlFirst);
+
                 $(".J_iframe").attr('src', htmlFirst);
 
                 $(".secondMenu li:eq(0)").addClass("layui-this active").siblings("li").removeClass("layui-this active");
@@ -99,6 +99,7 @@
                 $(".secondMenu li").click(function () {
                     $(this).addClass("layui-this active").siblings("li").removeClass("layui-this active");
                     var html = $(this).attr('name');
+                    console.log(htmlFirst);
                     $(".J_iframe").attr('src', html);
                 })
                 function size() {

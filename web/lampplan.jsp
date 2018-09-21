@@ -38,7 +38,8 @@
 
                 for (var i = 1; i < 9; i++) {
                     $("#time" + i.toString()).timespinner('setValue', '00:00');
-
+                    $("#num" + i.toString()).val(i.toString());
+                     $("#num" + i.toString()).attr('readonly',true);
                 }
 
 
@@ -64,7 +65,7 @@
                     a.p_time5 = JSON.stringify(obj5);
                     a.p_time6 = JSON.stringify(obj6);
                     var ret = false;
-                    $.ajax({async: false, url: "test1.plan.addlamp.action", type: "get", datatype: "JSON", data: a,
+                    $.ajax({async: false, url: "lamp.planForm.addlamp.action", type: "get", datatype: "JSON", data: a,
                         success: function (data) {
                             var arrlist = data.rs;
                             if (arrlist.length == 1) {
@@ -104,8 +105,9 @@
                     }
                     o.p_name = a.p_name;
                     o.p_type = a.p_type;
+                    o.pid=a.pid;
                     var ret = false;
-                    $.ajax({async: false, url: "test1.plan.addscene.action", type: "get", datatype: "JSON", data: o,
+                    $.ajax({async: false, url: "lamp.planForm.addscene.action", type: "get", datatype: "JSON", data: o,
                         success: function (data) {
                             var arrlist = data.rs;
                             if (arrlist.length == 1) {
@@ -303,6 +305,7 @@
                             var num = "#__num" + (i + 1).toString();
                             var val = "#__val" + (i + 1).toString();
                             $(num).val(obj.num);
+                             $(num).attr('readonly',true);
                             $(val).val(obj.value);
                         }
                     }
@@ -335,7 +338,7 @@
                 }, function (index) {
                     for (var i = 0; i < selects.length; i++) {
                         var select = selects[i];
-                        $.ajax({async: false, url: "test1.plan.deleteloop.action", type: "get", datatype: "JSON", data: {id: select.id},
+                        $.ajax({async: false, url: "loop.planForm.deleteloop.action", type: "get", datatype: "JSON", data: {id: select.id},
                             success: function (data) {
                                 var arrlist = data.rs;
                                 if (arrlist.length == 1) {
@@ -425,7 +428,7 @@
                             var v = $(".bootstrap-table");
                             $(v[0]).show();
                             $(v[1]).hide();
-                            var url = "test1.plan.getLoopPlan.action";
+                            var url = "lamp.planForm.getLampPlan.action";
                             var obj = {p_type: record.value, p_attr: 1};
                             var opt = {
                                 url: url,
@@ -440,7 +443,7 @@
                             $(v[1]).show();
                             $(v[0]).hide();
 
-                            var url = "test1.plan.getLoopPlan.action";
+                            var url = "lamp.planForm.getLampPlan.action";
                             var obj = {p_type: record.value, p_attr: 1};
                             var opt = {
                                 url: url,
@@ -493,7 +496,7 @@
                 });
 
                 $('#table_lamp').bootstrapTable({
-                    url: 'test1.plan.getLoopPlan.action',
+                    url: 'lamp.planForm.getLampPlan.action',
                     clickToSelect: true,
                     columns: [
                         [
@@ -821,7 +824,8 @@
                             limit: params.limit,
                             p_attr: "1",
                             p_type: 0,
-                            type_id: "1"    
+                            type_id: "1",
+                            pid:"${param.pid}"   
                         };      
                         return temp;  
                     },
@@ -830,7 +834,7 @@
 
 
                 $('#tablescene').bootstrapTable({
-                    url: 'test1.plan.getLoopPlan.action',
+                    url: 'lamp.planForm.getLampPlan.action',
                     clickToSelect: true,
                     columns: [
                         [
@@ -1246,7 +1250,8 @@
                             limit: params.limit,
                             p_attr: 1,
                             p_type: 1,
-                            type_id: "1"    
+                            type_id: "1",
+                            pid:"${param.pid}"  
                         };      
                         return temp;  
                     },
@@ -1294,10 +1299,10 @@
         </table> 
 
 
-        <div id="dialog-add"  class="bodycenter"  style=" display: none" title="回路添加">
+        <div id="dialog-add"  class="bodycenter"  style=" display: none" title="灯具方案添加">
 
             <form action="" method="POST" id="formadd" onsubmit="return checkPlanLampAdd()">      
-
+                <input type="hidden" name="pid" value="${param.pid}"/>
                 <table>
                     <tbody>
                         <tr>
@@ -1495,10 +1500,10 @@
             </form>                        
         </div>
 
-        <div id="dialog-edit"  class="bodycenter" style=" display: none"  title="回路修改">
+        <div id="dialog-edit"  class="bodycenter" style=" display: none"  title="灯具方案修改">
             <form action="" method="POST" id="form2" onsubmit="return modifyLoopName()">  
                 <input type="hidden" id="hidden_id" name="id">  
-
+                <input type="hidden" name="pid" value="${param.pid}"/>
                 <table>
                     <tbody>
                         <tr>
@@ -1635,18 +1640,18 @@
                         <tr>
                             <td>
                                 <span style="margin-left:20px;">场景号</span>&nbsp;
-                                <input id="__num4" class="form-control" name="num4" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
+                                <input id="__num4" class="form-control" name="num4" value="4" readonly="true" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
                             </td> 
                             <td></td>
                             <td>
                                 <span style="margin-left:20px;">调光值</span>&nbsp;
-                                <input id="__val4" class="form-control" name="_val4" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
+                                <input id="__val4" class="form-control" name="_val4"   style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
                             </td>
                         </tr> 
                         <tr>
                             <td>
                                 <span style="margin-left:20px;">场景号</span>&nbsp;
-                                <input id="__num5" class="form-control" name="num5" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
+                                <input id="__num5" class="form-control" name="num5" value="5" readonly="true" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
                             </td> 
                             <td></td>
                             <td>
@@ -1657,7 +1662,7 @@
                         <tr>
                             <td>
                                 <span style="margin-left:20px;">场景号</span>&nbsp;
-                                <input id="__num6" class="form-control" name="num6" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
+                                <input id="__num6" class="form-control" name="num6"  style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
                             </td> 
                             <td></td>
                             <td>
@@ -1669,7 +1674,7 @@
                         <tr>
                             <td>
                                 <span style="margin-left:20px;">场景号</span>&nbsp;
-                                <input id="__num7" class="form-control" name="num7" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
+                                <input id="__num7" class="form-control" name="num7" value="7" readonly="true" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
                             </td> 
                             <td></td>
                             <td>
@@ -1680,7 +1685,7 @@
                         <tr>
                             <td>
                                 <span style="margin-left:20px;">场景号</span>&nbsp;
-                                <input id="__num8" class="form-control" name="num8" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
+                                <input id="__num8" class="form-control" name="num8"  style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
                             </td> 
                             <td></td>
                             <td>

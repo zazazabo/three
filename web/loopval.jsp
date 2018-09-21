@@ -101,6 +101,7 @@
                 });
 
                 $('#gravidaTable').bootstrapTable({
+                    url:"loop.loopForm.getLoopList.action",
                     columns: [
                         {
                             title: '单选',
@@ -147,9 +148,9 @@
                             formatter: function (value, row, index, field) {
                                 console.log(value);
                                 if (value == 170) {
-                                    return "关"
+                                    return "断开"
                                 } else if (value == 85) {
-                                    return "开";
+                                    return "闭合";
                                 }
 
 //                                var groupe = value.toString();
@@ -194,19 +195,31 @@
                             search: params.search,
                             skip: params.offset,
                             limit: params.limit,
-                            type_id: "1"    
+                            type_id: "1",
+                            pid: "${param.pid}"  
                         };      
                         return temp;  
                     },
                 });
 
                 $('#l_comaddr').combobox({
+                    url: "loop.loopForm.getComaddr.action?pid=${param.pid}",
+                    onLoadSuccess: function (data) {
+                        if (Array.isArray(data) && data.length > 0) {
+                            $(this).combobox('select', data[0].id);
+
+                        } else {
+                            $(this).combobox('select', );
+                        }
+//                        console.log(data);
+                    },
                     onSelect: function (record) {
                         var obj = {};
                         obj.l_comaddr = record.id;
+                        obj.pid = "${param.pid}";
                         console.log(obj);
                         var opt = {
-                            url: "test1.loop.getloop.action",
+                            url: "loop.loopForm.getLoopList.action",
                             silent: true,
                             query: obj
                         };
@@ -231,15 +244,7 @@
                             <span class="menuBox">
 
                                 <input id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 34px" 
-                                       data-options="onLoadSuccess:function(data){
-                                       if(Array.isArray(data)&&data.length>0){
-                                       $(this).combobox('select', data[0].id);
-
-                                       }else{
-                                       $(this).combobox('select',);
-                                       }
-                                       console.log(data);
-                                       },editable:false,valueField:'id', textField:'text',url:'test1.loop.getlampcomaddr.action' " />
+                                       data-options="editable:false,valueField:'id', textField:'text' " />
 
                                 <!--                                <select name="l_comaddr" id="l_comaddr" placeholder="回路" class="input-sm" style="width:150px;">-->
                             </span>    
@@ -256,8 +261,8 @@
                             <span style="margin-left:10px;">合闸开关&nbsp;</span>
 
                             <select class="easyui-combobox" id="switch" name="switch" style="width:150px; height: 34px">
-                                <option value="170">关</option>
-                                <option value="85">开</option>           
+                                <option value="170">闭合</option>
+                                <option value="85">断开</option>           
                             </select>
 
                             <!--                            <span class="menuBox">
