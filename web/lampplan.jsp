@@ -106,7 +106,9 @@
                     o.p_name = a.p_name;
                     o.p_type = a.p_type;
                     o.pid=a.pid;
+                    console.log(o);
                     var ret = false;
+//f                    return false;
                     $.ajax({async: false, url: "lamp.planForm.addscene.action", type: "get", datatype: "JSON", data: o,
                         success: function (data) {
                             var arrlist = data.rs;
@@ -951,7 +953,7 @@
                         ], [
                             {
                                 field: 'p_scene1',
-                                title: '场景',
+                                title: '场景号',
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -987,7 +989,7 @@
 
                             }, {
                                 field: 'p_scene2',
-                                title: '场景',
+                                title: '场景号',
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -1021,7 +1023,7 @@
                                 }
                             }, {
                                 field: 'p_scene3',
-                                title: '场景',
+                                title: '场景号',
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -1055,7 +1057,7 @@
                                 }
                             }, {
                                 field: 'p_scene4',
-                                title: '场景',
+                                title: '场景号',
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -1089,7 +1091,7 @@
                                 }
                             }, {
                                 field: 'p_scene5',
-                                title: '场景',
+                                title: '场景号',
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -1123,7 +1125,7 @@
                                 }
                             }, {
                                 field: 'p_scene6',
-                                title: '场景',
+                                title: '场景号',
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -1156,7 +1158,7 @@
 
                                 }
                             }, {
-                                field: 'p_scene6',
+                                field: 'p_scene7',
                                 title: '场景',
                                 width: 25,
                                 align: 'center',
@@ -1172,7 +1174,7 @@
                                 }
                             },
                             {
-                                field: 'p_val6',
+                                field: 'p_val7',
                                 title: '调光值',
                                 width: 25,
                                 align: 'center',
@@ -1180,8 +1182,8 @@
                                 colspan: 1,
                                 formatter: function (value, row, index, field) {
                                     // console.log(row);
-                                    if (isJSON(row.p_scene6)) {
-                                        var obj = eval('(' + row.p_scene6 + ')');
+                                    if (isJSON(row.p_scene7)) {
+                                        var obj = eval('(' + row.p_scene7 + ')');
 
                                         if (obj.value != null) {
                                             return obj.value.toString();
@@ -1190,7 +1192,7 @@
 
                                 }
                             }, {
-                                field: 'p_scene6',
+                                field: 'p_scene8',
                                 title: '场景',
                                 width: 25,
                                 align: 'center',
@@ -1206,7 +1208,7 @@
                                 }
                             },
                             {
-                                field: 'p_val6',
+                                field: 'p_val8',
                                 title: '调光值',
                                 width: 25,
                                 align: 'center',
@@ -1214,8 +1216,8 @@
                                 colspan: 1,
                                 formatter: function (value, row, index, field) {
                                     // console.log(row);
-                                    if (isJSON(row.p_scene6)) {
-                                        var obj = eval('(' + row.p_scene6 + ')');
+                                    if (isJSON(row.p_scene8)) {
+                                        var obj = eval('(' + row.p_scene8 + ')');
 
                                         if (obj.value != null) {
                                             return obj.value.toString();

@@ -640,7 +640,7 @@
         </script>
 
         <style>
-
+            
             input[type="text"],input[type="radio"] { height: 30px; } 
             table td { line-height: 40px; } 
             .menuBox { position: relative; background: skyblue; } 
@@ -650,22 +650,6 @@
 
             .bodycenter { text-align: -webkit-center; text-align: -moz-center; width: 600px; margin: auto; }        
 
-
-
-
-
-
-
-            /*            .table { font-size: 12px; } 
-                        .modal-body input[type="text"], 
-                        .modal-body select { height: 30px; } 
-                        .modal-body input[type="radio"] { height: 30px; } 
-                        .modal-body table td { line-height: 40px; }
-                        .a-upload { padding: 4px 10px; height: 30px; line-height: 20px; position: relative; cursor: pointer; color: #888; background: #fafafa; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; display: inline-block; *display: inline; *zoom: 1 } 
-                        .a-upload input { position: absolute; font-size: 100px; right: 0; top: 0; opacity: 0; filter: alpha(opacity = 0); cursor: pointer } 
-                        .a-upload:hover { color: #444; background: #eee; border-color: #ccc; text-decoration: none } 
-                        .pagination-info { float: left; margin-top: -4px; } 
-                        .modal-body { text-align: -webkit-center; text-align: -moz-center; width: 600px; margin: auto; }*/
         </style>
 
     </head>
