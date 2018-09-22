@@ -26,6 +26,26 @@
                 </xflt>
             </xsql>
         </xhandle>
+                <xhandle desc="修改回路方案" id="modifyname" rtnype="JSON">
+            <xsql id="a1" para="l_name,l_worktype,l_groupe" tpe="DDL" tpl="update t_loop set l_name=':l_name',l_worktype=:l_worktype,l_groupe=:l_groupe where @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@id ">
+                    <xfltpara id="id" nrp="1=1" para="id" sql="id=:id">
+                    </xfltpara>
+                </xflt>
+            </xsql>
+        </xhandle>
+                <xhandle desc="删除回路" id="deleteLoop" rtn="rs" rtnype="JSON">
+            <xsql id="a1" tpe="DDL" tpl="delete from t_loop where @CONDITION " var="rs">
+                <xflt id="CONDITION" tpl="@ID ">
+                    <xfltpara id="ID" nrp="1=1" para="id" sql="id =  :id ">
+                    </xfltpara>
+                </xflt>
+            </xsql>
+        </xhandle>
+                <xhandle desc="添加回路" id="addloop" rtn="rs" rtnype="JSON">
+            <xsql id="a1" para="l_worktype,l_groupe,l_name,l_code,l_comaddr,name" tpe="DDL" tpl="insert into t_loop(l_worktype,l_groupe,l_name,l_code,l_comaddr,name,l_deplayment) values(:l_worktype,:l_groupe,':l_name',':l_code',':l_comaddr',':name',0) " var="rs">
+            </xsql>
+        </xhandle>
     </xform>
     
     <xform desc="回路方案" id="planForm">

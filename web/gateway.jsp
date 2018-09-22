@@ -42,6 +42,7 @@
                     offset: 'center'
                 });
             }
+
             function getMessage(obj) {
                 console.log("getMessage");
                 console.log(obj);
@@ -65,6 +66,7 @@
                 $('#dialog-add').dialog('open');
                 return false;
             }
+
             function modifyModal() {
 
                 var selectRow1 = $("#gravidaTable").bootstrapTable("getSelections");
@@ -117,7 +119,7 @@
                 var longitudemstr = obj.longitudem26d + "." + obj.longitudem26m + "." + obj.longitudem26s;
                 obj.longitude = longitudemstr;
                 console.log(obj);
-                $.ajax({async: false, cache: false, url: "test1.gayway.modifyGateway.action", type: "GET", data: obj,
+                $.ajax({async: false, cache: false, url: "gayway.GaywayForm.modifyGateway.action", type: "GET", data: obj,
                     success: function (data) {
                         // namesss = true;
                         $("#gravidaTable").bootstrapTable('refresh');
@@ -132,9 +134,6 @@
 
                 return false;
             }
-
-
-
 
             function dealsend() {
 
@@ -199,39 +198,49 @@
                 });
 
 
-//
-//                $("#add").attr("disabled", true);
-//                $("#xiugai").attr("disabled", true);
-//                $("#shanchu").attr("disabled", true);
-//                var obj = {};
-//                obj.code = ${param.m_parent};
-//                obj.roletype = ${param.role};
-//                $.ajax({async: false, url: "login.usermanage.power.action", type: "get", datatype: "JSON", data: obj,
-//                    success: function (data) {
-//                        var rs = data.rs;
-//                        if (rs.length > 0) {
-//                            for (var i = 0; i < rs.length; i++) {
-//
-//                                if (rs[i].code == "600101" && rs[i].enable != 0) {
-//                                    $("#add").attr("disabled", false);
-//                                    continue;
-//                                }
-//                                if (rs[i].code == "600102" && rs[i].enable != 0) {
-//                                    $("#xiugai").attr("disabled", false);
-//                                    continue;
-//                                }
-//                                if (rs[i].code == "600103" && rs[i].enable != 0) {
-//                                    $("#shanchu").attr("disabled", false);
-//                                    continue;
-//                                }
-//                            }
-//                        }
-//
-//                    },
-//                    error: function () {
-//                        alert("提交失败！");
-//                    }
-//                });
+                $('#pid').combobox({
+                    url: "gayway.GaywayForm.getProject.action?code=${param.pid}",
+                    onLoadSuccess: function (data) {
+                        if (Array.isArray(data) && data.length > 0) {
+                            $(this).combobox('select', data[0].id)
+                        } else {
+                            $(this).combobox('select', );
+                        }
+                    }
+                })
+
+                $("#add").attr("disabled", true);
+                $("#xiugai").attr("disabled", true);
+                $("#shanchu").attr("disabled", true);
+                var obj = {};
+                obj.code = ${param.m_parent};
+                obj.roletype = ${param.role};
+                $.ajax({async: false, url: "login.usermanage.power.action", type: "get", datatype: "JSON", data: obj,
+                    success: function (data) {
+                        var rs = data.rs;
+                        if (rs.length > 0) {
+                            for (var i = 0; i < rs.length; i++) {
+
+                                if (rs[i].code == "600101" && rs[i].enable != 0) {
+                                    $("#add").attr("disabled", false);
+                                    continue;
+                                }
+                                if (rs[i].code == "600102" && rs[i].enable != 0) {
+                                    $("#xiugai").attr("disabled", false);
+                                    continue;
+                                }
+                                if (rs[i].code == "600103" && rs[i].enable != 0) {
+                                    $("#shanchu").attr("disabled", false);
+                                    continue;
+                                }
+                            }
+                        }
+
+                    },
+                    error: function () {
+                        alert("提交失败！");
+                    }
+                });
 
                 flag = setInterval("dealsend()", 1000);
 
@@ -308,14 +317,15 @@
                     pageList: [5, 10, 15, 20, 25],
                     onLoadSuccess: function (data) {  //加载成功时执行  表格加载完成时 获取集中器在线状态
                     },
-                    url: 'test1.f5.h1.action',
+                    url: 'gayway.GaywayForm.List.action',
                     //服务器url
                     queryParams: function (params)  {   //配置参数     
                         var temp  =   {    //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的 
                             search: params.search,
                             skip: params.offset,
                             limit: params.limit,
-                            type_id: "1"   
+                            type_id: "1",
+                            pid: "${param.pid}" 
                         };      
                         return temp;  
                     },
@@ -330,16 +340,6 @@
 
                     var selects = $('#gravidaTable').bootstrapTable('getSelections');
                     var num = selects.length;
-//                    console.log(selects);
-//                    var num = ""
-//                    if (selects.length == 1) {
-//                        num = selects[0];
-//                    } else {
-//                        for (var i = 0; i < selects.length; i++) {
-//                            num += selects[i].id + ",";
-//                        }
-//                    }
-
                     if (num == 0) {
                         layer.alert('请选择您要删除的记录', {
                             icon: 6,
@@ -353,12 +353,12 @@
                             title: '提示'
                         }, function (index) {
                             var o = {l_comaddr: selects[0].comaddr, id: selects[0].id};
-                            $.ajax({url: "test1.gayway.existcomaddr.action", async: false, type: "POST", datatype: "JSON", data: o,
+                            $.ajax({url: "gayway.GaywayForm.existcomaddr.action", async: false, type: "POST", datatype: "JSON", data: o,
                                 success: function (data) {
                                     if (data.length >= 1) {
                                         layerAler("此网关在灯具或回路有数据,请先清空回路和灯具的网关");
                                     } else if (data.length == 0) {
-                                        $.ajax({url: "test1.f5.deleteGateway.action", type: "POST", datatype: "JSON", data: o,
+                                        $.ajax({url: "gayway.GaywayForm.deleteGateway.action", type: "POST", datatype: "JSON", data: o,
                                             success: function (data) {
                                                 var arrlist = data.rs;
                                                 if (arrlist.length == 1) {
@@ -413,7 +413,7 @@
                 var obj = $("#formadd").serializeObject();
 
                 var namesss = false;
-                $.ajax({async: false, cache: false, url: "test1.f5.queryGateway.action", type: "GET", data: obj,
+                $.ajax({async: false, cache: false, url: "gayway.GaywayForm.queryGateway.action", type: "GET", data: obj,
                     success: function (data) {
                         var arrlist = data.rs;
                         if (arrlist.length == 1) {
@@ -432,9 +432,9 @@
                             obj.longitude = obj.longitude == ".." ? "" : obj.longitude;
                             obj.multpower = obj.multpower == "" ? 0 : obj.multpower;
                             console.log(obj);
-                            $.ajax({async: false, cache: false, url: "test1.f5.addGateway.action", type: "GET", data: obj,
+                            $.ajax({async: false, cache: false, url: "gayway.GaywayForm.addGateway.action", type: "GET", data: obj,
                                 success: function (data) {
-                                    // namesss = true;
+                                     namesss = true;
                                     $("#gravidaTable").bootstrapTable('refresh');
                                 },
                                 error: function () {
@@ -507,18 +507,9 @@
                         <tr>
                             <td>
                                 <span style="margin-left:20px;">项目列表&nbsp;</span>
-                                <input id="pid" class="easyui-combobox" name="pid" style="width:150px; height: 30px" 
-                                       data-options="onLoadSuccess:function(data){
-                                       if(Array.isArray(data)&&data.length>0){
-                                       $(this).combobox('select', data[0].id)
-                                       }else{
-                                       $(this).combobox('select',);
-                                       }
-                                       console.log(data);
-                                       },editable:false,valueField:'id', textField:'text',url:'formuser.project.getProject.action?code=P00001' " />
+                                <input id="pid" class="easyui-combobox" name="pid" style="width:150px; height: 30px" data-options="editable:false,valueField:'id', textField:'text' " />
                             </td>
                             <td>
-
                             </td>
                             <td>
 

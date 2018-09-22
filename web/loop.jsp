@@ -32,11 +32,15 @@
                     return  false;
                 }
                 o.name = o.comaddrname;
-                console.log(o);
                 var namesss = false;
-                $.ajax({async: false, cache: false, url: "test1.loop.getloop.action", type: "GET", data: o,
+                return false;
+                $.ajax({async: false, cache: false, url: "loop.getLoopList.getloop.action", type: "GET", data: o,
                     success: function (data) {
+                        
+                        
                         console.log(data);
+                        
+                        return false;
                         if (data.total > 0) {
                             layer.alert('此回路已存在', {
                                 icon: 6,
@@ -45,7 +49,7 @@
                             return false;
                         }
                         if (data.total == 0) {
-                            $.ajax({async: false, cache: false, url: "test1.loop.addloop.action", type: "GET", data: o,
+                            $.ajax({async: false, cache: false, url: "loop.loopForm.addloop.action", type: "GET", data: o,
                                 success: function (data) {
 //                                    console.log(data);
                                     $("#gravidaTable").bootstrapTable('refresh');
@@ -60,6 +64,7 @@
                             });
                             return  false;
                         }
+                        
                     },
                     error: function () {
                         layer.alert('系统错误，刷新后重试', {icon: 6, offset: 'center'
@@ -131,7 +136,7 @@
                 var o = $("#form2").serializeObject();
                 o.id = o.hide_id;
                 console.log(o);
-                $.ajax({async: false, url: "test1.loop.modifyname.action", type: "get", datatype: "JSON", data: o,
+                $.ajax({async: false, url: "loop.loopForm.modifyname.action", type: "get", datatype: "JSON", data: o,
                     success: function (data) {
                         var arrlist = data.rs;
                         if (arrlist.length == 1) {
@@ -163,7 +168,7 @@
                 }
                 var select = selects[0];
                 console.log(select);
-                
+
                 $("#l_code1").val(select.l_code);
                 $("#l_comaddr1").combobox('setValue', select.l_comaddr);
                 $("#l_deployment").val(select.l_deplayment);
@@ -174,10 +179,10 @@
                 $('#l_worktype1').combobox('setValue', select.l_worktype);
                 $("#l_groupe1").combobox('setValue', select.l_groupe);
                 if (select.l_deplayment == "1") {
-      
-                    $("#l_groupe1").combobox('readonly',true);
+
+                    $("#l_groupe1").combobox('readonly', true);
                 } else if (select.l_deplayment == "0") {
-                    $("#l_groupe1").combobox('readonly',false);
+                    $("#l_groupe1").combobox('readonly', false);
                 }
 
                 $('#dialog-edit').dialog('open');
@@ -223,18 +228,14 @@
 
 
                 $('#comaddr').combobox({
-                    url: "test1.gayway.comaddr.action",
+                    url: "loop.loopForm.getComaddr.action?pid=${param.pid}",
                     onLoadSuccess: function (data) {
-                        console.log("load 网关完成");
-                        console.log(data);
                         if (Array.isArray(data) && data.length > 0) {
                             $(this).combobox("select", data[0].id);
                             $("#comaddrname").val(data[0].name);
                         }
                     },
                     onSelect: function (record) {
-                        console.log("load 网关完成33");
-                        console.log(record);
                         $("#comaddrname").val(record.name);
 
                     }
@@ -255,42 +256,42 @@
                     }, });
 
 
-//                $("#add").attr("disabled", true);
-//                $("#update").attr("disabled", true);
-//                $("#shanchu").attr("disabled", true);
-//                var obj = {};
-//                obj.code = ${param.m_parent};
-//                obj.roletype = ${param.role};
-//                $.ajax({async: false, url: "login.usermanage.power.action", type: "get", datatype: "JSON", data: obj,
-//                    success: function (data) {
-//                        var rs = data.rs;
-//                        if (rs.length > 0) {
-//                            for (var i = 0; i < rs.length; i++) {
-//
-//                                if (rs[i].code == "600201" && rs[i].enable != 0) {
-//                                    $("#add").attr("disabled", false);
-//                                    continue;
-//                                }
-//                                if (rs[i].code == "600202" && rs[i].enable != 0) {
-//                                    $("#update").attr("disabled", false);
-//                                    continue;
-//                                }
-//                                if (rs[i].code == "600203" && rs[i].enable != 0) {
-//                                    $("#shanchu").attr("disabled", false);
-//                                    continue;
-//                                }
-//                            }
-//                        }
-//
-//                    },
-//                    error: function () {
-//                        alert("提交失败！");
-//                    }
-//                });
+                $("#add").attr("disabled", true);
+                $("#update").attr("disabled", true);
+                $("#shanchu").attr("disabled", true);
+                var obj = {};
+                obj.code = ${param.m_parent};
+                obj.roletype = ${param.role};
+                $.ajax({async: false, url: "login.usermanage.power.action", type: "get", datatype: "JSON", data: obj,
+                    success: function (data) {
+                        var rs = data.rs;
+                        if (rs.length > 0) {
+                            for (var i = 0; i < rs.length; i++) {
+
+                                if (rs[i].code == "600201" && rs[i].enable != 0) {
+                                    $("#add").attr("disabled", false);
+                                    continue;
+                                }
+                                if (rs[i].code == "600202" && rs[i].enable != 0) {
+                                    $("#update").attr("disabled", false);
+                                    continue;
+                                }
+                                if (rs[i].code == "600203" && rs[i].enable != 0) {
+                                    $("#shanchu").attr("disabled", false);
+                                    continue;
+                                }
+                            }
+                        }
+
+                    },
+                    error: function () {
+                        alert("提交失败！");
+                    }
+                });
 
 
 
-                $('#gravidaTable').bootstrapTable({url: 'test1.loop.getLoopList.action',
+                $('#gravidaTable').bootstrapTable({url: 'loop.loopForm.getLoopList.action',
                     //服务器url
                     columns: [
                         {
@@ -391,7 +392,8 @@
                             search: params.search,
                             skip: params.offset,
                             limit: params.limit,
-                            type_id: "1"    
+                            type_id: "1",
+                            pid: "${param.pid}"   
                         };      
                         return temp;  
                     },
@@ -419,7 +421,7 @@
                                 layerAler("已部署不能删除");
                                 continue;
                             } else {
-                                $.ajax({url: "test1.loop.deleteLoop.action", type: "POST", datatype: "JSON", data: {id: select.id},
+                                $.ajax({url: "loop.loopForm.deleteLoop.action", type: "POST", datatype: "JSON", data: {id: select.id},
                                     success: function (data) {
                                         var arrlist = data.rs;
                                         if (arrlist.length == 1) {
@@ -521,22 +523,23 @@
 
         <div id="dialog-add"  class="bodycenter"  style=" display: none" title="回路添加">
 
-            <form action="" method="POST" id="formadd" onsubmit="return checkLoopAdd()">      
+            <form action="" method="POST" id="formadd" onsubmit="return checkLoopAdd()">    
+                               <input type="hidden" name="pid" value="${param.pid}"/>
                 <table >
                     <tbody>
                         <tr>
                             <td>
-                                                          <span style="margin-left:20px;">网关地址&nbsp;</span>
+                                <span style="margin-left:20px;">网关地址&nbsp;</span>
                                 <span class="menuBox">
 
                                     <input id="comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 
                                            data-options='editable:false,valueField:"id", textField:"text"' />
                                 </span>  
-                                                          
-                          
+
+
                             <td></td>
                             <td>
-            <span style="margin-left:10px;">网关名称</span>&nbsp;
+                                <span style="margin-left:10px;">网关名称</span>&nbsp;
                                 <input id="comaddrname" readonly="true"   class="form-control"  name="comaddrname" style="width:150px;display: inline;" placeholder="请输入网关名称" type="text"></td>
 
                             </td>
@@ -544,12 +547,12 @@
 
                         <tr>
                             <td>
-                                          <span style="margin-left:20px;">回路编号&nbsp;</span>
+                                <span style="margin-left:20px;">回路编号&nbsp;</span>
                                 <input id="l_code" class="form-control" name="l_code" style="width:150px;display: inline;" placeholder="请输入回路编号" type="text">
-                                
+
                             <td></td>
                             <td>
-                      <span style="margin-left:10px;">回路名称</span>&nbsp;
+                                <span style="margin-left:10px;">回路名称</span>&nbsp;
                                 <input id="l_name" class="form-control"  name="l_name" style="width:150px;display: inline;" placeholder="请输入回路名称" type="text"></td>
                             </td>
                             </td>
@@ -592,6 +595,7 @@
         <div id="dialog-edit"  class="bodycenter" style=" display: none"  title="回路修改">
             <form action="" method="POST" id="form2" onsubmit="return modifyLoopName()">  
                 <input type="hidden" id="hide_id" name="hide_id" />
+                      <input type="hidden" name="pid" value="${param.pid}"/>
                 <input type="hidden" id="l_deployment" name="l_deployment" />
                 <table >
                     <tbody>

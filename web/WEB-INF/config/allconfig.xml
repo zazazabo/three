@@ -12,6 +12,8 @@
     </xfile>
     <xfile desc="灯具模块" id="/WEB-INF/config/lamp.xml">
     </xfile>
-      <xfile desc="灯具模块" id="/WEB-INF/config/loop.xml">
+      <xfile desc="网关模块" id="/WEB-INF/config/loop.xml">
     </xfile>  
+          <xfile desc="网关模块" id="/WEB-INF/config/gayway.xml">
+    </xfile> 
 </xfiles>

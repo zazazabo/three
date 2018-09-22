@@ -39,9 +39,11 @@
                 for (var i = 1; i < 9; i++) {
                     $("#time" + i.toString()).timespinner('setValue', '00:00');
                     $("#num" + i.toString()).val(i.toString());
-                     $("#num" + i.toString()).attr('readonly',true);
+                    $("#num" + i.toString()).attr('readonly', true);
                 }
 
+                var u = $("#p_type").combobox('getValue');
+                $("#p_type1").combobox('setValue', u);
 
                 $("#p_name1").val("");
                 $('#dialog-add').dialog('open');
@@ -50,6 +52,7 @@
             function checkPlanLampAdd() {
 
                 var a = $("#formadd").serializeObject();
+
                 if (a.p_type == "0") {
                     var obj1 = {"time": a.time1, "value": parseInt(a.val1)};
                     var obj2 = {"time": a.time2, "value": parseInt(a.val2)};
@@ -105,7 +108,7 @@
                     }
                     o.p_name = a.p_name;
                     o.p_type = a.p_type;
-                    o.pid=a.pid;
+                    o.pid = a.pid;
                     console.log(o);
                     var ret = false;
 //f                    return false;
@@ -307,7 +310,7 @@
                             var num = "#__num" + (i + 1).toString();
                             var val = "#__val" + (i + 1).toString();
                             $(num).val(obj.num);
-                             $(num).attr('readonly',true);
+                            $(num).attr('readonly', true);
                             $(val).val(obj.value);
                         }
                     }
@@ -405,9 +408,6 @@
                     }
                 });
 
-
-
-
                 $("#p_type").combobox(
                         {
                             onSelect: function (record) {
@@ -424,7 +424,7 @@
                         }
                 )
                 $("#p_type").combobox('select', '0');
-                $('#p_type1').combobox({
+                $('#p_type').combobox({
                     onSelect: function (record) {
                         if (record.value == 0) {
                             var v = $(".bootstrap-table");
@@ -460,9 +460,9 @@
                     }
                 })
 
-//                $("#add").attr("disabled", true);
-//                $("#update").attr("disabled", true);
-//                $("#del").attr("disabled", true);
+                $("#add").attr("disabled", true);
+                $("#update").attr("disabled", true);
+                $("#del").attr("disabled", true);
 
                 var obj = {};
                 obj.code = ${param.m_parent};
@@ -827,7 +827,7 @@
                             p_attr: "1",
                             p_type: 0,
                             type_id: "1",
-                            pid:"${param.pid}"   
+                            pid: "${param.pid}"   
                         };      
                         return temp;  
                     },
@@ -1253,7 +1253,7 @@
                             p_attr: 1,
                             p_type: 1,
                             type_id: "1",
-                            pid:"${param.pid}"  
+                            pid: "${param.pid}"  
                         };      
                         return temp;  
                     },
@@ -1289,7 +1289,7 @@
             </button>
             <span style="margin-left:20px;">方案类型&nbsp;</span>
             <span class="menuBox">
-                <select class="easyui-combobox" data-options="editable:false" id="p_type1" name="p_type1" style="width:150px; height: 30px; margin-left: 3px;">
+                <select class="easyui-combobox" data-options="editable:false" id="p_type" name="p_type" style="width:150px; height: 30px; margin-left: 3px;">
                     <option value="0">时间</option>
                     <option value="1">场景</option>           
                 </select>
@@ -1311,7 +1311,7 @@
                             <td>
                                 <span >&nbsp;&nbsp;&nbsp;&nbsp;方案类型&nbsp;</span>
                                 <span class="menuBox">
-                                    <select class="easyui-combobox" data-options="editable:false" id="p_type" name="p_type" style="width:150px; height: 30px; margin-left: 3px;">
+                                    <select class="easyui-combobox" data-options="editable:false" id="p_type1" name="p_type" style="width:150px; height: 30px; margin-left: 3px;">
                                         <option value="0">时间</option>
                                         <option value="1">场景</option>           
                                     </select>

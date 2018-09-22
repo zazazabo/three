@@ -99,7 +99,7 @@
                 $(".secondMenu li").click(function () {
                     $(this).addClass("layui-this active").siblings("li").removeClass("layui-this active");
                     var html = $(this).attr('name');
-                    console.log(htmlFirst);
+                      console.log(html);
                     $(".J_iframe").attr('src', html);
                 })
                 function size() {
