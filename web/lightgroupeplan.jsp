@@ -667,7 +667,7 @@
                                     <span class="menuBox">
 
                                         <input id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 
-                                               data-options="editable:false,valueField:'id', textField:'text',url:'test1.lamp.getlampcomaddr.action' " />
+                                               data-options="editable:false,valueField:'id', textField:'text',url:'lamp.lampform.getComaddr.action?pid=${param.pid}' " />
 
                                         <!--<select name="l_comaddr_lamp" id="l_comaddr_lamp" placeholder="回路" class="input-sm" style="width:150px;">-->
                                     </span>   

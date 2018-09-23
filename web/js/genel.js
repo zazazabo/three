@@ -391,5 +391,34 @@ function isNumber(val) {
 
 }
 
+/**
+ * msg 功能
+ * data 发关的数据
+ * fn功能号
+ * func 回调函数
+ * comaddr 网关地址
+ * type 类型
+ * param 参数
+ * val   值
+ * */
 
-
+function dealsend2(msg, data, fn, func, comaddr, type, param, val) {
+    var user = new Object();
+    user.begin = '6A';
+    user.res = 1;
+    user.status = "";
+    user.comaddr = comaddr;
+    user.fn = fn;
+    user.function = func;
+    user.param = param;
+    user.page = 2;
+    user.msg = msg;
+    user.val = val;
+    user.type = type;
+    user.addr = comaddr; //getComAddr(comaddr); //"02170101";
+    user.data = data;
+    user.len = data.length;
+    user.end = '6A';
+    console.log(user);
+    parent.parent.sendData(user);
+}

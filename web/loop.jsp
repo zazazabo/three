@@ -33,43 +33,33 @@
                 }
                 o.name = o.comaddrname;
                 var namesss = false;
-                return false;
-                $.ajax({async: false, cache: false, url: "loop.getLoopList.getloop.action", type: "GET", data: o,
+                console.log(o);
+
+                $.ajax({async: false, cache: false, url: "loop.loopForm.getLoopList.action", type: "GET", data: o,
                     success: function (data) {
-                        
-                        
-                        console.log(data);
-                        
-                        return false;
+
                         if (data.total > 0) {
-                            layer.alert('此回路已存在', {
-                                icon: 6,
-                                offset: 'center'
-                            });
+                            layerAler("此回路已存在");
                             return false;
                         }
                         if (data.total == 0) {
                             $.ajax({async: false, cache: false, url: "loop.loopForm.addloop.action", type: "GET", data: o,
                                 success: function (data) {
-//                                    console.log(data);
                                     $("#gravidaTable").bootstrapTable('refresh');
                                     namesss = true;
                                 },
                                 error: function () {
-                                    layer.alert('系统错误，刷新后重试', {
-                                        icon: 6,
-                                        offset: 'center'
-                                    });
+                                    layerAler("系统错误，刷新后重试");
                                 }
                             });
                             return  false;
                         }
-                        
+
                     },
                     error: function () {
                         layer.alert('系统错误，刷新后重试', {icon: 6, offset: 'center'
                         });
-                        return namesss;
+
                     }
 
                 })
@@ -228,7 +218,7 @@
 
 
                 $('#comaddr').combobox({
-                    url: "loop.loopForm.getComaddr.action?pid=${param.pid}",
+                    url: "gayway.GaywayForm.getComaddr.action?pid=${param.pid}",
                     onLoadSuccess: function (data) {
                         if (Array.isArray(data) && data.length > 0) {
                             $(this).combobox("select", data[0].id);
@@ -414,9 +404,7 @@
                     }, function (index) {
                         for (var i = 0; i < selects.length; i++) {
                             var select = selects[i];
-                            console.log(select);
                             var l_deployment = select.l_deplayment;
-                            console.log(l_deployment);
                             if (l_deployment == 1) {
                                 layerAler("已部署不能删除");
                                 continue;
@@ -524,7 +512,7 @@
         <div id="dialog-add"  class="bodycenter"  style=" display: none" title="回路添加">
 
             <form action="" method="POST" id="formadd" onsubmit="return checkLoopAdd()">    
-                               <input type="hidden" name="pid" value="${param.pid}"/>
+                <input type="hidden" name="pid" value="${param.pid}"/>
                 <table >
                     <tbody>
                         <tr>
@@ -595,7 +583,7 @@
         <div id="dialog-edit"  class="bodycenter" style=" display: none"  title="回路修改">
             <form action="" method="POST" id="form2" onsubmit="return modifyLoopName()">  
                 <input type="hidden" id="hide_id" name="hide_id" />
-                      <input type="hidden" name="pid" value="${param.pid}"/>
+                <input type="hidden" name="pid" value="${param.pid}"/>
                 <input type="hidden" id="l_deployment" name="l_deployment" />
                 <table >
                     <tbody>
