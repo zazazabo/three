@@ -264,38 +264,15 @@
                     oldlgroupe = o.l_groupe;
                 }
 
-
 //                vv.push(3);  //灯控器组号  1 所有灯控器  2 按组   3 个个灯控器
-
                 vv.push(parseInt(o.l_groupe2)); //新组号  1字节            
                 var comaddr = o.l_comaddr;
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA4, num, 0, 110, vv); //01 03 F24    
 
                 dealsend2("A4", data, 110, "resetGroupeCB", comaddr, o.type, oldlgroupe, o.l_groupe2);
-
             }
 
-            function dealsend2(msg, data, fn, func, comaddr, type, param, val) {
-                var user = new Object();
-                user.begin = '6A';
-                user.res = 1;
-                user.status = "";
-                user.comaddr = comaddr;
-                user.fn = fn;
-                user.function = func;
-                user.param = param;
-                user.page = 2;
-                user.msg = msg;
-                user.val = val;
-                user.type = type;
-                user.addr = getComAddr(comaddr); //"02170101";
-                user.data = data;
-                user.len = data.length;
-                user.end = '6A';
-                console.log(user);
-                parent.parent.sendData(user);
-            }
 
             $(function () {
 

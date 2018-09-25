@@ -408,7 +408,7 @@
                     }
                 });
 
-                $("#p_type").combobox(
+                $("#p_type1").combobox(
                         {
                             onSelect: function (record) {
                                 if (record.value == "0") {

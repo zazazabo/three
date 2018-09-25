@@ -22,7 +22,8 @@
             var websocket = null;
 
             function sendData(obj) {
-                console.log(websocket.readyState);
+           
+                console.log("通信状态:",websocket.readyState);
                 if (websocket.readyState == 3) {
 //                    layerAler("通迅已断开");
                 }

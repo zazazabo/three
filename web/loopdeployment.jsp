@@ -426,6 +426,7 @@
                         $('#type' + v.toString()).hide();
 //                      
                         $("#p_type").val(record.p_type);
+                        console.log(record);
                         if (record.p_type == "1") {
                             var strArr1 = record.p_Longitude.split(".");
                             var strArr2 = record.p_latitude.split(".");

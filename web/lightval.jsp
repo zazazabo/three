@@ -245,7 +245,7 @@
                 param.row = select.index;
                 var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 301, vv); //01 03
                 //dealsend(sss, o1);
-                dealsend2(data, 301, "lightCB", l_comaddr, o.groupetype, param, lampval);
+                dealsend2("A5",data, 301, "lightCB", l_comaddr, o.groupetype, param, lampval);
 
             }
 
@@ -273,27 +273,27 @@
             }
 
 
-            function dealsend2(data, fn, func, comaddr, type, param, val) {
-                var user = new Object();
-                user.begin = '6A';
-                user.res = 1;
-                user.status = "";
-                user.comaddr = comaddr;
-                user.fn = fn;
-                user.function = func;
-                user.param = param;
-                user.page = 2;
-                user.msg = "A5";
-                user.res = 1;
-                user.val = val;
-                user.type = type;
-                user.addr = getComAddr(comaddr); //"02170101";
-                user.data = data;
-                user.len = data.length;
-                user.end = '6A';
-                console.log(user);
-                parent.parent.sendData(user);
-            }
+//            function dealsend2(data, fn, func, comaddr, type, param, val) {
+//                var user = new Object();
+//                user.begin = '6A';
+//                user.res = 1;
+//                user.status = "";
+//                user.comaddr = comaddr;
+//                user.fn = fn;
+//                user.function = func;
+//                user.param = param;
+//                user.page = 2;
+//                user.msg = "A5";
+//                user.res = 1;
+//                user.val = val;
+//                user.type = type;
+//                user.addr = getComAddr(comaddr); //"02170101";
+//                user.data = data;
+//                user.len = data.length;
+//                user.end = '6A';
+//                console.log(user);
+//                parent.parent.sendData(user);
+//            }
 
             $(function () {
                 $('#gravidaTable').bootstrapTable({

@@ -227,7 +227,7 @@
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT   tl.l_comaddr as id,tl.l_comaddr as text,tl.l_comaddr as comaddr FROM t_lamp tl" var="list">
             </xsql>
         </xhandle>
-        <xhandle desc="" id="getGroupe" rtnype="JSON">
+<!--         <xhandle desc="" id="getGroupe" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT   tl.l_groupe as id,tl.l_groupe as text,tl.l_groupe as l_groupe FROM t_lamp tl where @CONDITION " var="list">
                 <xflt id="CONDITION" nrp="" tpl="@l_comaddr AND @l_deplayment">
                     <xfltpara id="l_comaddr" nrp="1=1" para="l_comaddr" sql="l_comaddr = ':l_comaddr'">
@@ -236,7 +236,7 @@
                     </xfltpara>
                 </xflt>
             </xsql>
-        </xhandle>
+        </xhandle> -->
         <xhandle desc="" id="Groupe" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT tl.l_groupe,tl.l_comaddr,l_value FROM  t_lamp tl WHERE @CONDITION  GROUP BY l_groupe,l_comaddr,l_value" var="bootstrap">
                 <xflt id="CONDITION" nrp="" tpl="@l_comaddr AND @l_factorycode AND @l_groupe AND @l_deplayment">

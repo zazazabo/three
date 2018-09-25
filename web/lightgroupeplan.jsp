@@ -10,6 +10,9 @@
     <head>
         <%@include  file="js.jspf" %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <style>
+            .btn { margin-left: 10px;} 
+        </style>
         <script type="text/javascript" src="js/genel.js"></script>
         <script>
             var websocket = null;
@@ -20,198 +23,89 @@
                 });
             }
 
-
-            function dealsend2(msg, data, fn, func, comaddr, type, param, val) {
-                var user = new Object();
-                user.begin = '6A';
-                user.res = 1;
-                user.status = "";
-                user.comaddr = comaddr;
-                user.fn = fn;
-                user.function = func;
-                user.param = param;
-                user.page = 2;
-                user.msg = msg;
-                user.val = val;
-                user.type = type;
-                user.addr = getComAddr(comaddr); //"02170101";
-                user.data = data;
-                user.len = data.length;
-                user.end = '6A';
-                console.log(user);
-                parent.parent.sendData(user);
-            }
-
-            function deployPlan(obj) {
-                console.log(obj)
-                if (obj.status == "fail") {
-                    if (obj.errcode == 6) {
-                        layerAler("未查询到此设备或信息");
-                    }
-                } else if (obj.status == "success") {
-                    layerAler("成功");
+            function resetWowktypeCB(obj) {
+                if (obj.status == "success") {
+                    var o = {};
+                    o.l_comaddr = obj.comaddr;
+                    o.l_worktype = obj.val;
+                    o.l_groupe = obj.param;
+                    $.ajax({async: false, url: "lamp.lampform.modifyworktype.action", type: "get", datatype: "JSON", data: o,
+                        success: function (data) {
+                            var arrlist = data.rs;
+                            if (arrlist.length == 1) {
+                                layerAler("更换工作方式成功")
+                            }
+                        },
+                        error: function () {
+                            alert("提交失败！");
+                        }
+                    });
                 }
             }
-
-            function  sendPlan() {
-
-                var selects = $('#gravidaTable').bootstrapTable('getSelections');
-                if (selects.length == 0) {
-                    layerAler("请勾选分组数据");
+            function resetWowktype() {
+                var o = $("#form1").serializeObject();
+                if (o.l_comaddr == "" || o.l_groupe == "") {
+                    layerAler("网关或组号不能为空");
                     return;
                 }
+                var oldlgroupe = ""
+                var vv = [];
+                o.type = 2;
+                vv.push(o.type);  //灯控器组号  1 所有灯控器  2 按组   3 个个灯控器
+                vv.push(parseInt(o.l_groupe)); //原组号
 
 
-
-
-                var vv = new Array();
-                var eleArray = new Array();
-                var len = selects.length;
-                vv.push(len);
-                for (var i = 0; i < len; i++) {
-                    var select = selects[i];
-                    console.log(select);
-                    var l_groupe = parseInt(select.l_groupe, "10");
-                    vv.push(l_groupe);
-                    eleArray.push(l_groupe);
-                    var param = select.detail;
-                    var time1 = param.p_time1;
-                    var time2 = param.p_time2;
-                    var time3 = param.p_time3;
-                    var time4 = param.p_time4;
-                    var time5 = param.p_time5;
-                    var time6 = param.p_time6;
-                    var str = "";
-                    if (isJSON(time1)) {
-                        var obj = eval('(' + time1 + ')');
-                        var targetArr = obj.time.split(":");
-                        if (targetArr.length == 2) {
-                            var h = parseInt(targetArr[0], "16");
-                            var m = parseInt(targetArr[1], "16");
-                            vv.push(m);
-                            vv.push(h);
-                            var v = parseInt(obj.value, "10");
-                            vv.push(v);
-                        }
-                    }
-                    if (isJSON(time2)) {
-                        var obj = eval('(' + time2 + ')');
-                        var targetArr = obj.time.split(":");
-                        if (targetArr.length == 2) {
-                            var h = parseInt(targetArr[0], "16");
-                            var m = parseInt(targetArr[1], "16");
-                            vv.push(m);
-                            vv.push(h)
-                            var v = parseInt(obj.value, "16");
-                            vv.push(v);
-                        }
-                    }
-                    if (isJSON(time3)) {
-                        var obj = eval('(' + time3 + ')');
-                        var targetArr = obj.time.split(":");
-                        if (targetArr.length == 2) {
-                            var h = parseInt(targetArr[0], "16");
-                            var m = parseInt(targetArr[1], "16");
-                            vv.push(m);
-                            vv.push(h)
-                            var v = parseInt(obj.value, "10");
-                            vv.push(v);
-                        }
-                    }
-                    if (isJSON(time4)) {
-                        var obj = eval('(' + time4 + ')');
-                        var targetArr = obj.time.split(":");
-                        if (targetArr.length == 2) {
-                            var h = parseInt(targetArr[0], "16");
-                            var m = parseInt(targetArr[1], "16");
-                            vv.push(m);
-                            vv.push(h)
-                            var v = parseInt(obj.value, "10");
-                            vv.push(v);
-                        }
-                    }
-                    if (isJSON(time5)) {
-                        var obj = eval('(' + time5 + ')');
-                        var targetArr = obj.time.split(":");
-                        if (targetArr.length == 2) {
-                            var h = parseInt(targetArr[0], "16");
-                            var m = parseInt(targetArr[1], "16");
-                            vv.push(m);
-                            vv.push(h)
-                            var v = parseInt(obj.value, "10");
-                            vv.push(v);
-                        }
-                    }
-                    if (isJSON(time6)) {
-                        var obj = eval('(' + time6 + ')');
-                        var targetArr = obj.time.split(":");
-                        if (targetArr.length == 2) {
-                            var h = parseInt(targetArr[0], "16");
-                            var m = parseInt(targetArr[1], "16");
-                            vv.push(m);
-                            vv.push(h)
-                            var v = parseInt(obj.value, "10");
-                            vv.push(v);
-                        }
-                    }
-
-                }
-                var comaddr1 = selects[0].l_comaddr;
-                var ele = {id: eleArray};
-                var user = new Object();
-                user.res = 1;
-                user.afn = 140;
-                user.status = "";
-                user.function = "deployPlan";
-                user.parama = ele;
-                user.msg = "setParam";
-                user.res = 1;
-                user.addr = getComAddr(comaddr1); //"02170101";
+                vv.push(parseInt(o.l_worktype)); //新工作方式  1字节            
+                var comaddr = o.l_comaddr;
                 var num = randnum(0, 9) + 0x70;
-                num = 0x71;
-                var sss = buicode(comaddr1, 0x04, 0xA4, num, 0, 140, vv); //01 03 F24        
-                user.data = sss;
-                $datajson = JSON.stringify(user);
-                console.log("websocket readystate:" + websocket.readyState);
-                console.log(user);
-                websocket.send($datajson)
+                var data = buicode(comaddr, 0x04, 0xA4, num, 0, 120, vv); //01 03 F24    
+
+                dealsend2("A4", data, 120, "resetWowktypeCB", comaddr, o.type, oldlgroupe, o.l_worktype);
             }
-            function setPlan() {
-                var data = $("#txt_l_plan").combobox('getValue');
-                if (data == "") {
-                    layerAler("请选择方案列表");
+            function resetGroupeCB(obj) {
+                var o = {};
+                o.l_comaddr = obj.comaddr;
+                o.l_groupe = obj.val;
+                if (obj.status == "success") {
+                    o.oldlgroupe = obj.param;
+                    $.ajax({async: false, url: "lamp.lampform.modifygroup.action", type: "get", datatype: "JSON", data: o,
+                        success: function (data) {
+                            var arrlist = data.rs;
+                            if (arrlist.length == 1) {
+                                $("#l_groupe").combobox('clear');
+                                var url = "lamp.GroupeForm.getGroupe.action?l_comaddr=" + o.l_comaddr + "&l_deplayment=1";
+                                $("#l_groupe").combobox('reload', url);
+                            }
+                        },
+                        error: function () {
+                            alert("提交失败！");
+                        }
+                    });
+
+                    layerAler("修改灯具组号成功");
+
+                }
+            }
+            function resetGroupe() {
+
+                var o = $("#form1").serializeObject();
+                if (o.l_comaddr == "" || o.l_groupe == "") {
+                    layerAler("网关或组号不能为空");
                     return;
                 }
-                var obj = $("#eqpTypeForm").serializeObject();
-
-                obj.l_comaddr = obj.txt_l_comaddr;
-                obj.l_groupe = obj.txt_l_groupe;
-                obj.l_plan = obj.txt_l_plan;
-
-                $.ajax({async: false, url: "test1.plan.editlampplan.action", type: "get", datatype: "JSON", data: obj,
-                    success: function (data) {
-                        var arrlist = data.rs;
-                        if (arrlist.length == 1) {
-//                            $("#gravidaTable").bootstrapTable('refresh');
-                        }
-                    },
-                    error: function () {
-                        alert("提交失败！");
-                    }
-                });
+                o.type = 2;
+                var vv = [];
+                vv.push(o.type);
+                vv.push(parseInt(o.l_groupe)); //原组号
+                vv.push(parseInt(o.l_groupe1)); //新组号  1字节            
+                var comaddr = o.l_comaddr;
+                var num = randnum(0, 9) + 0x70;
+                var data = buicode(comaddr, 0x04, 0xA4, num, 0, 110, vv); //01 03 F24    
+                dealsend2("A4", data, 110, "resetGroupeCB", comaddr, o.type, o.l_groupe, o.l_groupe1);
             }
-            function groupeLampValue(obj) {
-                console.log(obj)
-                if (obj.status == "fail") {
-                    if (obj.errcode == 6) {
-                        layerAler("未查询到此设备或信息");
-                    }
-                } else if (obj.status == "success") {
 
-                }
 
-            }
-            function setLampTimePlanCB(obj) {
+            function setLampPlanCB(obj) {
                 console.log(obj);
 
 
@@ -318,28 +212,21 @@
                 }
             }
 
-
             function readLampPlan() {
-                var selects = $('#gravidaTable').bootstrapTable('getSelections');
-                if (selects.length == 0) {
-                    layerAler("请勾选列表读取");
-                    return;
-                }
+
                 var obj = $("#form1").serializeObject();
                 console.log(obj);
-                var v = obj.p_type;
-                var s = selects[0];
-//                console.log(s);
-                if (s.l_deplayment == 0) {
-                    layerAler("部署后的灯具才能设置回路运行方案");
+                if (obj.l_comaddr == "" || obj.l_groupe == "") {
+                    layerAler("网关或组号不能为空");
                     return;
                 }
+                var v = obj.p_type;
                 if (v == "0") {
                     console.log('读取分组时间方案');
                     var vv = [];
                     vv.push(1);
-                    vv.push(parseInt(s.l_groupe));
-                    var comaddr = s.l_comaddr;
+                    vv.push(parseInt(obj.l_groupe));
+                    var comaddr = obj.l_comaddr;
                     var num = randnum(0, 9) + 0x70;
                     var data = buicode(comaddr, 0x04, 0xAA, num, 0, 401, vv); //01 03 F24    
                     dealsend2("AA", data, 401, "readLampPlanCB", comaddr, 0, obj.p_type, 0, 0);
@@ -349,36 +236,28 @@
                     console.log('读取分组场景方案');
                     var vv = [];
                     vv.push(1);
-                    vv.push(parseInt(s.l_groupe));
-                    var comaddr = s.l_comaddr;
+                    vv.push(parseInt(obj.l_groupe));
+                    var comaddr = obj.l_comaddr;
                     var num = randnum(0, 9) + 0x70;
                     var data = buicode(comaddr, 0x04, 0xAA, num, 0, 402, vv); //01 03 F24    
                     dealsend2("AA", data, 402, "readLampPlanCB", comaddr, 0, obj.p_type, 0, 0);
                 }
             }
 
-
-
             function setLampPlan() {
-                var selects = $('#gravidaTable').bootstrapTable('getSelections');
-                if (selects.length == 0) {
-                    layerAler("请勾选列表读取");
-                    return;
-                }
+
                 var obj = $("#form1").serializeObject();
                 console.log(obj);
-                var v = obj.p_type;
-                var s = selects[0];
-//                console.log(s);
-                if (s.l_deplayment == 0) {
-                    layerAler("部署后的灯具才能设置回路运行方案");
+                if (obj.l_comaddr == "" || obj.l_groupe == "") {
+                    layerAler("网关或组号不能为空");
                     return;
                 }
+                var v = obj.p_type;
                 if (v == "0") {
                     console.log('部署分组时间方案');
                     var vv = [];
                     vv.push(1);
-                    vv.push(parseInt(s.l_groupe));
+                    vv.push(parseInt(obj.l_groupe));
                     for (var i = 0; i < 6; i++) {
                         var a = "time" + (i + 1).toString();
                         var b = "val" + (i + 1).toString();
@@ -392,7 +271,7 @@
                         vv.push(parseInt(val));
                     }
 
-                    var comaddr = s.l_comaddr;
+                    var comaddr = obj.l_comaddr;
                     var num = randnum(0, 9) + 0x70;
                     var data = buicode(comaddr, 0x04, 0xA4, num, 0, 140, vv); //01 03 F24    
                     dealsend2("A4", data, 140, "setLampTimePlanCB", comaddr, s.index, obj.p_type, 0, s.id);
@@ -402,8 +281,7 @@
                     console.log('部署分组场景方案');
                     var vv = [];
                     vv.push(1);
-                    vv.push(parseInt(s.l_groupe));
-                    console.log(obj);
+                    vv.push(parseInt(obj.l_groupe));
                     for (var i = 0; i < 8; i++) {
                         var a = "__num" + (i + 1).toString();
                         var b = "__val" + (i + 1).toString();
@@ -412,37 +290,43 @@
                         vv.push(num);
                         vv.push(val);
                     }
-                    var comaddr = s.l_comaddr;
+                    var comaddr = obj.l_comaddr;
                     var num = randnum(0, 9) + 0x70;
                     var data = buicode(comaddr, 0x04, 0xA4, num, 0, 480, vv); //01 03 F24    
-                    dealsend2("A4", data, 480, "setLampTimePlanCB", comaddr, 0, obj.p_type, 0, s.id);
+                    dealsend2("A4", data, 480, "setLampPlanCB", comaddr, 0, obj.p_type, 0, obj.p_code);
                 }
+
             }
 
 
             $(function () {
                 $('#l_comaddr').combobox({
+                    url: "lamp.lampform.getComaddr.action?pid=${param.pid}",
                     onLoadSuccess: function (data) {
                         if (Array.isArray(data) && data.length > 0) {
                             $(this).combobox('select', data[0].id);
-
                         } else {
                             $(this).combobox('select', );
                         }
                     },
                     onSelect: function (record) {
                         var obj = {l_comaddr: record.id};
-                        var opt = {
-                            url: "test1.lamp.Groupe.action",
-                            silent: true,
-                            query: obj
-                        };
-                        $('#gravidaTable').bootstrapTable('refresh', opt);
+                        $("#l_groupe").combobox('clear');
+                        var url = "lamp.GroupeForm.getGroupe.action?l_comaddr=" + record.id + "&l_deplayment=1";
+                        $("#l_groupe").combobox('reload', url);
+
+//                        var opt = {
+//                            url: "test1.lamp.Groupe.action",
+//                            silent: true,
+//                            query: obj
+//                        };
+//                        $('#gravidaTable').bootstrapTable('refresh', opt);
                     }
                 });
 
 
                 $('#p_plan').combobox({
+                    url: "lamp.GroupeForm.getPlanlist.action?attr=1&pid=${param.pid}",
                     formatter: function (row) {
                         var v1 = row.p_type == 0 ? "(时间)" : "(场景)";
                         var v = row.text + v1;
@@ -457,6 +341,9 @@
 
                         } else {
                             $(this).combobox('select', );
+                        }
+                        for (var i = 1; i < 9; i++) {
+                            $("#__num" + i.toString()).attr('readonly', true);
                         }
                     },
                     onSelect: function (record) {
@@ -498,148 +385,14 @@
                     }
                 });
 
-
-                $("#gravidaTable").on("dbl-click-cell.bs.table", function (field, value, row, element) {
-
-                    if (value == "l_plan") {
-                        console.log(element);
-                        $("#txt_l_comaddr").val(element.l_comaddr);
-                        $("#txt_l_groupe").val(element.l_groupe);
-                        $("#modal_plan_set").modal();
-                    }
-
-                })
-
-                $('#gravidaTable').bootstrapTable({
-                    url: 'test1.plan.GroupeLamp.action',
-                    clickToSelect: true,
-                    columns: [
-                        {
-                            title: '单选',
-                            field: 'select',
-                            //复选框
-                            checkbox: true,
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
-                            field: 'l_comaddr',
-                            title: '网关地址',
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        },
-                        {
-                            field: 'l_groupe',
-                            title: '组号',
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle',
-                            formatter: function (value, row, index, field) {
-                                if (value != null) {
-                                    return  value.toString();
-                                }
-
-                            }
-                        }
-//                        {
-//                            field: 'l_plan',
-//                            title: '方案',
-//                            width: 25,
-//                            align: 'center',
-//                            valign: 'middle'
-//                        }, {
-//                            field: 'l_content',
-//                            title: '内容',
-//                            width: 25,
-//                            align: 'center',
-//                            valign: 'middle',
-//                            formatter: function (value, row, index, field) {
-//                                row.p_code = row.l_plan;
-//                                var str = "";
-//                                $.ajax({async: false, url: "test1.plan.getPlanContent.action", type: "get", datatype: "JSON", data: row,
-//                                    success: function (data) {
-//                                        var arrlist = data.rs;
-//                                        if (arrlist.length == 1) {
-//                                            var param = arrlist[0];
-//                                            row.detail = param;
-//                                            if (param.p_type == 0) {
-//                                                var time1 = param.p_time1;
-//                                                var time2 = param.p_time2;
-//                                                var time3 = param.p_time3;
-//                                                var time4 = param.p_time4;
-//                                                var time5 = param.p_time5;
-//                                                var time6 = param.p_time6;
-//
-//                                                if (isJSON(time1)) {
-//                                                    var obj = eval('(' + time1 + ')');
-//                                                    str = str + obj.time + "=" + obj.value + " | ";
-//                                                }
-//                                                if (isJSON(time2)) {
-//                                                    var obj = eval('(' + time2 + ')');
-//                                                    str = str + obj.time + "=" + obj.value + " | ";
-//                                                }
-//                                                if (isJSON(time3)) {
-//                                                    var obj = eval('(' + time3 + ')');
-//                                                    str = str + obj.time + "=" + obj.value + " | ";
-//                                                }
-//                                                if (isJSON(time4)) {
-//                                                    var obj = eval('(' + time4 + ')');
-//                                                    str = str + obj.time + "=" + obj.value + " | ";
-//                                                }
-//                                                if (isJSON(time5)) {
-//                                                    var obj = eval('(' + time5 + ')');
-//                                                    str = str + obj.time + "=" + obj.value + " | ";
-//                                                }
-//                                                if (isJSON(time5)) {
-//                                                    var obj = eval('(' + time5 + ')');
-//                                                    str = str + obj.time + "=" + obj.value + " | ";
-//                                                }
-//
-//                                            }
-//
-//
-//                                            // $("#table_loop").bootstrapTable('refresh');
-//                                            // console.log(data);
-//                                        }
-//                                    },
-//                                    error: function () {
-//                                        alert("提交失败！");
-//                                    }
-//                                });
-//
-//                                return  str;
-////                                console.log(row.l_plan);
-//                            }
-//                        }
-                    ],
-                    singleSelect: false,
-                    sortName: 'id',
-                    locale: 'zh-CN', //中文支持,
-                    showColumns: true,
-                    sortOrder: 'desc',
-                    pagination: true,
-                    sidePagination: 'server',
-                    pageNumber: 1,
-                    pageSize: 5,
-                    showRefresh: true,
-                    showToggle: true,
-                    // 设置默认分页为 50
-                    pageList: [5, 10, 15, 20, 25],
-                    onLoadSuccess: function () {  //加载成功时执行  表格加载完成时 获取集中器在线状态
-                    },
-                    //服务器url
-                    queryParams: function (params)  {   //配置参数     
-                        var temp  =   {    //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的 
-                            search: params.search,
-                            skip: params.offset,
-                            limit: params.limit,
-                            type_id: "1",
-                            l_deplayment: "1"  
-                        };      
-                        return temp;  
-                    },
-                });
+                var d = [];
+                for (var i = 0; i < 18; i++) {
+                    var o = {"id": i + 1, "text": i + 1};
+                    d.push(o);
+                }
+                $("#l_groupe1").combobox({data: d, onLoadSuccess: function (data) {
+                        $(this).combobox("select", data[0].id);
+                    }, });
 
 
             })
@@ -655,63 +408,90 @@
             <input name="p_code" type="hidden" id="p_code" />
             <input name="p_name" type="hidden" id="p_name" />
             <div class="row">
-                <div class="col-xs-6">
-
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td>
-                                    <span style="margin-left:10px;">网关地址&nbsp;</span>
-                                    <span class="menuBox">
-
-                                        <input id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 
-                                               data-options="editable:false,valueField:'id', textField:'text',url:'lamp.lampform.getComaddr.action?pid=${param.pid}' " />
-
-                                        <!--<select name="l_comaddr_lamp" id="l_comaddr_lamp" placeholder="回路" class="input-sm" style="width:150px;">-->
-                                    </span>   
-                                </td>
-
-                                <td>
-                                    <!--&nbsp;&nbsp;  <button id="btndeploy" onclick="deployloop()" class="btn btn-success">部署回路</button>-->
-                                </td>
-                                <td>
-                                    <span style="margin-left:10px;">组号&nbsp;</span>
-                                    <span class="menuBox">
-                                        <input id="l_groupe" class="easyui-combobox" name="l_groupe" style="width:150px; height: 30px" 
-                                               data-options="editable:true,valueField:'id', textField:'text',url:'test1.lamp.getGroupe.action' " />
-                                    </span> 
-                                    <!--&nbsp;&nbsp;  <button id="btnremove" onclick="removeloop()" class="btn btn-success">移除回路</button>-->
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <table id="gravidaTable" style="width:100%;"  class="text-nowrap table table-hover table-striped">
-                    </table>
-                </div>
-                <div class="col-xs-6">
+                <div class="col-xs-12">
                     <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; ">
                         <tr>
-                            <td colspan="4" align="right">
-                                <span style=" margin-left: 20px;" >方案列表</span>
+                            <td>
+                                <span style="margin-left:10px;">网关地址&nbsp;</span>
                                 <span class="menuBox">
+                                    <input id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 
+                                           data-options="editable:false,valueField:'id', textField:'text' " />
 
-                                    <input id="p_plan" class="easyui-combobox" name="p_plan" style="width:150px; height: 30px" 
-                                           data-options="editable:false,valueField:'id', textField:'text',url:'test1.plan.getPlanlist.action?attr=1' " />
-                                    <span style=" margin-left: 120px;" ></span>
+                                    <!--<select name="l_comaddr_lamp" id="l_comaddr_lamp" placeholder="回路" class="input-sm" style="width:150px;">-->
+                                </span> 
                             </td>
+                            <td>
+                                <span style="margin-left:10px;">组号&nbsp;</span>
+                                <span class="menuBox">
+                                    <input id="l_groupe" class="easyui-combobox" name="l_groupe" style="width:100px; height: 30px" 
+                                           data-options="editable:true,valueField:'id', textField:'text' " />
+                                </span> 
+                            </td>
+                            <td>
+                                <span style="margin-left:10px;">新组号</span>
+                                <span class="menuBox">
+                                    <input id="l_groupe1" class="easyui-combobox" name="l_groupe1" style="width:100px; height: 30px" 
+                                           data-options="editable:true,valueField:'id', textField:'text' " />
+                                </span> 
+
+                                <!--<button  onclick="resetGroupe()" class="btn btn-success btn-sm">更换分组</button>-->
+                                <span  onclick="resetGroupe()" style=" margin-left: 2px;" class="label label-success" >更换分组</span>
+                            </td>
+                            <td>
+
+                                <span style="margin-left:20px;">新控制方式</span>&nbsp;
+                                <span class="menuBox">
+                                    <select class="easyui-combobox"  id="l_worktype" name="l_worktype" data-options='editable:false' style="width:100px; height: 30px">
+                                        <option value="0" >时间</option>
+                                        <option value="1">经纬度</option>
+                                        <option value="2">场景</option>           
+                                    </select>
+                                </span>  
+                                <!--<button  onclick="resetWowktype()" class="btn btn-success btn-sm">更换工作方式</button>-->
+                                <span  onclick="resetWowktype()" style=" margin-left: 2px;" class="label label-success" >更换工作方式</span>
+                            </td>
+
                         </tr>
                     </table>
 
+
+
+                </div>
+                <div class="col-xs-12">
+                    <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; ">
+                        <tr>
+                            <td>
+                                <span style=" margin-left: 10px;" >方案列表</span>
+                                <span class="menuBox">
+                                    <input id="p_plan" class="easyui-combobox" name="p_plan" style="width:150px; height: 30px" 
+                                           data-options="editable:false,valueField:'id', textField:'text'" />
+                            </td>
+                            <td>
+                                <button onclick="setLampPlan()" type="button" class="btn btn-success btn-sm">部署灯具方案</button>
+                                <button  onclick="readLampPlan()" type="button" class="btn btn-success btn-sm">读取分组灯具方案</button>
+                                </div>
+                                </div>
+
+                                </form> 
+
+
+                                </body>
+                                </html>
+
+                            </td>
+                        </tr>
+                    </table>
+                </div>   
+
+                <div class="col-xs-12">
                     <table id="type0" style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; display: none ">
 
                         <tr >
                             <td>
                                 <span style="margin-left:20px;">时间1</span>&nbsp;
                             </td>
-                            <td> <input id="time1"  name="time1" style=" height: 30px; width: 150px" class="easyui-timespinner">
+                            <td>
+                                <input id="time1"  name="time1" style=" height: 30px; width: 150px" class="easyui-timespinner">
                             </td>
                             <td>
                                 <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
@@ -879,21 +659,10 @@
                             </td>
                         </tr> 
                     </table>
+                </div>
 
-                </div>
             </div>
-            <div class="row"  style=" margin-top: 20px;">
-                <div class="col-xs-6">
-                    <!--                    <button id="btndeploylamp" class="btn btn-success">部署灯具</button>
-                                        <button id="btnremovelamp" class="btn btn-success">移除灯具</button>-->
-                </div>
-                <div class="col-xs-6">
-                    <!--<button style=" margin-left: 40px;" type="button" onclick="setPlan()" class="btn btn-success">设置</button>-->
 
-                    <button style=" margin-left: 40px;" onclick="setLampPlan()" type="button" class="btn btn-success">部署灯具时间方案</button>
-                    <button style=" margin-left: 40px;" onclick="readLampPlan()" type="button" class="btn btn-success">读取分组灯具方案</button>
-                </div>
-            </div>
 
         </form> 
 
