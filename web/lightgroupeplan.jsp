@@ -22,7 +22,15 @@
                     offset: 'center'
                 });
             }
+            function setNowTime() {
+                var myDate = new Date();
+                var timestr = sprintf("%02d:%02d", myDate.getHours(), myDate.getMinutes());
 
+                for (var i = 1; i < 7; i++) {
+
+                    $("#time" + i.toString()).spinner('setValue', timestr);
+                }
+            }
             function resetWowktypeCB(obj) {
                 if (obj.status == "success") {
                     var o = {};
@@ -112,7 +120,7 @@
 
 //                               console.log(obj)
                 if (obj.status == "success") {
-                    if (obj.fn == 140) {
+                    if (obj.fn == 140) { //时间
                         var a = $("#form1").serializeObject();
                         var obj1 = {"time": a.time1, "value": parseInt(a.val1)};
                         var obj2 = {"time": a.time2, "value": parseInt(a.val2)};
@@ -127,7 +135,7 @@
                         a.p_time4 = JSON.stringify(obj4);
                         a.p_time5 = JSON.stringify(obj5);
                         a.p_time6 = JSON.stringify(obj6);
-                        $.ajax({async: false, url: "test1.plan.editlamp.action", type: "get", datatype: "JSON", data: a,
+                        $.ajax({async: false, url: "lamp.planForm.editlamp.action", type: "get", datatype: "JSON", data: a,
                             success: function (data) {
                                 var arrlist = data.rs;
                                 if (arrlist.length == 1) {
@@ -139,7 +147,7 @@
                                 alert("提交失败！");
                             }
                         });
-                    } else if (obj.fn == 480) {
+                    } else if (obj.fn == 480) {  //场景
                         var a = $("#form1").serializeObject();
                         console.log(a);
                         var o = {};
@@ -274,7 +282,7 @@
                     var comaddr = obj.l_comaddr;
                     var num = randnum(0, 9) + 0x70;
                     var data = buicode(comaddr, 0x04, 0xA4, num, 0, 140, vv); //01 03 F24    
-                    dealsend2("A4", data, 140, "setLampTimePlanCB", comaddr, s.index, obj.p_type, 0, s.id);
+                    dealsend2("A4", data, 140, "setLampPlanCB", comaddr, obj.p_type, 0, obj.l_groupe);
                 }
 
                 if (v == "1") {
@@ -469,6 +477,8 @@
                             <td>
                                 <button onclick="setLampPlan()" type="button" class="btn btn-success btn-sm">部署灯具方案</button>
                                 <button  onclick="readLampPlan()" type="button" class="btn btn-success btn-sm">读取分组灯具方案</button>
+
+                                <button  onclick="setNowTime()" type="button" class="btn btn-success btn-sm">设置当前时间</button>
                                 </div>
                                 </div>
 

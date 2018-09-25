@@ -11,6 +11,9 @@
         <%@include  file="js.jspf" %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script type="text/javascript" src="js/genel.js"></script>
+        <style>
+            .btn{ margin-left: 10px;}
+        </style>
         <script>
 
             function layerAler(str) {
@@ -48,6 +51,7 @@
                     layerAler("恢复成功");
                 }
             }
+
             function restore() {
 
                 var o = $("#formsearch").serializeObject();
@@ -61,25 +65,23 @@
                     var num = randnum(0, 9) + 0x70;
                     var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 180, vv); //01 03
                     //dealsend(sss, o1);
-                    dealsend2(data, 180, "restoreCB", l_comaddr, 0, 0, 0);
+                    dealsend2("A4", data, 180, "restoreCB", l_comaddr, 0, 0, 0);
                 } else if (o.type == 2) {
 
-                    var selects = $('#groupegravidaTable').bootstrapTable('getSelections');
-                    if (selects.length == 0) {
-                        layerAler("请勾选组表格数据");
+                    if (o.l_comaddr == "" || o.l_groupe == "") {
+                        layerAler("请选择网关或组号");
                         return;
                     }
-                    var select = selects[0];
-                    var vv = new Array();
 
-                    var l_comaddr = select.l_comaddr;
+                    var vv = new Array();
+                    var l_comaddr = o.l_comaddr;
                     vv.push(1);
-                    var groupe = select.l_groupe;
+                    var groupe = o.l_groupe;
                     var l_groupe = parseInt(groupe, "10");
                     vv.push(l_groupe); //组号
                     var num = randnum(0, 9) + 0x70;
                     var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 140, vv); //01 03
-                    dealsend2(data, 180, "restoreCB", l_comaddr, o.type, 0, groupe);
+                    dealsend2("A4", data, 180, "restoreCB", l_comaddr, o.type, 0, groupe);
                 } else if (o.type == 1) {
                     var selects = $('#gravidaTable').bootstrapTable('getSelections');
 
@@ -98,7 +100,7 @@
                     vv.push(h); //装置序号  2字节
                     var num = randnum(0, 9) + 0x70;
                     var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 140, vv); //01 03
-                    dealsend2(data, 180, "restoreCB", l_comaddr, o.type, 0, select.l_code);
+                    dealsend2("A5", data, 180, "restoreCB", l_comaddr, o.type, 0, select.l_code);
                 }
 
             }
@@ -144,7 +146,6 @@
                     return;
                 }
 
-
                 var vv = new Array();
                 var l_comaddr = select.l_comaddr;
                 var c = parseInt(select.l_code);
@@ -160,11 +161,7 @@
                 param.row = select.index;
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 304, vv); //01 03
-                //dealsend(sss, o1);
-                dealsend2(data, 304, "sceneCB", l_comaddr, obj.lighttype, param, scenenum);
-
-
-                console.log(obj);
+                dealsend2("A5", data, 304, "sceneCB", l_comaddr, obj.lighttype, param, scenenum);
             }
 
             function lightCB(obj) {
@@ -245,7 +242,7 @@
                 param.row = select.index;
                 var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 301, vv); //01 03
                 //dealsend(sss, o1);
-                dealsend2("A5",data, 301, "lightCB", l_comaddr, o.groupetype, param, lampval);
+                dealsend2("A5", data, 301, "lightCB", l_comaddr, o.groupetype, param, lampval);
 
             }
 
@@ -269,7 +266,7 @@
                 var param = {};
                 param.l_groupe = l_groupe;
                 var data = buicode(comaddr, 0x04, 0xA5, num, 0, 302, vv); //01 03 F24     
-                dealsend2(data, 302, "lightCB", comaddr, obj.groupetype, param, groupeval);
+                dealsend2("A5", data, 302, "lightCB", comaddr, obj.groupetype, param, groupeval);
             }
 
 
@@ -297,6 +294,8 @@
 
             $(function () {
                 $('#gravidaTable').bootstrapTable({
+                    showExport: true, //是否显示导出
+                    exportDataType: "basic", //basic', 'a
                     url: 'lamp.lampform.getlampList.action',
                     clickToSelect: true,
                     columns: [
@@ -444,11 +443,14 @@
                         } else if (record.value == 1) {
                             var valinput1 = $("button[name='btnsingle']");
                             var valinput2 = $("button[name='btngroupe']");
-
                             $(valinput1[0]).hide();
                             $(valinput1[1]).hide();
                             $(valinput2[0]).show();
                             $(valinput2[1]).show();
+
+                            var o = $("#formsearch").serializeObject();
+                            console.log(o);
+
                         }
                     }
                 })
@@ -464,47 +466,8 @@
                         console.log(data);
                     },
                     onSelect: function (record) {
-                        var o = {l_comaddr: record.id, l_deplayment: 1};
-                        $.ajax({async: false, url: "test1.lamp.getGroupe.action", type: "get", datatype: "JSON", data: o,
-                            success: function (data1) {
-                                console.log(data1);
-                                $('#l_groupe').combobox('clear')
-                                $("#l_groupe").combobox("loadData", data1);
-                            }
-                        });
-
-
-
-//                       $('#p_plan').combobox('reload');
-
-//                        
-//                        var obj = $("#tosearch").serializeObject();
-//                        var url = "test1.lamp.getGroupe.action?l_comaddr=" + record.id + "&l_deplayment=1";
-//                        obj.l_comaddr = record.id;
-//                        obj.l_deplayment = 1;
-//                        $('#l_groupe').combobox('reload', url);
-//
-//
-//                        if (obj.lighttype == 0) {
-//                            var opt = {
-//                                url: "test1.lamp.getlamp1.action",
-//                                silent: true,
-//                                query: obj
-//                            };
-//                            $('#gravidaTable').bootstrapTable('refresh', opt);
-//
-//
-//                        } else if (obj.lighttype == 1) {
-//                            var opt = {
-//                                url: "test1.lamp.Groupe.action",
-//                                silent: true,
-//                                query: obj
-//                            };
-//                            $('#groupegravidaTable').bootstrapTable('refresh', opt);
-//
-//                        }
-
-
+                        var url = "lamp.GroupeForm.getGroupe.action?l_comaddr=" + record.id + "&l_deplayment=1";
+                        $("#l_groupe").combobox("reload", url);
                     }
                 });
 
@@ -512,11 +475,15 @@
                 $('#scenetype').combobox({
                     onSelect: function (record) {
                         var o = $("#formsearch").serializeObject();
-                        console.log(o);
-                        var o1 = "#light" + record.value;
                         $("#light" + record.value).show();
-                        var j = 1 - parseInt(record.value);
-                        $("#light" + j.toString()).hide();
+                        var a1 = 1 - parseInt(record.value);
+                        $("#light" + a1.toString()).hide();
+//                        console.log(o);
+
+//                        var o1 = "#light" + record.value;
+//                        $("#light" + record.value).show();
+//                        var j = 1 - parseInt(record.value);
+//                        $("#light" + j.toString()).hide();
 
                     }
                 });
@@ -537,36 +504,10 @@
 
         <form id="formsearch">
             <input type="hidden" name="pid" value="${param.pid}">
-            <div class="row" style=" margin-top: 10px;">
-                <div class="col-xs-12">
-                    <table style="border-collapse:separate;  border-spacing:0px 10px;border: 1px solid #16645629; margin-left: 20px; align-content:  center">
-                        <tr>
 
-                            <td >
-                                <span style=" margin-left: 100px;"></span>
-                                <label class="radio-inline">
-                                    <input type="radio"  value="1" name="type">恢复灯时间控制
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="radio"  value="2" name="type">按组恢复时间控制
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="radio"  value="3" checked="true" name="type">恢复全部时间控制
-                                </label>
-                            </td>
-                            <td>
-                                <button  type="button" style="margin-left:20px;" onclick="restore()" class="btn btn-success btn-sm">恢复自动运行</button>
-                                <span style=" margin-left: 100px;"></span>
-                            </td>
-                        </tr>
-                    </table> 
-                </div>
-
-            </div>
 
             <div class="row" >
                 <div class="col-xs-12">
-
                     <table style="border-collapse:separate;  border-spacing:0px 10px;border: 1px solid #16645629; margin-left: 20px; margin-top: 10px; align-content:  center">
                         <tbody>
                             <tr>
@@ -587,22 +528,10 @@
                                 <td>
 
                                     <span class="menuBox">
-                                        <input id="l_groupe" class="easyui-combobox" name="l_groupe" style="width:150px; height: 30px" 
+                                        <input id="l_groupe" class="easyui-combobox" name="l_groupe" style="width:100px; height: 30px" 
                                                data-options="editable:false,valueField:'id', textField:'text' " />
                                     </span>  
                                 </td>
-
-
-                                <td>
-                                    <span style="margin-left:10px;">调光方式&nbsp;</span>
-                                </td>
-                                <td>
-                                    <select class="easyui-combobox" id="scenetype" name="scenetype" style="width:150px; height: 30px">
-                                        <option value="0">立即调光</option>
-                                        <option value="1">场景调光</option>           
-                                    </select>
-                                </td>
-
                                 <td>
                                     <span style="margin-left:10px;">分组方式&nbsp;</span>
                                 </td>
@@ -618,7 +547,19 @@
                                 </td>
 
                                 <td>
-                                    <button  type="button" style="margin-left:20px;" onclick="search()" class="btn btn-success btn-xm">搜索</button>
+                                    <span style="margin-left:10px;">调光模式&nbsp;</span>
+                                </td>
+                                <td>
+                                    <select class="easyui-combobox" id="scenetype" name="scenetype" style="width:150px; height: 30px">
+                                        <option value="0">立即调光</option>
+                                        <option value="1">场景调光</option>           
+                                    </select>
+                                </td>
+
+
+
+                                <td>
+                                    <button  type="button" style="margin-left:20px;" onclick="search()" class="btn btn-success btn-xm">搜索</button>&nbsp;
 
                                 </td>
 
@@ -628,50 +569,67 @@
 
                         </tbody>
                     </table> 
-
                 </div>
-
             </div>
 
             <div class="row" style="  margin-top: 10px;">
 
+                <div class="col-xs-4">
+                    <table  style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; width: 350px;margin-left: 20px;">
+                        <tr>
+                            <td>
+                                <span style="margin-left:10px;">恢复模式&nbsp;</span>
+                                <select class="easyui-combobox" id="type" name="type" style="width:150px; height: 30px">
+                                    <option value="1">单灯恢复时间控制</option>
+                                    <option value="2">按组恢复时间控制</option>    
+                                    <option value="3">全部恢复时间控制</option>  
+                                </select>
+                                <button  type="button" style="margin-left:20px;" onclick="restore()" class="btn btn-success btn-sm">恢复自动运行</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-xs-6" id="light0">
+                    <table  style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; width: 350px;margin-left: 20px;">
+                        <tr>
+                            <td>
+                                <span style="margin-left:10px;">调光值&nbsp;</span>
+                                <input id="val" value="0" class="form-control" readonly="true" name="val" style="width:50px;display: inline; height: 30px; " placeholder="调光值" type="text">
 
-                <div class="col-xs-12">
+                            </td>
+                            <td >
+                                <div  id="slide_lamp_val"  class="easyui-slider"     data-options="showTip:true,min:0,max:100,step:1" style="width:100px;    "></div>
 
-                    <table id="light0" style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; width: 350px;margin-left: 20px;">
-                        <tbody>
-                            <tr>
-
-                                <td>
-                                    <span style="margin-left:10px;">调光值&nbsp;</span>
-                                    <input id="val" value="0" class="form-control" readonly="true" name="val" style="width:50px;display: inline;" placeholder="调光值" type="text">
-                                </td>
-
-                                <td>
-                                    <div id="slide_lamp_val"  class="easyui-slider"     data-options="showTip:true,min:0,max:100,step:1" style="width:100px; "></div>
-                                </td>
-                                <td >
-                                    <button  type="button"  name="btnsingle" style="margin-left:20px;" onclick="lightsingle()" class="btn btn-success btn-xs">单灯立即调光</button>
-                                    <button  type="button" name="btngroupe" style="margin-left:20px; display: none" onclick="lightgroupe()" class="btn btn-success btn-xs">按组立即调光</button>
-                                </td>
-                                <td>
-
-                                </td>
+                            </td>
+                            <td>
+                                <button  type="button"  name="btnsingle"  onclick="lightsingle()" class="btn btn-success btn-sm">单灯立即调光</button>
+                                <button  type="button" name="btngroupe"  style="display: none"  onclick="lightgroupe()" class="btn btn-success btn-sm">按组立即调光</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
 
 
-                        </tbody>
-                    </table> 
-
-
-                    <table  id="light1"  id="light0" style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; width: 350px; display: none;margin-left: 20px;">
+                <div class="col-xs-6"  id="light1" style="display: none;">
+                    <table   style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; width: 350px; margin-left: 20px;">
                         <tbody>
                             <tr>
                                 <td>
 
                                     <span style="margin-left:10px;">场景号&nbsp;</span>
-                                    <input id="scennum" class="form-control" name="scennum" style="width:50px;display: inline;" placeholder="场景号" type="text">&nbsp;
-                                    <button  type="button"  name="btnsingle" style="margin-left:20px;" onclick="scenesingle()" class="btn btn-success btn-xs">立即场景</button>
-                                    <button  type="button" name="btngroupe" style="margin-left:20px; display: none" onclick="scenegroupe()" class="btn btn-success btn-xs">按组场景</button>
+                                    <!--<input id="scennum" class="form-control" name="scennum" style="width:50px;display: inline;" placeholder="场景号" type="text">&nbsp;-->
+                                    <select class="easyui-combobox" id="scennum" name="scennum" style="width:150px; height: 30px">
+                                        <option value="1">场景1</option>
+                                        <option value="2">场景2</option>    
+                                        <option value="3">场景3</option> 
+                                        <option value="4">场景4</option> 
+                                        <option value="5">场景5</option> 
+                                        <option value="6">场景6</option> 
+                                        <option value="7">场景7</option> 
+                                        <option value="8">场景8</option> 
+                                    </select>
+                                    <button  type="button"  name="btnsingle" style="margin-left:20px;" onclick="scenesingle()" class="btn btn-success btn-sm">立即场景</button>
+                                    <button  type="button" name="btngroupe" style="margin-left:20px; display: none" onclick="scenegroupe()" class="btn btn-success btn-sm">按组场景</button>
                                 </td>
 
                             </tr>
@@ -679,22 +637,15 @@
                         </tbody>
                     </table> 
                 </div>
-
             </div>
 
 
         </form>
 
-        <div class="panel panel-success" style="margin-top: 60px;" >
-            <div class="panel-heading">
-                <h3 class="panel-title">灯具表</h3>
-            </div>
-            <div class="panel-body" >
 
-                <table id="gravidaTable" style="width:100%;"  class="text-nowrap table table-hover table-striped">
-                </table>
+        <table id="gravidaTable" style="width:100%;"  class="text-nowrap table table-hover table-striped">
+        </table>
 
-            </div>
 
     </body>
 </html>

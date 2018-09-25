@@ -457,6 +457,7 @@
     </head>
     <body>
         <form id="form1">
+            
             <div class="row">
 
 
@@ -482,54 +483,6 @@
             </div>
 
 
-            <!--                <div class="col-xs-6">
-                                <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; ">
-                                    <tr>
-                                        <td colspan="4" align="center">
-                                            <span >方案列表&nbsp;</span>
-                                            <span class="menuBox">
-            
-                                                <input id="p_plan" class="easyui-combobox" name="p_plan" style="width:150px; height: 30px" 
-                                                       data-options="editable:false,valueField:'id', textField:'text' " />
-                                        </td>
-                                    </tr>
-                                    <input type="hidden" id="p_type" name="p_type" />
-                                    <tr id="type0">
-                                        <td>
-                                            <span style="margin-left:20px;">闭合时间</span>&nbsp;
-                                        </td>
-                                        <td> <input id="intime" name="intime" style=" height: 30px; width: 150px;  "  class="easyui-timespinner">
-                                        </td>
-                                        <td>
-                                            <span style="margin-left:20px;">断开时间&nbsp;</span>
-                                        </td>
-                                        <td>
-                                            <input id="outtime" name="outtime" style=" height: 30px; width: 150px;  "  class="easyui-timespinner">
-                                        </td>
-                                    </tr>
-            
-                                    <tr id="type1" style=" display: none" >
-                                        <td>
-                                            <span style="margin-left:20px;">区域经度</span>&nbsp;
-                                        </td>
-                                        <td>
-                                            <input id="longitudem26d" class="form-control" name="longitudem26d" style="width:51px;display: inline;" type="text">&nbsp;°
-                                            <input id="longitudem26m" class="form-control" name="longitudem26m" style="width:45px;display: inline;" type="text">&nbsp;'
-                                            <input id="longitudem26s" class="form-control" name="longitudem26s" style="width:45px;display: inline;" type="text">&nbsp;"
-                                        </td>
-                                        <td>
-                                            <span style="margin-left:20px;">区域纬度&nbsp;</span>
-            
-                                        </td>
-                                        <td>
-                                            <input id="latitudem26d" class="form-control" name="latitudem26d" style="width:51px;display: inline;" type="text">&nbsp;°
-                                            <input id="latitudem26m" class="form-control" name="latitudem26m" style="width:45px;display: inline;" type="text">&nbsp;'
-                                            <input id="latitudem26s" class="form-control" name="latitudem26s" style="width:45px;display: inline;" type="text">&nbsp;"
-                                        </td>
-                                    </tr>
-                                </table>
-            
-                            </div>-->
         </div>
 
 
