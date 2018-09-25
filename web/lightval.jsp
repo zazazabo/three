@@ -15,7 +15,6 @@
             .btn{ margin-left: 10px;}
         </style>
         <script>
-
             function layerAler(str) {
                 layer.alert(str, {
                     icon: 6,
