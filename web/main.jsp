@@ -22,9 +22,10 @@
             var websocket = null;
 
             function sendData(obj) {
-                console.log(websocket.readyState);
+           
+                console.log("通信状态:",websocket.readyState);
                 if (websocket.readyState == 3) {
-                    layerAler("通迅已断开");
+//                    layerAler("通迅已断开");
                 }
                 if (websocket != null && websocket.readyState == 1) {
                     console.log(obj);
@@ -239,7 +240,8 @@
             $(function () {
 
                 if ('WebSocket' in window) {
-                    websocket = new WebSocket("ws://zhizhichun.eicp.net:18414/");
+                    //websocket = new WebSocket("ws://zhizhichun.eicp.net:18414/");
+                    websocket = new WebSocket("ws://localhost:5050/");
                 } else {
                     alert('当前浏览器不支持websocket')
                 }
@@ -250,7 +252,8 @@
 
                 //接收到消息的回调方法
                 websocket.onmessage = function (e) {
-                    var info = JSON.parse(e.data);
+//                    var info = JSON.parse(e.data);
+                    var info = eval('(' + e.data + ')');
                     console.log("main onmessage");
                     console.log(info);
 
@@ -490,11 +493,11 @@
                         $(this).parent(".eachMenu").siblings(".eachMenu").children(".list").removeClass("active");
                         $(this).parent(".eachMenu").siblings(".eachMenu").children(".secondMenu").children(".secondMenuList").removeClass("active");
                         var iframesrc = $(this).attr("name");
-                        if(iframesrc.indexOf("?")==-1){
-                            iframesrc+="?mmm=2";
+                        if (iframesrc.indexOf("?") == -1) {
+                            iframesrc += "?mmm=2";
                         }
-                            
-                        iframesrc = iframesrc + "&pid=" + getpojectId(); 
+
+                        iframesrc = iframesrc + "&pid=" + getpojectId();
                         console.log(iframesrc);
                         $("#iframe").attr("src", iframesrc);
 

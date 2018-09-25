@@ -87,6 +87,18 @@
             }
 
             $(function () {
+
+                var uPattern = /^[a-fA-F0-9]{12}$/;
+                console.log(uPattern.test("000000603388")); //000000603388
+
+
+
+
+
+
+
+
+
                 var ww = 07;
 
 

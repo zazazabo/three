@@ -40,7 +40,7 @@
                 layer.confirm('确认要删除吗？', {
                     btn: ['确定', '取消']//按钮
                 }, function (index) {
-                    $.ajax({url: "test1.lamp.deleteLamp.action", type: "POST", datatype: "JSON", data: {id: select.id},
+                    $.ajax({url: "lamp.lampform.deleteLamp.action", type: "POST", datatype: "JSON", data: {id: select.id},
                         success: function (data) {
                             var arrlist = data.rs;
                             if (arrlist.length == 1) {
@@ -60,16 +60,12 @@
 
             function  editlamp() {
                 var o = $("#form2").serializeObject();
-
-                console.log(o);
-                $.ajax({async: false, url: "test1.lamp.modifylamp.action", type: "get", datatype: "JSON", data: o,
+                $.ajax({async: false, url: "lamp.lampform.modifylamp.action", type: "get", datatype: "JSON", data: o,
                     success: function (data) {
                         var a = data.rs;
                         if (a.length == 1) {
-                            layerAler("修改成功");
                             $("#gravidaTable").bootstrapTable('refresh');
                         }
-                        console.log(data);
                     },
                     error: function () {
                         alert("提交失败！");
@@ -127,23 +123,26 @@
                     layerAler("灯具编号不能为空,或网关地址不能为空");
                     return  false;
                 }
+                var uPattern = /^[a-fA-F0-9]{12}$/;
+                if (uPattern.test(o.l_factorycode) == false) {
+                    layerAler("灯具编号是12位的十六进制");
+                    return false;
+                }
 
                 var isflesh = false;
-                $.ajax({url: "test1.lamp.getlamp.action", async: false, type: "get", datatype: "JSON", data: o,
+                $.ajax({url: "lamp.lampform.existlamp.action", async: false, type: "get", datatype: "JSON", data: o,
                     success: function (data) {
-                        console.log(data);
                         if (data.total > 0) {
                             layerAler("灯具编号已存在");
                         } else if (data.total == 0) {
                             console.log("adddd");
-                            $.ajax({url: "test1.lamp.addlamp.action", async: false, type: "get", datatype: "JSON", data: o,
+                            $.ajax({url: "lamp.lampform.addlamp.action", async: false, type: "get", datatype: "JSON", data: o,
                                 success: function (data) {
                                     var arrlist = data.rs;
                                     if (arrlist.length == 1) {
                                         isflesh = true;
                                         $("#gravidaTable").bootstrapTable('refresh');
                                     }
-
                                 },
                                 error: function () {
                                     alert("提交添加失败！");
@@ -167,15 +166,12 @@
                 o.l_worktype = obj.val;
                 if (obj.status == "success") {
                     if (obj.type == "1") {
-
                     } else if (obj.type == "2") {
                         o.l_groupe = obj.param;  //旧组号
                     } else if (obj.type == "3") {
                         o.l_code = obj.param;      //装置序号
                     }
-                    console.log(o);
-
-                    $.ajax({async: false, url: "test1.lamp.modifyworktype.action", type: "get", datatype: "JSON", data: o,
+                    $.ajax({async: false, url: "lamp.lampform.modifyworktype.action", type: "get", datatype: "JSON", data: o,
                         success: function (data) {
                             var arrlist = data.rs;
                             if (arrlist.length == 1) {
@@ -219,7 +215,6 @@
                 dealsend2("A4", data, 120, "resetWowktypeCB", comaddr, o.type, oldlgroupe, o.l_worktype1);
             }
             function resetGroupeCB(obj) {
-
                 var o = {};
                 o.l_comaddr = obj.comaddr;
                 o.l_groupe = obj.val;
@@ -231,11 +226,7 @@
                     } else if (obj.type == "3") {
                         o.l_code = obj.param;      //装置序号
                     }
-
-//                    console.log(obj);
-                    console.log(o);
-
-                    $.ajax({async: false, url: "test1.lamp.modifygroup.action", type: "get", datatype: "JSON", data: o,
+                    $.ajax({async: false, url: "lamp.lampform.modifygroup.action", type: "get", datatype: "JSON", data: o,
                         success: function (data) {
                             var arrlist = data.rs;
                             if (arrlist.length == 1) {
@@ -254,7 +245,7 @@
             function resetGroupe() {
 
                 var o = $("#form2").serializeObject();
-                o.type=3;
+                o.type = 3;
                 console.log(o);
 
 
@@ -273,38 +264,15 @@
                     oldlgroupe = o.l_groupe;
                 }
 
-
 //                vv.push(3);  //灯控器组号  1 所有灯控器  2 按组   3 个个灯控器
-
                 vv.push(parseInt(o.l_groupe2)); //新组号  1字节            
                 var comaddr = o.l_comaddr;
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA4, num, 0, 110, vv); //01 03 F24    
 
                 dealsend2("A4", data, 110, "resetGroupeCB", comaddr, o.type, oldlgroupe, o.l_groupe2);
-
             }
 
-            function dealsend2(msg, data, fn, func, comaddr, type, param, val) {
-                var user = new Object();
-                user.begin = '6A';
-                user.res = 1;
-                user.status = "";
-                user.comaddr = comaddr;
-                user.fn = fn;
-                user.function = func;
-                user.param = param;
-                user.page = 2;
-                user.msg = msg;
-                user.val = val;
-                user.type = type;
-                user.addr = getComAddr(comaddr); //"02170101";
-                user.data = data;
-                user.len = data.length;
-                user.end = '6A';
-                console.log(user);
-                parent.parent.sendData(user);
-            }
 
             $(function () {
 
@@ -331,7 +299,7 @@
                     position: "top",
                     buttons: {
                         修改: function () {
-                            modifyLoopName();
+                            editlamp();
                             //$(this).dialog("close");
                         }, 关闭: function () {
                             $(this).dialog("close");
@@ -339,46 +307,43 @@
                     }
                 });
 
+                $("#add").attr("disabled", true);
+                $("#xiugai1").attr("disabled", true);
+                $("#shanchu").attr("disabled", true);
+                var obj = {};
+                obj.code = ${param.m_parent};
+                obj.roletype = ${param.role};
+                $.ajax({async: false, url: "login.usermanage.power.action", type: "get", datatype: "JSON", data: obj,
+                    success: function (data) {
+                        var rs = data.rs;
+                        if (rs.length > 0) {
+                            for (var i = 0; i < rs.length; i++) {
 
-//                
-//                
-//                $("#add").attr("disabled", true);
-//                $("#xiugai1").attr("disabled", true);
-//                $("#shanchu").attr("disabled", true);
-//                var obj = {};
-//                obj.code = ${param.m_parent};
-//                obj.roletype = ${param.role};
-//                $.ajax({async: false, url: "login.usermanage.power.action", type: "get", datatype: "JSON", data: obj,
-//                    success: function (data) {
-//                        var rs = data.rs;
-//                        if (rs.length > 0) {
-//                            for (var i = 0; i < rs.length; i++) {
-//
-//                                if (rs[i].code == "600301" && rs[i].enable != 0) {
-//                                    $("#add").attr("disabled", false);
-//                                    continue;
-//                                }
-//                                if (rs[i].code == "600302" && rs[i].enable != 0) {
-//                                    $("#xiugai1").attr("disabled", false);
-//                                    continue;
-//                                }
-//                                if (rs[i].code == "600303" && rs[i].enable != 0) {
-//                                    $("#shanchu").attr("disabled", false);
-//                                    continue;
-//                                }
-//                            }
-//                        }
-//
-//                    },
-//                    error: function () {
-//                        alert("提交失败！");
-//                    }
-//                });
+                                if (rs[i].code == "600301" && rs[i].enable != 0) {
+                                    $("#add").attr("disabled", false);
+                                    continue;
+                                }
+                                if (rs[i].code == "600302" && rs[i].enable != 0) {
+                                    $("#xiugai1").attr("disabled", false);
+                                    continue;
+                                }
+                                if (rs[i].code == "600303" && rs[i].enable != 0) {
+                                    $("#shanchu").attr("disabled", false);
+                                    continue;
+                                }
+                            }
+                        }
+
+                    },
+                    error: function () {
+                        alert("提交失败！");
+                    }
+                });
 
 
 
                 $('#l_comaddr').combobox({
-                    url: "test1.gayway.comaddr.action",
+                    url: "gayway.GaywayForm.getComaddr.action?pid=${param.pid}",
                     onLoadSuccess: function (data) {
                         if (Array.isArray(data) && data.length > 0) {
                             $(this).combobox("select", data[0].id);
@@ -410,7 +375,7 @@
 
 
                 $('#gravidaTable').bootstrapTable({
-                    url: 'test1.lamp.getlamp1.action',
+                    url: 'lamp.lampform.getlampList.action',
                     showExport: true, //是否显示导出
                     exportDataType: "basic", //basic', 'a
                     columns: [
@@ -528,7 +493,8 @@
                             search: params.search,
                             skip: params.offset,
                             limit: params.limit,
-                            type_id: "1"    
+                            type_id: "1",
+                            pid: "${param.pid}"    
                         };      
                         return temp;  
                     },
@@ -650,22 +616,6 @@
 
             .bodycenter { text-align: -webkit-center; text-align: -moz-center; width: 600px; margin: auto; }        
 
-
-
-
-
-
-
-            /*            .table { font-size: 12px; } 
-                        .modal-body input[type="text"], 
-                        .modal-body select { height: 30px; } 
-                        .modal-body input[type="radio"] { height: 30px; } 
-                        .modal-body table td { line-height: 40px; }
-                        .a-upload { padding: 4px 10px; height: 30px; line-height: 20px; position: relative; cursor: pointer; color: #888; background: #fafafa; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; display: inline-block; *display: inline; *zoom: 1 } 
-                        .a-upload input { position: absolute; font-size: 100px; right: 0; top: 0; opacity: 0; filter: alpha(opacity = 0); cursor: pointer } 
-                        .a-upload:hover { color: #444; background: #eee; border-color: #ccc; text-decoration: none } 
-                        .pagination-info { float: left; margin-top: -4px; } 
-                        .modal-body { text-align: -webkit-center; text-align: -moz-center; width: 600px; margin: auto; }*/
         </style>
 
     </head>
@@ -713,19 +663,19 @@
                     <tbody>
                         <tr>
                             <td>
-                                                                <span style="margin-left:20px;">网关地址&nbsp;</span>
+                                <span style="margin-left:20px;">网关地址&nbsp;</span>
                                 <span class="menuBox">
 
                                     <input id="l_comaddr"  class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 
                                            data-options='editable:false,valueField:"id", textField:"text"' />
                                 </span>  
-                                                                
-   
+
+
                                 <!--                                            <span style="margin-left:20px;">网关名称</span>&nbsp;
                                                                             <input id="txt_gayway_name" readonly="true"  class="form-control"  name="txt_gayway_name" style="width:150px;display: inline;" placeholder="请输入网关名称" type="text"></td>-->
                             <td></td>
                             <td>
-                             <span style="margin-left:10px;">网关名称</span>&nbsp;
+                                <span style="margin-left:10px;">网关名称</span>&nbsp;
                                 <input id="comaddrname" readonly="true"   class="form-control"  name="comaddrname" style="width:150px;display: inline;" placeholder="请输入网关名称" type="text">
 
                             </td>
@@ -733,17 +683,17 @@
 
                         <tr>
                             <td>
-                                                             <span style="margin-left:20px;">灯具编号&nbsp;</span>
+                                <span style="margin-left:20px;">灯具编号&nbsp;</span>
                                 <input id="l_factorycode" class="form-control" name="l_factorycode" style="width:150px;display: inline;" placeholder="请输入灯具装置编号" type="text">
-                        
-                                
-          
+
+
+
                             </td>
                             <td></td>
                             <td>
-                            <span style="margin-left:10px;">灯具名称</span>&nbsp;
+                                <span style="margin-left:10px;">灯具名称</span>&nbsp;
                                 <input id="l_name" class="form-control"  name="l_name" style="width:150px;display: inline;" placeholder="请输入灯具名称" type="text">
-                           
+
                             </td>
                             </td>
                         </tr>                                   
@@ -779,39 +729,39 @@
         </div>
 
         <div id="dialog-edit"  class="bodycenter" style=" display: none"  title="灯具修改">
-            <form action="" method="POST" id="form2" onsubmit="return modifyLoopName()">  
-                <input type="hidden" id="hide_id" name="hide_id" />
+            <form action="" method="POST" id="form2" onsubmit="return editlamp()">  
+                <input type="hidden" id="hide_id" name="id" />
                 <input type="hidden" id="l_deployment" name="l_deployment" />
                 <table>
                     <tbody>
                         <tr>
                             <td>
-                                                           <span style="margin-left:20px;">网关地址&nbsp;</span>
+                                <span style="margin-left:20px;">网关地址&nbsp;</span>
                                 <span class="menuBox">
                                     <input  readonly="true"  id="l_comaddr1" readonly="true"  class="form-control"  name="l_comaddr" style="width:150px;display: inline;" placeholder="网关地址" type="text"></td>     
                                 </span>    
-                          
-             
+
+
                             <td></td>
                             <td>
-                         <span style="margin-left:20px;">网关名称</span>&nbsp;
+                                <span style="margin-left:20px;">网关名称</span>&nbsp;
                                 <input  id="name" readonly="true"  class="form-control"  name="nam" style="width:150px;display: inline;" placeholder="网关名称" type="text"></td>
-                           
+
                             </td>
                         </tr>
 
                         <tr>
                             <td>
-                                              <span style="margin-left:20px;">灯具编号&nbsp;</span>
+                                <span style="margin-left:20px;">灯具编号&nbsp;</span>
                                 <input id="l_factorycode1" readonly="true" class="form-control" name="l_factorycode" style="width:150px;display: inline;" placeholder="灯具编号" type="text"></td>
-                          
-                            
-                  
+
+
+
                             <td></td>
                             <td>
                                 <span style="margin-left:20px;">灯具名称</span>&nbsp;
                                 <input id="l_name1"  class="form-control"  name="l_name" style="width:150px;display: inline;" placeholder="灯具名称" type="text"></td>
-                          
+
                             </td>
                         </tr>                                   
 
@@ -865,18 +815,18 @@
                                 <span  onclick="resetWowktype()" style=" margin-left: 2px;" class="label label-success" >更换</span>
                             </td>
                         </tr> 
-                      <tr id="trlamp1">
-<!--                            <td colspan="4">
-                                <label class="radio-inline">
-                                    <input type="radio"  value="1" name="type">集中器下的所有灯具
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="radio"  value="2" name="type">集中器下以组为单位的灯具
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="radio"  value="3" checked="true" name="type">灯控器为单位
-                                </label>
-                            </td>-->
+                        <tr id="trlamp1">
+                            <!--                            <td colspan="4">
+                                                            <label class="radio-inline">
+                                                                <input type="radio"  value="1" name="type">集中器下的所有灯具
+                                                            </label>
+                                                            <label class="radio-inline">
+                                                                <input type="radio"  value="2" name="type">集中器下以组为单位的灯具
+                                                            </label>
+                                                            <label class="radio-inline">
+                                                                <input type="radio"  value="3" checked="true" name="type">灯控器为单位
+                                                            </label>
+                                                        </td>-->
 
                         </tr> 
 

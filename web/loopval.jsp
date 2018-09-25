@@ -13,6 +13,8 @@
         <script type="text/javascript" src="js/genel.js"></script>
         <script>
 
+
+
             function switchloopCB(obj) {
                 console.log(obj);
                 if (obj.status == "success") {
@@ -57,7 +59,7 @@
                 param.id = select.id;
 
                 var data = buicode(comaddr, 0x04, 0xA5, num, 0, 208, vv); //01 03 F24     
-                dealsend2(data, 302, "switchloopCB", comaddr, 0, param, switchval);
+                dealsend2("A5", data, 208, "switchloopCB", comaddr, 0, param, switchval);
 
 //                var sss = buicode(comaddr, 0x04, 0xA5, num, 0, 208, vv); //0320    
 //                dealsend(sss, switchval);
@@ -70,37 +72,14 @@
                 });
             }
 
-            function dealsend2(data, fn, func, comaddr, type, param, val) {
-                var user = new Object();
-                user.begin = '6A';
-                user.res = 1;
-                user.status = "";
-                user.comaddr = comaddr;
-                user.fn = fn;
-                user.function = func;
-                user.param = param;
-                user.page = 2;
-                user.msg = "A5";
-                user.res = 1;
-                user.val = val;
-                user.type = type;
-                user.addr = getComAddr(comaddr); //"02170101";
-                user.data = data;
-                user.len = data.length;
-                user.end = '6A';
-                console.log(user);
-                parent.parent.sendData(user);
-            }
-
-
             $(function () {
                 $('#gravidaTable').on("check.bs.table", function (field, value, row, element) {
                     var index = row.data('index');
                     value.index = index;
-                    console.log(value);
                 });
 
                 $('#gravidaTable').bootstrapTable({
+                    url: "loop.loopForm.getLoopList.action",
                     columns: [
                         {
                             title: '单选',
@@ -145,11 +124,10 @@
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
-                                console.log(value);
                                 if (value == 170) {
-                                    return "关"
+                                    return "断开"
                                 } else if (value == 85) {
-                                    return "开";
+                                    return "闭合";
                                 }
 
 //                                var groupe = value.toString();
@@ -194,19 +172,31 @@
                             search: params.search,
                             skip: params.offset,
                             limit: params.limit,
-                            type_id: "1"    
+                            type_id: "1",
+                            pid: "${param.pid}"  
                         };      
                         return temp;  
                     },
                 });
 
                 $('#l_comaddr').combobox({
+                    url: "loop.loopForm.getComaddr.action?pid=${param.pid}",
+                    onLoadSuccess: function (data) {
+                        if (Array.isArray(data) && data.length > 0) {
+                            $(this).combobox('select', data[0].id);
+
+                        } else {
+                            $(this).combobox('select', );
+                        }
+//                        console.log(data);
+                    },
                     onSelect: function (record) {
                         var obj = {};
                         obj.l_comaddr = record.id;
+                        obj.pid = "${param.pid}";
                         console.log(obj);
                         var opt = {
-                            url: "test1.loop.getloop.action",
+                            url: "loop.loopForm.getLoopList.action",
                             silent: true,
                             query: obj
                         };
@@ -231,15 +221,7 @@
                             <span class="menuBox">
 
                                 <input id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 34px" 
-                                       data-options="onLoadSuccess:function(data){
-                                       if(Array.isArray(data)&&data.length>0){
-                                       $(this).combobox('select', data[0].id);
-
-                                       }else{
-                                       $(this).combobox('select',);
-                                       }
-                                       console.log(data);
-                                       },editable:false,valueField:'id', textField:'text',url:'test1.loop.getlampcomaddr.action' " />
+                                       data-options="editable:false,valueField:'id', textField:'text' " />
 
                                 <!--                                <select name="l_comaddr" id="l_comaddr" placeholder="回路" class="input-sm" style="width:150px;">-->
                             </span>    
@@ -256,21 +238,13 @@
                             <span style="margin-left:10px;">合闸开关&nbsp;</span>
 
                             <select class="easyui-combobox" id="switch" name="switch" style="width:150px; height: 34px">
-                                <option value="170">关</option>
-                                <option value="85">开</option>           
+                                <option value="170">闭合</option>
+                                <option value="85">断开</option>           
                             </select>
-
-                            <!--                            <span class="menuBox">
-                                                            <select name="select_switch" id="select_switch" placeholder="开关闸" class="input-sm" style="width:150px;">
-                                                                <option value="170">关</option>
-                                                                <option value="85">开</option>
-                                                            </select>
-                                                        </span>   -->
                         </td>
 
                         <td>
-                            &nbsp;&nbsp;
-                            <button id="btnswitch" onclick="switchloop()" class="btn btn-success">合闸开关</button>
+                            <button id="btnswitch" onclick="switchloop()" class="btn btn-success btn-sm">合闸开关</button>
                         </td>
 
 

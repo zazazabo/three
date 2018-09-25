@@ -265,159 +265,92 @@
             var myChart, myChart2, myChart3, myChart4, myChart5;
             var echarts;
             $(function () {
+<<<<<<< HEAD
                 //alert();
                 console.log("a:"+"${param.pid}");
                 var truevalmap;
+=======
+                console.log("${param.pid}");
+                var truevalmap = "";
+>>>>>>> eb96eda2c3ea5073e141f1bd18aca903cc38c93d
                 var status1 = "";
+                var planvalue = "";
+                var atualvalue = "";
+                var date = new Date;
+                var year = date.getFullYear();
+                var month = date.getMonth() + 1;
+
+                //计划能耗
+            <c:if test="${fn:length(rs4)==0}">
+                planvalue = "";
+            </c:if>
+            <c:if test="${fn:length(rs4)>0}">
+                planvalue = ${rs4[0].warnpower eq null?"":rs4[0].warnpower};
+            </c:if>
+
             <c:if test="${fn:length(rs3)==0 }">
-                var fend = 0;
-                var planpower = parseFloat(${rs4[0].power});
-                $("#actualConsumption").html("0");  //实际用能
-                truevalmap = 0;
-                var diff = planpower - fend;
-                $("#differenceConsumption").html(diff.toString());
-
-                $("#jnl").html("100%");
-                status1 = "正常";
-
+                atualvalue = 0;
             </c:if>
             <c:if test="${fn:length(rs3)==1 }">
+                atualvalue =${rs3[0].mpower==NULL?0.00:rs3[0].mpower};
 
-                var power =${rs3[0].power};
-                var powerArr = power.A.split("|");
-                var val = powerArr[power.len - 1];
-                console.log(val);
-                var planpower = parseFloat(${rs4[0].power});
-                var fstart = 0;
-                var fend = parseFloat(val);
-                truevalmap = fend;
-                var trueval = fend / planpower * 100;
-                var jnl = (1 - trueval) * 100;
-                var str = jnl.toFixed(2).toString() + "%";
-                $("#jnl").html(str);
-
-
-                $("#actualConsumption").html(fend.toString());  //实际用能
-
-                var planpower = parseFloat(${rs4[0].power});
-                var diff = planpower - fend;
-                $("#differenceConsumption").html(diff.toString());      //差值
-
-
-                if (diff < 0) {
-                    $("#status").html("异常");
-                    status1 = "异常";
-                } else {
-                    $("#status").html("正常");
-                    status1 = "正常";
-                }
-            </c:if>
-            <c:if test="${fn:length(rs3)>1 }">
-                var power1 =${rs3[0].power}; //最近一日
-                var power2 =${rs3[fn:length(rs3)-1].power}; //最远一日
-                var a1 = power1.A.split("|");
-                var a2 = power2.A.split("|");
-
-                var p1 = a1[power1.len - 1];
-                var p2 = a2[0];
-
-                var fend = parseFloat(p1);
-                var fstart = a2[0];
-
-
-                var planpower = parseFloat(${rs4[0].power});
-                var trueval = fend - fstart;
-                truevalmap = trueval;
-                $("#actualConsumption").html(trueval.toFixed(2).toString());
-
-                var diff = planpower - trueval;
-                $("#differenceConsumption").html(diff.toFixed(2).toString());
-
-
-                var jnl = (1 - trueval / planpower) * 100;
-                var str = jnl.toFixed(2).toString() + "%";
-                $("#jnl").html(str);
-
-                if (diff < 0) {
-                    $("#status").html("异常");
-                    status1 = "异常";
-                } else {
-                    $("#status").html("正常");
-                    status1 = "正常";
-                }
             </c:if>
 
+                var fplanpower = parseFloat(planvalue); //计划能耗
+                var fatualpower = parseFloat(atualvalue);
+                var diffpower = fplanpower - fatualpower;
+                $("#actualConsumption").html(atualvalue);
+                diffpower=  isNaN(diffpower)==true?0:diffpower;
+                
+                $("#differenceConsumption").html(diffpower.toString());
+                var status = diffpower < 0 ? "异常" : "正常";
+                $("#status").html("正常");
+
+                var jnl = 1 - fatualpower / fplanpower
+                  jnl=  isNaN(jnl)==true?0:jnl;
+                $("#jnl").html((jnl * 100).toFixed(2) + "%");
 
 
                 var aa = new Array();
                 var obj = new Object();
-                obj.Month = ${rs3[0].month};
-                obj.plan_value =${rs4[0].power};
-                obj.num = truevalmap.toFixed(2);
-                obj.energy = ${rs4[0].power};
-                obj.status = status1;
+                obj.Month = month;
+                obj.plan_value = fplanpower;
+                obj.num = fatualpower;
+                obj.status = status;
                 aa.push(obj);
-                data = aa;
+                var data = aa;
                 var pieData = [{value: data[0].plan_value, name: '计划能耗'}, {value: data[0].num, name: '实际能耗'}];
                 pieChart("echarts2", "", pieData, "用能计划");
             })
 
 
-
-
-            function dealsend() {
-
-                var user = new Object();
-                user.count = 0;
-                user.res = 1;
-                user.afn = 0;
-                user.status = "";
-                user.function = "getCount";
-                user.errcode = 0;
-                user.frame = 0;
-                user.msg = "Online";
-                user.res = 1;
-                user.page = 1;
-                parent.sendData(user);
-
-            }
-
-
-
             $(function () {
+
                 var a3 = new Array();
                 var o3 = new Object();
-
-                var yearobj = {"2018": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "2017": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "2016": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]};
-                var yearbar = {"2018": 0, "2017": 0, "2016": 0};
+                var date = new Date;
+                var year = date.getFullYear();
+                var month = date.getMonth() + 1;
+                var yearobj = {};
+                yearobj[year] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+                yearobj[year - 1] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+                yearobj[year - 2] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+                var yearbar = {};
+                yearbar[year] = 0;
+                yearbar[year - 1] = 0;
+                yearbar[year - 2] = 0;
             <c:forEach items="${rs6}" var="t">
-                var year = ${t.year};
-                var month = ${t.monty};
-                <c:if test="${t.power ne  null }">
-                var power =${t.power};
-                var energy = power.energy;
-//                    console.log(energy);
-//                    console.log(year);
-//                    console.log(month);
-                if (yearobj.hasOwnProperty(year.toString())) {
-//                    var f1 = parseFloat(energy);
-                    var f1 = Math.floor(energy * 100) / 100;
-//                    console.log(f1);
-                    yearobj[year.toString()][month - 1] += f1;
-                    yearbar[year.toString()] += f1;
+                var y = ${t.y};
+                var m = ${t.m};
+
+                var power =${t.val==null?0.00:t.val};
+                console.log(power);
+                if (yearobj.hasOwnProperty(y.toString())) {
+                    yearobj[y.toString()][m - 1] = parseFloat(power);
+                    yearbar[y.toString()] += power;
                 }
-                </c:if>
             </c:forEach>
-                console.log(yearobj);
-//                console.log(yearobj);
-
-//                var resultYear = "";
-//                resultYear = yeararr.filter(function (item, index, self) {
-//                    return self.indexOf(item) == index;
-//                });
-//                console.log(resultYear);
-
-
+                console.log(yearbar);
                 var a3 = new Array();
                 var o3 = new Object();
                 var titlearr = [];
@@ -426,15 +359,9 @@
                 {
                     titlearr.push(x);
                 }
-
-
-
-
-
-
-                o3.thisYear3 = yearobj[2018];
-                o3.thisYear2 = yearobj[2017];
-                o3.thisYear1 = yearobj[2016];
+                o3.thisYear3 = yearobj[year];
+                o3.thisYear2 = yearobj[year - 1];
+                o3.thisYear1 = yearobj[year - 2];
 //                console.log(o3);
                 a3.push(o3);
                 var data = a3;
@@ -448,12 +375,12 @@
 
                 var a4 = new Array();
                 var o4 = new Object();
-                o4.thisYear3 = Math.floor(yearbar[2018] * 100) / 100;
-                o4.thisYear2 = Math.floor(yearbar[2017] * 100) / 100;
-                o4.thisYear1 = Math.floor(yearbar[2016] * 100) / 100;
-                o4.date3 = 2018;
-                o4.date2 = 2017;
-                o4.date1 = 2016;
+                o4.thisYear3 = Math.floor(yearbar[year] * 100) / 100;
+                o4.thisYear2 = Math.floor(yearbar[year - 1] * 100) / 100;
+                o4.thisYear1 = Math.floor(yearbar[year - 2] * 100) / 100;
+                o4.date3 = year;
+                o4.date2 = year - 1;
+                o4.date1 = year - 2;
 //                console.log(o4);
                 a4.push(o4);
                 var data = a4;
@@ -465,22 +392,18 @@
                 var date = new Date();
                 var year1 = date.getFullYear();
                 var year2 = year1 - 1;
-                var month1 = date.getMonth() + 1;
-                var month2 = month1 - 1;
-//                console.log(year1);
-//                console.log(month1);
+//                var month1 = date.getMonth() + 1;
+//                var month2 = month1 - 1;
 
-                var a5 = [0.0, 4.5, 0.0, -100.0, 0.0];
-                var data = a5;
                 var dataX = ["当月能耗", "上月能耗", "去年同期"];
 
-                var nowmonth = Math.floor(yearobj[year1.toString()][month1 - 1] * 100) / 100;  //当月
-                var premonth = Math.floor(yearobj[year1.toString()][month2 - 1] * 100) / 100;  //前个月
+                var nowmonth = yearobj[year.toString()][month - 1]; //Math.floor(yearobj[year.toString()][month - 1] * 100) / 100;  //当月
+                var premonth = yearobj[year.toString()][month - 2]; //Math.floor(yearobj[year1.toString()][month2 - 1] * 100) / 100;  //前个月
 
-
-                var preyear = Math.floor(yearobj[year2.toString()][month1 - 1] * 100) / 100;  //去年当月
+                var preyear = yearobj[(year - 1).toString()][month - 1];          //Math.floor(yearobj[year2.toString()][month1 - 1] * 100) / 100;  //去年当月
                 var dataY = [nowmonth, premonth, preyear];
                 ech('echarts1', '能耗分析', '能耗', dataX, dataY, 'bar', 'kW·h', "#68b928");
+
                 $("#benyue").html(nowmonth);
                 $("#shangyue").html(premonth);
                 var huanbi = nowmonth - premonth;
@@ -490,13 +413,6 @@
                 qiantb = Math.floor(qiantb * 100) / 100;
                 $("#lastYearSameMonth").html(qiantb);
 
-                window.onresize = function () {
-//                    myChart.resize();
-//                    myChart2.resize();
-//                    myChart3.resize();
-//                    myChart4.resize();
-//                    myChart5.resize();
-                }
             })
 
             function ech(id, title, titleY, signXAxis, signYAxis, type, danwei, bg) {
@@ -566,7 +482,6 @@
             function pieChart(id, title, dataY, zongbi) {
                 var vvv = document.getElementById(id);
                 myChart2 = echarts.init(document.getElementById(id));
-
                 var option = {
                     title: {
                         text: title,
@@ -578,11 +493,6 @@
                             color: "skyblue"
                         }
                     },
-//                                        legend: {
-//                                            orient: 'vertical',
-//                                            x: 'left',
-//                                            data: ['计划能耗', '实际能耗']
-//                                        },
                     tooltip: {
                         trigger: 'item',
                         formatter: "{a} <br/>{b} : {c} kW·h ({d}%)"
@@ -807,6 +717,23 @@
                 myChart5.setOption(option);
             }
 
+            function dealsend() {
+
+                var user = new Object();
+                user.count = 0;
+                user.res = 1;
+                user.afn = 0;
+                user.status = "";
+                user.function = "getCount";
+                user.errcode = 0;
+                user.frame = 0;
+                user.msg = "Online";
+                user.res = 1;
+                user.page = 1;
+                parent.sendData(user);
+            }
+
+
             function getCount(obj) {
                 console.log(obj)
                 var count = obj.count;
@@ -814,6 +741,7 @@
                 var str = a.toString() + '%';
                 $('#online').html(str);
             }
+
             $(function () {
                 dealsend();
             })
@@ -880,7 +808,7 @@
                 <div class="topCenter3MessMM" style="margin-top:40%;">
                     <div class="first">
                         <span class="subPara">计划能耗：</span>
-                        <span class="paraValue" id="planConsumption">${rs4[0].power}</span>
+                        <span class="paraValue" id="planConsumption">${rs4[0].warnpower}</span>
                     </div>
                     <!-- <div class="second"></div> -->
                     <div class="first">
@@ -939,10 +867,7 @@
                         <span class="tongbi" id="lastYearSameMonth"></span>
                         kW·h
                     </div>
-                    <div class="nenghao1">
-                        <span class="subPara">每盏灯平均能耗:</span>
-                        <span id="pingjun" class="paraValue">0</span>kW·h
-                    </div>
+
                 </div>
             </div> 
 
