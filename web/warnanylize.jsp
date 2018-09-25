@@ -163,23 +163,8 @@
 
         <div id="big" style="height:auto;width:100%;border:1px solid #CECECE;border-bottom:none;">
             <div id="condition" style="height:60px;width:100%;padding-top: 12px">
-                <span style="margin-left:15px;font-size:16px;">区划</span>
-                <select name="area" id="area" class="input-sm" data-done-button="true" style="width:120px;">
-                    <option value="59cc85f31d41ec7d6c34ad39" selected="selected">广东</option>
-                </select>
-
-                <span style="margin-left:15px;font-size:16px;">机构</span>
-                <select name="org" id="org" class="input-sm" data-done-button="true" style="width:120px;">
-                    <option value="5aa7ac921d41ec61a04f152e" selected="selected">广东华铭光电科技有限公司</option>
-                </select>
-
-                <span style="margin-left:15px;font-size:16px;">项目</span>
-                <select name="proj" id="proj" class="input-sm" data-done-button="true" style="width:120px;">
-                    <option value="5aa7aca81d41ec61a04f152f" longitude="" latitude="" selected="selected">华铭光电</option>
-                </select>
-
-                <span style="margin-left:15px;font-size:16px;">时间(年)</span>
-                <form action="" id="formyear" class="form-horizontal" role="form" style="float:left;position:absolute;top:21px;left:635px;width: 166px;">
+                <span style="margin-left:360px;font-size:16px; ">时间(年)</span>
+                <form action="" id="formyear" class="form-horizontal" role="form" style="float:left;position:absolute;top:21px;left:450px;width: 166px;">
                     <label for="dtp_input2" class="control-label" style="float: left;"></label>
                     <input id="dtp_input2" value="" type="hidden">
                     <span class="input-group date form_date col-md-2" style="float:initial;" data-date="" data-date-format="yyyy" data-link-field="dtp_input2" data-link-format="yyyy">
