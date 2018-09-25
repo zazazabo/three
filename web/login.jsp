@@ -495,7 +495,8 @@
                                 nobj.name = name;
                                 var day =getNowFormatDate2();
                                 nobj.time = day;
-                                nobj.comment = "登陆";
+                                nobj.type = "登陆";
+                                nobj.pid = arrlist1[0].pid;
                                 $.ajax({async: false, url: "login.oplog.addoplog.action", type: "get", datatype: "JSON", data: nobj,
                                     success: function (data) {
                                         var arrlist = data.rs;
@@ -523,11 +524,6 @@
                     if (pwd == "" || username == "") {
                         $("#cc").prop("checked", false);
                     } else if ($("#cc").is(":checked")) {
-
-                        //var pass = $("#password").val();
-                        // var name = $("#username").val();               
-                        //var password = hex_md5(pass);
-                        //  var obj = $("#myfrom").serializeObject();
                         //记住密码前先清除原先记住的密码
                         addCookie("rmbUser", "false", -1);
                         addCookie("username", "", -1);

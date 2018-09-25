@@ -12,7 +12,6 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script type="text/javascript" src="js/genel.js"></script>
         <script>
-
             function layerAler(str) {
                 layer.alert(str, {
                     icon: 6,

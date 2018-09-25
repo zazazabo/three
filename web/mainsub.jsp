@@ -266,7 +266,7 @@
             var echarts;
             $(function () {
                 //alert();
-                console.log("${param.pid}");
+                console.log("a:"+"${param.pid}");
                 var truevalmap;
                 var status1 = "";
             <c:if test="${fn:length(rs3)==0 }">

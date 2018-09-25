@@ -47,6 +47,11 @@
                 var name = $("#u_name").text();
                 return name;
             }
+            
+            function  getupid(){
+                var upid = $("#upid").val();
+                return upid;
+            }
 
             //退出
             function getout() {
@@ -57,7 +62,9 @@
                     nobj.name = name;
                     var day = getNowFormatDate2();
                     nobj.time = day;
-                    nobj.comment = "退出系统";
+                    nobj.type = "退出系统";
+                    nobj.pid = $("#upid").val();
+                    nobj.page = "首页";
                     $.ajax({async: false, url: "login.oplog.addoplog.action", type: "get", datatype: "JSON", data: nobj,
                         success: function (data) {
                             var arrlist = data.rs;
@@ -276,27 +283,6 @@
                     websocket.close();
                 };
 
-                var pid = $("#upid").val();
-                var pids = pid.split(",");   //项目编号
-                var pname = [];   //项目名称
-                for (var i = 0; i < pids.length; i++) {
-                    var obj = {};
-                    obj.code = pids[i];
-                    $.ajax({url: "login.main.getpojcetname.action", async: false, type: "get", datatype: "JSON", data: obj,
-                        success: function (data) {
-                            pname.push(data.rs[0].name);
-                        },
-                        error: function () {
-                            alert("出现异常！");
-                        }
-                    });
-                }
-
-                for (var i = 0; i < pids.length; i++) {
-                    var options;
-                    options += "<option value=\"" + pids[i] + "\">" + pname[i] + "</option>";
-                    $("#pojects").html(options);
-                }
                 //查看警异常信息总数
                 fualtCount();
             });
@@ -460,6 +446,32 @@
 //                    $("#alarmTable").css("display", "block");
 //                    document.getElementById('alarmTable').contentWindow.document.location.reload();
 //                });
+                var pid = '${rs[0].pid}';
+                var pids = pid.split(",");   //项目编号
+               // $("#pojects").val(pids[0]);
+                var pname = [];   //项目名称
+                for (var i = 0; i < pids.length; i++) {
+                    var obj = {};
+                    obj.code = pids[i];
+                    $.ajax({url: "login.main.getpojcetname.action", async: false, type: "get", datatype: "JSON", data: obj,
+                        success: function (data) {
+                            pname.push(data.rs[0].name);
+                        },
+                        error: function () {
+                            alert("出现异常！");
+                        }
+                    });
+                }
+
+                for (var i = 0; i < pids.length; i++) {
+                    var options;
+                    options += "<option value=\"" + pids[i] + "\">" + pname[i] + "</option>";
+                    $("#pojects").html(options);
+                }
+                
+                
+                
+                
 
                 $("body").delegate(".list", "click", function () {
                     if ($(this).siblings(".secondMenu").length != 0) {
@@ -559,6 +571,7 @@
                         $(".MenuBox").html(htmls);
                         $(".list:eq(0)").addClass("active");
                         var ifrsrc = $(".list:eq(0)").attr("name");
+                         ifrsrc = ifrsrc + "?pid=" + getpojectId(); 
                         $("#iframe").attr("src", ifrsrc);
                     }
 
