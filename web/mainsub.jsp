@@ -265,14 +265,7 @@
             var myChart, myChart2, myChart3, myChart4, myChart5;
             var echarts;
             $(function () {
-<<<<<<< HEAD
-                //alert();
-                console.log("a:"+"${param.pid}");
-                var truevalmap;
-=======
-                console.log("${param.pid}");
                 var truevalmap = "";
->>>>>>> eb96eda2c3ea5073e141f1bd18aca903cc38c93d
                 var status1 = "";
                 var planvalue = "";
                 var atualvalue = "";
