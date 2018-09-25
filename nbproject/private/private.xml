@@ -13,7 +13,7 @@
             <url>web/gateway.jsp</url>
             <bookmark id="5">
                 <name/>
-                <line>311</line>
+                <line>390</line>
                 <key/>
             </bookmark>
         </file>
@@ -28,13 +28,10 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Documents/NetBeansProjects/three/web/WEB-INF/config/login.xml</file>
-            <file>file:/D:/Documents/NetBeansProjects/three/web/login.jsp</file>
-            <file>file:/D:/Documents/NetBeansProjects/three/web/gateway.jsp</file>
-            <file>file:/D:/Documents/NetBeansProjects/three/web/policereord.jsp</file>
-            <file>file:/D:/Documents/NetBeansProjects/three/web/oplog.jsp</file>
-            <file>file:/D:/Documents/NetBeansProjects/three/web/index2.jsp</file>
-            <file>file:/D:/Documents/NetBeansProjects/three/web/map.jsp</file>
+            <file>file:/C:/Users/Administrator/Documents/NetBeansProjects/three/web/loopdeployment.jsp</file>
+            <file>file:/C:/Users/Administrator/Documents/NetBeansProjects/three/web/WEB-INF/config/database.xml</file>
+            <file>file:/C:/Users/Administrator/Documents/NetBeansProjects/three/web/loopval.jsp</file>
+            <file>file:/C:/Users/Administrator/Documents/NetBeansProjects/three/web/lightval.jsp</file>
         </group>
     </open-files>
 </project-private>
