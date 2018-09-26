@@ -86,7 +86,6 @@
                 }
 
             }
-
             function readTrueTime() {
                 var o1 = $("#form1").serializeObject();
                 var vv = [];
@@ -95,6 +94,7 @@
                 var data = buicode(l_comaddr, 0x04, 0xAC, num, 0, 1, vv); //01 03
                 dealsend2("AC", data, 1, "readTrueTimeCB", l_comaddr, 0, 0, 0);
             }
+
             function gettime(obj) {
 
                 obj.id = obj.val;
@@ -156,26 +156,6 @@
                 }
             }
 
-//            function dealsend2(msg, data, fn, func, comaddr, type, param, val) {
-//                var user = new Object();
-//                user.begin = '6A';
-//                user.res = 1;
-//                user.status = "";
-//                user.comaddr = comaddr;
-//                user.fn = fn;
-//                user.function = func;
-//                user.param = param;
-//                user.page = 2;
-//                user.msg = msg;
-//                user.val = val;
-//                user.type = type;
-//                user.addr = getComAddr(comaddr); //"02170101";
-//                user.data = data;
-//                user.len = data.length;
-//                user.end = '6A';
-//                console.log(user);
-//                parent.parent.sendData(user);
-//            }
 
             $(function () {
 
@@ -384,7 +364,13 @@
                 dealsend2("AA", data, 4, "gettime", comaddr, select.index, 0, select.id);
             }
 
-            function setsite() {
+            function setsiteCB(obj) {
+
+            }
+
+
+
+            function setSite() {
                 var obj = $("#form1").serializeObject();
                 if (obj.port == "") {
                     layerAler("端口不能为空");
@@ -403,8 +389,43 @@
                 var u2 = hexport & 0x000ff;
                 console.log(obj);
                 var vv = [];
-                if (isValidIP(obj.ip) == false) {
-                    // layerAler("不是合法ip");
+
+                if (obj.sitetype == "1") {
+                    if (isValidIP(obj.ip) == false) {
+                        layerAler("不是合法ip");
+                        return;
+                    }
+                    for (var i = 0; i < 12; i++) {
+                        vv.push(0);
+                    }
+                    var iparr = obj.ip.split(".");
+                    for (var i = 0; i < iparr.length; i++) {
+                        vv.push(parseInt(iparr[i]));
+                    }
+                    vv.push(u2);
+                    vv.push(u1);
+
+                    for (var i = 0; i < 6; i++) {
+                        vv.push(0);
+                    }
+
+
+                    for (var i = 0; i < 16; i++) {
+                        var apn = obj.apn;
+                        var len = apn.length;
+                        if (len <= i) {
+                            vv.push(0);
+                        } else {
+                            var c = apn.charCodeAt(i);
+                            vv.push(c);
+                        }
+
+                    }
+
+                    vv.push(0);
+
+
+                } else if (obj.sitetype == "0") {
                     if (obj.ip != "") {
                         vv.push(0);
                         vv.push(0);
@@ -416,7 +437,6 @@
                         for (var i = 0; i < 18; i++) {
                             vv.push(0);
                         }
-
 
                         for (var i = 0; i < 16; i++) {
                             var apn = obj.apn.trim();
@@ -438,9 +458,7 @@
                             vv.push(c);
                         }
                     }
-                }
 
-                if (isValidIP(obj.ip) == true) {
                     for (var i = 0; i < 12; i++) {
                         vv.push(0);
                     }
@@ -470,6 +488,8 @@
 
                     vv.push(0);
                 }
+
+
 
                 if (vv.length > 0) {
                     var comaddr = obj.l_comaddr;
@@ -611,13 +631,6 @@
                     }
                 });
 
-
-
-
-
-
-
-
             })
         </script>
     </head>
@@ -685,6 +698,19 @@
                             <tbody>
                                 <tr>
                                     <td>
+                                        <span  style=" float: right; margin-right: 2px;" >域名IP选择:</span>
+                                    </td>
+                                    <td>
+
+                                        <select class="easyui-combobox" id="sitetype" name="sitetype" style="width:150px; height: 30px">
+                                            <option value="0">域名</option>
+                                            <option value="1">ip地址</option>            
+                                        </select>   
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
                                         <span  style=" float: right; margin-right: 2px;" >主站ip或域名:</span>
                                     </td>
                                     <td>
@@ -714,7 +740,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="2">
-                                        <button type="button"  onclick="setsite()" class="btn  btn-success btn-sm" style="margin-left: 2px;">设置主站信息</button>
+                                        <button type="button"  onclick="setSite()" class="btn  btn-success btn-sm" style="margin-left: 2px;">设置主站信息</button>
                                         <button  type="button" onclick="readsite()" class="btn btn-success btn-sm">读取主站信息 </button>
                                         <button  type="button"  onclick="setAPN()" class="btn btn-success btn-sm">设置运营商APN </button>
                                     </td>
@@ -776,8 +802,6 @@
                                         <button  type="button" onclick="readTrueTime()" class="btn btn-success btn-sm">读取时间</button>&nbsp;
                                     </td>
                                 </tr>
-
-
                             </tbody>
                         </table>
                     </div>
