@@ -52,16 +52,18 @@
             </xsql>
         </xhandle>
         <xhandle desc="" id="insert" rtnype="JSON">
-            <xsql id="a1" para="day,power" tpe="DDL" tpl="insert into t_planpower(day,power) values(':day',':power') " var="rs">
+            <xsql id="a1" para="day,power" tpe="DDL" tpl="insert into t_planpower(day,power,warnpower) values(':day',':power',':warnpower') " var="rs">
             </xsql>
         </xhandle>
         <xhandle desc="" id="update" rtnype="JSON">
-            <xsql id="a1" para="power" tpe="DDL" tpl="update t_planpower set power=':power' where @CONDITION " var="rs">
-                <xflt id="CONDITION" nrp="" tpl="@id ">
-                    <xfltpara id="id" nrp="1=1" para="id" sql="id=:id">
+            <xsql id="a1" para="power,warnpower" tpe="DDL" tpl="update t_planpower set power=':power',warnpower=':warnpower' where @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@year AND @month ">
+                    <xfltpara id="year" nrp="1=2" para="year" sql="year(day)=:year">
+                    </xfltpara>
+                    <xfltpara id="month" nrp="1=2" para="month" sql="month(day)=:month">
                     </xfltpara>
                 </xflt>
             </xsql>
         </xhandle>
     </xform>
-</xforms>
+</xforms>  

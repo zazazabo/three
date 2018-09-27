@@ -63,9 +63,10 @@
                     var t = k.indexOf("plan_value");
                     if (t != -1) {
                         var a = k.substring(t + len1);
-                        console.log(a);
+                        var warningstr="warning_value" + a;  
+                        var warningval=f1[warningstr];
                         var obj = {"day": vday.day, "m": a};
-                        var oo = {"day": vday.day + "-" + a + "-01", "power": f1[k]};
+                        var oo = {"day": vday.day + "-" + a + "-01", "power": f1[k],"warnpower":warningval,"year":vday.day,"month":a};
                         console.log(oo);
                         $.ajax({async: false, url: "param.power.anylize1.action", type: "get", datatype: "JSON", data: obj,
                             success: function (data) {
@@ -74,27 +75,19 @@
                                 if (arr.length == 0) {
                                     $.ajax({async: false, url: "param.power.insert.action", type: "get", datatype: "JSON", data: oo,
                                         success: function (data) {
-                                            var arr = data.rs;
-                                            if (arr.length == 1) {
-
-                                            }
+            
                                         },
                                         error: function () {
                                             alert("提交插入失败！");
                                         }
                                     });
 
-                                } else if (arr.length == 1) {
+                                } else if (arr.length > 0) {
 
-                                    var o = {"id": arr[0].id, "power": f1[k]};
-                                    console.log(o);
-                                    $.ajax({async: false, url: "param.power.update.action", type: "get", datatype: "JSON", data: o,
+
+                                    $.ajax({async: false, url: "param.power.update.action", type: "get", datatype: "JSON", data: oo,
                                         success: function (data1) {
-                                            var a = data1.rs;
-
-                                            if (a.length == 1) {
-                                                console.log("更改", o.id, "成功");
-                                            }
+           
                                         },
                                         error: function () {
                                             alert("提交插入失败！");
@@ -132,22 +125,36 @@
 
                         }
 
+                        
+
                         for (var i = 0; i < arrbefor.length; i++) {
                             var v1 = arrbefor[i];
                             console.log(v1);
                             var id = "#plan_valueto" + v1.m;
                             $(id).val(v1.power);
-                            $("#warning_valueto" + v1.m).val(v1.warnpower);
+                           
+                            // $("#warning_valueto" + v1.m).val(v1.warnpower);
                         }
 
+                  
+                        var s1=0;
+                        var s2=0;
                         var arrnow = data.now;
                         for (var i = 0; i < arrnow.length; i++) {
                             var v1 = arrnow[i];
                             console.log(v1);
                             var id = "#plan_value" + v1.m;
                             $(id).val(v1.power);
+                             s1=s1+parseInt(v1.power);
+                             s2=s2+parseInt(v1.warnpower);
                             $("#warning_value" + v1.m).val(v1.warnpower);
                         }
+                        console.log(s1);
+
+                              $("#annual_plan_value").html(s1.toString());
+                              var s3=s2/s1*100;
+                              $("#warning_ration").val(s3.toString());
+
                     },
                     error: function () {
                         alert("提交失败！");
