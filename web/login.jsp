@@ -596,11 +596,7 @@
             <canvas id="demo-canvas" width="1398" height="914"></canvas>
         </div>
 
-        <img src="./img/huaming.jpg" style="position:absolute;top:0;left:0;z-index:-1;width:100%;height:100%;">
-        <!--        <div class="logo animated bounceInDown" style="display: block;">
-                     <img src="imgs/login/sz.png"/> 
-                    <img src="./img/sz-tit.png" class="phoneTit">
-                </div> -->
+        <img src="./img/hm.jpg" style="position:absolute;top:0;left:0;z-index:-1;width:100%;height:100%;">
 
         <div class="changeLanguage">
             <div language="zh_CN" class="Zh" id="chinese">中文</div>

@@ -192,7 +192,6 @@
                     $.ajax({async: false, url: "login.usermanage.isusername.action", type: "POST", datatype: "JSON", data: nobj,
                         success: function (data) {
                             var arrlist = data.rs;
-                            console.log(arrlist);
                             if (arrlist.length > 0) {
                                 alert("该用户名已存在，请输入新的用户名");
                                 isok = false;

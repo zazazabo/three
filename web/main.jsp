@@ -318,7 +318,7 @@
                                                 </li>-->
                         <li class="one">
                             <span>项目&nbsp;&nbsp;</span>
-                            <select style="width: 100px; height: 30px; margin-top:0px; font-size: 16px; border: 1px solid;" id="pojects">
+                            <select style="width: 200px; height: 30px; margin-top:0px; font-size: 16px; border: 1px solid;" id="pojects">
 
                             </select>
                         </li>

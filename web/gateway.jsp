@@ -12,6 +12,8 @@
         <%@include  file="js.jspf" %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
+
+        <!--<style>* { margin: 0; padding: 0; } body, html { width: 100%; height: 100%; } .zuheanniu { margin-top: 2px; margin-left: 10px; } table { font-size: 14px; } .modal-body input[type="text"], .modal-body select, .modal-body input[type="radio"] { height: 30px; } .modal-body table td { line-height: 40px; } .menuBox { position: relative; background: skyblue; } .getMenu { z-index: 1000; display: none; background: white; list-style: none; border: 1px solid skyblue; width: 150px; height: auto; max-height: 200px; position: absolute; left: 0; top: 25px; overflow: auto; } .getMenu li { width: 148px; padding-left: 10px; line-height: 22px; font-size: 14px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; } .getMenu li:hover { background: #eee; cursor: pointer; } .a-upload { padding: 4px 10px; height: 30px; line-height: 20px; position: relative; cursor: pointer; color: #888; background: #fafafa; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; display: inline-block; *display: inline; *zoom: 1 } .a-upload input { position: absolute; font-size: 100px; right: 0; top: 0; opacity: 0; filter: alpha(opacity = 0); cursor: pointer } .a-upload:hover { color: #444; background: #eee; border-color: #ccc; text-decoration: none } .pagination-info { float: left; margin-top: -4px; } .modal-body { text-align: -webkit-center; text-align: -moz-center; width: 600px; margin: auto; } .btn-primary { color: #fff; background-color: #0099CC; border-color: #0099CC; }</style></head>-->
         <style>* { margin: 0; padding: 0; } body, html { width: 100%; height: 100%; } 
 
             input[type="text"],input[type="radio"] { height: 30px; } 
@@ -25,26 +27,29 @@
 
         </style>
 
-
+        <script type="text/javascript" src="SheetJS-js-xlsx/dist/xlsx.core.min.js"></script>
         <script type="text/javascript" src="js/genel.js"></script>
 
         <script>
 
-            var websocket = null;
-            var vvvv = 0;
-            var flag = null;
+
+            function excel() {
+                $('#dialog-excel').dialog('open');
+                return false;
+
+            }
+
             function layerAler(str) {
                 layer.alert(str, {
                     icon: 6,
                     offset: 'center'
                 });
             }
-
             function deleteGateway(){
                     var selects = $('#gravidaTable').bootstrapTable('getSelections');
                     var num = selects.length;
                     if (num == 0) {
-                        layerAler("请选择删除的记录");
+                        layerAler("请选择您要删除的记录");
                     } else {
                         layer.confirm('您确定要删除吗？', {
                             btn: ['确定', '取消'], //按钮
@@ -66,7 +71,6 @@
                                                         yes: function (index, layero) {
                                                             $("#gravidaTable").bootstrapTable('refresh');
                                                             layer.close(index);
-                                  
                                                         }
                                                     });
                                                 }
@@ -85,7 +89,6 @@
 
                         });
                     }
-
             }
 
             function getMessage(obj) {
@@ -212,6 +215,110 @@
             // }
 
             $(function () {
+                $('#warningtable').bootstrapTable({
+                    columns: [
+                        {
+                            title: '单选',
+                            field: 'select',
+                            //复选框
+                            checkbox: true,
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            title: '序号',
+                            field: '序号',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            title: '网关地址',
+                            field: '网关地址',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: '名称',
+                            title: '网关名称',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: '经度',
+                            title: '经度',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: '纬度',
+                            title: '纬度',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: '倍率',
+                            title: '倍率',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: '安装位置',
+                            title: '安装位置',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }
+                    ],
+                    singleSelect: false,
+                    locale: 'zh-CN', //中文支持,
+                    pagination: true,
+                    pageNumber: 1,
+                    pageSize: 40,
+                    pageList: [20, 40, 80, 160]
+
+                });
+
+                $('#excel-file').change(function (e) {
+                    var files = e.target.files;
+                    var fileReader = new FileReader();
+                    fileReader.onload = function (ev) {
+                        try {
+                            var data = ev.target.result,
+                                    workbook = XLSX.read(data, {
+                                        type: 'binary'
+                                    }), // 以二进制流方式读取得到整份excel表格对象
+                                    persons = []; // 存储获取到的数据
+                        } catch (e) {
+                            alert('文件类型不正确');
+                            return;
+                        }
+                        // 表格的表格范围，可用于判断表头是否数量是否正确
+                        var fromTo = '';
+                        // 遍历每张表读取
+                        for (var sheet in workbook.Sheets) {
+                            if (workbook.Sheets.hasOwnProperty(sheet)) {
+                                fromTo = workbook.Sheets[sheet]['!ref'];
+                                persons = persons.concat(XLSX.utils.sheet_to_json(workbook.Sheets[sheet]));
+                                // break; // 如果只取第一张表，就取消注释这行
+                            }
+                        }
+                        var headStr = '序号,名称,网关地址,经度,纬度,倍率,安装位置';
+                        for (var i = 0; i < persons.length; i++) {
+                            if (Object.keys(persons[i]).join(',') !== headStr) {
+                                alert("导入文件格式不正确");
+                                persons = [];
+                            }
+                        }
+                        $("#warningtable").bootstrapTable('load', []);
+                        if (persons.length > 0) {
+                            $('#warningtable').bootstrapTable('load', persons);
+
+                        }
+                    };
+                    // 以二进制方式打开文件
+                    fileReader.readAsBinaryString(files[0]);
+                });
+
                 $("#dialog-add").dialog({
                     autoOpen: false,
                     modal: true,
@@ -242,6 +349,21 @@
                     }
                 });
 
+                $("#dialog-excel").dialog({
+                    autoOpen: false,
+                    modal: true,
+                    width: 750,
+                    height: 500,
+                    position: "top",
+                    buttons: {
+                        保存: function () {
+                            addexcel();
+                        }, 关闭: function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
+
 
                 $('#pid').combobox({
                     url: "gayway.GaywayForm.getProject.action?code=${param.pid}",
@@ -257,6 +379,7 @@
                 $("#add").attr("disabled", true);
                 $("#xiugai").attr("disabled", true);
                 $("#shanchu").attr("disabled", true);
+                $("#addexcel").attr("disabled", true);
                 var obj = {};
                 obj.code = ${param.m_parent};
                 obj.roletype = ${param.role};
@@ -268,8 +391,10 @@
 
                                 if (rs[i].code == "600101" && rs[i].enable != 0) {
                                     $("#add").attr("disabled", false);
+                                    $("#addexcel").attr("disabled", false);
                                     continue;
                                 }
+                                if (rs[i].code == "600102" && rs[i].enable != 0) {
                                 if (rs[i].code == "600102" && rs[i].enable != 0) {
                                     $("#xiugai").attr("disabled", false);
                                     continue;
@@ -281,18 +406,15 @@
                             }
                         }
 
+                    }
                     },
                     error: function () {
                         alert("提交失败！");
                     }
                 });
 
-                // flag = setInterval("dealsend()", 1000);
-
                 var bb = $(window).height() - 20;
                 $('#gravidaTable').bootstrapTable({
-                   showExport: true, //是否显示导出
-                    exportDataType: "basic", //basic', 'a
                     columns: [
                         {
                             title: '单选',
@@ -345,14 +467,15 @@
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index) {
-                                  if (value==1) {
-                                    return "<img  src='img/online1.png'/>"; 
-                                  }else{
-                                    return "<img  src='img/off.png'/>"; 
-                                  }
-                                 //onclick='hello()'
+                                if (value==1) {
+                                    return "<img  src='img/off.png'/>";  //onclick='hello()'
+                                }else{
+                                    return "<img  src='img/online1.png'/>";  //onclick='hello()'
+                                }
+                                
                             },
                         }],
+                    showExport: true, //是否显示导出
                     singleSelect: true,
                     clickToSelect: true,
                     sortName: 'id',
@@ -384,14 +507,61 @@
                 });
 
 
-                // $("#gravidaTable").on('refresh.bs.table', function (data) {
-                //     flag = setInterval("dealsend()", 1000);
-                // });
+            });
+
+            //导入excel的添加按钮事件
+            function addexcel() {
+                var selects = $('#warningtable').bootstrapTable('getSelections');
+                var num = selects.length;
+                if (num == 0) {
+                    layerAler("请选择您要保存的数据");
+                    return;
+                }
+                var pid = parent.parent.getpojectId();
+                for (var i = 0; i <= selects.length - 1; i++) {
+                    var comaddr = selects[i].网关地址;
+                    var obj = {};
+                    obj.comaddr = comaddr;
+                    $.ajax({async: false, url: "login.gateway.iscomaddr.action", type: "POST", datatype: "JSON", data: obj,
+                        success: function (data) {
+                            var arrlist = data.rs;
+                            if (arrlist.length == 0) {
+                                var adobj = {};
+                                adobj.model = "LC001";
+                                adobj.comaddr = comaddr;
+                                adobj.name = selects[i].名称;
+                                adobj.Longitude = selects[i].经度;
+                                adobj.latitude = selects[i].纬度;
+                                adobj.area = selects[i].安装位置;
+                                adobj.pid = pid;
+                                adobj.multpower = selects[i].倍率;
+                                adobj.presence = 0;
+                                adobj.connecttype = 0;
+                                $.ajax({url: "login.gateway.addbase.action", async: false, type: "get", datatype: "JSON", data: adobj,
+                                    success: function (data) {
+                                        var arrlist = data.rs;
+                                        if (arrlist.length == 1) {
+                                            var ids = [];//定义一个数组
+                                            var xh = selects[i].序号;
+                                            ids.push(xh);//将要删除的id存入数组
+                                            $("#warningtable").bootstrapTable('remove', {field: '序号', values: ids});
+                                        }
+                                    },
+                                    error: function () {
+                                        alert("提交添加失败！");
+                                    }
+                                });
 
 
-            })
+                            }
+                        },
+                        error: function () {
+                            layerAler("提交失败");
+                        }
+                    });
 
-
+                }
+            }
 
 
             function checkAdd() {
@@ -429,7 +599,7 @@
                             console.log(obj);
                             $.ajax({async: false, cache: false, url: "gayway.GaywayForm.addGateway.action", type: "GET", data: obj,
                                 success: function (data) {
-                                     namesss = true;
+                                    namesss = true;
                                     $("#gravidaTable").bootstrapTable('refresh');
                                 },
                                 error: function () {
@@ -463,30 +633,15 @@
             <button class="btn btn-primary ctrol" onclick="modifyModal()" id="xiugai1">
                 <span class="glyphicon glyphicon-pencil"></span>&nbsp;编辑
             </button>
-            <button class="btn btn-danger ctrol" onclick="deleteGateway();"  id="shanchu">
+            <button class="btn btn-danger ctrol" onclick="deleteGateway()" id="shanchu">
                 <span class="glyphicon glyphicon-trash"></span>&nbsp;删除
             </button>
-            <!--        <button class="btn btn-danger ctrol" id="closews">
-                        <span class="glyphicon glyphicon-trash"></span>&nbsp;关闭websocket
-                    </button>         
-                    <button class="btn btn-danger ctrol" id="addback">
-                        <span class="glyphicon glyphicon-trash"></span>&nbsp;添加回路
-                    </button>       -->
+            <button class="btn btn-success ctrol" onclick="excel()" id="addexcel" >
+                <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;导入Excel
+            </button>
 
 
         </div>
-        <!--    <form id="importForm" action="importGateway.action" method="post" enctype="multipart/form-data" onsubmit="return check()">
-                <div style="float:left;margin:12px 0 0 10px;border-radius:5px 0 0 5px;position:relative;z-index:100;width:230px;height:30px;">
-                    <a href="javascript:;" class="a-upload" style="width:130px;">
-                        <input name="excel" id="excel" type="file">
-                        <div class="filess">点击这里选择文件</div></a>
-                    <input style="float:right;" class="btn btn-default" value="导入Excel" type="submit"></div>
-            </form>
-            <form id="exportForm" action="exportGateway.action" method="post" style="display: inline;">
-                <input id="daochu" class="btn btn-default" style="float:left;margin:12px 0 0 20px;" value="导出Excel" type="button">
-            </form>-->
-
-
         <table id="gravidaTable" style="width:100%;" class="text-nowrap table table-hover table-striped">
         </table>
 
@@ -554,18 +709,6 @@
                                         <option value="1">网线</option>    
                                         <option value="2">485</option>           
                                     </select>
-
-
-
-
-
-
-
-                                    <!--                                    <select name="connecttype" id="connecttype" class="input-sm" style="width:150px;">
-                                                                            <option value="GPRS" selected="selected">GPRS</option>
-                                                                            <option value="net" selected="selected">网线</option>
-                                                                            <option value="485" selected="selected">485</option>
-                                                                        </select>-->
                                 </span>
 
                             </td>
@@ -594,11 +737,6 @@
                     </tbody>
                 </table>
             </form>                        
-            <!--                             <button id="tianjia1" type="submit" class="btn btn-primary">添加</button>
-                                                                                     关闭按钮 
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>-->
-
-
         </div>
 
         <div id="dialog-edit"  class="bodycenter" style=" display: none"  title="网关修改">
@@ -676,6 +814,12 @@
                     </tbody>
                 </table>
             </form>
+        </div>
+
+        <div id="dialog-excel"  class="bodycenter"  style=" display: none" title="导入Excel">
+            <input type="file" id="excel-file" style=" height: 40px;">
+            <table id="warningtable"></table>
+
         </div>
 
 
