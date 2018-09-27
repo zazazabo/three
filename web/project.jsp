@@ -223,7 +223,6 @@
                 $("#parea").val(selects[0].area);
                 $("#p_id").val(selects[0].id);
                 $("#pjj2").modal();
-                alert($("#p_id").val());
             }
 
             function update() {

@@ -74,10 +74,10 @@
     <xform desc="地图导航" id="map">
         <xhandle desc="查询所有网关信息" id="map" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_baseinfo where @CONDITION " var="bootstrap">
-                <xflt id="CONDITION" nrp="" tpl="@comaddr AND @name AND @pid">
+                <xflt id="CONDITION" nrp="" tpl="@comaddr AND @area AND @pid">
                     <xfltpara id="comaddr" nrp="1=1" para="comaddr" sql="comaddr = ':comaddr'">
                     </xfltpara>
-                    <xfltpara id="name" nrp="1=1" para="name" sql="name = ':name'">
+                    <xfltpara id="area" nrp="1=1" para="area" sql="area = ':area'">
                     </xfltpara>
                     <xfltpara id="pid" nrp="1=1" para="pid" sql="pid = ':pid'">
                     </xfltpara>
@@ -571,11 +571,78 @@
                     </xfltpara>
                 </xflt>
             </xsql>
-        </xhandle>
-        
-                                
-                                   
+        </xhandle>                             
     </xform>
     
+    <xform desc="灯具管理" id="lampmanage">
+        <xhandle desc="查看网关所属项目" id="getpid" rtn="rs" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select comaddr from t_baseinfo where @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@comaddr AND  @pid ">
+                    <xfltpara id="comaddr" nrp="1=1" para="comaddr" sql="comaddr=':comaddr'">
+                    </xfltpara>
+                    <xfltpara id="pid" nrp="1=1" para="pid" sql="pid=  ':pid' ">
+                    </xfltpara>
+                </xflt>
+            </xsql> 
+        </xhandle> 
+        <xhandle desc="查看灯具编码是否唯一" id="getfactorycode" rtn="rs" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select l_factorycode from t_lamp where @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@l_factorycode">
+                    <xfltpara id="l_factorycode" nrp="1=1" para="l_factorycode" sql="l_factorycode=':l_factorycode'">
+                    </xfltpara>
+                </xflt>
+            </xsql> 
+        </xhandle>  
+        
+        <xhandle desc="添加灯具" id="addlamp" rtn="rs" rtnype="JSON">
+            <xsql id="a1" para="l_name,l_worktype,l_comaddr,l_deplayment,l_factorycode,l_groupe,lng,lat,wname" tpe="DDL" tpl="insert into t_lamp(l_name,l_worktype,l_comaddr,l_deplayment,l_factorycode,l_groupe,Longitude,latitude,name) values(':l_name',':l_worktype',':l_comaddr',':l_deplayment',':l_factorycode',':l_groupe',':lng',':lat',':wname') " var="rs">
+            </xsql>
+        </xhandle>    
+    </xform>
+    
+    <xform desc="网关管理" id="gateway">
+        <xhandle desc="判断网关地址是否已存在" id="iscomaddr" rtn="rs" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select comaddr from t_baseinfo where @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@comaddr">
+                    <xfltpara id="comaddr" nrp="1=1" para="comaddr" sql="comaddr=':comaddr'">
+                    </xfltpara>
+                   
+                </xflt>
+            </xsql> 
+        </xhandle> 
+            
+        <xhandle desc="添加网关" id="addbase" rtn="rs" rtnype="JSON">
+            <xsql id="a1" para="model,comaddr,name,Longitude,latitude,area,pid,multpower,presence,connecttype" tpe="DDL" tpl="insert into t_baseinfo(model,comaddr,name,Longitude,latitude,area,pid,multpower,presence,connecttype) values(':model',':comaddr',':name',':Longitude',':latitude',':area',':pid',':multpower',':presence',':connecttype') " var="rs">
+            </xsql>
+        </xhandle>    
+    </xform>
+    
+    
+    <xform desc="回路管理" id="loop">
+       <xhandle desc="判断该网关是否属于该项目" id="isporject" rtn="rs" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select comaddr from t_baseinfo where @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@comaddr AND  @pid ">
+                    <xfltpara id="comaddr" nrp="1=1" para="comaddr" sql="comaddr=':comaddr'">
+                    </xfltpara>
+                    <xfltpara id="pid" nrp="1=1" para="pid" sql="pid=  ':pid' ">
+                    </xfltpara>
+                </xflt>
+            </xsql> 
+        </xhandle>  
+        
+        <xhandle desc="查看回路编码是否唯一" id="getl_code" rtn="rs" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select l_code from t_loop where @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@l_code">
+                    <xfltpara id="l_code" nrp="1=1" para="l_code" sql="l_code=':l_code'">
+                    </xfltpara>
+                </xflt>
+            </xsql> 
+        </xhandle> 
+            
+        <xhandle desc="添加网关" id="addloop" rtn="rs" rtnype="JSON">
+            <xsql id="a1" para="l_name,l_code,l_worktype,l_comaddr,l_deplayment,l_groupe,name" tpe="DDL" tpl="insert into t_loop(l_name,l_code,l_worktype,l_comaddr,l_deplayment,l_groupe,name) values(':l_name',':l_code',':l_worktype',':l_comaddr',':l_deplayment',':l_groupe',':name') " var="rs">
+            </xsql>
+        </xhandle>    
+    </xform>
     
 </xforms>

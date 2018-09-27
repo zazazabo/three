@@ -47,11 +47,8 @@
                         <tbody class="search">
                             <tr>
                                 <td>
-                                    <span style="margin-left:50px;">所属区划</span>&nbsp;
-                                    <select name="qh" id="qh"  style="width:150px; height: 30px;">
-                                        <option value="1">广东</option>
-                                        <option value="2">福建</option>
-                                    </select>
+                                    <span style="margin-left:50px;">所属区域</span>&nbsp;
+                                    <input type="text" id ="area" style="width:150px; height: 30px;">
                                 </td>
                                 <td></td>
                                 <td>
@@ -177,7 +174,6 @@
                         }],
                     method: "post",
                     contentType:"application/x-www-form-urlencoded",
-                    //contentType: 'application/json;charset=utf-8',
                     singleSelect: false, //设置单选还是多选，true为单选 false为多选
                     sortName: 'id',
                     locale: 'zh-CN', //中文支持,
@@ -269,7 +265,7 @@
                     singleSelect: true,
                     sortName: 'id',
                     locale: 'zh-CN', //中文支持,
-                    // minimumCountColumns: 7, //最少显示多少列
+                   // minimumCountColumns: 7, //最少显示多少列
                     showColumns: true,
                     sortOrder: 'desc',
                     pagination: true,
@@ -300,9 +296,14 @@
             function getInfoByComaddr() {
 
                 var comaddr = $("#comaddrlist").val();
+                var area = $("#area").val();
                 var obj = {};
+                obj.type="ALL";
                 if (comaddr != "") {
                     obj.comaddr = comaddr;
+                }
+                if(area !=""){
+                    obj.area =encodeURI(area);
                 }
                 var pid = parent.getpojectId();
                 obj.pid = pid;
@@ -526,7 +527,6 @@
 
                             var arrlist = data.rs;
                             var flist = data.rs2;
-                            console.log("f:" + flist[0].f_lampset);
                             for (var i = 0; i < arrlist.length; i++) {
                                 (function (x) {
                                     var obj = arrlist[i];
@@ -569,7 +569,7 @@
                                             <td>" + Isfault + "</td>\n\
                                         </tr>\n\ \n\
                                     </table></div>";
-                                    if (Longitude != "" && latitude != "") {
+                                    if ((Longitude != "" && latitude != "")||(Longitude !=null && latitude !=null)) {
                                         var point = new BMap.Point(Longitude, latitude);
                                         var marker1;
                                         if (Isfault == "异常") {
@@ -624,7 +624,8 @@
                         var obj = {};
                         obj.pid = porjectId;
                         var opt = {
-                            //method: "post",
+                            method: "post",
+                            contentType:"application/x-www-form-urlencoded",
                             url: "login.map.lamp.action",
                             silent: true,
                             query: obj
@@ -695,17 +696,15 @@
             function selectlamp() {
                 var porjectId = parent.getpojectId();
                 var lampname = $("#lampname").val();
-                alert(lampname);
                 var l_commadr = $("#lampcomaddrlist").val();
                 var obj = {};
+                obj.type="ALL";
                 if (lampname != "") {
-                    obj.l_name = lampname;
+                    obj.l_name = encodeURI(lampname);
                 }
                 obj.l_comaddr = l_commadr;
                 obj.pid = porjectId;
                 var opt = {
-                    method: "post",
-                    contentType:"application/x-www-form-urlencoded",
                     url: "login.map.lamp.action",
                     silent: true,
                     query: obj

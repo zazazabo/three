@@ -269,6 +269,7 @@
                                 valign: 'middle'
                             }]
                     ],
+                    showExport: true, //是否显示导出
                     singleSelect: true,
                     sortName: 'id',
                     locale: 'zh-CN', //中文支持,
@@ -326,6 +327,7 @@
                                 valign: 'middle'
                             }]
                     ],
+                    showExport: true, //是否显示导出
                     singleSelect: true,
                     sortName: 'id',
                     locale: 'zh-CN', //中文支持,
@@ -383,6 +385,7 @@
                                 valign: 'middle'
                             }]
                     ],
+                    showExport: true, //是否显示导出
                     singleSelect: true,
                     sortName: 'id',
                     locale: 'zh-CN', //中文支持,

@@ -10,6 +10,7 @@
     <head>
         <%@include  file="js.jspf" %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script type="text/javascript" src="SheetJS-js-xlsx/dist/xlsx.core.min.js"></script>
         <script type="text/javascript" src="js/genel.js"></script>
         <script>
             function layerAler(str) {
@@ -17,6 +18,77 @@
                     icon: 6,
                     offset: 'center'
                 });
+            }
+            function excel() {
+                $('#dialog-excel').dialog('open');
+                return false;
+
+            }
+
+            //导入excel的添加按钮事件
+            function addexcel() {
+                var selects = $('#warningtable').bootstrapTable('getSelections');
+                var num = selects.length;
+                if (num == 0) {
+                    layerAler("请选择您要保存的数据");
+                    return;
+                }
+                var pid = parent.parent.getpojectId();
+                for (var i = 0; i <= selects.length - 1; i++) {
+                    var comaddr = selects[i].网关地址;
+                    var l_code = selects[i].回路编号;
+                    var obj = {};
+                    obj.pid = pid;
+                    obj.comaddr = comaddr;
+                    $.ajax({async: false, url: "login.loop.isporject.action", type: "POST", datatype: "JSON", data: obj,
+                        success: function (data) {
+                            var arrlist = data.rs;
+                            if (arrlist.length > 0) {
+                                $.ajax({async: false, url: "login.loop.getl_code.action", type: "POST", datatype: "JSON", data: {l_code: l_code},
+                                    success: function (data) {
+                                        var arrlist = data.rs;
+                                        if (arrlist.length == 0) {
+                                            var cmdname = selects[i].网关名称;
+                                            var lname = selects[i].回路名称;
+                                            var groupe = selects[i].回路组号;
+                                            var adobj = {};
+                                            adobj.l_name = lname;
+                                            adobj.l_code = l_code;
+                                            adobj.l_worktype = 0;
+                                            adobj.l_comaddr = comaddr;
+                                            adobj.l_deplayment = 0;
+                                            adobj.l_groupe = groupe;
+                                            adobj.name = cmdname;
+                                            $.ajax({url: "login.loop.addloop.action", async: false, type: "get", datatype: "JSON", data: adobj,
+                                                success: function (data) {
+                                                    var arrlist = data.rs;
+                                                    if (arrlist.length == 1) {
+                                                        
+                                                        var ids = [];//定义一个数组
+                                                        var xh = selects[i].序号;        
+                                                        ids.push(xh);//将要删除的id存入数组
+                                                        $("#warningtable").bootstrapTable('remove', {field: '序号', values: ids});
+                                                    }
+                                                },
+                                                error: function () {
+                                                    alert("提交添加失败！");
+                                                }
+                                            });
+                                        }
+                                    },
+                                    error: function () {
+                                        layerAler("提交失败");
+                                    }
+                                });
+
+                            }
+                        },
+                        error: function () {
+                            layerAler("提交失败");
+                        }
+                    });
+
+                }
             }
 
             function showDialog() {
@@ -33,7 +105,6 @@
                 }
                 o.name = o.comaddrname;
                 var namesss = false;
-                console.log(o);
 
                 $.ajax({async: false, cache: false, url: "loop.loopForm.getLoopList.action", type: "GET", data: o,
                     success: function (data) {
@@ -184,6 +255,106 @@
             }
 
             $(function () {
+
+                $('#warningtable').bootstrapTable({
+                    columns: [
+                        {
+                            title: '单选',
+                            field: 'select',
+                            //复选框
+                            checkbox: true,
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            title: '序号',
+                            field: '序号',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            title: '网关名称',
+                            field: '网关名称',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: '网关地址',
+                            title: '网关地址',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: '回路名称',
+                            title: '回路名称',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: '回路编号',
+                            title: '回路编号',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: '回路组号',
+                            title: '回路组号',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }
+                    ],
+                    singleSelect: false,
+                    locale: 'zh-CN', //中文支持,
+                    pagination: true,
+                    pageNumber: 1,
+                    pageSize: 40,
+                    pageList: [20, 40, 80, 160]
+
+                });
+
+                $('#excel-file').change(function (e) {
+                    var files = e.target.files;
+                    var fileReader = new FileReader();
+                    fileReader.onload = function (ev) {
+                        try {
+                            var data = ev.target.result,
+                                    workbook = XLSX.read(data, {
+                                        type: 'binary'
+                                    }), // 以二进制流方式读取得到整份excel表格对象
+                                    persons = []; // 存储获取到的数据
+                        } catch (e) {
+                            alert('文件类型不正确');
+                            return;
+                        }
+                        // 表格的表格范围，可用于判断表头是否数量是否正确
+                        var fromTo = '';
+                        // 遍历每张表读取
+                        for (var sheet in workbook.Sheets) {
+                            if (workbook.Sheets.hasOwnProperty(sheet)) {
+                                fromTo = workbook.Sheets[sheet]['!ref'];
+                                console.log(fromTo);
+                                persons = persons.concat(XLSX.utils.sheet_to_json(workbook.Sheets[sheet]));
+                                // break; // 如果只取第一张表，就取消注释这行
+                            }
+                        }
+                        var headStr = '序号,网关名称,网关地址,回路名称,回路编号,回路组号';
+                        for (var i = 0; i < persons.length; i++) {
+                            if (Object.keys(persons[i]).join(',') !== headStr) {
+                                alert("导入文件格式不正确");
+                                persons = [];
+                            }
+                        }
+                        console.log("p2:" + persons.length);
+                        $("#warningtable").bootstrapTable('load', []);
+                        if (persons.length > 0) {
+                            $('#warningtable').bootstrapTable('load', persons);
+
+                        }
+                    };
+                    // 以二进制方式打开文件
+                    fileReader.readAsBinaryString(files[0]);
+                });
                 //####### Dialogs
                 $("#dialog-add").dialog({
                     autoOpen: false,
@@ -216,6 +387,20 @@
                     }
                 });
 
+                $("#dialog-excel").dialog({
+                    autoOpen: false,
+                    modal: true,
+                    width: 750,
+                    height: 500,
+                    position: "top",
+                    buttons: {
+                        保存: function () {
+                            addexcel();
+                        }, 关闭: function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
 
                 $('#comaddr').combobox({
                     url: "gayway.GaywayForm.getComaddr.action?pid=${param.pid}",
@@ -249,6 +434,7 @@
                 $("#add").attr("disabled", true);
                 $("#update").attr("disabled", true);
                 $("#shanchu").attr("disabled", true);
+                $("#addexcel").attr("disabled", true);
                 var obj = {};
                 obj.code = ${param.m_parent};
                 obj.roletype = ${param.role};
@@ -260,6 +446,7 @@
 
                                 if (rs[i].code == "600201" && rs[i].enable != 0) {
                                     $("#add").attr("disabled", false);
+                                    $("#addexcel").attr("disabled", false);
                                     continue;
                                 }
                                 if (rs[i].code == "600202" && rs[i].enable != 0) {
@@ -484,6 +671,9 @@
             <button class="btn btn-danger ctrol" id="shanchu">
                 <span class="glyphicon glyphicon-trash"></span>&nbsp;删除
             </button>
+            <button class="btn btn-success ctrol" onclick="excel()" id="addexcel" >
+                <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;导入Excel
+            </button>
         </div>
         <!--        <form id="importForm" action="importGateway.action" method="post" enctype="multipart/form-data" onsubmit="return check()">
                     <div style="float:left;margin:12px 0 0 10px;border-radius:5px 0 0 5px;position:relative;z-index:100;width:230px;height:30px;">
@@ -573,11 +763,6 @@
                     </tbody>
                 </table> 
             </form>                        
-            <!--                             <button id="tianjia1" type="submit" class="btn btn-primary">添加</button>
-                                                                                     关闭按钮 
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>-->
-
-
         </div>
 
         <div id="dialog-edit"  class="bodycenter" style=" display: none"  title="回路修改">
@@ -651,6 +836,12 @@
 
 
             </form>
+        </div>
+
+        <div id="dialog-excel"  class="bodycenter"  style=" display: none" title="导入Excel">
+            <input type="file" id="excel-file" style=" height: 40px;">
+            <table id="warningtable"></table>
+
         </div>
 
 
