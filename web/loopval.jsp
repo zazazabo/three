@@ -62,6 +62,10 @@
                         return;
                     }
                     var select = selects[0];
+                    if (select.l_deplayment=="0") {
+                        layerAler("请部署后再操作");
+                        return;
+                    }
 
                     var comaddr = select.l_comaddr;
                     var switchval = o1.switch;
