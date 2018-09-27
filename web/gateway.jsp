@@ -12,8 +12,6 @@
         <%@include  file="js.jspf" %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-
-        <!--<style>* { margin: 0; padding: 0; } body, html { width: 100%; height: 100%; } .zuheanniu { margin-top: 2px; margin-left: 10px; } table { font-size: 14px; } .modal-body input[type="text"], .modal-body select, .modal-body input[type="radio"] { height: 30px; } .modal-body table td { line-height: 40px; } .menuBox { position: relative; background: skyblue; } .getMenu { z-index: 1000; display: none; background: white; list-style: none; border: 1px solid skyblue; width: 150px; height: auto; max-height: 200px; position: absolute; left: 0; top: 25px; overflow: auto; } .getMenu li { width: 148px; padding-left: 10px; line-height: 22px; font-size: 14px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; } .getMenu li:hover { background: #eee; cursor: pointer; } .a-upload { padding: 4px 10px; height: 30px; line-height: 20px; position: relative; cursor: pointer; color: #888; background: #fafafa; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; display: inline-block; *display: inline; *zoom: 1 } .a-upload input { position: absolute; font-size: 100px; right: 0; top: 0; opacity: 0; filter: alpha(opacity = 0); cursor: pointer } .a-upload:hover { color: #444; background: #eee; border-color: #ccc; text-decoration: none } .pagination-info { float: left; margin-top: -4px; } .modal-body { text-align: -webkit-center; text-align: -moz-center; width: 600px; margin: auto; } .btn-primary { color: #fff; background-color: #0099CC; border-color: #0099CC; }</style></head>-->
         <style>* { margin: 0; padding: 0; } body, html { width: 100%; height: 100%; } 
 
             input[type="text"],input[type="radio"] { height: 30px; } 
@@ -35,12 +33,59 @@
             var websocket = null;
             var vvvv = 0;
             var flag = null;
-
             function layerAler(str) {
                 layer.alert(str, {
                     icon: 6,
                     offset: 'center'
                 });
+            }
+
+            function deleteGateway(){
+                    var selects = $('#gravidaTable').bootstrapTable('getSelections');
+                    var num = selects.length;
+                    if (num == 0) {
+                        layerAler("请选择删除的记录");
+                    } else {
+                        layer.confirm('您确定要删除吗？', {
+                            btn: ['确定', '取消'], //按钮
+                            icon: 3,
+                            offset: 'center',
+                            title: '提示'
+                        }, function (index) {
+                            var o = {l_comaddr: selects[0].comaddr, id: selects[0].id};
+                            $.ajax({url: "gayway.GaywayForm.existcomaddr.action", async: false, type: "POST", datatype: "JSON", data: o,
+                                success: function (data) {
+                                    if (data.length >= 1) {
+                                        layerAler("此网关在灯具或回路有数据,请先清空回路和灯具的网关");
+                                    } else if (data.length == 0) {
+                                        $.ajax({url: "gayway.GaywayForm.deleteGateway.action", type: "POST", datatype: "JSON", data: o,
+                                            success: function (data) {
+                                                var arrlist = data.rs;
+                                                if (arrlist.length == 1) {
+                                                    layer.open({content: '删除成功', icon: 1,
+                                                        yes: function (index, layero) {
+                                                            $("#gravidaTable").bootstrapTable('refresh');
+                                                            layer.close(index);
+                                  
+                                                        }
+                                                    });
+                                                }
+
+                                                //                                    
+                                            },
+                                            error: function () {
+                                                alert("提交失败！");
+                                            }
+                                        });
+                                    }
+                                }
+
+                            });
+                            layer.close(index);
+
+                        });
+                    }
+
             }
 
             function getMessage(obj) {
@@ -135,36 +180,36 @@
                 return false;
             }
 
-            function dealsend() {
+            // function dealsend() {
 
-                //            if (websocket != null && websocket.readyState == 1) {
-                var allTableData = $("#gravidaTable").bootstrapTable('getData'); //获取表格的所有内容行
-                if (allTableData.length > vvvv) {
-                    var obj = allTableData[vvvv];
-                    var addrArea = Str2Bytes(obj.comaddr);
-                    var straddr = sprintf("%02d", addrArea[1]) + sprintf("%02d", addrArea[0]) + sprintf("%02d", addrArea[3]) + sprintf("%02d", addrArea[2]);
-                    var user = new Object();
-                    var ele = {};
-                    user.begin = '6A';
-                    user.msg = "getStatus";
-                    user.res = 1;
-                    user.row = vvvv;
-                    user.parama = ele;
-                    user.page = 2;
-                    user.function = "getMessage";
-                    user.addr = straddr; //"02170101";
-                    user.data = false;
-                    user.end = '6A';
-                    parent.parent.sendData(user);
-                    //  console.log(user);
-                    // var datajson = JSON.stringify(user);
-                    // websocket.send(datajson);
-                    vvvv += 1;
-                } else {
-                    clearInterval(flag);
-                    vvvv = 0;
-                }
-            }
+            //     //            if (websocket != null && websocket.readyState == 1) {
+            //     var allTableData = $("#gravidaTable").bootstrapTable('getData'); //获取表格的所有内容行
+            //     if (allTableData.length > vvvv) {
+            //         var obj = allTableData[vvvv];
+            //         var addrArea = Str2Bytes(obj.comaddr);
+            //         var straddr = sprintf("%02d", addrArea[1]) + sprintf("%02d", addrArea[0]) + sprintf("%02d", addrArea[3]) + sprintf("%02d", addrArea[2]);
+            //         var user = new Object();
+            //         var ele = {};
+            //         user.begin = '6A';
+            //         user.msg = "getStatus";
+            //         user.res = 1;
+            //         user.row = vvvv;
+            //         user.parama = ele;
+            //         user.page = 2;
+            //         user.function = "getMessage";
+            //         user.addr = straddr; //"02170101";
+            //         user.data = false;
+            //         user.end = '6A';
+            //         parent.parent.sendData(user);
+            //         //  console.log(user);
+            //         // var datajson = JSON.stringify(user);
+            //         // websocket.send(datajson);
+            //         vvvv += 1;
+            //     } else {
+            //         clearInterval(flag);
+            //         vvvv = 0;
+            //     }
+            // }
 
             $(function () {
                 $("#dialog-add").dialog({
@@ -242,10 +287,12 @@
                     }
                 });
 
-                flag = setInterval("dealsend()", 1000);
+                // flag = setInterval("dealsend()", 1000);
 
                 var bb = $(window).height() - 20;
                 $('#gravidaTable').bootstrapTable({
+                   showExport: true, //是否显示导出
+                    exportDataType: "basic", //basic', 'a
                     columns: [
                         {
                             title: '单选',
@@ -298,7 +345,12 @@
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index) {
-                                return "<img  src='img/off.png'/>";  //onclick='hello()'
+                                  if (value==1) {
+                                    return "<img  src='img/online1.png'/>"; 
+                                  }else{
+                                    return "<img  src='img/off.png'/>"; 
+                                  }
+                                 //onclick='hello()'
                             },
                         }],
                     singleSelect: true,
@@ -332,66 +384,9 @@
                 });
 
 
-                $("#gravidaTable").on('refresh.bs.table', function (data) {
-                    flag = setInterval("dealsend()", 1000);
-                });
-
-                $("#shanchu").click(function () {
-
-                    var selects = $('#gravidaTable').bootstrapTable('getSelections');
-                    var num = selects.length;
-                    if (num == 0) {
-                        layer.alert('请选择您要删除的记录', {
-                            icon: 6,
-                            offset: 'center'
-                        });
-                    } else {
-                        layer.confirm('您确定要删除吗？', {
-                            btn: ['确定', '取消'], //按钮
-                            icon: 3,
-                            offset: 'center',
-                            title: '提示'
-                        }, function (index) {
-                            var o = {l_comaddr: selects[0].comaddr, id: selects[0].id};
-                            $.ajax({url: "gayway.GaywayForm.existcomaddr.action", async: false, type: "POST", datatype: "JSON", data: o,
-                                success: function (data) {
-                                    if (data.length >= 1) {
-                                        layerAler("此网关在灯具或回路有数据,请先清空回路和灯具的网关");
-                                    } else if (data.length == 0) {
-                                        $.ajax({url: "gayway.GaywayForm.deleteGateway.action", type: "POST", datatype: "JSON", data: o,
-                                            success: function (data) {
-                                                var arrlist = data.rs;
-                                                if (arrlist.length == 1) {
-                                                    layer.open({content: '删除成功', icon: 1,
-                                                        yes: function (index, layero) {
-                                                            $("#gravidaTable").bootstrapTable('refresh');
-                                                            layer.close(index);
-                                                            // layer.close(index) window.parent.document.getElementsByClassName('J_iframe')[0].src = "device/gatewayConfig.action";
-                                                        }
-                                                    });
-                                                }
-
-                                                //                                    
-                                            },
-                                            error: function () {
-                                                alert("提交失败！");
-                                            }
-                                        });
-                                    }
-                                }
-
-                            });
-                            layer.close(index);
-
-                        });
-                    }
-
-
-                });
-
-                //添加时触发
-
-                //修改时触发
+                // $("#gravidaTable").on('refresh.bs.table', function (data) {
+                //     flag = setInterval("dealsend()", 1000);
+                // });
 
 
             })
@@ -468,7 +463,7 @@
             <button class="btn btn-primary ctrol" onclick="modifyModal()" id="xiugai1">
                 <span class="glyphicon glyphicon-pencil"></span>&nbsp;编辑
             </button>
-            <button class="btn btn-danger ctrol" id="shanchu">
+            <button class="btn btn-danger ctrol" onclick="deleteGateway();"  id="shanchu">
                 <span class="glyphicon glyphicon-trash"></span>&nbsp;删除
             </button>
             <!--        <button class="btn btn-danger ctrol" id="closews">

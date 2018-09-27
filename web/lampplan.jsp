@@ -497,6 +497,8 @@
                     $(this).removeData("bs.modal");
                 });
 
+
+
                 $('#table_lamp').bootstrapTable({
                     url: 'lamp.planForm.getLampPlan.action',
                     clickToSelect: true,

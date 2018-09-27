@@ -15,6 +15,7 @@
 
         <style>
             .pull-right.pagination-detail{display:none;}
+
         </style>
     </head>
 

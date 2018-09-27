@@ -216,6 +216,10 @@
                 vv.push(0);//测量点号  2字节  
                 var factorycode = ele.l_factorycode;
                 var factor = Str2BytesH(factorycode);
+                if (factor.length!=6) {
+                    layerAler("灯具通信地址应该是六位字节");
+                    return;
+                }
                 vv.push(factor[5]); //通信地址
                 vv.push(factor[4]); //通信地址
                 vv.push(factor[3]); //通信地址
@@ -229,10 +233,15 @@
                 var igroupe = parseInt(ele.l_groupe); //组号
                 vv.push(igroupe); //组号
                 var param = {row: ele.index, id: ele.id};
+
                 var comaddr = o.l_comaddr;
+
                 var num = randnum(0, 9) + 0x70;
+                console.log("aaa");
                 var data = buicode(o.l_comaddr, 0x04, 0xA4, num, 0, 102, vv);
+                console.log("bbb");
                 var num = randnum(0, 9) + 0x70; //随机帧序列号
+
                 dealsend2("A4", data, 102, "deploylampCB", comaddr, 0, param, 0);
             }
 
@@ -367,6 +376,16 @@
                         return temp;  
                     },
                 });
+                    
+
+                   $('#gravidaTable').on("check.bs.table", function (field, value, row, element) {
+                    var index = row.data('index');
+                    value.index = index;
+                });    
+
+
+
+
             })
         </script>
     </head>

@@ -144,7 +144,7 @@
                                 alert("提交失败！");
                             }
                         });
-                        layerAler("更换工作方式");
+                        layerAler("删除全部灯具信息成功");
                     }else if (obj.msg=="A4"&&obj.fn==180) {
                         layerAler("删除全部灯时间表成功");
                     }else if (obj.msg=="A4"&&obj.fn==340) {

@@ -291,6 +291,7 @@ function  buicode(comaddr, C, AFN, SEQ, DA, DT, paraArr) {
 
     var ByteToSend = "";
     for (var i = 0; i < hexData.length; i++) {
+        // console.log(hexData[i]);
         ByteToSend = ByteToSend + b2s(hexData[i]) + " ";
         //console.log(hexData[i].toString(16));
     }
