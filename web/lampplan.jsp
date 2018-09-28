@@ -167,7 +167,7 @@
                     a.p_time6 = JSON.stringify(obj6);
 
                     var ret = false;
-                    $.ajax({async: false, url: "test1.plan.editlamp.action", type: "get", datatype: "JSON", data: a,
+                    $.ajax({async: false, url: "lamp.planForm.editlamp1.action", type: "get", datatype: "JSON", data: a,
                         success: function (data) {
                             var arrlist = data.rs;
                             if (arrlist.length == 1) {

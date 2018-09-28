@@ -166,7 +166,19 @@
                     </xfltpara>
                 </xflt>
             </xsql>
+        </xhandle> 
+
+
+        <xhandle desc="修改灯具方案时间" id="editlamp1" rtn="rs" rtnype="JSON">
+            <xsql id="a1" para="p_name,p_time1,p_time2,p_time3,p_time4,p_time5,p_time6" tpe="DDL" tpl="update t_plan set p_name=':p_name',p_time1=':p_time1',p_time2=':p_time2',p_time3=':p_time3',p_time4=':p_time4',p_time5=':p_time5',p_time6=':p_time6' where @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@id">
+                    <xfltpara id="id" nrp="1=2" para="id" sql="id=:id">
+                    </xfltpara>
+      
+                </xflt>
+            </xsql>
         </xhandle>
+
     </xform>
     <xform desc="灯具分组" id="GroupeForm">
         <xhandle desc="" id="getGroupe" rtnype="JSON">
