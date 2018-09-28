@@ -296,7 +296,7 @@
         <div class="wraper"> 
             <div class="bodyLeft" style="background: rgb(14, 98, 199) none repeat scroll 0% 0%;">
                 <div class="bodyLeftTop listdisplayNone" style="background: rgb(92, 183, 92) none repeat scroll 0% 0%">
-                    <span class="menuMessage" style="width:80px;margin-left:30px;">智慧照明</span>
+                    <span class="menuMessage" style="width:80px;margin-left:30px;">智慧城市照明管理系统</span>
                 </div>
                 <ul class="layui-nav layui-nav-tree layui-nav-side MenuBox ">
                 </ul>
@@ -329,8 +329,8 @@
 
                         <li class="one" style="width:74px;">
 
-                            <i class="layui-icon indexIcon"></i>   
-                            <!--<span class="glyphicon glyphicon-tags indexIcon"/>-->
+                            <i class="layui-icon  indexIcon"></i>   
+<!--                            <span class="glyphicon glyphicon-tags indexIcon"/>-->
                             <span class="Till" style="width: 74px; text-align: center; color: rgb(255, 255, 255);">语言</span>
 
 

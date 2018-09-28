@@ -23,9 +23,21 @@
                 height: 50px;
                 font-size: 20px;
             }
-
+            #fdiv{
+                width: 70%;
+                margin-left: -20%;
+            }
             .bodycenter { text-align: -webkit-center; text-align: -moz-center; width: 600px; margin: auto; } 
 
+            #up-map-div{
+                width:300px;
+                top:10%;
+                left:60%;
+                position:absolute;
+                z-index:9999;
+                border:1px solid blue;
+                background-color:#FFFFFF;
+            }
         </style>
         <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=Uppxai1CT7jTHF9bjKFx0WGTs7nCyHMr"></script>
         <script type="text/javascript" src="js/genel.js"></script>
@@ -38,6 +50,30 @@
     <body>
         <div id="allmap">
 
+        </div>
+        <div id="up-map-div" style=" display: none">
+            <table style=" margin-left: 10%; width: 80%;">
+                <tr style=" border-bottom:1px solid green">
+                    <th >状态</th>
+                     <th></th>
+                    <th>标识</th>
+                </tr>
+                <tr>
+                    <td>在线:</td>
+                    <td style=" color: green;">-----------------</td>
+                    <td><img src="img/green2.png"></td>
+                </tr>
+                <tr>
+                    <td>离线:</td>
+                    <td style=" color: blue;">-----------------</td>
+                    <td><img src="img/blue.png"></td>
+                </tr>
+                <tr>
+                    <td>异常:</td>
+                    <td style=" color: yellow;">-----------------</td>
+                    <td><img src="img/yellow.png"></td>
+                </tr>
+            </table>
         </div>
         <!-- 添加 网关-->
         <div  id="addwanguang" class="bodycenter"  style=" display: none" title="添加网关">
@@ -100,12 +136,16 @@
         </div>
 
         <script type="text/javascript">
-            //创建灰图标
+            //创建离线图标
             var huiicon = new BMap.Icon('./img/blue.png', new BMap.Size(27, 28), {//20，30是图片大小
                 // anchor: new BMap.Size(0, 0)      //这个是信息窗口位置（可以改改看看效果）
             });
-            //创建绿图标
+            //创建在线图标
             var greenicon = new BMap.Icon('./img/green2.png', new BMap.Size(27, 28), {//20，30是图片大小
+                //anchor: new BMap.Size(0, 0)      //这个是信息窗口位置（可以改改看看效果）
+            });
+            //异常
+             var yellow = new BMap.Icon('./img/yellow.png', new BMap.Size(27, 28), {//20，30是图片大小
                 //anchor: new BMap.Size(0, 0)      //这个是信息窗口位置（可以改改看看效果）
             });
             //调用父页面的方法获取用户名
@@ -173,7 +213,7 @@
                             }
                         }],
                     method: "post",
-                    contentType:"application/x-www-form-urlencoded",
+                    contentType: "application/x-www-form-urlencoded",
                     singleSelect: false, //设置单选还是多选，true为单选 false为多选
                     sortName: 'id',
                     locale: 'zh-CN', //中文支持,
@@ -265,7 +305,7 @@
                     singleSelect: true,
                     sortName: 'id',
                     locale: 'zh-CN', //中文支持,
-                   // minimumCountColumns: 7, //最少显示多少列
+                    // minimumCountColumns: 7, //最少显示多少列
                     showColumns: true,
                     sortOrder: 'desc',
                     pagination: true,
@@ -298,12 +338,12 @@
                 var comaddr = $("#comaddrlist").val();
                 var area = $("#area").val();
                 var obj = {};
-                obj.type="ALL";
+                obj.type = "ALL";
                 if (comaddr != "") {
                     obj.comaddr = comaddr;
                 }
-                if(area !=""){
-                    obj.area =encodeURI(area);
+                if (area != "") {
+                    obj.area = encodeURI(area);
                 }
                 var pid = parent.getpojectId();
                 obj.pid = pid;
@@ -398,6 +438,14 @@
                 button4.setAttribute("style", "margin-left: 5px");
                 button4.setAttribute("id", "dj");
                 div.appendChild(button4);
+
+                var button5 = document.createElement("input");
+                button5.setAttribute("type", "button");
+                button5.setAttribute("value", "状态标识");
+                button5.setAttribute("style", "margin-left: 5px");
+                button5.setAttribute("id", "zt");
+                div.appendChild(button5);
+
 
                 //网关单击事件
                 button3.onclick = function (e) {
@@ -569,11 +617,13 @@
                                             <td>" + Isfault + "</td>\n\
                                         </tr>\n\ \n\
                                     </table></div>";
-                                    if ((Longitude != "" && latitude != "")||(Longitude !=null && latitude !=null)) {
+                                    if ((Longitude != "" && latitude != "") || (Longitude != null && latitude != null)) {
                                         var point = new BMap.Point(Longitude, latitude);
                                         var marker1;
                                         if (Isfault == "异常") {
-                                            marker1 = new BMap.Marker(point);
+                                            marker1 = new BMap.Marker(point, {
+                                                icon: yellow
+                                            });
                                         } else if (obj.presence == 1) {
                                             marker1 = new BMap.Marker(point, {
                                                 icon: greenicon
@@ -599,6 +649,18 @@
                         }
                     });
                 };
+                var ij = 0;
+                button5.onclick = function (e){
+                    if(ij ==0){
+                        $("#up-map-div").show();
+                        ij = 1;
+                    }else{
+                        $("#up-map-div").hide();
+                        ij = 0;
+                    }
+                };
+             
+        
                 // 添加DOM元素到地图中
                 map.getContainer().appendChild(div);
                 // 将DOM元素返回
@@ -625,7 +687,7 @@
                         obj.pid = porjectId;
                         var opt = {
                             method: "post",
-                            contentType:"application/x-www-form-urlencoded",
+                            contentType: "application/x-www-form-urlencoded",
                             url: "login.map.lamp.action",
                             silent: true,
                             query: obj
@@ -657,8 +719,8 @@
                         obj.pid = porjectId;
                         //加载所有网关信息
                         var opt = {
-                            method: "post", 
-                            contentType:"application/x-www-form-urlencoded",
+                            method: "post",
+                            contentType: "application/x-www-form-urlencoded",
                             url: "login.map.map.action",
                             silent: true,
                             query: obj
@@ -698,7 +760,7 @@
                 var lampname = $("#lampname").val();
                 var l_commadr = $("#lampcomaddrlist").val();
                 var obj = {};
-                obj.type="ALL";
+                obj.type = "ALL";
                 if (lampname != "") {
                     obj.l_name = encodeURI(lampname);
                 }
@@ -712,7 +774,7 @@
                 $("#lamptable").bootstrapTable('refresh', opt);
             }
             $(function () {
-
+        
                 var porjectId = parent.getpojectId();
                 //加载所有网关信息
                 getAllInfo();
@@ -742,7 +804,7 @@
                     buttons: {
                         选点绘线: function () {
                             Drawing();
-                        },关闭: function () {
+                        }, 关闭: function () {
                             $(this).dialog("close");
                         }
                     }

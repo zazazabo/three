@@ -14,7 +14,10 @@
         <script type="text/javascript" src="js/genel.js"></script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css" href="bootstrap-datetimepicker/bootstrap-datetimepicker.css">
+        <link rel="stylesheet" type="text/css" href="bootstrap-3.3.7-dist/css/bootstrap.css">
         <script src="bootstrap-datetimepicker/bootstrap-datetimepicker.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <style type="text/css">
             #div2{
                 display: none;
@@ -104,7 +107,8 @@
                 $("#div1").show();
                 $("#div2").hide();
                 $("#div3").hide();
-            };
+            }
+            ;
 
             function getMoth() {
                 var porjectId = parent.parent.getpojectId();
@@ -162,72 +166,73 @@
                     <label for="dtp_input2" class="control-label" style="float: left;"></label>
                     <input id="dtp_input2" value="" type="hidden">
                     <span class="input-group date col-md-2 day" style="float:initial;" data-date=""  data-link-field="dtp_input2">
-                        <input id="sday" name="day"  class="form-control" style="width:100px;" size="16" readonly="readonly" type="text">
+                        <input id="sday" name="day"  class="form-control" style="width:90px;" size="16" readonly="readonly" type="text">
                         <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                     </span>
                 </form>
-                <span style="position:absolute;top:90px;left:195px; font-size: 18px;">至</span>
-                <form action="" id="day2" class="form-horizontal" role="form" style="float:left;position:absolute;top:88px;left: 220px;">
+                <span style="position:absolute;top:90px;left:185px; font-size: 18px;">至</span>
+                <form action="" id="day2" class="form-horizontal" role="form" style="float:left;position:absolute;top:88px;left: 210px;">
                     <label for="dtp_input2" class="control-label" style="float: left;"></label>
                     <input id="dtp_input2" value="" type="hidden">
                     <span class="input-group date col-md-2 day" style="float:initial;" data-date=""  data-link-field="dtp_input2">
-                        <input id="eday" name="day"  class="form-control" style="width:100px;" size="16" readonly="readonly" type="text">
+                        <input id="eday" name="day"  class="form-control" style="width:90px;" size="16" readonly="readonly" type="text">
                         <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                     </span>
                 </form>
-                <span style="position:absolute;top:90px;left:400px; font-size: 18px;">
+                <span style="position:absolute;top:90px;left:385px; font-size: 18px;">
                     <button type="button" class="btn btn-sm btn-success" onclick="getday()" >按日显示数据</button>
                 </span>
             </div>
 
-            <form action="" id="Mother1" class="form-horizontal" role="form" style="float:left;position:absolute;top:88px;left:510px;width: 166px;">
+            <form action="" id="Mother1" class="form-horizontal" role="form" style="float:left;position:absolute;top:88px;left:500px;width: 166px;">
                 <label for="dtp_input2" class="control-label" style="float: left;"></label>
                 <input id="dtp_input2" value="" type="hidden">
                 <span class="input-group date col-md-2 m" style="float:initial;" data-date=""  data-link-field="dtp_input2">
-                    <input id="smother" name="day"  class="form-control" style="width:100px;" size="16" readonly="readonly" type="text">
+                    <input id="smother" name="day"  class="form-control" style="width:90px;" size="16" readonly="readonly" type="text">
                     <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                 </span>
             </form>
-            <span style="position:absolute;top:90px;left:695px; font-size: 18px;">至</span>
-            <form action="" id="Mother2" class="form-horizontal" role="form" style="float:left;position:absolute;top:88px;left:720px;width: 166px;">
+            <span style="position:absolute;top:90px;left:675px; font-size: 18px;">至</span>
+            <form action="" id="Mother2" class="form-horizontal" role="form" style="float:left;position:absolute;top:88px;left:700px;width: 166px;">
                 <label for="dtp_input2" class="control-label" style="float: left;"></label>
                 <input id="dtp_input2" value="" type="hidden">
                 <span class="input-group date col-md-2 m" style="float:initial;" data-date=""  data-link-field="dtp_input2">
-                    <input id="emother" name="day"  class="form-control" style="width:100px;" size="16" readonly="readonly" type="text">
+                    <input id="emother" name="day"  class="form-control" style="width:90px;" size="16" readonly="readonly" type="text">
                     <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                 </span>
             </form>
-            <span style="position:absolute;top:90px;left:900px;width: 100px;">
+            <span style="position:absolute;top:90px;left:875px;width: 100px;">
                 <button type="button" class="btn btn-sm btn-success" onclick="getMoth()" >按月显示数据</button>
             </span>
 
-            <form action="" id="formyear" class="form-horizontal" role="form" style="float:left;position:absolute;top:88px;left:1010px;width: 166px;">
+            <form action="" id="formyear" class="form-horizontal" role="form" style="float:left;position:absolute;top:88px;left:990px;width: 166px;">
                 <label for="dtp_input2" class="control-label" style="float: left;"></label>
                 <input id="dtp_input2" value="" type="hidden">
                 <span class="input-group date form_date col-md-2" style="float:initial;" data-date="" data-date-format="yyyy" data-link-field="dtp_input2" data-link-format="yyyy">
-                    <input id="syear" name="day"  class="form-control" style="width:100px;" size="16" readonly="readonly" type="text">
+                    <input id="syear" name="day"  class="form-control" style="width:90px;" size="16" readonly="readonly" type="text">
                     <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                 </span>
             </form>
-            <span style="position:absolute;top:90px;left:1195px; font-size: 18px;">至</span>
-            <form action="" id="formyear2" class="form-horizontal" role="form" style="float:left;position:absolute;top:88px;left:1220px;width: 166px;">
+            <span style="position:absolute;top:90px;left:1165px; font-size: 18px;">至</span>
+            <form action="" id="formyear2" class="form-horizontal" role="form" style="float:left;position:absolute;top:88px;left:1190px;width: 166px;">
                 <label for="dtp_input2" class="control-label" style="float: left;"></label>
                 <input id="dtp_input2" value="" type="hidden">
                 <span class="input-group date form_date col-md-2" style="float:initial;" data-date="" data-date-format="yyyy" data-link-field="dtp_input2" data-link-format="yyyy">
-                    <input id="eyear" name="day"  class="form-control" style="width:100px;" size="16" readonly="readonly" type="text">
+                    <input id="eyear" name="day"  class="form-control" style="width:90px;" size="16" readonly="readonly" type="text">
                     <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                 </span>
             </form>
-            <span style="position:absolute;top:90px;left:1400px;">
+            <span style="position:absolute;top:90px;left:1365px;">
                 <button type="button" class="btn btn-sm btn-success" onclick="getyear()" >按年份显示数据</button>
             </span>
         </div>
+
         <hr>
         <div style="" id="div1">
             <table id="getdayTable">
@@ -246,7 +251,7 @@
             $(function () {
                 var pid2 = parent.parent.getpojectId();
                 $('#getdayTable').bootstrapTable({
-                    url: 'login.reportmanage.getday.action?pid=' + pid2,
+                    // url: 'login.reportmanage.getday.action?pid=' + pid2,
                     columns: [[{
                                 field: '',
                                 title: '日消耗量',
@@ -300,7 +305,7 @@
                 });
                 //按月查询
                 $('#getMotherTable').bootstrapTable({
-                    url: 'login.reportmanage.getmother.action?pid=' + pid2,
+                    //url: 'login.reportmanage.getmother.action?pid=' + pid2,
                     columns: [[{
                                 field: '',
                                 title: '月消耗量',
@@ -358,7 +363,7 @@
                 });
                 //按年查询
                 $('#getYearTable').bootstrapTable({
-                    url: 'login.reportmanage.getyear.action?pid=' + pid2,
+                    //url: 'login.reportmanage.getyear.action?pid=' + pid2,
                     columns: [[{
                                 field: '',
                                 title: '年消耗量',

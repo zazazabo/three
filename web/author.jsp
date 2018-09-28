@@ -372,24 +372,18 @@
 
                                 <button class="btn btn-success" onclick="addauthor()" style="  margin-top: 20px">分配权限</button>
 
-                                <!--                                <button class="btn btn-success" style=" margin-top: 20px"></button>       -->
                             </div>
 
                         </div>
 
-                        <div class="col-xs-3">
-                            <span class="label label-success label-lg ">角色列表1</span>
-                            <input id="role" class="easyui-combobox" name="role" style="width:150px; height: 34px" data-options="editable:true,valueField:'id', textField:'text',url:'login.usermanage.rolemenu.action?parent_id=${param.role}'" />
-
-
-                            <!--                            <table id="gravidaTable" style="width:100%;" class="text-nowrap table table-hover table-striped">
-                                                        </table> -->
-
+                        <div class="col-xs-3" style=" width: 20%;">
+                            <span class="label label-success label-lg " style=" width: 30%;">角色列表1</span>
+                            <input id="role" class="easyui-combobox" name="role" style="width:60%; height: 34px" data-options="editable:true,valueField:'id', textField:'text',url:'login.usermanage.rolemenu.action?parent_id=${param.role}'" />
                         </div>
-                        <div class="col-xs-4">
-                            <span style="margin-left:20px;">角色名称</span>&nbsp;
-                            <input id="rolename" class="form-control" name="rolename" style="width:150px;display: inline;" placeholder="请输入角色名称" type="text">
-                            <button id="btnrole" onclick="addrole()" class="btn btn-success">生成角色</button>
+                        <div class="col-xs-4" style=" width: 33%; margin-left: 5%;">
+                            <span style=" width: 30%;">角色名称</span>&nbsp;
+                            <input id="rolename" class="form-control" name="rolename" style="width:40%;display: inline;" placeholder="请输入角色名称" type="text">
+                            <button id="btnrole" onclick="addrole()" class="btn btn-success" style=" width: 30%;">生成角色</button>
                         </div>
                     </div>
                 </div>
