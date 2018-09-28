@@ -91,23 +91,7 @@
                     }
             }
 
-            function getMessage(obj) {
-                console.log("getMessage");
-                console.log(obj);
-                if (obj.hasOwnProperty("msg")) {
-                    if (obj.msg = "getStatus" && obj.data == true) {
-                        var trarr = $("#gravidaTable").find("tr");  //所有tr数组
-                        var child = $(trarr[obj.row + 1]).children('td:eq(7)');
-                        console.log(child);
-                        if (child.length == 1) {
-                            var jqimg = child.children();
-                            if (jqimg.prop("tagName") == "IMG") {
-                                jqimg.attr("src", "img/online1.png");
-                            }
-                        }
-                    }
-                }
-            }
+
 
             function showDialog() {
 
@@ -468,9 +452,10 @@
                             valign: 'middle',
                             formatter: function (value, row, index) {
                                 if (value==1) {
-                                    return "<img  src='img/off.png'/>";  //onclick='hello()'
+                                     return "<img  src='img/online1.png'/>";  //onclick='hello()'
+                                  
                                 }else{
-                                    return "<img  src='img/online1.png'/>";  //onclick='hello()'
+                                     return "<img  src='img/off.png'/>";  //onclick='hello()'
                                 }
                                 
                             },

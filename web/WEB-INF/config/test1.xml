@@ -117,14 +117,14 @@
                 </xflt>
             </xsql>
         </xhandle> -->
-        <xhandle desc="修改灯具方案场景" id="editlampscene" rtn="rs" rtnype="JSON">
+<!--         <xhandle desc="修改灯具方案场景" id="editlampscene" rtn="rs" rtnype="JSON">
             <xsql id="a1" para="p_name,p_scene1,p_scene2,p_scene3,p_scene4,p_scene5,p_scene6,p_scene7,p_scene8" tpe="DDL" tpl="update t_plan set p_name=':p_name',p_scene1=':p_scene1',p_scene2=':p_scene2',p_scene3=':p_scene3',p_scene4=':p_scene4',p_scene5=':p_scene5',p_scene6=':p_scene6',p_scene7=':p_scene7',p_scene8=':p_scene8' where @CONDITION " var="rs">
                 <xflt id="CONDITION" nrp="" tpl="@id ">
                     <xfltpara id="id" nrp="1=1" para="id" sql="id=:id">
                     </xfltpara>
                 </xflt>
             </xsql>
-        </xhandle>
+        </xhandle> -->
 <!--         <xhandle desc="" id="getPlanlist" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT   tl.p_code as id,tl.p_code as text,p_outtime,p_intime,p_Longitude,p_latitude,p_type,* FROM t_plan tl where  @CONDITION " var="list">
                 <xflt id="CONDITION" nrp="" tpl="@attr ">
