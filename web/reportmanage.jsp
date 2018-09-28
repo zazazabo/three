@@ -18,7 +18,7 @@
         <link rel="stylesheet" type="text/css" href="bootstrap-datetimepicker/bootstrap-datetimepicker.css">
         <script src="bootstrap-datetimepicker/bootstrap-datetimepicker.js"></script>
         <style type="text/css">
-           
+           .btn{ margin-left: 20px; }
         </style>
         <script>
             var websocket = null;
@@ -128,13 +128,55 @@
                 var d = date.getDate() - 1;
                 return m + '/' + d + '/' + y;
             }
+
+
+            function search(){
+
+                var o=$("#form1").serializeObject();
+                console.log(o);
+                var opt = {
+                    url: "param.report.queryRecord.action",
+                    query: o
+                };
+                $('#gravidaTable').bootstrapTable('refresh', opt);
+
+            }
+
+
+
+
+
             $(function () {
                 var curr_time = new Date();
                 $("#dd").datebox("setValue", myformatter(curr_time));
                 var val = $("#dd").datebox("getValue");
-                    
+
+
+
+                $('#comaddr').combobox({
+                    url: "gayway.GaywayForm.getComaddr.action?pid=${param.pid}",
+                    onLoadSuccess: function (data) {
+                        if (Array.isArray(data) && data.length > 0) {
+                            $(this).combobox("select", data[0].id);
+                            $("#comaddrname").val(data[0].name);
+                        }
+                    },
+                    onSelect: function (record) {
+                        $("#comaddrname").val(record.name);
+
+                    }
+                });
+
+
+
+
+                var o=$("#form1").serializeObject();
+                console.log(o);
+                var comaddr=o.comaddr;
+
+
                 $('#gravidaTable').bootstrapTable({
-                    url: 'test1.report.queryRecord.action', //test1.report.queryRecord.action
+                    url: 'param.report.queryRecord.action', //test1.report.queryRecord.action
                     columns: [
                         [
                             {
@@ -284,9 +326,6 @@
                                 valign: 'middle'
                             }
                         ]
-
-
-
                     ],
                     clickToSelect: true,
                     singleSelect: false,
@@ -315,9 +354,10 @@
                             var v = row.voltage;
                             var e = row.electric;
                             var pf = row.powerfactor;
+   
                             var pa = row.activepower;
                             var p = row.power;
-                            console.log(p);
+       
                             var josonv = null;
                             var josone = null;
                             var josonpf = null;
@@ -457,15 +497,12 @@
                                     z++;
                                 }
 
-
-
-
                             }
 
                             if (josonp != null) {
                                 var powerArrA = josonp.A.split("|");
                                 console.log(powerArrA);
-                                var len1 = a.length >= josonpf.len ? a.length : josonp.len;
+                                var len1 = a.length >= josonp.len ? a.length : josonp.len;
                                 z = 0;
                                 for (var j = 0; j < len1; j++) {
                                     if (a.length >= j) {
@@ -501,7 +538,8 @@
                             skip: params.offset,
                             limit: params.limit,
                             type_id: "1",
-                            day: val    
+                            day: val,
+                            comaddr:o.comaddr
                         };      
                         return temp;  
                     },
@@ -526,13 +564,68 @@
         </script>
 
         <link rel="stylesheet" href="gatewayconfig_files/layer.css" id="layui_layer_skinlayercss" style="">
-        <style>* { margin: 0; padding: 0; } body, html { width: 100%; height: 100%; } .zuheanniu { margin-top: 2px; margin-left: 10px; } table { font-size: 14px; } .modal-body input[type="text"], .modal-body select, .modal-body input[type="radio"] { height: 30px; } .modal-body table td { line-height: 40px; } .menuBox { position: relative; background: skyblue; } .getMenu { z-index: 1000; display: none; background: white; list-style: none; border: 1px solid skyblue; width: 150px; height: auto; max-height: 200px; position: absolute; left: 0; top: 25px; overflow: auto; } .getMenu li { width: 148px; padding-left: 10px; line-height: 22px; font-size: 14px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; } .getMenu li:hover { background: #eee; cursor: pointer; } .a-upload { padding: 4px 10px; height: 30px; line-height: 20px; position: relative; cursor: pointer; color: #888; background: #fafafa; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; display: inline-block; *display: inline; *zoom: 1 } .a-upload input { position: absolute; font-size: 100px; right: 0; top: 0; opacity: 0; filter: alpha(opacity = 0); cursor: pointer } .a-upload:hover { color: #444; background: #eee; border-color: #ccc; text-decoration: none } .pagination-info { float: left; margin-top: -4px; } .modal-body { text-align: -webkit-center; text-align: -moz-center; width: 600px; margin: auto; } .btn-primary { color: #fff; background-color: #0099CC; border-color: #0099CC; }</style>
+        <style>
+            
+        </style>
 
     </head>
 
     <body>
 
-        <div class="btn-group zuheanniu" id="zuheanniu" style="float:left;position:relative;z-index:100;margin:12px 0 0 10px;">
+
+           <div class="row" style=" padding-bottom: 5px;" >
+                <div class="col-xs-12">
+                    <form id="form1">
+                        <table style="border-collapse:separate;  border-spacing:0px 10px;border: 1px solid #16645629;">
+                            <tbody>
+                                <tr>
+
+                                    <td>
+                                        <span style="margin-left:10px;">网关地址&nbsp;</span>
+
+                                        <span class="menuBox">
+                                            <input id="comaddr" class="easyui-combobox" name="comaddr" style="width:150px; height: 30px" 
+                                                   data-options="editable:true,valueField:'id', textField:'text' " />
+                                        </span>  
+                                    </td>
+                                    <td>
+                                        <span style="margin-left:10px;">时期&nbsp;</span>
+
+                                    <input id="dd" class="easyui-datebox" name="day" data-options="formatter:myformatter,parser:myparser"></input>
+                                        <script type="text/javascript">
+                                            function myformatter(date) {
+                                                var y = date.getFullYear();
+                                                var m = date.getMonth() + 1;
+                                                var d = date.getDate();
+                                                return y + '-' + (m < 10 ? ('0' + m) : m) + '-' + (d < 10 ? ('0' + d) : d);
+                                            }
+                                            function myparser(s) {
+                                                if (!s)
+                                                    return new Date();
+                                                var ss = (s.split('-'));
+                                                var y = parseInt(ss[0], 10);
+                                                var m = parseInt(ss[1], 10);
+                                                var d = parseInt(ss[2], 10);
+                                                if (!isNaN(y) && !isNaN(m) && !isNaN(d)) {
+                                                    return new Date(y, m - 1, d);
+                                                } else {
+                                                    return new Date();
+                                                }
+                                            }
+                                        </script>
+
+                                         <button type="button" class="btn btn-sm btn-success" onclick="search()" >查找</button>
+                                         <span style=" margin-left: 20px;"></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table> 
+                    </form>
+                </div>
+            </div>
+
+<%-- 
+
             <span style="margin-left:20px;">&nbsp;
                 <label class="label label-lg label-success ">日&nbsp;&nbsp;期</label>
             </span>
@@ -561,17 +654,17 @@
                         }
                     }
                 </script>
+
             </span> 
             <span style="margin-left:20px;">
                 <button type="button" class="btn btn-sm btn-success" onclick="search()" >查找</button>
-            </span>
-            
-        </div>
+            </span> --%>
+ 
 
-        <div style="width:100%;" id="div1">
+        <%-- <div style="width:100%;" id="div1"> --%>
 
             <table id="gravidaTable" style="width:100%;" class="text-nowrap table table-hover table-striped">
             </table>
-        </div>
+        <%-- </div> --%>
     </body>
 </html>
