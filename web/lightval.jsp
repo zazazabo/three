@@ -14,7 +14,10 @@
         <style>
             .btn{ margin-left: 10px;}
         </style>
+        <script type="text/javascript"  src="js/getdate.js"></script>
         <script>
+            var u_name = parent.parent.getusername();
+            var o_pid = parent.parent.getpojectId();
             function layerAler(str) {
                 layer.alert(str, {
                     icon: 6,
@@ -72,7 +75,7 @@
                         layerAler("请选择网关或组号");
                         return;
                     }
-
+                    addlogon(u_name, "灯具调光", o_pid, "灯具调光", "恢复自动运行");
                     var vv = new Array();
                     var l_comaddr = o.l_comaddr;
                     vv.push(1);
@@ -116,7 +119,7 @@
                     return
                 }
 
-
+                addlogon(u_name, "灯具调光", o_pid, "灯具调光", "按组场景调光");
                 var vv = new Array();
                 var l_comaddr = obj.l_comaddr;
                 vv.push(1);
@@ -145,7 +148,7 @@
                     layerAler("请勾选灯具数据");
                     return;
                 }
-
+                addlogon(u_name, "灯具调光", o_pid, "灯具调光", "按组立即调光");
                 var vv = new Array();
                 var l_comaddr = select.l_comaddr;
                 var c = parseInt(select.l_code);
@@ -224,6 +227,7 @@
                     layerAler("请勾选灯具数据");
                     return;
                 }
+                addlogon(u_name, "灯具调光", o_pid, "灯具调光", "单灯立即调光");
                 var vv = new Array();
                 var l_comaddr = $("#l_comaddr").combobox('getValue');
                 var select = selects[0];
@@ -252,7 +256,7 @@
                     layerAler("网关或组号不是数字");
                     return
                 }
-
+                addlogon(u_name, "灯具调光", o_pid, "灯具调光", "按组立即调光");
                 var vv = new Array();
                 vv.push(1);
                 var comaddr = obj.l_comaddr;

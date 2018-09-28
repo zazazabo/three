@@ -14,10 +14,13 @@
             .btn { margin-left: 10px;}
         </style>
         <script type="text/javascript" src="js/genel.js"></script>
+        <script type="text/javascript"  src="js/getdate.js"></script>
         <script>
+             
+            var u_name = parent.parent.getusername();
+            var o_pid = parent.parent.getpojectId();
 
-
-
+  
             function switchloopCB(obj) {
                 console.log(obj);
                 if (obj.status == "success") {
@@ -66,7 +69,7 @@
                         layerAler("请部署后再操作");
                         return;
                     }
-
+                   addlogon(u_name, "合闸开关", o_pid, "回路断合闸", "回路断合闸");
                     var comaddr = select.l_comaddr;
                     var switchval = o1.switch;
 
@@ -109,6 +112,7 @@
                     layerAler("网关地址不能为空");
                     return;
                 }
+                addlogon(u_name, "恢复自动运行", o_pid, "回路断合闸", "恢复回路自动运行");
                 if (o1.type == "0") {
                     var selects = $('#gravidaTable').bootstrapTable('getSelections');
                     if (selects.length == 0) {

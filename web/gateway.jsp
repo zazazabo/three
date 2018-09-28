@@ -395,7 +395,6 @@
                                     continue;
                                 }
                                 if (rs[i].code == "600102" && rs[i].enable != 0) {
-                                if (rs[i].code == "600102" && rs[i].enable != 0) {
                                     $("#xiugai").attr("disabled", false);
                                     continue;
                                 }
@@ -403,7 +402,6 @@
                                     $("#shanchu").attr("disabled", false);
                                     continue;
                                 }
-                            }
                         }
 
                     }
