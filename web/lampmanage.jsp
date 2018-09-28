@@ -12,7 +12,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script type="text/javascript" src="SheetJS-js-xlsx/dist/xlsx.core.min.js"></script>
         <script type="text/javascript" src="js/genel.js"></script>
+        <script type="text/javascript" src="js/getdate.js"></script>
         <script>
+            var u_name = parent.parent.getusername();
+            var o_pid =  parent.parent.getpojectId();
             function excel() {
                 $('#dialog-excel').dialog('open');
                 return false;
@@ -26,6 +29,7 @@
                     layerAler("请选择您要保存的数据");
                     return;
                 }
+                addlogon(u_name, "添加", o_pid, "灯具管理", "导入Excel");
                 var pid = parent.parent.getpojectId();
                 for (var i = 0; i <= selects.length - 1; i++) {
                     var comaddr = selects[i].网关地址;
@@ -118,6 +122,7 @@
                 layer.confirm('确认要删除吗？', {
                     btn: ['确定', '取消']//按钮
                 }, function (index) {
+                    addlogon(u_name, "删除", o_pid, "灯具管理", "删除灯具");
                     $.ajax({url: "lamp.lampform.deleteLamp.action", type: "POST", datatype: "JSON", data: {id: select.id},
                         success: function (data) {
                             var arrlist = data.rs;
@@ -137,6 +142,7 @@
             }
 
             function  editlamp() {
+                addlogon(u_name, "修改", o_pid, "灯具管理", "修改灯具");
                 var o = $("#form2").serializeObject();
                 $.ajax({async: false, url: "lamp.lampform.modifylamp.action", type: "get", datatype: "JSON", data: o,
                     success: function (data) {
@@ -206,7 +212,7 @@
                     layerAler("灯具编号是12位的十六进制");
                     return false;
                 }
-
+                addlogon(u_name, "添加", o_pid, "灯具管理", "添加灯具");
                 var isflesh = false;
                 $.ajax({url: "lamp.lampform.existlamp.action", async: false, type: "get", datatype: "JSON", data: o,
                     success: function (data) {

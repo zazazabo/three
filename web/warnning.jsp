@@ -14,11 +14,14 @@
         <script type="text/javascript" src ="layer/layer.js"></script>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+        <script type="text/javascript" src="js/getdate.js"></script>
         <title>JSP Page</title>
         <style>
             table { font-size: 14px; } .modal-body input[type="text"], .modal-body select, .modal-body input[type="radio"] { height: 30px; } .modal-body table td { line-height: 40px; }
         </style>
         <script>
+            var u_name = parent.parent.getusername();
+            var o_pid =  parent.parent.getpojectId();
             $(function () {
                 $("#add").attr("disabled", true);
                 $("#update").attr("disabled", true);
@@ -184,6 +187,7 @@
                         }
 
                     }
+                    addlogon(u_name, "修改", o_pid, "报警设置", "修改报警管理人员");
                     var obj = {};
                     obj.u_name = uname;
                     obj.u_phone = uphone;
@@ -262,6 +266,7 @@
                     }
 
                 }
+                addlogon(u_name, "添加", o_pid, "报警设置", "添加报警管理人员");
                 var obj = {};
                 obj.u_phone = phone;
                 obj.u_name = name;
@@ -295,6 +300,7 @@
                 layer.confirm('确认要删除吗？', {
                     btn: ['确定', '取消']//按钮
                 }, function (index) {
+                    addlogon(u_name, "删除", o_pid, "报警设置", "删除报警管理人员");
                     var select = selects[0];
                     $.ajax({async: false, url: "login.warnning.deletepeople.action", type: "POST", datatype: "JSON", data: {u_id: select.u_id},
                         success: function (data) {

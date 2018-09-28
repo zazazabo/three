@@ -11,13 +11,15 @@
         <%@include  file="js.jspf" %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script type="text/javascript" src="js/genel.js"></script>
+        <script type="text/javascript" src="js/getdate.js"></script>
         <style>
             .btn { margin-left: 10px;} 
 
         </style>
         <script>
 
-
+            var u_name = parent.parent.getusername();
+            var o_pid = parent.parent.getpojectId();
 
             function deployloopCB(obj) {
                 var param = obj.param;
@@ -68,7 +70,7 @@
                     layerAler("请勾选表格数据");
                     return;
                 }
-
+                addlogon(u_name, "部署", o_pid, "回路部署", "部署回路");
                 var vv = [];
 
                 var ele = selects[0];
@@ -111,7 +113,7 @@
                     return;
                 }
 
-
+                addlogon(u_name, "移除", o_pid, "回路部署", "移除回路");
                 var vv = [];
                 var ele = selects[0];
                 var comaddr = ele.l_comaddr;
@@ -165,6 +167,7 @@
                     layerAler("请勾选列表读取");
                     return;
                 }
+                addlogon(u_name, "部署", o_pid, "回路部署", "部署回路方案");
                 var obj = $("#form1").serializeObject();
                 console.log(obj);
 
@@ -237,6 +240,7 @@
                     layerAler("请勾选列表读取");
                     return;
                 }
+                addlogon(u_name, "读取", o_pid, "回路部署", "读取回路时间表");
                 var obj = $("#form1").serializeObject();
                 console.log(obj);
                 var v = obj.p_type;
@@ -457,7 +461,7 @@
     </head>
     <body>
         <form id="form1">
-            
+
             <div class="row">
 
 

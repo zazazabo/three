@@ -12,7 +12,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
         <script type="text/javascript" src="js/genel.js"></script>
+        <script type="text/javascript" src="js/getdate.js"></script>
         <script>
+            var u_name = parent.parent.getusername();
+            var o_pid = parent.parent.getpojectId();
             function layerAler(str) {
                 layer.alert(str, {
                     icon: 6,
@@ -71,7 +74,7 @@
                     layerAler("请勾选表格数据");
                     return;
                 }
-
+                addlogon(u_name, "读取", o_pid, "回路部署", "读取灯具信息");
                 var len = selects.length;
                 var h = len >> 8 & 0x00FF;
                 var l = len & 0x00ff;
@@ -149,6 +152,7 @@
                     layerAler("请勾选表格数据");
                     return;
                 }
+                addlogon(u_name, "部署", o_pid, "灯具部署", "部署灯具");
                 var len = selects.length;
                 var h = len >> 8 & 0x00FF;
                 var l = len & 0x00ff;
@@ -196,6 +200,7 @@
                     layerAler("请勾选表格数据");
                     return;
                 }
+                addlogon(u_name, "移除", o_pid, "灯具部署", "移除灯具");
                 var len = selects.length;
                 var h = len >> 8 & 0x00FF;
                 var l = len & 0x00ff;

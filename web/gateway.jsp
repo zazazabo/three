@@ -29,9 +29,10 @@
 
         <script type="text/javascript" src="SheetJS-js-xlsx/dist/xlsx.core.min.js"></script>
         <script type="text/javascript" src="js/genel.js"></script>
-
+        <script type="text/javascript" src="js/getdate.js"></script>
         <script>
-
+            var u_name = parent.parent.getusername();
+            var o_pid =  parent.parent.getpojectId();
 
             function excel() {
                 $('#dialog-excel').dialog('open');
@@ -57,6 +58,7 @@
                             offset: 'center',
                             title: '提示'
                         }, function (index) {
+                            addlogon(u_name, "删除", o_pid, "网关管理", "删除网关");
                             var o = {l_comaddr: selects[0].comaddr, id: selects[0].id};
                             $.ajax({url: "gayway.GaywayForm.existcomaddr.action", async: false, type: "POST", datatype: "JSON", data: o,
                                 success: function (data) {
@@ -150,7 +152,7 @@
                 obj.latitude = latitudemstr;
                 var longitudemstr = obj.longitudem26d + "." + obj.longitudem26m + "." + obj.longitudem26s;
                 obj.longitude = longitudemstr;
-                console.log(obj);
+               addlogon(u_name, "修改", o_pid, "网关管理", "修改网关");
                 $.ajax({async: false, cache: false, url: "gayway.GaywayForm.modifyGateway.action", type: "GET", data: obj,
                     success: function (data) {
                         // namesss = true;
@@ -500,6 +502,7 @@
                     layerAler("请选择您要保存的数据");
                     return;
                 }
+                addlogon(u_name, "添加", o_pid, "网关管理", "导入excel文件");
                 var pid = parent.parent.getpojectId();
                 for (var i = 0; i <= selects.length - 1; i++) {
                     var comaddr = selects[i].网关地址;
@@ -557,9 +560,9 @@
                     });
                     return false;
                 }
-
+                addlogon(u_name, "添加", o_pid, "网关管理", "添加网关");
                 var obj = $("#formadd").serializeObject();
-
+                
                 var namesss = false;
                 $.ajax({async: false, cache: false, url: "gayway.GaywayForm.queryGateway.action", type: "GET", data: obj,
                     success: function (data) {

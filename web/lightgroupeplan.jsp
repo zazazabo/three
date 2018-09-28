@@ -14,7 +14,10 @@
             .btn { margin-left: 10px;} 
         </style>
         <script type="text/javascript" src="js/genel.js"></script>
+        <script type="text/javascript" src="js/getdate.js"></script>
         <script>
+            var u_name = parent.parent.getusername();
+            var o_pid =  parent.parent.getpojectId();
             var websocket = null;
             function layerAler(str) {
                 layer.alert(str, {
@@ -261,6 +264,7 @@
                     return;
                 }
                 var v = obj.p_type;
+                addlogon(u_name, "部署", o_pid, "灯具分组管理", "部署灯具方案");
                 if (v == "0") {
                     console.log('部署分组时间方案');
                     var vv = [];
@@ -479,8 +483,6 @@
                                 <button  onclick="readLampPlan()" type="button" class="btn btn-success btn-sm">读取分组灯具方案</button>
 
                                 <button  onclick="setNowTime()" type="button" class="btn btn-success btn-sm">设置当前时间</button>
-                                </div>
-                                </div>
 
                                 </form> 
 

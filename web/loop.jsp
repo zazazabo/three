@@ -12,7 +12,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script type="text/javascript" src="SheetJS-js-xlsx/dist/xlsx.core.min.js"></script>
         <script type="text/javascript" src="js/genel.js"></script>
+        <script type="text/javascript" src="js/getdate.js"></script>
         <script>
+            var u_name = parent.parent.getusername();
+            var o_pid =  parent.parent.getpojectId();
             function layerAler(str) {
                 layer.alert(str, {
                     icon: 6,
@@ -33,6 +36,7 @@
                     layerAler("请选择您要保存的数据");
                     return;
                 }
+                addlogon(u_name, "添加", o_pid, "回路管理", "导入Excel文件");
                 var pid = parent.parent.getpojectId();
                 for (var i = 0; i <= selects.length - 1; i++) {
                     var comaddr = selects[i].网关地址;
@@ -105,7 +109,7 @@
                 }
                 o.name = o.comaddrname;
                 var namesss = false;
-
+                addlogon(u_name, "添加", o_pid, "回路管理", "添加回路");
                 $.ajax({async: false, cache: false, url: "loop.loopForm.getLoopList.action", type: "GET", data: o,
                     success: function (data) {
 
@@ -196,7 +200,7 @@
             function modifyLoopName() {
                 var o = $("#form2").serializeObject();
                 o.id = o.hide_id;
-                console.log(o);
+                addlogon(u_name, "修改", o_pid, "回路管理", "修改回路");
                 $.ajax({async: false, url: "loop.loopForm.modifyname.action", type: "get", datatype: "JSON", data: o,
                     success: function (data) {
                         var arrlist = data.rs;
@@ -589,6 +593,7 @@
                         offset: 'center',
                         title: '提示'
                     }, function (index) {
+                        addlogon(u_name, "删除", o_pid, "回路管理", "删除回路");
                         for (var i = 0; i < selects.length; i++) {
                             var select = selects[i];
                             var l_deployment = select.l_deplayment;

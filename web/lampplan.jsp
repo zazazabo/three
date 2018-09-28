@@ -105,19 +105,6 @@
                             var arrlist = data.rs;
                             if (arrlist.length == 1) {
                                 ret = true;
-                                var nobj2 = {};
-                                nobj2.name = u_name;
-                                var day = getNowFormatDate2();
-                                nobj2.time = day;
-                                nobj2.comment = "添加场景类型的灯具方案";
-                                $.ajax({async: false, url: "login.oplog.addoplog.action", type: "get", datatype: "JSON", data: nobj2,
-                                    success: function (data) {
-                                        var arrlist = data.rs;
-                                        if (arrlist.length > 0) {
-
-                                        }
-                                    }
-                                });
                                 $("#tablescene").bootstrapTable('refresh');
                             }
                         },
@@ -135,8 +122,6 @@
 
 
             function editlampplan_finish() {
-                var lamp_code = $("#lampcode").val();
-//                $("#select_type_edit").attr("disabled", false);
                 var a = $("#form2").serializeObject();
                 addlogon(u_name, "修改", o_pid, "灯具策略", "修改灯具方案");
                 if (a.p_type == "0") {
@@ -310,19 +295,6 @@
                             success: function (data) {
                                 var arrlist = data.rs;
                                 if (arrlist.length == 1) {
-                                    var nobj2 = {};
-                                    nobj2.name = u_name;
-                                    var day = getNowFormatDate2();
-                                    nobj2.time = day;
-                                    nobj2.comment = "删除灯具方案编码为：" + select.p_code + "的灯具方案";
-                                    $.ajax({async: false, url: "login.oplog.addoplog.action", type: "get", datatype: "JSON", data: nobj2,
-                                        success: function (data) {
-                                            var arrlist = data.rs;
-                                            if (arrlist.length > 0) {
-
-                                            }
-                                        }
-                                    });
                                     $(b).bootstrapTable('refresh');
                                 }
 

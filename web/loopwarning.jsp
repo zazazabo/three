@@ -20,8 +20,11 @@
     </head>
 
     <script type="text/javascript" src="js/genel.js"></script>
-
+    <script type="text/javascript" src="js/getdate.js"></script>
     <script>
+
+        var u_name = parent.parent.getusername();
+        var o_pid = parent.parent.getpojectId();
         function layerAler(str) {
             layer.alert(str, {
                 icon: 6,
@@ -32,16 +35,16 @@
         var flag = null;
 
         $(function () {
-              $('#l_comaddr').combobox({
-                    url: "gayway.GaywayForm.getComaddr.action?pid=${param.pid}",
-                    onLoadSuccess: function (data) {
-                        if (Array.isArray(data) && data.length > 0) {
-                            $(this).combobox("select", data[0].id);
-                        }
-                    },
-                    onSelect: function (record) {
+            $('#l_comaddr').combobox({
+                url: "gayway.GaywayForm.getComaddr.action?pid=${param.pid}",
+                onLoadSuccess: function (data) {
+                    if (Array.isArray(data) && data.length > 0) {
+                        $(this).combobox("select", data[0].id);
                     }
-                });
+                },
+                onSelect: function (record) {
+                }
+            });
             $('#time4').timespinner('setValue', '00:00');
             $('#time3').timespinner('setValue', '00:00');
 
@@ -67,7 +70,7 @@
                         valign: 'middle'
                     }
                 ],
-                paginationDetailHAlign:'right',
+                paginationDetailHAlign: 'right',
                 data: data2,
                 singleSelect: false,
                 locale: 'zh-CN', //中文支持,
@@ -82,23 +85,23 @@
 
 
 
-        function LoopWarningCb(obj){
-             if (obj.status == "success") {
+        function LoopWarningCb(obj) {
+            if (obj.status == "success") {
 
-                if (obj.msg=="A4"&&obj.fn==610) {
-                     layerAler("报警参数设置成功");
-                 }
+                if (obj.msg == "A4" && obj.fn == 610) {
+                    layerAler("报警参数设置成功");
+                }
             }
         }
 
         function setLoopWarning() {
 
-          var obj = $("#form1").serializeObject();
-            if (obj.l_comaddr=="") {
-            layerAler("请选择网关");
-            return;
+            var obj = $("#form1").serializeObject();
+            if (obj.l_comaddr == "") {
+                layerAler("请选择网关");
+                return;
             }
-
+            addlogon(u_name, "设置", o_pid, "回路预报警", "设置回路预报警参数");
             var arr = $("#warningtable").bootstrapTable('getData');
             var vv = [];
             var u = 0x00;
@@ -135,8 +138,8 @@
 
             var comaddr = obj.l_comaddr;
             var num = randnum(0, 9) + 0x70;
-            var data = buicode(comaddr, 0x04, 0xA4, num, 0, 610, vv);    
-            dealsend2("A4", data,610, "LoopWarningCb", comaddr, 0, 0, 0);
+            var data = buicode(comaddr, 0x04, 0xA4, num, 0, 610, vv);
+            dealsend2("A4", data, 610, "LoopWarningCb", comaddr, 0, 0, 0);
         }
 
 
@@ -152,41 +155,41 @@
             <div class="container"  >
 
 
-            <div class="row" align="center" style=" padding-top: 20px; padding-bottom: 20px; padding-bottom: 20; width: 600px; " >
-                <div class="col-xs-12">
-                    <form id="form1">
-                        <table style="">
-                            <tbody>
-                                <tr>
+                <div class="row" align="center" style=" padding-top: 20px; padding-bottom: 20px; padding-bottom: 20; width: 600px; " >
+                    <div class="col-xs-12">
+                        <form id="form1">
+                            <table style="">
+                                <tbody>
+                                    <tr>
 
-                                    <td>
-                                        <span style="margin-left:10px;">网关地址&nbsp;</span>
-                                        <span class="menuBox">
-                                        <input id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 
-                                                   data-options="editable:true,valueField:'id', textField:'text' " />
-                                        </span>  
-                                    <button  type="button" style="margin-left:20px;" onclick="setLoopWarning()" class="btn btn-success">设置回路报警参数</button>
-                                    &nbsp;
-                                    </td>
-            
-                                </tr>
-                            </tbody>
-                        </table> 
-                    </form>
+                                        <td>
+                                            <span style="margin-left:10px;">网关地址&nbsp;</span>
+                                            <span class="menuBox">
+                                                <input id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 
+                                                       data-options="editable:true,valueField:'id', textField:'text' " />
+                                            </span>  
+                                            <button  type="button" style="margin-left:20px;" onclick="setLoopWarning()" class="btn btn-success">设置回路报警参数</button>
+                                            &nbsp;
+                                        </td>
+
+                                    </tr>
+                                </tbody>
+                            </table> 
+                        </form>
+                    </div>
                 </div>
-            </div>
 
 
-        <div class="row" style="width: 600px;">
-                <div class="col-xs-12">
+                <div class="row" style="width: 600px;">
+                    <div class="col-xs-12">
                         <table id="warningtable" style="width: 600px;" > 
                         </table> 
+                    </div>
                 </div>
-        </div>
 
-        <div style=" margin-top: 20px;">
+                <div style=" margin-top: 20px;">
 
-        </div>
+                </div>
 
 
             </div>

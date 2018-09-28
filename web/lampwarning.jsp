@@ -20,8 +20,11 @@
     </head>
 
     <script type="text/javascript" src="js/genel.js"></script>
-
+    <script type="text/javascript" src="js/getdate.js"></script>
     <script>
+        
+        var u_name = parent.parent.getusername();
+        var o_pid = parent.parent.getpojectId();
         function layerAler(str) {
             layer.alert(str, {
                 icon: 6,
@@ -136,6 +139,7 @@
             layerAler("请选择网关");
             return;
          }  
+           addlogon(u_name, "设置", o_pid, "路灯预报警", "设置灯具预警参数");
             var arr = $("#prewarningtable").bootstrapTable('getData');
             var vv = [];
             var u = 0x00;
@@ -170,7 +174,7 @@
             layerAler("请选择网关");
             return;
          }
-
+            addlogon(u_name, "设置", o_pid, "路灯预报警", "设置灯具报警参数");
             var arr = $("#warningtable").bootstrapTable('getData');
             var vv = [];
             var u = 0x00;
