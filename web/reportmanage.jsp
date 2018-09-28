@@ -132,7 +132,7 @@
                 var curr_time = new Date();
                 $("#dd").datebox("setValue", myformatter(curr_time));
                 var val = $("#dd").datebox("getValue");
-
+                    
                 $('#gravidaTable').bootstrapTable({
                     url: 'test1.report.queryRecord.action', //test1.report.queryRecord.action
                     columns: [
