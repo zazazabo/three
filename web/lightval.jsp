@@ -36,7 +36,12 @@
                 $('#gravidaTable').bootstrapTable('refresh', opt);
 
             }
+            function onlamp(){
 
+            }
+            function offlamp(){
+                
+            }
             function sceneCB(obj) {
                 console.log(obj);
                 if (obj.status == "success") {
@@ -566,7 +571,12 @@
                                     <button  type="button" style="margin-left:20px;" onclick="search()" class="btn btn-success btn-xm">搜索</button>&nbsp;
 
                                 </td>
-
+                                <td>
+                                    <button  type="button" style="margin-left:20px;" onclick="onlamp()" class="btn btn-success btn-xm">开灯</button>&nbsp;                                    
+                                </td>
+                                <td>
+                                    <button  type="button" style="margin-left:20px;" onclick="offlamp()" class="btn btn-success btn-xm">关灯</button>&nbsp;
+                                </td>
 
                             </tr>
 

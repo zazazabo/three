@@ -180,9 +180,9 @@
                     }
                     o.p_name = a.p_name;
                     o.p_type = a.p_type;
-
+                    o.id=a.id;
                     var ret = false;
-                    $.ajax({async: false, url: "test1.plan.editlampscene.action", type: "get", datatype: "JSON", data: o,
+                    $.ajax({async: false, url: "lamp.planForm.editlampscene.action", type: "get", datatype: "JSON", data: o,
                         success: function (data) {
                             var arrlist = data.rs;
                             if (arrlist.length == 1) {
