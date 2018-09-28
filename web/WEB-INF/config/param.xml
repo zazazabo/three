@@ -66,4 +66,19 @@
             </xsql>
         </xhandle>
     </xform>
+ <xform desc="报表模块" id="report">
+               <xhandle desc="查询历史数据报表" id="queryRecord" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select  CONVERT(Nvarchar, day, 23) as dayalis,day,voltage,electric,activepower,powerfactor,powerfactor,power from t_records where @CONDITION group by day,voltage,electric,activepower,powerfactor,power  " var="bootstrap">
+                <xflt id="CONDITION" nrp="" tpl="@day AND @comaddr">
+                    <xfltpara id="day" nrp="1=2" para="day" sql="day = ':day'"> 
+                    </xfltpara>
+                             <xfltpara id="comaddr" nrp="1=2" para="comaddr" sql="comaddr = ':comaddr'">
+                    </xfltpara>
+                </xflt>
+            </xsql>
+        </xhandle>  
+
+ </xform>
+
+
 </xforms>  

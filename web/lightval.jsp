@@ -24,10 +24,11 @@
 
             function search() {
                 var o = $("#formsearch").serializeObject();
+                 console.log(o);
                 var opt = {
                     url: "lamp.lampform.getlampList.action",
-                    query: o,
-                    silent: false
+                    query: o
+     
                 };
                 $('#gravidaTable').bootstrapTable('refresh', opt);
 
