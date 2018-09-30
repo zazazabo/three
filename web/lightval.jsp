@@ -36,9 +36,11 @@
                 $('#gravidaTable').bootstrapTable('refresh', opt);
 
             }
+            //开灯
             function onlamp(){
 
             }
+            //关灯
             function offlamp(){
                 
             }
@@ -254,7 +256,7 @@
                 dealsend2("A5", data, 301, "lightCB", l_comaddr, o.groupetype, param, lampval);
 
             }
-
+            
             function lightgroupe() {
                 var obj = $("#formsearch").serializeObject();
                 if (isNumber(obj.l_comaddr) == false || isNumber(obj.l_groupe) == false) {
