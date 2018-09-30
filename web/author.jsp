@@ -377,7 +377,7 @@
                         </div>
 
                         <div class="col-xs-3" style=" width: 20%;">
-                            <span class="label label-success label-lg " style=" width: 30%;">角色列表1</span>
+                            <span class="label label-success label-lg " style=" width: 30%;">角色列表</span>
                             <input id="role" class="easyui-combobox" name="role" style="width:60%; height: 34px" data-options="editable:true,valueField:'id', textField:'text',url:'login.usermanage.rolemenu.action?parent_id=${param.role}'" />
                         </div>
                         <div class="col-xs-4" style=" width: 33%; margin-left: 5%;">

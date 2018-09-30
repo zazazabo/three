@@ -61,7 +61,16 @@
                     }
                 });
                 //获取所有项目
-                var pid = parent.parent.getupid();
+                var pid;
+                var id = parent.parent.getuserId();
+                $.ajax({url: "login.project.getuserProject.action", async: false, type: "get", datatype: "JSON", data:{id:id},
+                    success: function (data) {
+                        pid = data.rs[0].pid;
+                    },
+                    error: function () {
+                        alert("出现异常！");
+                    }
+                });
                 var pids = pid.split(",");   //项目编号
                 // $("#pojects").val(pids[0]);
                 var pname = [];   //项目名称
@@ -81,8 +90,8 @@
                 for (var i = 0; i < pids.length; i++) {
                     var options;
                     options += "<option value=\"" + pids[i] + "\">" + pname[i] + "</option>";
-                   $("#sel_menu2").html(options);
-                   $("#sel_menu1").html(options);
+                    $("#sel_menu2").html(options);
+                    $("#sel_menu1").html(options);
                 }
 //                $.ajax({async: false, url: "login.usermanage.getProject.action", type: "get", datatype: "JSON",
 //                    success: function (data) {

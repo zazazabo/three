@@ -23,9 +23,10 @@
             var o_pid = parent.parent.getpojectId();
             var uid = parent.parent.getuserId();
             $(function () {
+                //var pinfo = [];
                 $("#add").attr("disabled", true);
                 $("#del").attr("disabled", true);
-                $("#update").attr(":disabled",true);
+                $("#update").attr(":disabled", true);
                 var obj = {};
                 obj.code = ${param.m_parent};
                 obj.roletype = ${param.role};
@@ -34,7 +35,7 @@
                         var rs = data.rs;
                         if (rs.length > 0) {
                             for (var i = 0; i < rs.length; i++) {
-
+                                
                                 if (rs[i].code == "800301" && rs[i].enable != 0) {
                                     $("#add").attr("disabled", false);
                                     continue;
@@ -43,20 +44,20 @@
                                     $("#del").attr("disabled", false);
                                     continue;
                                 }
-                                 if (rs[i].code == "800303" && rs[i].enable != 0) {
+                                if (rs[i].code == "800303" && rs[i].enable != 0) {
                                     $("#update").attr("disabled", false);
                                     continue;
                                 }
                             }
                         }
-
+                        
                     },
                     error: function () {
                         alert("提交失败！");
                     }
                 });
                 $('#gravidaTable').bootstrapTable({
-                    url: 'login.project.queryProject.action',
+                    //url: 'login.project.queryProject.action?pid=' + userporject,
                     columns: [
                         {
                             title: '单选',
@@ -80,55 +81,71 @@
                             align: 'center',
                             valign: 'middle'
                         }],
-                    clickToSelect: true,
-                    singleSelect: true,
-                    sortName: 'id',
+                    singleSelect: false,
                     locale: 'zh-CN', //中文支持,
-                    showColumns: true,
-                    sortOrder: 'desc',
                     pagination: true,
-                    sidePagination: 'server',
                     pageNumber: 1,
-                    pageSize: 5,
-                    showRefresh: true,
-                    showToggle: true,
-                    // 设置默认分页为 50
-                    pageList: [5, 10, 15, 20, 25],
-                    onLoadSuccess: function () {  //加载成功时执行  表格加载完成时 获取集中器在线状态
-//                        console.info("加载成功");
-                    },
-                    //服务器url
-                    queryParams: function (params)  {   //配置参数     
-                        var temp  =   {    //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的 
-                            search: params.search,
-                            skip: params.offset,
-                            limit: params.limit,
-                            type_id: "1"    
-                        };      
-                        return temp;  
-                    },
+                    pageSize: 10,
+                    pageList: [10, 20, 40, 80]
                 });
-            })
-
+                var pid = getuserporject(uid);
+                var pinfo = getprojectInfo(pid);
+                $('#gravidaTable').bootstrapTable('load', pinfo);
+                
+            });
+            //获取当前用户的管理项目
+            function  getuserporject(uid) {
+                var s = "";
+                $.ajax({async: false, url: "login.project.getuserProject.action", type: "get", datatype: "JSON", data: {id: uid},
+                    success: function (data) {
+                        var arrlist = data.rs;
+                        if (arrlist.length == 1) {
+                            s = arrlist[0].pid;
+                        }
+                    },
+                    error: function () {
+                        alert("提交失败！");
+                    }
+                });
+                return s;
+            }
+            //获取项目信息
+            function getprojectInfo(pid) {
+                var pinfo = [];
+                var pids = pid.split(",");
+                for (var i = 0; i < pids.length; i++) {
+                    $.ajax({async: false, url: 'login.project.queryProject.action', type: "get", datatype: "JSON", data: {pid: pids[i]},
+                        success: function (data) {
+                            var arrlist = data.rs;
+                            if (arrlist.length == 1) {
+                                pinfo = pinfo.concat(arrlist);
+                            }
+                        },
+                        error: function () {
+                            alert("提交失败！");
+                        }
+                    });
+                }
+                return pinfo;
+            }
             function layerAler(str) {
                 layer.alert(str, {
                     icon: 6,
                     offset: 'center'
                 });
             }
-
+            
             function  checkProjectAdd() {
                 var obj = $("#Form_User").serializeObject();
                 if (obj.name == "") {
                     layerAler("项目不能为空");
                     return false;
                 }
-                console.log(obj);
                 addlogon(u_name, "添加", o_pid, "项目管理", "添加项目");
                 var isflesh = false;
                 $.ajax({url: "login.project.queryProject.action", async: false, type: "POST", datatype: "JSON", data: obj,
                     success: function (data) {
-                        if (data.total == 0) {
+                        if (data.rs.length == 0) {
                             $.ajax({async: false, url: "login.project.addProject.action", type: "get", datatype: "JSON", data: obj,
                                 success: function (data) {
                                     var arrlist = data.rs;
@@ -137,7 +154,7 @@
                                             success: function (data) {
                                                 var newcode;
                                                 var code = data.codes;
-
+                                                
                                                 if (code.length == 1) {
                                                     newcode = code[0].code;
                                                     var pidobj = {};
@@ -145,7 +162,7 @@
                                                     pidobj.npid = "," + newcode;
                                                     $.ajax({async: false, url: "login.project.addpid.action", type: "get", datatype: "JSON", data: pidobj,
                                                         success: function (data) {
-
+                                                            
                                                         },
                                                         error: function () {
                                                             alert("提交失败！");
@@ -155,7 +172,7 @@
                                                     pobj.id = uid;
                                                     var parentid = 0;
                                                     do {
-
+                                                        
                                                         $.ajax({async: false, url: "login.project.selectparent.action", type: "get", datatype: "JSON", data: pobj,
                                                             success: function (data) {
                                                                 var parentid = data.ups;
@@ -166,7 +183,7 @@
                                                                     ppobj.npid = "," + newcode;
                                                                     $.ajax({async: false, url: "login.project.addpid.action", type: "get", datatype: "JSON", data: ppobj,
                                                                         success: function (data) {
-
+                                                                            
                                                                         },
                                                                         error: function () {
                                                                             alert("提交失败！");
@@ -177,13 +194,12 @@
                                                         });
                                                     } while (parentid != 0);
                                                 }
-
+                                                
                                             },
                                             error: function () {
                                                 alert("提交失败！");
                                             }
                                         });
-                                        $("#gravidaTable").bootstrapTable('refresh');
                                     }
                                     isflesh = true;
                                 },
@@ -191,18 +207,14 @@
                                     alert("提交失败！");
                                 }
                             });
-
-
-
+                            
+                            
+                            
                         } else if (data.total > 0) {
                             layerAler("此项目已存在");
                         }
                         return  false;
-//                        var arrlist = data.rs;
-//                        if (arrlist.length == 1) {
-//                            isflesh = true;
-////                            $("#gravidaTable").bootstrapTable('refresh');
-//                        }
+//             
                     },
                     error: function () {
                         alert("提交添加失败！");
@@ -210,7 +222,7 @@
                 });
                 return isflesh;
             }
-
+            
             //编辑
             function editporject() {
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
@@ -224,7 +236,7 @@
                 $("#p_id").val(selects[0].id);
                 $("#pjj2").modal();
             }
-
+            
             function update() {
                 addlogon(u_name, "修改", o_pid, "项目管理", "修改项目信息");
                 var obj = {};
@@ -234,7 +246,9 @@
                     success: function (data) {
                         var arrlist = data.rs;
                         if (arrlist.length == 1) {
-                            $("#gravidaTable").bootstrapTable('refresh');
+                            var pid = getuserporject(uid);
+                            var pinfo = getprojectInfo(pid);
+                            $('#gravidaTable').bootstrapTable('load', pinfo);
                             $("#pjj2").modal('hide'); //手动关闭
                         }
                     },
@@ -246,6 +260,7 @@
             //删除
             function deleteUser() {
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
+                console.log(selects[0]);
                 var num = selects.length;
                 if (num == 0) {
                     layerAler("请选择您要删除的记录");
@@ -261,18 +276,72 @@
                             if (arrlist.length > 0) {
                                 layerAler("该项目下存在网关，不可删除");
                             } else {
-                                alert("0");
-                                $.ajax({async: false, url: "login.delete.action", type: "POST", datatype: "JSON", data: {id: selects[0].id},
+                                $.ajax({async: false, url: "login.project.getpidUser.action", type: "get", datatype: "JSON", data: {pid: selects[0].code},
                                     success: function (data) {
                                         var arrlist = data.rs;
-                                        if (arrlist.length > 0) {
-                                            $("#gravidaTable").bootstrapTable('refresh');
+                                        if (arrlist.length > 1) {
+                                            layerAler("该项目下拥有管理人员，不可删除");
                                         } else {
-
+                                            $.ajax({async: false, url: "login.project.delete.action", type: "POST", datatype: "JSON", data: {id: selects[0].id},
+                                                success: function (data) {
+                                                    var arrlist = data.rs;
+                                                    if (arrlist.length > 0) {
+                                                        var code = selects[0].code;
+                                                        var pid = getuserporject(uid);
+                                                        var pinfo = getprojectInfo(pid);
+                                                        $('#gravidaTable').bootstrapTable('load', pinfo);
+                                                        $.ajax({async: false, url: "login.project.getpidUser.action", type: "get", datatype: "JSON", data: {pid: code},
+                                                            success: function (data) {
+                                                                var arrlist = data.rs;
+                                                                for (var i = 0; i < arrlist.length; i++) {
+                                                                    var pids = arrlist[i].pid.split(",");
+                                                                    console.log(i + ":" + pids);
+                                                                    for (var j = 0; j < pids.length; j++) {
+                                                                        if (pids[j] == code) {
+                                                                            pids.splice(j, 1);
+                                                                        }
+                                                                    }
+                                                                    console.log(i + ":" + pids);
+                                                                    var newcode = "";
+                                                                    for (var k = 0; k < pids.length; k++) {
+                                                                        if (k == 0) {
+                                                                            newcode += pids[k];
+                                                                        } else {
+                                                                            newcode += ",";
+                                                                            newcode += pids[k];
+                                                                        }
+                                                                    }
+                                                                    console.log(i + "new:" + newcode);
+                                                                    var uobj = {};
+                                                                    console.log("id:" + arrlist[i].id);
+                                                                    uobj.id = arrlist[i].id;
+                                                                    uobj.pid = newcode;
+                                                                    $.ajax({async: false, url: "login.project.upduserpid.action", type: "get", datatype: "JSON", data: uobj,
+                                                                        success: function (data) {
+                                                                            // var arrlist = data.rs;
+                                                                        },
+                                                                        error: function () {
+                                                                            alert("提交失败！");
+                                                                        }
+                                                                    });
+                                                                    
+                                                                }
+                                                            },
+                                                            error: function () {
+                                                                alert("提交失败！");
+                                                            }
+                                                        });
+                                                    }
+                                                },
+                                                error: function () {
+                                                    layerAler("提交失败");
+                                                }
+                                            });
+                                            
                                         }
                                     },
                                     error: function () {
-                                        layerAler("提交失败");
+                                        alert("提交失败！");
                                     }
                                 });
                             }
@@ -282,13 +351,13 @@
                         }
                     });
                     layer.close(index);
-
+                    
                 });
             }
-
-
-
-
+            
+            
+            
+            
         </script>
 
     </head>

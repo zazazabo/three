@@ -307,15 +307,7 @@
                     <div class="CCIOT-logo" style="display:none;height:60px;float:left;padding-top:7px;padding-left:15px;box-sizing:border-box;">
                         <img src="abc.action_files/sz-tit.png" style="min-width:50px;height:50px;float:left;" id="logoImg">
                     </div>
-                    <ul class="navTop" style="left: 200px; display: none;">
-                        <!-- 首页顶部导航 -->
-                        <li title="照明" name="abc/device.action" style="background:url(&quot;imgs/indexNav/2.png&quot;)"></li>
-                        <li title="地图" name="abc/map.action" style="background:url(&quot;imgs/indexNav/3.png&quot;)"></li>
-                    </ul>
                     <ul class="controlMessage animated fadeInRight">
-                        <!--                        <li class="one imgM Home" style="display: none;">
-                                                    <img alt="" src="abc.action_files/home_s.png" style="height:21px;width:21px;margin-top:2px;">
-                                                </li>-->
                         <li class="one">
                             <span>项目&nbsp;&nbsp;</span>
                             <select style="width: 200px; height: 30px; margin-top:0px; font-size: 16px; border: 1px solid;" id="pojects">
@@ -340,10 +332,10 @@
                                 <li language="en_US" id="english">英文</li>
                             </ul>
                         </li>
-                        <li class="one" style="width:140px;">
+                        <li class="one" style=" margin-right: 10px;">
                             <i class="layui-icon indexIcon"></i>  
                             <!--<span class="glyphicon glyphicon-user"></span>-->
-                            <span class="Till" style="width: 140px; padding-left: 24px; box-sizing: border-box; color: rgb(255, 255, 255);">
+                            <span class="Till" style=" padding-left: 24px; box-sizing: border-box; color: rgb(255, 255, 255);">
                                 <span id="u_name" class="admin" style="color: rgb(255, 255, 255);">${rs[0].name}</span>
                                 <input id="m_code" type="hidden" value="${rs[0].m_code}"/>
                                 <input id="pwd" type="hidden" value="${rs[0].password}"/>
@@ -383,13 +375,13 @@
                                 <tr>
                                     <td>
                                         <span style="margin-left:35px;">新密码：</span>&nbsp;
-                                        <input id="newPwd" class="form-control" style="width:150px;display: inline;" placeholder="请输入原密码" type="password">
+                                        <input id="newPwd" class="form-control" style="width:150px;display: inline;" placeholder="请输入新密码" type="password">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <span style="margin-left:20px;">确定密码：</span>&nbsp;
-                                        <input id="okPwd" class="form-control" style="width:150px;display: inline;" placeholder="请输入原密码" type="password">
+                                        <input id="okPwd" class="form-control" style="width:150px;display: inline;" placeholder="请确认密码" type="password">
                                     </td>
                                 </tr>
                             </tbody>
@@ -535,7 +527,7 @@
                 })
                 /* 加载左边菜单 */
                 //传角色权限 获取菜单 
-                var rotype = 1;// $("#m_code").val(); //角色id
+                var rotype = $("#m_code").val(); //角色id
                 var objrole = {role: rotype};
                 var u_id = $("#userid").val(); //用户id
                 var objrole = {role: rotype, uid: u_id};

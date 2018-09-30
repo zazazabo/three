@@ -154,91 +154,7 @@
     
     
     <xform desc="统计数据数据" id="reportmanage">
-<!--        <xhand id="getMoth"   rtnype="JSON">
-            <xsql id="m1" list="true" page="true" tpe="SQL" tpl="select  power,month(day) as month, year(day) from t_records where @CONDITION and month(day)=1 order by day desc" var="M1">
-                <xflt id="CONDITION" nrp="" tpl="@year(day)">
-                    <xfltpara id="year(day)" nrp="1=1" para="year" sql="year(day) = ':year'">
-                    </xfltpara>
-                </xflt>      
-            </xsql> 
-            <xsql id="m2" list="true" page="true" tpe="SQL" tpl="select  power,month(day) as month, year(day) from t_records where @CONDITION and month(day)=2 order by day desc" var="M2">
-                <xflt id="CONDITION" nrp="" tpl="@year(day)">
-                    <xfltpara id="year(day)" nrp="1=1" para="year" sql="year(day) = ':year'">
-                    </xfltpara>
-                </xflt>      
-            </xsql>           
-            
-            <xsql id="m3" list="true" page="true" tpe="SQL" tpl="select  power,month(day) as month, year(day) from t_records where @CONDITION and month(day)=3 order by day desc" var="M3">
-                <xflt id="CONDITION" nrp="" tpl="@year(day)">
-                    <xfltpara id="year(day)" nrp="1=1" para="year" sql="year(day) = ':year'">
-                    </xfltpara>
-                </xflt>      
-            </xsql>
-
-            <xsql id="m4" list="true" page="true" tpe="SQL" tpl="select  power,month(day) as month, year(day) from t_records where @CONDITION and month(day)=4 order by day desc" var="M4">
-                <xflt id="CONDITION" nrp="" tpl="@year(day)">
-                    <xfltpara id="year(day)" nrp="1=1" para="year" sql="year(day) = ':year'">
-                    </xfltpara>
-                </xflt>      
-            </xsql> 
-
-            <xsql id="m5" list="true" page="true" tpe="SQL" tpl="select  power,month(day) as month, year(day) from t_records where @CONDITION and month(day)=5 order by day desc" var="M5">
-                <xflt id="CONDITION" nrp="" tpl="@year(day)">
-                    <xfltpara id="year(day)" nrp="1=1" para="year" sql="year(day) = ':year'">
-                    </xfltpara>
-                </xflt>      
-            </xsql>
-           
-            <xsql id="m6" list="true" page="true" tpe="SQL" tpl="select  power,month(day) as month, year(day) from t_records where @CONDITION and month(day)=6 order by day desc" var="M6">
-                <xflt id="CONDITION" nrp="" tpl="@year(day)">
-                    <xfltpara id="year(day)" nrp="1=1" para="year" sql="year(day) = ':year'">
-                    </xfltpara>
-                </xflt>      
-            </xsql>        
-            
-            <xsql id="m7" list="true" page="true" tpe="SQL" tpl="select  power,month(day) as month, year(day) from t_records where @CONDITION and month(day)=7 order by day desc" var="M7">
-                <xflt id="CONDITION" nrp="" tpl="@year(day)">
-                    <xfltpara id="year(day)" nrp="1=1" para="year" sql="year(day) = ':year'">
-                    </xfltpara>
-                </xflt>      
-            </xsql>
-            
-            <xsql id="m8" list="true" page="true" tpe="SQL" tpl="select  power,month(day) as month, year(day) from t_records where @CONDITION and month(day)=8 order by day desc" var="M8">
-                <xflt id="CONDITION" nrp="" tpl="@year(day)">
-                    <xfltpara id="year(day)" nrp="1=1" para="year" sql="year(day) = ':year'">
-                    </xfltpara>
-                </xflt>      
-            </xsql>
-            
-            <xsql id="m9" list="true" page="true" tpe="SQL" tpl="select  power,month(day) as month, year(day) from t_records where @CONDITION and month(day)=9 order by day desc" var="M9">
-                <xflt id="CONDITION" nrp="" tpl="@year(day)">
-                    <xfltpara id="year(day)" nrp="1=1" para="year" sql="year(day) = ':year'">
-                    </xfltpara>
-                </xflt>      
-            </xsql>
-            
-            <xsql id="m10" list="true" page="true" tpe="SQL" tpl="select  power,month(day) as month, year(day) from t_records where @CONDITION and month(day)=10 order by day desc" var="M10">
-                <xflt id="CONDITION" nrp="" tpl="@year(day)">
-                    <xfltpara id="year(day)" nrp="1=1" para="year" sql="year(day) = ':year'">
-                    </xfltpara>
-                </xflt>      
-            </xsql>
-            
-            <xsql id="m11" list="true" page="true" tpe="SQL" tpl="select  power,month(day) as month, year(day) from t_records where @CONDITION and month(day)=11 order by day desc" var="M11">
-                <xflt id="CONDITION" nrp="" tpl="@year(day)">
-                    <xfltpara id="year(day)" nrp="1=1" para="year" sql="year(day) = ':year'">
-                    </xfltpara>
-                </xflt>      
-            </xsql>
-            
-            <xsql id="m12" list="true" page="true" tpe="SQL" tpl="select  power,month(day) as month, year(day) from t_records where @CONDITION and month(day)=12 order by day desc" var="M12">
-                <xflt id="CONDITION" nrp="" tpl="@year(day)">
-                    <xfltpara id="year(day)" nrp="1=1" para="year" sql="year(day) = ':year'">
-                    </xfltpara>
-                </xflt>      
-            </xsql>
-        </xhand>-->
-        
+                         
         <xhandle desc="按日查询数据" id="getday" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select CONVERT(varchar(100),day, 23) as d,SUM( (CONVERT(decimal (18, 2), power45)-  CONVERT(decimal (18, 2), power00))) AS val  from t_power where  @CONDITION   GROUP BY day order by day desc" var="bootstrap">
                 <xflt id="CONDITION" nrp="" tpl="@comaddr AND @star AND @end AND @pid">
@@ -313,7 +229,11 @@
             </xsql>            
         </xhand>
         <xhandle desc="查看所有角色" id="rolemenu" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT DISTINCT roletype as id,name as text FROM t_role " var="list">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT DISTINCT roletype as id,name as text FROM t_role where @CONDITION " var="list">
+                <xflt id="CONDITION" nrp="" tpl="@parent_id">
+                    <xfltpara id="parent_id" nrp="1=1" para="parent_id" sql="parent_id = ':parent_id'">
+                    </xfltpara>
+                </xflt> 
             </xsql>
         </xhandle> 
         <xhandle desc="添加用户" id="addUser" rtn="rs" rtnype="JSON">
@@ -500,11 +420,13 @@
     
     <xform desc="项目管理" id="project">
         <xhandle desc="项目列表" id="queryProject" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from  t_project    WHERE   @CONDITION   " var="bootstrap">
-                <xflt id="CONDITION" nrp="" tpl="@name AND @unit ">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from  t_project    WHERE   @CONDITION" var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@name AND @unit AND @code ">
                     <xfltpara id="name" nrp="1=1" para="name" sql="name = ':name'"> 
                     </xfltpara>
                     <xfltpara id="unit" nrp="1=1" para="unit" sql="unit = ':unit'">
+                    </xfltpara> 
+                    <xfltpara id="code" nrp="1=1" para="pid" sql="code =':pid'">
                     </xfltpara>             
                 </xflt>        
             </xsql>   
@@ -564,14 +486,42 @@
             </xsql>
         </xhandle> 
         
-        <xhandle desc="" id="getProject" rtnype="JSON">
+        <xhandle desc="获取项目" id="getProject" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT   tl.code as id,tl.name as text FROM t_project tl where @CONDITION  " var="list">
                 <xflt id="CONDITION" nrp="" tpl="@code ">
                     <xfltpara id="code" nrp="1=1" para="code" sql="code = ':code' ">
                     </xfltpara>
                 </xflt>
             </xsql>
-        </xhandle>                             
+        </xhandle>    
+        
+        <xhandle desc="查找当前用户管理的项目" id="getuserProject" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select pid from t_user where @CONDITION  " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@id">
+                    <xfltpara id="id" nrp="1=1" para="id" sql="id = ':id' ">
+                    </xfltpara>
+                </xflt>
+            </xsql>
+        </xhandle>  
+        
+        <xhandle desc="查找所有拥有该项目管理权的用户" id="getpidUser" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_user where @CONDITION  " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@pid">
+                    <xfltpara id="pid" nrp="1=1" para="pid" sql="pid like '%:pid%' ">
+                    </xfltpara>
+                </xflt>
+            </xsql>
+        </xhandle> 
+        
+        <xhandle desc="修改用户权限" id="upduserpid" rtn="rs" rtnype="JSON">
+            <xsql id="a1" para="pid" tpe="DDL" tpl="update t_user set pid = ':pid' where  @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@id ">
+                    <xfltpara id="id" nrp="1=1" para="id" sql="id=':id'">
+                    </xfltpara>
+                </xflt>
+            </xsql>
+        </xhandle>
+                                                                                                 
     </xform>
     
     <xform desc="灯具管理" id="lampmanage">

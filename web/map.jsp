@@ -617,7 +617,7 @@
                                             <td>" + Isfault + "</td>\n\
                                         </tr>\n\ \n\
                                     </table></div>";
-                                    if ((Longitude != "" && latitude != "") || (Longitude != null && latitude != null)) {
+                                    if ((Longitude != "" && latitude != "") && (Longitude != null && latitude != null)) {
                                         var point = new BMap.Point(Longitude, latitude);
                                         var marker1;
                                         if (Isfault == "异常") {
