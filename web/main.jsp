@@ -29,7 +29,7 @@
                 }
                 if (websocket != null && websocket.readyState == 1) {
                    
-                    delete obj.msg;
+                    //delete obj.msg;
                      console.log(obj);
                     var datajson = JSON.stringify(obj);
 
