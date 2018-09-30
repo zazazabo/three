@@ -239,11 +239,18 @@
                 console.log(select);
                 var l_comaddr = select.l_comaddr;
                 var lampval = $("#val").val();
-                var setcode = select.l_code;
-                var dd = get2byte(setcode);
-                var set1 = Str2BytesH(dd);
-                vv.push(set1[1]);
-                vv.push(set1[0]); //装置序号  2字节
+
+
+                var c = parseInt(select.l_code);
+                var h = c >> 8 & 0x00ff;
+                var l = c & 0x00ff;
+                vv.push(l);
+                vv.push(h); //装置序号  2字节
+
+
+
+
+
                 vv.push(parseInt(lampval));
                 var num = randnum(0, 9) + 0x70;
                 var param = {};

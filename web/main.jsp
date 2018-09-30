@@ -28,8 +28,11 @@
 //                    layerAler("通迅已断开");
                 }
                 if (websocket != null && websocket.readyState == 1) {
-                    console.log(obj);
+                   
+                    delete obj.msg;
+                     console.log(obj);
                     var datajson = JSON.stringify(obj);
+
                     websocket.send(datajson);
                 }
             }
