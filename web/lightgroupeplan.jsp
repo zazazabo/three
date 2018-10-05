@@ -17,7 +17,7 @@
         <script type="text/javascript" src="js/getdate.js"></script>
         <script>
             var u_name = parent.parent.getusername();
-            var o_pid =  parent.parent.getpojectId();
+            var o_pid = parent.parent.getpojectId();
             var websocket = null;
             function layerAler(str) {
                 layer.alert(str, {
@@ -312,6 +312,39 @@
 
 
             $(function () {
+
+                $('#type').combobox({
+                    onLoadSuccess: function (data) {
+                        if (Array.isArray(data) && data.length > 0) {
+                            $(this).combobox("select", data[0].id);
+                        }
+                    },
+                    onSelect: function (record) {
+                        var rowdiv = $(".row");
+                        for (var i = 0; i < rowdiv.length; i++) {
+                            var row = rowdiv[i];
+                            if (i == 0) {
+                                continue;
+                            }
+                            $(row).hide();
+                        }
+
+                        var v = parseInt(record.id);
+                        $(rowdiv[v]).show();
+
+                    }
+                });
+
+
+
+
+
+
+
+
+
+
+
                 $('#l_comaddr').combobox({
                     url: "lamp.lampform.getComaddr.action?pid=${param.pid}",
                     onLoadSuccess: function (data) {
@@ -440,37 +473,101 @@
                                 </span> 
                             </td>
                             <td>
-                                <span style="margin-left:10px;">新组号</span>
+                                <span style="margin-left:20px;">功能选择</span>&nbsp;
                                 <span class="menuBox">
-                                    <input id="l_groupe1" class="easyui-combobox" name="l_groupe1" style="width:100px; height: 30px" 
-                                           data-options="editable:true,valueField:'id', textField:'text' " />
-                                </span> 
-
-                                <!--<button  onclick="resetGroupe()" class="btn btn-success btn-sm">更换分组</button>-->
-                                <span  onclick="resetGroupe()" style=" margin-left: 2px;" class="label label-success" >更换分组</span>
-                            </td>
-                            <td>
-
-                                <span style="margin-left:20px;">新控制方式</span>&nbsp;
-                                <span class="menuBox">
-                                    <select class="easyui-combobox"  id="l_worktype" name="l_worktype" data-options='editable:false' style="width:100px; height: 30px">
-                                        <option value="0" >时间</option>
-                                        <option value="1">经纬度</option>
-                                        <option value="2">场景</option>           
+                                    <select class="easyui-combobox"  id="type" name="type" data-options="editable:false,valueField:'id', textField:'text'" style="width:200px; height: 30px">
+                                        <option value="1" selected="true" >更换分组</option>
+                                        <option value="2">按组更换工作方式 </option>
+                                        <option value="3">部署分组方案</option>           
                                     </select>
-                                </span>  
-                                <!--<button  onclick="resetWowktype()" class="btn btn-success btn-sm">更换工作方式</button>-->
-                                <span  onclick="resetWowktype()" style=" margin-left: 2px;" class="label label-success" >更换工作方式</span>
+                                </span> 
                             </td>
+                            <!--                            
+                                                        <td>
+                                                            <span style="margin-left:10px;">新组号</span>
+                                                            <span class="menuBox">
+                                                                <input id="l_groupe1" class="easyui-combobox" name="l_groupe1" style="width:100px; height: 30px" 
+                                                                       data-options="editable:true,valueField:'id', textField:'text' " />
+                                                            </span> 
+                            
+                                                            <button  onclick="resetGroupe()" class="btn btn-success btn-sm">更换分组</button>
+                                                            <span  onclick="resetGroupe()" style=" margin-left: 2px;" class="label label-success" >更换分组</span>
+                                                        </td>
+                                                        <td>
+                            
+                                                            <span style="margin-left:20px;">新控制方式</span>&nbsp;
+                                                            <span class="menuBox">
+                                                                <select class="easyui-combobox"  id="l_worktype" name="l_worktype" data-options='editable:false' style="width:100px; height: 30px">
+                                                                    <option value="0" >时间</option>
+                                                                    <option value="1">经纬度</option>
+                                                                    <option value="2">场景</option>           
+                                                                </select>
+                                                            </span>  
+                                                            <button  onclick="resetWowktype()" class="btn btn-success btn-sm">更换工作方式</button>
+                                                            <span  onclick="resetWowktype()" style=" margin-left: 2px;" class="label label-success" >更换工作方式</span>
+                                                        </td>-->
 
                         </tr>
                     </table>
-
-
-
                 </div>
-                <div class="col-xs-12">
-                    <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; ">
+            </div>
+
+            <div class="row" id="row1">
+                <div class="col-xs-12" >
+
+                    <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; margin-top: 10px;  ">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span style="margin-left:10px;">新组号</span>
+                                    <span class="menuBox">
+                                        <input id="l_groupe1" class="easyui-combobox" name="l_groupe1" style="width:100px; height: 30px" 
+                                               data-options="editable:true,valueField:'id', textField:'text' " />
+                                    </span> 
+
+                                    <button type="button"  onclick="resetGroupe()" class="btn btn-success btn-sm">更换分组</button>
+                                    <!--<span  onclick="resetGroupe()" style=" margin-left: 2px;" class="label label-success" >更换分组</span>-->
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+            <div class="row" id="row2" style=" display: none">
+                <div class="col-xs-12" >
+
+                    <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; margin-top: 10px;  ">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span style="margin-left:20px;">新工作方式</span>&nbsp;
+                                    <span class="menuBox">
+                                        <select class="easyui-combobox"  id="l_worktype" name="l_worktype" data-options='editable:false' style="width:100px; height: 30px">
+                                            <option value="0" >时间</option>
+                                            <option value="1">经纬度</option>
+                                            <option value="2">场景</option>           
+                                        </select>
+                                    </span>  
+                                    <button type="button"  onclick="resetWowktype()" class="btn btn-success btn-sm">更换工作方式</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>   
+
+
+
+
+
+
+
+
+            <div class="row" style=" display: none">
+                <div class="col-xs-12"> 
+                    <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; margin-top: 10px;">
                         <tr>
                             <td>
                                 <span style=" margin-left: 10px;" >方案列表</span>
@@ -672,7 +769,6 @@
                         </tr> 
                     </table>
                 </div>
-
             </div>
 
 

@@ -625,6 +625,92 @@
                 dealsend2("AA", data, 202, "readInspectcb", comaddr, 0, 0, 0);
             }
 
+
+            function readAreaCb(obj) {
+                if (obj.status == "success") {
+                    var src = Str2BytesH(obj.data);
+                    var v = "";
+                    for (var i = 0; i < src.length; i++) {
+
+                        v = v + sprintf("%02x", src[i]) + " ";
+                    }
+                    console.log(v);
+
+                    var z = 18;
+                    //dns解析的ip
+                    var area1 = sprintf("%02x%02x", src[z + 1], src[z]);
+                    var area2 = sprintf("%02x%02x", src[z + 3], src[z + 2]);
+                    $("#area").val(area1);
+                    $("#addr").val(area2);
+                    console.log(area1, area2);
+                }
+
+            }
+            function readArea() {
+                var vv = [];
+                var obj = $("#form1").serializeObject();
+                var comaddr = obj.l_comaddr;
+                var num = randnum(0, 9) + 0x70;
+                var data = buicode(comaddr, 0x04, 0xFE, num, 0, 1, vv); //01 03 F24    
+                dealsend2("FE", data, 1, "readAreaCb", comaddr, 0, 0, 0);
+            }
+            function setAreaCB(obj) {
+                if (obj.status == "success") {
+                    var src = Str2BytesH(obj.data);
+                    var v = "";
+                    for (var i = 0; i < src.length; i++) {
+
+                        v = v + sprintf("%02x", src[i]) + " ";
+                    }
+                    console.log(v);
+
+                    var z = 18;
+
+                }
+            }
+            function setArea() {
+                var vv = [];
+                var obj = $("#form1").serializeObject();
+                var obj1 = $("#form2").serializeObject();
+                if (!isNumber(obj1.area) || obj1.area.length != 4) {
+                    layerAler("区划码是2位字节4数字长度");
+                    return;
+                }
+                if (!isNumber(obj1.addr) || obj1.addr.length != 4) {
+                    layerAler("区划码是2位字节4数字长度");
+                    return;
+                }
+  
+                var arr=Str2BytesH(obj1.area);                
+                vv.push(arr[1]);
+                vv.push(arr[0]);
+
+                 arr=Str2BytesH(obj1.addr);                
+                vv.push(arr[1]);
+                vv.push(arr[0]);
+                
+
+//                var h = area >> 8 && 0x00ff;
+//                var l = area & 0x00ff;
+//                vv.push(l);
+//                vv.push(h);
+                
+                
+                
+//                var addr = parseInt(obj1.addr, 106);
+//                var h1 = addr >> 8 && 0x0f;
+//                var l1 = addr & 0x0f;
+//                vv.push(l1);
+//                vv.push(h1);
+
+                console.log(area);
+                console.log(obj1);
+                var comaddr = obj.l_comaddr;
+                var num = randnum(0, 9) + 0x70;
+                var data = buicode(comaddr, 0x04, 0xFF, num, 0, 1, vv); //01 03 F24    
+                dealsend2("FF", data, 1, "setAreaCB", comaddr, 0, 0, 0);
+            }
+
             $(function () {
                 $('#l_comaddr').combobox({
                     url: "gayway.GaywayForm.getComaddr.action?pid=${param.pid}",
@@ -698,8 +784,9 @@
                                                         <option value="2">设置换日冻结时间参数</option>    
                                                         <option value="3">设置通信巡检次数</option> 
                                                         <option value="4">读取网关时间</option> 
-                                                        <option value="5">设置灯具</option> 
-                                                        <option value="6">设置回路</option> 
+                                                        <option value="5">网关行政区划码</option> 
+                                                        <option value="6">设置灯具</option> 
+                                                        <option value="7">设置回路</option> 
                                                     </select>
                                                 </span>  
                                             </td>
@@ -828,7 +915,46 @@
                             </div>
                         </div>
 
-                        <div class="row" id="row5"  style=" display: none">
+                        <div class="row" id="row5" style=" display: none">
+                            <div class="col-xs-12" >
+
+                                <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; ">
+                                    <tbody>
+
+                                        <tr >
+                                            <td>
+                                                <span  style=" float: right; margin-right: 2px;" >行政区划码:</span>
+                                            <td>
+
+                                                <input id="area"  class="form-control" name="area" style="width:150px;"  placeholder="区划码" type="text">&nbsp;
+                                            </td>
+
+                                        </tr>                                   
+
+                                        <tr>
+                                            <td>
+                                                <span  style=" float: right; margin-right: 2px;" >网关地址:</span>
+                                            </td>
+
+                                            <td >
+                                                <input id="addr" class="form-control" name="addr" value="" style="width:150px;" placeholder="终端地址" type="text">
+                                                &nbsp;
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <button  type="button" onclick="readArea()" class="btn btn-success btn-sm">读取 </button>
+                                                <button type="button"  onclick="setArea()" class="btn  btn-success btn-sm" style="margin-left: 2px;">设置</button>
+
+                                            </td>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="row" id="row6"  style=" display: none">
                             <div class="col-xs-12">
                                 <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629;">
                                     <tbody>
@@ -862,7 +988,7 @@
                             </div>
                         </div>
 
-                        <div class="row" id="row6"  style=" display: none">
+                        <div class="row" id="row7"  style=" display: none">
                             <div class="col-xs-12">
                                 <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629;">
                                     <tbody>
