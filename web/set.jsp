@@ -867,10 +867,16 @@
                                                 <input id="time4" name="time4" style=" height: 30px; width: 100px;  "  class="easyui-timespinner">
                                                 <span  style="margin-left:10px;" >冻结时间</span>
                                                 <input id="time3" name="time3" style=" height: 30px; width: 100px;"  class="easyui-timespinner">
+                                                    &nbsp;
+                                            </td>
+
+                                        </tr>
+                                        <tr><td></td></tr>
+                                        <tr>
+                                            <td>
                                                 <button   type="button" onclick="setChgTime()" class="btn btn-success btn-sm">设置换日冻结时间</button>
                                                 <button  type="button" onclick="readTime()" class="btn btn-success btn-sm">读取换日冻结时间</button>
                                             </td>
-
                                         </tr>
                                     </tbody>
                                 </table>
@@ -977,10 +983,17 @@
                                                     </select>
                                                 </span> 
                                                 <span  onclick="setWowktype()" style=" margin-left: 2px;" class="label label-success" >更换</span>
-
+                                                &nbsp;
                                                 <!-- <button  type="button" onclick="setLampWowktype()" class="btn btn-success btn-sm">更换所有灯工作方式</button>&nbsp; -->
-                                                <button  type="button" onclick="delAllLamp()" class="btn btn-success btn-sm">删除全部灯具信息</button>&nbsp;
-                                                <button  type="button" onclick="delAllplan()" class="btn btn-success btn-sm">删除全部灯时间表</button>&nbsp;
+                                          
+                                            </td>
+                                        </tr>
+                                        <tr><td></td></tr>
+                                        <tr>
+                                            <td>
+                                                      <button  type="button" onclick="delAllLamp()" class="btn btn-success btn-sm">删除全部灯具信息</button>&nbsp;
+                                                <button  style="float:right; margin-right: 5px;" type="button" onclick="delAllplan()" class="btn btn-success btn-sm">删除全部灯时间表</button>&nbsp;
+                                            &nbsp;
                                             </td>
                                         </tr>
                                     </tbody>

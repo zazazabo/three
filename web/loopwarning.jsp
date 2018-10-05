@@ -15,7 +15,9 @@
 
         <style>
             .pull-right.pagination-detail{display:none;}
-
+            table thead{
+               background-color:  #ddd
+            }
         </style>
     </head>
 
@@ -180,9 +182,9 @@
                 </div>
 
 
-                <div class="row" style="width: 600px;">
-                    <div class="col-xs-12">
-                        <table id="warningtable" style="width: 600px;" > 
+                <div class="row" style="width: 400px;">
+                    <div class="col-xs-12" style=" margin-left: 100px;">
+                        <table  id="warningtable"  > 
                         </table> 
                     </div>
                 </div>

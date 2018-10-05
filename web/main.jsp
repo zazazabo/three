@@ -243,8 +243,8 @@
             $(function () {
 
                 if ('WebSocket' in window) {
-                    websocket = new WebSocket("ws://zhizhichun.eicp.net:18414/");
-//                    websocket = new WebSocket("ws://localhost:5050/");
+                   // websocket = new WebSocket("ws://zhizhichun.eicp.net:18414/");
+                    websocket = new WebSocket("ws://localhost:5050/");
                 } else {
                     alert('当前浏览器不支持websocket')
                 }

@@ -31,7 +31,7 @@
 
                         v = v + sprintf("%02x", data[i]) + " ";
                     }
-                    console.log("读取的数据:",v);
+                    console.log("读取的数据:", v);
                     var set1 = data[21] * 256 + data[20];
                     var set2 = data[23] * 256 + data[22];
 
@@ -43,6 +43,8 @@
                     var l_groupe = data[31];
                     var o = ["时间", "经纬度", "场景"];
                     var str = "装置号：" + set1.toString() + "<br>测量点号:" + set1.toString() + "<br>通信地址:" + l_factory + "<br>工作方式:" + o[worktype] + "<br>组号:" + l_groupe.toString();
+
+ 
                     layerAler(str);
 
 //                    if (obj.fn == 320) {
@@ -221,7 +223,7 @@
                 vv.push(0);//测量点号  2字节  
                 var factorycode = ele.l_factorycode;
                 var factor = Str2BytesH(factorycode);
-                if (factor.length!=6) {
+                if (factor.length != 6) {
                     layerAler("灯具通信地址应该是六位字节");
                     return;
                 }
@@ -381,12 +383,12 @@
                         return temp;  
                     },
                 });
-                    
 
-                   $('#gravidaTable').on("check.bs.table", function (field, value, row, element) {
+
+                $('#gravidaTable').on("check.bs.table", function (field, value, row, element) {
                     var index = row.data('index');
                     value.index = index;
-                });    
+                });
 
 
 

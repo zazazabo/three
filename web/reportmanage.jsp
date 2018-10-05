@@ -18,7 +18,7 @@
         <link rel="stylesheet" type="text/css" href="bootstrap-datetimepicker/bootstrap-datetimepicker.css">
         <script src="bootstrap-datetimepicker/bootstrap-datetimepicker.js"></script>
         <style type="text/css">
-           .btn{ margin-left: 20px; }
+            .btn{ margin-left: 20px; }
         </style>
         <script>
             var websocket = null;
@@ -130,9 +130,9 @@
             }
 
 
-            function search(){
+            function search() {
 
-                var o=$("#form1").serializeObject();
+                var o = $("#form1").serializeObject();
                 console.log(o);
                 var opt = {
                     url: "param.report.queryRecord.action",
@@ -170,9 +170,9 @@
 
 
 
-                var o=$("#form1").serializeObject();
+                var o = $("#form1").serializeObject();
                 console.log(o);
-                var comaddr=o.comaddr;
+                var comaddr = o.comaddr;
 
 
                 $('#gravidaTable').bootstrapTable({
@@ -354,10 +354,10 @@
                             var v = row.voltage;
                             var e = row.electric;
                             var pf = row.powerfactor;
-   
+
                             var pa = row.activepower;
                             var p = row.power;
-       
+
                             var josonv = null;
                             var josone = null;
                             var josonpf = null;
@@ -539,7 +539,7 @@
                             limit: params.limit,
                             type_id: "1",
                             day: val,
-                            comaddr:o.comaddr
+                            comaddr: o.comaddr
                         };      
                         return temp;  
                     },
@@ -565,7 +565,7 @@
 
         <link rel="stylesheet" href="gatewayconfig_files/layer.css" id="layui_layer_skinlayercss" style="">
         <style>
-            
+
         </style>
 
     </head>
@@ -573,58 +573,58 @@
     <body>
 
 
-           <div class="row" style=" padding-bottom: 5px;" >
-                <div class="col-xs-12">
-                    <form id="form1">
-                        <table style="border-collapse:separate;  border-spacing:0px 10px;border: 1px solid #16645629;">
-                            <tbody>
-                                <tr>
+        <div class="row" style=" padding-bottom: 5px;" >
+            <div class="col-xs-12">
+                <form id="form1">
+                    <table style="border-collapse:separate;  border-spacing:0px 10px;border: 1px solid #16645629;">
+                        <tbody>
+                            <tr>
 
-                                    <td>
-                                        <span style="margin-left:10px;">网关地址&nbsp;</span>
+                                <td>
+                                    <span style="margin-left:10px;">网关地址&nbsp;</span>
 
-                                        <span class="menuBox">
-                                            <input id="comaddr" class="easyui-combobox" name="comaddr" style="width:150px; height: 30px" 
-                                                   data-options="editable:true,valueField:'id', textField:'text' " />
-                                        </span>  
-                                    </td>
-                                    <td>
-                                        <span style="margin-left:10px;">时期&nbsp;</span>
-
+                                    <span class="menuBox">
+                                        <input id="comaddr" class="easyui-combobox" name="comaddr" style="width:150px; height: 30px" 
+                                               data-options="editable:true,valueField:'id', textField:'text' " />
+                                    </span>  
+                                    <span style="margin-left:10px;">日期&nbsp;</span>
                                     <input id="dd" class="easyui-datebox" name="day" data-options="formatter:myformatter,parser:myparser"></input>
-                                        <script type="text/javascript">
-                                            function myformatter(date) {
-                                                var y = date.getFullYear();
-                                                var m = date.getMonth() + 1;
-                                                var d = date.getDate();
-                                                return y + '-' + (m < 10 ? ('0' + m) : m) + '-' + (d < 10 ? ('0' + d) : d);
+                                    <script type="text/javascript">
+                                        function myformatter(date) {
+                                            var y = date.getFullYear();
+                                            var m = date.getMonth() + 1;
+                                            var d = date.getDate();
+                                            return y + '-' + (m < 10 ? ('0' + m) : m) + '-' + (d < 10 ? ('0' + d) : d);
+                                        }
+                                        function myparser(s) {
+                                            if (!s)
+                                                return new Date();
+                                            var ss = (s.split('-'));
+                                            var y = parseInt(ss[0], 10);
+                                            var m = parseInt(ss[1], 10);
+                                            var d = parseInt(ss[2], 10);
+                                            if (!isNaN(y) && !isNaN(m) && !isNaN(d)) {
+                                                return new Date(y, m - 1, d);
+                                            } else {
+                                                return new Date();
                                             }
-                                            function myparser(s) {
-                                                if (!s)
-                                                    return new Date();
-                                                var ss = (s.split('-'));
-                                                var y = parseInt(ss[0], 10);
-                                                var m = parseInt(ss[1], 10);
-                                                var d = parseInt(ss[2], 10);
-                                                if (!isNaN(y) && !isNaN(m) && !isNaN(d)) {
-                                                    return new Date(y, m - 1, d);
-                                                } else {
-                                                    return new Date();
-                                                }
-                                            }
-                                        </script>
+                                        }
+                                    </script>
+                                    <button type="button" class="btn btn-sm btn-success" onclick="search()" >查找</button>
+                                </td>
+                                <td>
 
-                                         <button type="button" class="btn btn-sm btn-success" onclick="search()" >查找</button>
-                                         <span style=" margin-left: 20px;"></span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table> 
-                    </form>
-                </div>
+
+                                    <span style=" margin-left: 20px;"></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table> 
+                </form>
             </div>
+        </div>
 
-<%-- 
+        <%-- 
 
             <span style="margin-left:20px;">&nbsp;
                 <label class="label label-lg label-success ">日&nbsp;&nbsp;期</label>
@@ -659,12 +659,12 @@
             <span style="margin-left:20px;">
                 <button type="button" class="btn btn-sm btn-success" onclick="search()" >查找</button>
             </span> --%>
- 
+
 
         <%-- <div style="width:100%;" id="div1"> --%>
 
-            <table id="gravidaTable" style="width:100%;" class="text-nowrap table table-hover table-striped">
-            </table>
+        <table id="gravidaTable" style="width:100%;" class="text-nowrap table table-hover table-striped">
+        </table>
         <%-- </div> --%>
     </body>
 </html>
