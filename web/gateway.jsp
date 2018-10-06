@@ -169,38 +169,8 @@
                 return false;
             }
 
-            // function dealsend() {
-
-            //     //            if (websocket != null && websocket.readyState == 1) {
-            //     var allTableData = $("#gravidaTable").bootstrapTable('getData'); //获取表格的所有内容行
-            //     if (allTableData.length > vvvv) {
-            //         var obj = allTableData[vvvv];
-            //         var addrArea = Str2Bytes(obj.comaddr);
-            //         var straddr = sprintf("%02d", addrArea[1]) + sprintf("%02d", addrArea[0]) + sprintf("%02d", addrArea[3]) + sprintf("%02d", addrArea[2]);
-            //         var user = new Object();
-            //         var ele = {};
-            //         user.begin = '6A';
-            //         user.msg = "getStatus";
-            //         user.res = 1;
-            //         user.row = vvvv;
-            //         user.parama = ele;
-            //         user.page = 2;
-            //         user.function = "getMessage";
-            //         user.addr = straddr; //"02170101";
-            //         user.data = false;
-            //         user.end = '6A';
-            //         parent.parent.sendData(user);
-            //         //  console.log(user);
-            //         // var datajson = JSON.stringify(user);
-            //         // websocket.send(datajson);
-            //         vvvv += 1;
-            //     } else {
-            //         clearInterval(flag);
-            //         vvvv = 0;
-            //     }
-            // }
-
             $(function () {
+                
                 $('#warningtable').bootstrapTable({
                     columns: [
                         {
@@ -356,9 +326,7 @@
                     onLoadSuccess: function (data) {
                         if (Array.isArray(data) && data.length > 0) {
                             $(this).combobox('select', data[0].id)
-                        } else {
-                            $(this).combobox('select', );
-                        }
+                        } 
                     }
                 })
 
@@ -628,7 +596,7 @@
 
 
         </div>
-        <table id="gravidaTable" style="width:100%;" class="text-nowrap table table-hover table-striped">
+        <table id="gravidaTable" style="width:100%;">
         </table>
 
 

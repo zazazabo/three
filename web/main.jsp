@@ -298,10 +298,11 @@
 
         <div class="wraper"> 
             <div class="bodyLeft" style="background: rgb(14, 98, 199) none repeat scroll 0% 0%;">
-                <div class="bodyLeftTop listdisplayNone" style="background: rgb(92, 183, 92) none repeat scroll 0% 0%">
+                <div class="bodyLeftTop listdisplayNone" style="background:#5cb75c ">
                     <span class="menuMessage" style="width:80px;margin-left:30px;">智慧城市照明管理系统</span>
                 </div>
-                <ul class="layui-nav layui-nav-tree layui-nav-side MenuBox ">
+         
+                <ul class="layui-nav layui-nav-tree  MenuBox " >
                 </ul>
             </div>
 

@@ -398,9 +398,7 @@
                     onLoadSuccess: function (data) {
                         if (Array.isArray(data) && data.length > 0) {
                             $(this).combobox("select", data[0].id);
-                        } else {
-                            $(this).combobox("select", );
-                        }
+                        } 
                     },
                     onSelect: function (record) {
                         $("#gravidaTable").bootstrapTable('refresh');
@@ -420,9 +418,7 @@
                         if (Array.isArray(data) && data.length > 0) {
                             $(this).combobox('select', data[0].id);
 
-                        } else {
-                            $(this).combobox('select', );
-                        }
+                        } 
                     },
                     onSelect: function (record) {
                         $('#type' + record.p_type).show();

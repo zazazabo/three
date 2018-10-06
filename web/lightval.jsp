@@ -281,28 +281,6 @@
             }
 
 
-//            function dealsend2(data, fn, func, comaddr, type, param, val) {
-//                var user = new Object();
-//                user.begin = '6A';
-//                user.res = 1;
-//                user.status = "";
-//                user.comaddr = comaddr;
-//                user.fn = fn;
-//                user.function = func;
-//                user.param = param;
-//                user.page = 2;
-//                user.msg = "A5";
-//                user.res = 1;
-//                user.val = val;
-//                user.type = type;
-//                user.addr = getComAddr(comaddr); //"02170101";
-//                user.data = data;
-//                user.len = data.length;
-//                user.end = '6A';
-//                console.log(user);
-//                parent.parent.sendData(user);
-//            }
-
             $(function () {
                 $('#gravidaTable').bootstrapTable({
                     showExport: true, //是否显示导出
@@ -471,10 +449,7 @@
                     onLoadSuccess: function (data) {
                         if (Array.isArray(data) && data.length > 0) {
                             $(this).combobox('select', data[0].id);
-                        } else {
-                            $(this).combobox('select', );
-                        }
-                        console.log(data);
+                        } 
                     },
                     onSelect: function (record) {
                         var url = "lamp.GroupeForm.getGroupe.action?l_comaddr=" + record.id + "&l_deplayment=1";
@@ -489,12 +464,6 @@
                         $("#light" + record.value).show();
                         var a1 = 1 - parseInt(record.value);
                         $("#light" + a1.toString()).hide();
-//                        console.log(o);
-
-//                        var o1 = "#light" + record.value;
-//                        $("#light" + record.value).show();
-//                        var j = 1 - parseInt(record.value);
-//                        $("#light" + j.toString()).hide();
 
                     }
                 });

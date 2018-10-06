@@ -929,10 +929,10 @@
 
                                         <tr >
                                             <td>
-                                                <span  style=" float: right; margin-right: 2px;" >行政区划码:</span>
+                                                <span  style=" float: right; margin-right: 2px;" >行政区域码:</span>
                                             <td>
 
-                                                <input id="area"  class="form-control" name="area" style="width:150px;"  placeholder="区划码" type="text">&nbsp;
+                                                <input id="area"  class="form-control" name="area" style="width:150px;"  placeholder="区域码" type="text">&nbsp;
                                             </td>
 
                                         </tr>                                   

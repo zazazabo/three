@@ -350,22 +350,13 @@
                     onLoadSuccess: function (data) {
                         if (Array.isArray(data) && data.length > 0) {
                             $(this).combobox('select', data[0].id);
-                        } else {
-                            $(this).combobox('select', );
-                        }
+                        } 
                     },
                     onSelect: function (record) {
                         var obj = {l_comaddr: record.id};
                         $("#l_groupe").combobox('clear');
                         var url = "lamp.GroupeForm.getGroupe.action?l_comaddr=" + record.id + "&l_deplayment=1";
                         $("#l_groupe").combobox('reload', url);
-
-//                        var opt = {
-//                            url: "test1.lamp.Groupe.action",
-//                            silent: true,
-//                            query: obj
-//                        };
-//                        $('#gravidaTable').bootstrapTable('refresh', opt);
                     }
                 });
 
@@ -384,9 +375,7 @@
                         if (Array.isArray(data) && data.length > 0) {
                             $(this).combobox('select', data[0].id);
 
-                        } else {
-                            $(this).combobox('select', );
-                        }
+                        } 
                         for (var i = 1; i < 9; i++) {
                             $("#__num" + i.toString()).attr('readonly', true);
                         }

@@ -262,10 +262,7 @@
                         if (Array.isArray(data) && data.length > 0) {
                             $(this).combobox('select', data[0].id);
 
-                        } else {
-                            $(this).combobox('select', );
-                        }
-//                        console.log(data);
+                        } 
                     },
                     onSelect: function (record) {
                         var obj = {};

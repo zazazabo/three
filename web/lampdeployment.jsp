@@ -262,9 +262,7 @@
                     onLoadSuccess: function (data) {
                         if (Array.isArray(data) && data.length > 0) {
                             $(this).combobox('select', data[0].id);
-                        } else {
-                            $(this).combobox('select', );
-                        }
+                        } 
                     },
                     url: "lamp.lampform.getComaddr.action?pid=${param.pid}",
                     onSelect: function (record) {
