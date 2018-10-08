@@ -276,8 +276,6 @@
             }
 
             function lightCB(obj) {
-                console.log(obj);
-<<<<<<< HEAD
                 if (obj.status == "success") {
                     if (obj.fn == 301) {
                         layerAler("单灯调光成功");
@@ -317,48 +315,7 @@
                         });
                     }
                 }
-=======
-                // if (obj.status == "success") {
-                //     if (obj.fn == 301) {
-                //         layerAler("单灯调光成功");
-                //         var param = obj.param;
-                //         var o = {};
-                //         o.l_value = obj.val;
-                //         o.id = param.id;
-                //         $.ajax({async: false, url: "test1.lamp.modifyvalue.action", type: "get", datatype: "JSON", data: o,
-                //             success: function (data) {
-                //                 var arrlist = data.rs;
-                //                 if (arrlist.length == 1) {
-                //                     $("#gravidaTable").bootstrapTable('updateCell', {index: param.row, field: "l_value", value: obj.val});
-                //                 }
-                //             },
-                //             error: function () {
-                //                 alert("提交失败！");
-                //             }
-                //         });
-                //     } else if (obj.fn == 302) {
 
-                //         var param = obj.param;
-                //         var o = {};
-                //         o.l_value = obj.val;
-                //         o.l_comaddr = obj.comaddr;
-                //         o.l_groupe = param.l_groupe;
-                //         $.ajax({async: false, url: "test1.lamp.modifygroupeval.action", type: "get", datatype: "JSON", data: o,
-                //             success: function (data) {
-                //                 var arrlist = data.rs;
-                //                 if (arrlist.length >= 1) {
-
-                //                     $('#gravidaTable').bootstrapTable('refresh');
-                //                 }
-                //             },
-                //             error: function () {
-                //                 alert("提交失败！");
-                //             }
-                //         });
-
-                //     }
-                // }
->>>>>>> 19042c1af0530e1e16a803612d88277ed75df326
             }
 
             function  lightsingle() {
