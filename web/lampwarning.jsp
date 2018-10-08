@@ -11,18 +11,19 @@
     <head>
         <%@include  file="js.jspf" %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <script type="text/javascript" src="js/genel.js"></script>
+        <script type="text/javascript" src="js/genel.js"></script>
 
         <style>
             .btn{ margin-left: 10px; }
-             .pull-right.pagination-detail{display:none;}
+            .pull-right.pagination-detail{display:none;}
+            
         </style>
     </head>
 
     <script type="text/javascript" src="js/genel.js"></script>
     <script type="text/javascript" src="js/getdate.js"></script>
     <script>
-        
+
         var u_name = parent.parent.getusername();
         var o_pid = parent.parent.getpojectId();
         function layerAler(str) {
@@ -36,16 +37,16 @@
 
         $(function () {
 
-                $('#l_comaddr').combobox({
-                    url: "gayway.GaywayForm.getComaddr.action?pid=${param.pid}",
-                    onLoadSuccess: function (data) {
-                        if (Array.isArray(data) && data.length > 0) {
-                            $(this).combobox("select", data[0].id);
-                        }
-                    },
-                    onSelect: function (record) {
+            $('#l_comaddr').combobox({
+                url: "gayway.GaywayForm.getComaddr.action?pid=${param.pid}",
+                onLoadSuccess: function (data) {
+                    if (Array.isArray(data) && data.length > 0) {
+                        $(this).combobox("select", data[0].id);
                     }
-                });
+                },
+                onSelect: function (record) {
+                }
+            });
 
 
 
@@ -58,26 +59,34 @@
             var data2 = [{"name": "灯控器故障开关"}, {"name": "温度故障开关"}, {"name": "超负荷故障开关"}, {"name": "功率因数过低故障开关"}, {"name": "时钟故障开关"}, {"name": "集中器与灯控器通信中断"}, {"name": "灯珠故障"}, {"name": "电源故障"}];
 
 
-
+            var str = "<button  type='button'  onclick='setPreWarning()' class='btn btn-success btn-sm'>设置灯具预警参数</button>";
             $('#prewarningtable').bootstrapTable({
-                columns: [
-                    {
-                        title: '单选',
-                        field: 'select',
-                        //复选框
-                        checkbox: true,
-                        width: 25,
-                        align: 'center',
-                        valign: 'middle'
-                    }, {
-                        field: 'name',
-                        title: '预警参数',
-                        width: 25,
-                        align: 'center',
-                        valign: 'middle'
-                    }
-                ],
-                 paginationDetailHAlign:'right',
+                columns: [[{
+                            title: str,
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle',
+                            colspan: 2,
+                            rowspan: 1
+
+                        }], [
+                        {
+                            title: '单选',
+                            field: 'select',
+                            //复选框
+                            checkbox: true,
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: 'name',
+                            title: '预警参数',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }
+                    ]],
+                paginationDetailHAlign: 'right',
                 data: data1,
                 singleSelect: false,
                 locale: 'zh-CN', //中文支持,
@@ -88,26 +97,34 @@
 
             });
 
-
+            var str1 = "<button   type='button'  onclick='setWarning()' class='btn btn-success btn-sm'>设置灯具报警参数</button>";
             $('#warningtable').bootstrapTable({
-                columns: [
-                    {
-                        title: '单选',
-                        field: 'select',
-                        //复选框
-                        checkbox: true,
-                        width: 25,
-                        align: 'center',
-                        valign: 'middle'
-                    }, {
-                        field: 'name',
-                        title: '报警参数',
-                        width: 25,
-                        align: 'center',
-                        valign: 'middle'
-                    }
-                ],
-                 paginationDetailHAlign:'right',
+                columns: [[{
+                            title: str1,
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle',
+                            colspan: 2,
+                            rowspan: 1
+
+                        }], [
+                        {
+                            title: '单选',
+                            field: 'select',
+                            //复选框
+                            checkbox: true,
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: 'name',
+                            title: '报警参数',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }
+                    ]],
+                paginationDetailHAlign: 'right',
                 data: data2,
                 singleSelect: false,
                 locale: 'zh-CN', //中文支持,
@@ -121,25 +138,25 @@
 
         })
 
-        function lampwarnningCb(obj){
-             if (obj.status == "success") {
+        function lampwarnningCb(obj) {
+            if (obj.status == "success") {
 
-                if (obj.msg=="A4"&&obj.fn==602) {
-                     layerAler("预警参数设置成功");
-                 }else if (obj.msg=="A4"&&obj.fn==604) {
+                if (obj.msg == "A4" && obj.fn == 602) {
+                    layerAler("预警参数设置成功");
+                } else if (obj.msg == "A4" && obj.fn == 604) {
                     layerAler("报警参数设置成功");
-                 }
-              
+                }
+
             }
         }
 
         function setPreWarning() {
             var obj = $("#form1").serializeObject();
-         if (obj.l_comaddr=="") {
-            layerAler("请选择网关");
-            return;
-         }  
-           addlogon(u_name, "设置", o_pid, "路灯预报警", "设置灯具预警参数");
+            if (obj.l_comaddr == "") {
+                layerAler("请选择网关");
+                return;
+            }
+            addlogon(u_name, "设置", o_pid, "路灯预报警", "设置灯具预警参数");
             var arr = $("#prewarningtable").bootstrapTable('getData');
             var vv = [];
             var u = 0x00;
@@ -169,11 +186,11 @@
         }
 
         function setWarning() {
-         var obj = $("#form1").serializeObject();
-         if (obj.l_comaddr=="") {
-            layerAler("请选择网关");
-            return;
-         }
+            var obj = $("#form1").serializeObject();
+            if (obj.l_comaddr == "") {
+                layerAler("请选择网关");
+                return;
+            }
             addlogon(u_name, "设置", o_pid, "路灯预报警", "设置灯具报警参数");
             var arr = $("#warningtable").bootstrapTable('getData');
             var vv = [];
@@ -210,31 +227,31 @@
             <div class="container"  >
 
 
-            <div class="row" style=" padding-top: 20px; padding-bottom: 20; width: 700px;" align="center" >
-                <div class="col-xs-12">
-                    <form id="form1">
-                        <table style="">
-                            <tbody>
-                                <tr>
+                <div class="row" style=" padding-top: 20px; padding-bottom: 20; width: 700px;" align="center" >
+                    <div class="col-xs-12">
+                        <form id="form1">
+                            <table style="">
+                                <tbody>
+                                    <tr>
 
-                                    <td>
-                                        <span style="margin-left:10px;">网关地址&nbsp;</span>
+                                        <td>
+                                            <span style="margin-left:10px;">网关地址&nbsp;</span>
 
-                                        <span class="menuBox">
-                                            <input id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 
-                                                   data-options="editable:true,valueField:'id', textField:'text' " />
-                                        </span>  
-                                        <button  type="button"  onclick="setPreWarning()" class="btn btn-success btn-sm">设置灯具预警参数</button>
-                                    <button  style=" float: right;" type="button"  onclick="setWarning()" class="btn btn-success btn-sm">设置灯具报警参数</button>
-                                    &nbsp;
-                                    </td>
-            
-                                </tr>
-                            </tbody>
-                        </table> 
-                    </form>
+                                            <span class="menuBox">
+                                                <input id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 
+                                                       data-options="editable:true,valueField:'id', textField:'text' " />
+                                            </span>  
+                                            <!--<button  type="button"  onclick="setPreWarning()" class="btn btn-success btn-sm">设置灯具预警参数</button>-->
+                                            <!--                                            <button  style=" float: right;" type="button"  onclick="setWarning()" class="btn btn-success btn-sm">设置灯具报警参数</button>-->
+
+                                        </td>
+
+                                    </tr>
+                                </tbody>
+                            </table> 
+                        </form>
+                    </div>
                 </div>
-            </div>
 
 
 
@@ -252,9 +269,9 @@
 
                 </div>
 
-        <div style=" margin-top: 20px;">
+                <div style=" margin-top: 20px;">
 
-        </div>
+                </div>
 
             </div>
         </div>

@@ -345,19 +345,21 @@
                             width: 25,
                             align: 'center',
                             valign: 'middle'
-                        }, {
-                            field: 'p_Longitude',
-                            title: '经度',
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
-                            field: 'p_latitude',
-                            title: '纬度',
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
+                        }, 
+//                        {
+//                            field: 'p_Longitude',
+//                            title: '经度',
+//                            width: 25,
+//                            align: 'center',
+//                            valign: 'middle'
+//                        }, {
+//                            field: 'p_latitude',
+//                            title: '纬度',
+//                            width: 25,
+//                            align: 'center',
+//                            valign: 'middle'
+//                        }
+                         {
                             field: 'p_attr',
                             title: '方案类型',
                             width: 25,
@@ -427,7 +429,7 @@
 
                 <select class="easyui-combobox" data-options="editable:false" id="p_type_query" name="p_type_query" style="width:150px; height: 30px">
                     <option value="0">时间</option>
-                    <option value="1">经纬度</option>           
+                    <!--<option value="1">经纬度</option>-->           
                 </select>
 
                 <!--                <select name="p_type_query" id="p_type_query" class="input-sm" style="width:150px;">

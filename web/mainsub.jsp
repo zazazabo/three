@@ -297,7 +297,7 @@
                 
                 $("#differenceConsumption").html(diffpower.toString());
                 var status = diffpower < 0 ? "异常" : "正常";
-                $("#status").html("正常");
+                $("#status").html(status);
 
                 var jnl = 1 - fatualpower / fplanpower
                   jnl=  isNaN(jnl)==true?0:jnl;

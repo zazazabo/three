@@ -428,9 +428,6 @@
                     }
                 });
 
-                $("#modal_add").on("hidden.bs.modal", function () {
-                    $(this).removeData("bs.modal");
-                });
 
 
 

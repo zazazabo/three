@@ -277,6 +277,7 @@
 
             function lightCB(obj) {
                 console.log(obj);
+<<<<<<< HEAD
                 if (obj.status == "success") {
                     if (obj.fn == 301) {
                         layerAler("单灯调光成功");
@@ -316,6 +317,48 @@
                         });
                     }
                 }
+=======
+                // if (obj.status == "success") {
+                //     if (obj.fn == 301) {
+                //         layerAler("单灯调光成功");
+                //         var param = obj.param;
+                //         var o = {};
+                //         o.l_value = obj.val;
+                //         o.id = param.id;
+                //         $.ajax({async: false, url: "test1.lamp.modifyvalue.action", type: "get", datatype: "JSON", data: o,
+                //             success: function (data) {
+                //                 var arrlist = data.rs;
+                //                 if (arrlist.length == 1) {
+                //                     $("#gravidaTable").bootstrapTable('updateCell', {index: param.row, field: "l_value", value: obj.val});
+                //                 }
+                //             },
+                //             error: function () {
+                //                 alert("提交失败！");
+                //             }
+                //         });
+                //     } else if (obj.fn == 302) {
+
+                //         var param = obj.param;
+                //         var o = {};
+                //         o.l_value = obj.val;
+                //         o.l_comaddr = obj.comaddr;
+                //         o.l_groupe = param.l_groupe;
+                //         $.ajax({async: false, url: "test1.lamp.modifygroupeval.action", type: "get", datatype: "JSON", data: o,
+                //             success: function (data) {
+                //                 var arrlist = data.rs;
+                //                 if (arrlist.length >= 1) {
+
+                //                     $('#gravidaTable').bootstrapTable('refresh');
+                //                 }
+                //             },
+                //             error: function () {
+                //                 alert("提交失败！");
+                //             }
+                //         });
+
+                //     }
+                // }
+>>>>>>> 19042c1af0530e1e16a803612d88277ed75df326
             }
 
             function  lightsingle() {
@@ -334,11 +377,18 @@
                 console.log(select);
                 var l_comaddr = select.l_comaddr;
                 var lampval = $("#val").val();
-                var setcode = select.l_code;
-                var dd = get2byte(setcode);
-                var set1 = Str2BytesH(dd);
-                vv.push(set1[1]);
-                vv.push(set1[0]); //装置序号  2字节
+
+
+                var c = parseInt(select.l_code);
+                var h = c >> 8 & 0x00ff;
+                var l = c & 0x00ff;
+                vv.push(l);
+                vv.push(h); //装置序号  2字节
+
+
+
+
+
                 vv.push(parseInt(lampval));
                 var num = randnum(0, 9) + 0x70;
                 var param = {};
@@ -373,28 +423,6 @@
                 dealsend2("A5", data, 302, "lightCB", comaddr, obj.groupetype, param, groupeval);
             }
 
-
-//            function dealsend2(data, fn, func, comaddr, type, param, val) {
-//                var user = new Object();
-//                user.begin = '6A';
-//                user.res = 1;
-//                user.status = "";
-//                user.comaddr = comaddr;
-//                user.fn = fn;
-//                user.function = func;
-//                user.param = param;
-//                user.page = 2;
-//                user.msg = "A5";
-//                user.res = 1;
-//                user.val = val;
-//                user.type = type;
-//                user.addr = getComAddr(comaddr); //"02170101";
-//                user.data = data;
-//                user.len = data.length;
-//                user.end = '6A';
-//                console.log(user);
-//                parent.parent.sendData(user);
-//            }
 
             $(function () {
                 $('#gravidaTable').bootstrapTable({
@@ -564,10 +592,7 @@
                     onLoadSuccess: function (data) {
                         if (Array.isArray(data) && data.length > 0) {
                             $(this).combobox('select', data[0].id);
-                        } else {
-                            $(this).combobox('select', );
-                        }
-                        console.log(data);
+                        } 
                     },
                     onSelect: function (record) {
                         var url = "lamp.GroupeForm.getGroupe.action?l_comaddr=" + record.id + "&l_deplayment=1";
@@ -582,12 +607,6 @@
                         $("#light" + record.value).show();
                         var a1 = 1 - parseInt(record.value);
                         $("#light" + a1.toString()).hide();
-//                        console.log(o);
-
-//                        var o1 = "#light" + record.value;
-//                        $("#light" + record.value).show();
-//                        var j = 1 - parseInt(record.value);
-//                        $("#light" + j.toString()).hide();
 
                     }
                 });
