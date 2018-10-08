@@ -103,7 +103,6 @@
 
             }
             function onoff(obj) {
-                alert("1");
                 console.log(obj);
                 if (obj.status == "success") {
                     if (obj.fn == 301) {
