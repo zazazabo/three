@@ -563,10 +563,6 @@
 
         </script>
 
-        <link rel="stylesheet" href="gatewayconfig_files/layer.css" id="layui_layer_skinlayercss" style="">
-        <style>
-
-        </style>
 
     </head>
 
