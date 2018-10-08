@@ -254,7 +254,7 @@ function  buicode(comaddr, C, AFN, SEQ, DA, DT, paraArr) {
     hexData[10] = addrArea[2];         //parseInt(sprintf("0x%02d", addrArea[2]), 16)
     hexData[11] = 0x02  //地址C  单地址或组地址
     hexData[12] = AFN;  //功能码
-    hexData[13] = 0x70;SEQ  //帧序列  
+    hexData[13] = 0x70;//SEQ  //帧序列  
 
     hexData[14] = datemp[1]; //   DA1
     hexData[15] = datemp[0];

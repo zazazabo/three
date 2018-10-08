@@ -45,12 +45,17 @@
             }
             $(function () {
 
+                for (var i = 0; i < 12; i++) {
+                    var s = (i + 1).toString();
+                    $("#warning_value" + s).attr('readonly', true);
+                }
 
 
             })
 
             function  saveplan() {
                 var f1 = $("#form3").serializeObject();
+                console.log(f1);
                 var vday = $("#formyear").serializeObject();
 
                 if (vday.day == "") {
@@ -63,10 +68,12 @@
                     var t = k.indexOf("plan_value");
                     if (t != -1) {
                         var a = k.substring(t + len1);
-                        var warningstr="warning_value" + a;  
-                        var warningval=f1[warningstr];
+                        var warningstr = "warning_value" + a;
+                        //var warningval=f1[warningstr];
+                        var warnbl = $("#warning_ration").val();
+                        var warningval = parseInt(f1[k]) * parseInt(warnbl)/100;
                         var obj = {"day": vday.day, "m": a};
-                        var oo = {"day": vday.day + "-" + a + "-01", "power": f1[k],"warnpower":warningval,"year":vday.day,"month":a};
+                        var oo = {"day": vday.day + "-" + a + "-01", "power": f1[k], "warnpower": warningval, "year": vday.day, "month": a};
                         console.log(oo);
                         $.ajax({async: false, url: "param.power.anylize1.action", type: "get", datatype: "JSON", data: obj,
                             success: function (data) {
@@ -75,7 +82,7 @@
                                 if (arr.length == 0) {
                                     $.ajax({async: false, url: "param.power.insert.action", type: "get", datatype: "JSON", data: oo,
                                         success: function (data) {
-            
+
                                         },
                                         error: function () {
                                             alert("提交插入失败！");
@@ -87,7 +94,7 @@
 
                                     $.ajax({async: false, url: "param.power.update.action", type: "get", datatype: "JSON", data: oo,
                                         success: function (data1) {
-           
+
                                         },
                                         error: function () {
                                             alert("提交插入失败！");
@@ -125,35 +132,35 @@
 
                         }
 
-                        
+
 
                         for (var i = 0; i < arrbefor.length; i++) {
                             var v1 = arrbefor[i];
                             console.log(v1);
                             var id = "#plan_valueto" + v1.m;
                             $(id).val(v1.power);
-                           
+
                             // $("#warning_valueto" + v1.m).val(v1.warnpower);
                         }
 
-                  
-                        var s1=0;
-                        var s2=0;
+
+                        var s1 = 0;
+                        var s2 = 0;
                         var arrnow = data.now;
                         for (var i = 0; i < arrnow.length; i++) {
                             var v1 = arrnow[i];
                             console.log(v1);
                             var id = "#plan_value" + v1.m;
                             $(id).val(v1.power);
-                             s1=s1+parseInt(v1.power);
-                             s2=s2+parseInt(v1.warnpower);
+                            s1 = s1 + parseInt(v1.power);
+                            s2 = s2 + parseInt(v1.warnpower);
                             $("#warning_value" + v1.m).val(v1.warnpower);
                         }
                         console.log(s1);
 
-                              $("#annual_plan_value").html(s1.toString());
-                              var s3=s2/s1*100;
-                              $("#warning_ration").val(s3.toString());
+                        $("#annual_plan_value").html(s1.toString());
+                        var s3 = s2 / s1 * 100;
+                        $("#warning_ration").val(s3.toString());
 
                     },
                     error: function () {
@@ -206,7 +213,7 @@
                             预警比例：
                         </td>
                         <td width="24%" align="left">
-                            <input id="warning_ration" runat="server" cssclass="tdfont" font-size="20px" style="width: 150px; font-size: 26px; font-weight: bold; color: #009933; height: 30px;
+                            <input id="warning_ration" runat="server" name="warning_ration" cssclass="tdfont" font-size="20px" style="width: 150px; font-size: 26px; font-weight: bold; color: #009933; height: 30px;
                                    border: 0px; text-align: center; border-bottom: 1px solid #ddd;" value="0" type="text">
                             <span style="font-size: 33px;">%</span>&nbsp;
                         </td>
