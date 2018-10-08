@@ -74,7 +74,13 @@
                             width: 25,
                             align: 'center',
                             valign: 'middle'
-                        }, {
+                        },{
+                            field: 'code',
+                            title: '项目编号',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        },{
                             field: 'area',
                             title: '项目地址',
                             width: 25,
@@ -233,14 +239,21 @@
                 }
                 $("#pname").val(selects[0].name);
                 $("#parea").val(selects[0].area);
+                $("#code").val(selects[0].code);
                 $("#p_id").val(selects[0].id);
                 $("#pjj2").modal();
             }
             
             function update() {
+                var pname = $("#pname").val();
+                if(pname==""){
+                    layerAler("项目名不能为空");
+                    return;
+                }
                 addlogon(u_name, "修改", o_pid, "项目管理", "修改项目信息");
                 var obj = {};
                 obj.area = $("#parea").val();
+                obj.name = pname;
                 obj.id = $("#p_id").val();
                 $.ajax({async: false, url: "login.project.updProject.action", type: "get", datatype: "JSON", data: obj,
                     success: function (data) {
@@ -444,11 +457,18 @@
                     <input type="hidden" id="p_id" name="id" />
                     <table>
                         <tbody>
+                            <tr>
+                                <td>
+                                    <span style="margin-left:20px;">项目编号</span>&nbsp;
+                                    <input id="code"    class="form-control"  name="name" style="width:150px;display: inline; " readonly="readonly" type="text">
+                                </td>
 
+                                <td></td>
+                            </tr>
                             <tr>
                                 <td>
                                     <span style="margin-left:20px;">项目名称</span>&nbsp;
-                                    <input id="pname"    class="form-control"  name="name" style="width:150px;display: inline; " readonly="readonly" type="text">
+                                    <input id="pname"    class="form-control"  name="name" style="width:150px;display: inline; "  type="text">
                                 </td>
 
                                 <td></td>

@@ -21,7 +21,7 @@
                 display: none;
             }
             #div1{
-/*                display: none;*/
+                /*                display: none;*/
             }
             #div3{
                 display: none;
@@ -62,7 +62,7 @@
     </head>
 
     <body>
-         <div style=" margin-top: 10px;">
+        <div style=" margin-top: 10px;">
             <span style="margin-top: 10px; font-size: 18px;margin-left: 10px;">
                 查询方式：
                 <select  id="YMD" style="width:150px; height: 30px">
@@ -156,7 +156,7 @@
                 </select>
             </span>
             <span id="list" style="display:none; margin-top: 10px;">
-                <input id="comaddrlist" data-options='editable:false,valueField:"id", textField:"text"' class="easyui-combobox"/>
+                <input id="comaddrlist" data-options='editable:false,valueField:"id", textField:"text" ' class="easyui-combobox"/>
             </span>
         </div>
         <div style="" id="div1">
@@ -173,10 +173,18 @@
         </div>
 
         <script>
+
+            $("#comaddrlist").combobox({
+                url: "login.map.getallcomaddr.action?pid=${param.pid}",
+                onLoadSuccess: function (data) {
+                    $(this).combobox("select", data[0].id);
+                    $(this).val(data[0].text);
+                }
+            });
             $(function () {
                 var pid2 = parent.parent.getpojectId();
-                 $('#getdayTable').bootstrapTable({
-                     url: 'login.reportmanage.getday.action?pid=' + pid2,
+                $('#getdayTable').bootstrapTable({
+                    url: 'login.reportmanage.getday.action?pid=' + pid2,
                     columns: [[{
                                 field: '',
                                 title: '日消耗量',
@@ -229,9 +237,6 @@
                     }
                 });
 
-                var id = "#comaddrlist";
-                var pid = parent.parent.getpojectId();
-                combobox(id, pid);
 
                 $("#fs").change(function () {
                     if ($(this).val() == "2") {
@@ -288,19 +293,8 @@
                 });
             });
 
-            //网关下拉框
-            function combobox(id, pid) {
-                $(id).combobox({
-                    url: "login.map.getallcomaddr.action?pid=" + pid,
-                    onLoadSuccess: function (data) {
-                        $(this).combobox("select", data[0].id);
-                        $(this).val(data[0].text);
-                    }
-                });
-            }
-            
-            
-             function getyear() {
+
+            function getyear() {
                 //按年查询
                 $('#getYearTable').bootstrapTable({
                     //url: 'login.reportmanage.getyear.action?pid=' + pid2,
