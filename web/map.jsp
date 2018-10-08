@@ -375,7 +375,7 @@
                 layer.close(layer.index);
             }
             // 百度地图API功能
-            var map = new BMap.Map("allmap"); // 创建Map实例
+            var map = new BMap.Map("allmap",{enableMapClick: false}); // 创建Map实例
             map.centerAndZoom(new BMap.Point(116.404, 39.915), 11); // 初始化地图,设置中心点坐标和地图级别
             //添加地图类型控件
             map.addControl(new BMap.MapTypeControl({
@@ -385,7 +385,6 @@
                 ]}));
             map.centerAndZoom("湛江", 15); // 设置地图显示的城市 此项是必须设置的
             map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
-
 
             var top_left_control = new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_LEFT}); // 左上角，添加比例尺
             var top_left_navigation = new BMap.NavigationControl(); //左上角，添加默认缩放平移控件
@@ -695,6 +694,8 @@
                         $("#lamptable").bootstrapTable('refresh', opt);
                         var id = "#lampcomaddrlist";
                         combobox(id, porjectId);
+                        draw = false;
+                        idlist = [];
                         $("#addlamp").dialog("open");
 
 

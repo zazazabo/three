@@ -11,6 +11,9 @@
         <%@include  file="js.jspf" %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>报警记录</title>
+        <link rel="stylesheet" type="text/css" href="bootstrap-datetimepicker/bootstrap-datetimepicker.css">
+        <link rel="stylesheet" type="text/css" href="bootstrap-3.3.7-dist/css/bootstrap.css">
+        <script src="bootstrap-datetimepicker/bootstrap-datetimepicker.js"></script>
         <script>
             $(function () {
                 $('#reordtabel').bootstrapTable({
@@ -102,8 +105,8 @@
                     },
                 });
                 $("#select").click(function () {
-                    var statr = $("#startime").val();
-                    var end = $("#endtime").val();
+                    var statr = $("#sday").val();
+                    var end = $("#eday").val();
                     var obj = {};
 
                     if (statr == "" && end == "") {
@@ -130,14 +133,46 @@
                     };
                     $("#reordtabel").bootstrapTable('refresh', opt);
                 });
+                 $(".day").datetimepicker({
+                    format: 'yyyy/mm/dd',
+                    language: 'zh-CN',
+                    minView: "month",
+                    todayBtn: 1,
+                    autoclose: 1
+                });
             });
         </script>
     </head>
     <body>
-        <div style="float:left;position:relative;z-index:100;margin:12px 0 20px 50px; font-size: 18px">
+<!--        <div style="float:left;position:relative;z-index:100;margin:12px 0 20px 50px; font-size: 18px">
             <span>搜索时间：<input type="date" id="startime"/></span>
             <span style="margin-left: 10px">至：<input type="date" id="endtime"/></span>
             <span><input type="button" class="btn btn-sm btn-success" value="查询" id="select"></span>
+        </div>-->
+        <div style="margin-top:15px; font-size: 18px;margin-left: 10px;" id="Day">
+            <form action="" id="day1" class="form-horizontal" role="form" style="float:left; width: 166px;">
+                <label for="dtp_input2" class="control-label" style="float: left;"></label>
+                <input id="dtp_input2" value="" type="hidden">
+                <span class="input-group date col-md-2 day" style="float:initial;" data-date=""  data-link-field="dtp_input2">
+                    <input id="sday" name="day"  class="form-control" style="width:90px;" size="16" readonly="readonly" type="text">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                </span>
+            </form>
+            <span style=" font-size: 18px; float: left; margin-top: 4px;">&nbsp;至&nbsp;</span>
+            <form action="" id="day2" class="form-horizontal" role="form" style="float:left; width: 166px;">
+                <label for="dtp_input2" class="control-label" style="float: left;"></label>
+                <input id="dtp_input2" value="" type="hidden">
+                <span class="input-group date col-md-2 day" style="float:initial;" data-date=""  data-link-field="dtp_input2">
+                    <input id="eday" name="day"  class="form-control" style="width:90px;" size="16" readonly="readonly" type="text">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                </span>
+            </form>
+            <span style="font-size: 18px; margin-left: 10px;">
+                <button type="button" class="btn btn-sm btn-success" id="select" >查询</button>
+            </span>
+            <button style=" height: 30px;" type="button" id="btn_download" class="btn btn-primary" onClick ="$('#reordtabel').tableExport({type: 'excel', escape: 'false'})">导出Excel</button>
         </div>
         <div>
             <table id="reordtabel">

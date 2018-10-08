@@ -27,22 +27,123 @@
 
             function search() {
                 var o = $("#formsearch").serializeObject();
-                 console.log(o);
+                console.log(o);
                 var opt = {
                     url: "lamp.lampform.getlampList.action",
                     query: o
-     
+
                 };
                 $('#gravidaTable').bootstrapTable('refresh', opt);
 
             }
             //开灯
-            function onlamp(){
+            function onlamp() {
+                //var o = $("#formsearch").serializeObject();
+                var selects = $('#gravidaTable').bootstrapTable('getSelections');
+
+                if (selects.length == 0) {
+                    layerAler("请勾选灯具数据");
+                    return;
+                }
+                addlogon(u_name, "灯具调光", o_pid, "灯具调光", "开灯");
+                for (var i = 0; i < selects.length; i++) {
+                    console.log("cs:" + i);
+                    var vv = new Array();
+                    //var l_comaddr = $("#l_comaddr").combobox('getValue');
+                    var select = selects[i];
+                    var l_comaddr = select.l_comaddr;
+                    var lampval = 100;
+                    var setcode = select.l_code;
+                    var dd = get2byte(setcode);
+                    var set1 = Str2BytesH(dd);
+                    vv.push(set1[1]);
+                    vv.push(set1[0]); //装置序号  2字节
+                    vv.push(parseInt(lampval));
+                    var num = randnum(0, 9) + 0x70;
+                    var param = {};
+                    param.id = select.id;
+                    param.row = i;
+                    var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 301, vv); //01 03
+                    //dealsend(sss, o1);
+                    dealsend2("A5", data, 301, "onoff", l_comaddr, 0, param, lampval);
+
+                }
 
             }
             //关灯
-            function offlamp(){
-                
+            function offlamp() {
+                var selects = $('#gravidaTable').bootstrapTable('getSelections');
+
+                if (selects.length == 0) {
+                    layerAler("请勾选灯具数据");
+                    return;
+                }
+                addlogon(u_name, "灯具调光", o_pid, "灯具调光", "关灯");
+                for (var i = 0; i < selects.length; i++) {
+                    var vv = new Array();
+                    //var l_comaddr = $("#l_comaddr").combobox('getValue');
+                    var select = selects[i];
+                    var l_comaddr = select.l_comaddr;
+                    var lampval = 0;
+                    var setcode = select.l_code;
+                    var dd = get2byte(setcode);
+                    var set1 = Str2BytesH(dd);
+                    vv.push(set1[1]);
+                    vv.push(set1[0]); //装置序号  2字节
+                    vv.push(parseInt(lampval));
+                    var num = randnum(0, 9) + 0x70;
+                    var param = {};
+                    param.id = select.id;
+                    param.row = i;
+                    var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 301, vv); //01 03
+                    //dealsend(sss, o1);
+                    dealsend2("A5", data, 301, "onoff", l_comaddr, 0, param, lampval);
+
+                }
+
+            }
+            function onoff(obj) {
+                alert("1");
+                console.log(obj);
+                if (obj.status == "success") {
+                    if (obj.fn == 301) {
+                        layerAler("灯具打开/关闭成功");
+                        var param = obj.param;
+                        var o = {};
+                        o.l_value = obj.val;
+                        o.id = param.id;
+                        $.ajax({async: false, url: "test1.lamp.modifyvalue.action", type: "get", datatype: "JSON", data: o,
+                            success: function (data) {
+                                var arrlist = data.rs;
+                                if (arrlist.length == 1) {
+                                    $("#gravidaTable").bootstrapTable('updateCell', {index: param.row, field: "l_value", value: obj.val});
+                                }
+                            },
+                            error: function () {
+                                alert("提交失败！");
+                            }
+                        });
+                    } else if (obj.fn == 302) {
+
+                        var param = obj.param;
+                        var o = {};
+                        o.l_value = obj.val;
+                        o.l_comaddr = obj.comaddr;
+                        o.l_groupe = param.l_groupe;
+                        $.ajax({async: false, url: "test1.lamp.modifygroupeval.action", type: "get", datatype: "JSON", data: o,
+                            success: function (data) {
+                                var arrlist = data.rs;
+                                if (arrlist.length >= 1) {
+
+                                    $('#gravidaTable').bootstrapTable('refresh');
+                                }
+                            },
+                            error: function () {
+                                alert("提交失败！");
+                            }
+                        });
+                    }
+                }
             }
             function sceneCB(obj) {
                 console.log(obj);
@@ -175,47 +276,47 @@
             }
 
             function lightCB(obj) {
-                console.log(obj);
-                // if (obj.status == "success") {
-                //     if (obj.fn == 301) {
-                //         layerAler("单灯调光成功");
-                //         var param = obj.param;
-                //         var o = {};
-                //         o.l_value = obj.val;
-                //         o.id = param.id;
-                //         $.ajax({async: false, url: "test1.lamp.modifyvalue.action", type: "get", datatype: "JSON", data: o,
-                //             success: function (data) {
-                //                 var arrlist = data.rs;
-                //                 if (arrlist.length == 1) {
-                //                     $("#gravidaTable").bootstrapTable('updateCell', {index: param.row, field: "l_value", value: obj.val});
-                //                 }
-                //             },
-                //             error: function () {
-                //                 alert("提交失败！");
-                //             }
-                //         });
-                //     } else if (obj.fn == 302) {
 
-                //         var param = obj.param;
-                //         var o = {};
-                //         o.l_value = obj.val;
-                //         o.l_comaddr = obj.comaddr;
-                //         o.l_groupe = param.l_groupe;
-                //         $.ajax({async: false, url: "test1.lamp.modifygroupeval.action", type: "get", datatype: "JSON", data: o,
-                //             success: function (data) {
-                //                 var arrlist = data.rs;
-                //                 if (arrlist.length >= 1) {
+                if (obj.status == "success") {
+                    if (obj.fn == 301) {
+                        layerAler("单灯调光成功");
+                        var param = obj.param;
+                        var o = {};
+                        o.l_value = obj.val;
+                        o.id = param.id;
+                        $.ajax({async: false, url: "test1.lamp.modifyvalue.action", type: "get", datatype: "JSON", data: o,
+                            success: function (data) {
+                                var arrlist = data.rs;
+                                if (arrlist.length == 1) {
+                                    $("#gravidaTable").bootstrapTable('updateCell', {index: param.row, field: "l_value", value: obj.val});
+                                }
+                            },
+                            error: function () {
+                                alert("提交失败！");
+                            }
+                        });
+                    } else if (obj.fn == 302) {
 
-                //                     $('#gravidaTable').bootstrapTable('refresh');
-                //                 }
-                //             },
-                //             error: function () {
-                //                 alert("提交失败！");
-                //             }
-                //         });
+                        var param = obj.param;
+                        var o = {};
+                        o.l_value = obj.val;
+                        o.l_comaddr = obj.comaddr;
+                        o.l_groupe = param.l_groupe;
+                        $.ajax({async: false, url: "test1.lamp.modifygroupeval.action", type: "get", datatype: "JSON", data: o,
+                            success: function (data) {
+                                var arrlist = data.rs;
+                                if (arrlist.length >= 1) {
 
-                //     }
-                // }
+                                    $('#gravidaTable').bootstrapTable('refresh');
+                                }
+                            },
+                            error: function () {
+                                alert("提交失败！");
+                            }
+                        });
+                    }
+                }
+
             }
 
             function  lightsingle() {
@@ -256,7 +357,7 @@
                 dealsend2("A5", data, 301, "lightCB", l_comaddr, o.groupetype, param, lampval);
 
             }
-            
+
             function lightgroupe() {
                 var obj = $("#formsearch").serializeObject();
                 if (isNumber(obj.l_comaddr) == false || isNumber(obj.l_groupe) == false) {
@@ -381,7 +482,7 @@
                                 }
                             }
                         }],
-                    singleSelect: true,
+                    singleSelect: false,
                     sortName: 'id',
                     locale: 'zh-CN', //中文支持,
                     showColumns: true,
@@ -444,18 +545,41 @@
                     }
                 })
 
-                $('#l_comaddr').combobox({
-                    url: "lamp.lampform.getComaddr.action?l_deplayment=1&pid=${param.pid}",
-                    onLoadSuccess: function (data) {
-                        if (Array.isArray(data) && data.length > 0) {
-                            $(this).combobox('select', data[0].id);
-                        } 
-                    },
-                    onSelect: function (record) {
-                        var url = "lamp.GroupeForm.getGroupe.action?l_comaddr=" + record.id + "&l_deplayment=1";
-                        $("#l_groupe").combobox("reload", url);
-                    }
-                });
+
+
+
+
+                        $('#l_comaddr').combobox({
+                            url:"lamp.lampform.getComaddr.action?l_deplayment=1&pid=${param.pid}",
+                            onLoadSuccess: function (data) {
+                                 data = data.distinct();
+                                if (Array.isArray(data) && data.length > 0) {
+                                    $(this).combobox('select', data[0].id);
+                                }
+                            },
+                            onSelect: function (record) {
+                                var url = "lamp.GroupeForm.getGroupe.action?l_comaddr=" + record.id + "&l_deplayment=1";
+                                $("#l_groupe").combobox("reload", url);
+                            }
+                        })
+
+
+
+//                $.ajax({async: false, url: "lamp.lampform.getComaddr.action?l_deplayment=1&pid=${param.pid}", type: "get", datatype: "JSON", data: {},
+//                    success: function (data) {
+//                        data = data.distinct();
+//
+//                    },
+//                    error: function () {
+//                        alert("提交失败！");
+//                    }
+//                });
+
+
+
+
+
+
 
 
                 $('#scenetype').combobox({
@@ -565,9 +689,9 @@
                             <td>
                                 <span style="margin-left:10px;">恢复模式&nbsp;</span>
                                 <select class="easyui-combobox" id="type" name="type" style="width:150px; height: 30px">
-                                    <option value="1">单灯恢复时间控制</option>
-                                    <option value="2">按组恢复时间控制</option>    
-                                    <option value="3">全部恢复时间控制</option>  
+                                    <option value="1">单灯恢复</option>
+                                    <option value="2">按组恢复</option>    
+                                    <option value="3">全部恢复</option>  
                                 </select>
                                 <button  type="button" style="margin-left:20px;" onclick="restore()" class="btn btn-success btn-sm">恢复自动运行</button>
                             </td>

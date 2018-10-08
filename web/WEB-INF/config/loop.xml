@@ -14,7 +14,7 @@
             </xsql>
         </xhandle>
         <xhandle desc="回路的网关" id="getComaddr" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT   tl.l_comaddr as id,tl.l_comaddr as text FROM t_loop tl where @CONDITION 
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT DISTINCT  tl.l_comaddr as id,tl.l_comaddr as text FROM t_loop tl where @CONDITION 
              " var="list">
                 <xflt id="CONDITION" nrp="" tpl="@l_comaddr AND @l_deplayment AND @pid ">
                     <xfltpara id="l_comaddr" nrp="1=1" para="l_comaddr" sql="l_comaddr = ':l_comaddr' ">

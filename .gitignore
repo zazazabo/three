@@ -1,3 +1,7 @@
 /build/
 /dist/
+<<<<<<< HEAD
+/web/tableExport.jquery.plugin/nbproject/private/
+=======
 /dist/three.war
+>>>>>>> 19042c1af0530e1e16a803612d88277ed75df326

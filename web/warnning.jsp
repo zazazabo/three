@@ -54,25 +54,9 @@
                         alert("提交失败！");
                     }
                 });
-                //初始化select2
-                $("#sel_menu1").select2();
-                $("#sel_menu2").select2();
-                //获取所有项目
-                $.ajax({async: false, url: "login.usermanage.getProject.action", type: "get", datatype: "JSON",
-                    success: function (data) {
-                        $("#sel_menu2").empty();//清空下拉框
-                        $.each(data, function (i, item) {
-                            $("#sel_menu2").append("<option value='" + item.id + "'>&nbsp;" + item.text + "</option>");
-                            $("#sel_menu1").append("<option value='" + item.id + "'>&nbsp;" + item.text + "</option>");
-                        });
 
-                    },
-                    error: function () {
-                        alert("提交失败！");
-                    }
-                });
                 $('#gravidaTable').bootstrapTable({
-                    url: 'login.warnning.queryData.action',
+                    url: 'login.warnning.queryData.action?pid='+o_pid,
                     columns: [[{
                                 field: '',
                                 title: '告警配置',
@@ -157,7 +141,6 @@
                     var uid = $("#updid").val();
                     var uemail = $("#updemail").val();
                     var uwarntype = $("#upd_warntype").val();
-                    var upid = $("#sel_menu2").val();
                     if (uname == "") {
                         alert("用户名不能为空");
                         return;
@@ -174,19 +157,7 @@
                         alert("警告类型不能为空");
                         return;
                     }
-                    if (upid == "") {
-                        alert("项目不能为空");
-                        return;
-                    }
-                    var pids = "";
-                    for (var i = 0; i < upid.length; i++) {
-                        if (i == upid.length - 1) {
-                            pids += upid[i];
-                        } else {
-                            pids += upid[i] + ",";
-                        }
-
-                    }
+                   
                     addlogon(u_name, "修改", o_pid, "报警设置", "修改报警管理人员");
                     var obj = {};
                     obj.u_name = uname;
@@ -194,7 +165,6 @@
                     obj.u_email = uemail;
                     obj.u_warntype = uwarntype;
                     obj.u_id = uid;
-                    obj.u_pid = pids;
                     $.ajax({url: "login.warnning.update.action", async: false, type: "get", datatype: "JSON", data: obj,
                         success: function (data) {
                             var arrlist = data.rs;
@@ -224,9 +194,6 @@
                 $("#updemail").val(select.u_email);
                 $("#updid").val(select.u_id);
                 $("#upd_warntype").combobox('setValue', select.u_warntype);
-                var pid = select.u_pid;
-                var pid2 = pid.split(",");
-                $('#sel_menu2').val(pid2).trigger('change');
                 $("#updatetable").modal();
             }
             //添加警告配置
@@ -236,7 +203,7 @@
                 var email = $("#ademail").val();
                 var warntype = $("#adu_warntype").val();
                 var content = $("#adu_content").val();
-                var pid = $("#sel_menu1").val();
+                var pid = o_pid;
                 if (name == "") {
                     alert("请输入名字");
                     return;
@@ -253,19 +220,7 @@
                     alert("请输选择警告类型");
                     return;
                 }
-                if (pid == "") {
-                    alert("请输选择项目");
-                    return;
-                }
-                var pids = "";
-                for (var i = 0; i < pid.length; i++) {
-                    if (i == pid.length - 1) {
-                        pids += pid[i];
-                    } else {
-                        pids += pid[i] + ",";
-                    }
-
-                }
+               
                 addlogon(u_name, "添加", o_pid, "报警设置", "添加报警管理人员");
                 var obj = {};
                 obj.u_phone = phone;
@@ -273,7 +228,7 @@
                 obj.u_email = email;
                 obj.u_warntype = warntype;
                 obj.u_content = content;
-                obj.u_pid = pids;
+                obj.u_pid = pid;
                 $.ajax({url: "login.warnning.addpeople.action", async: false, type: "get", datatype: "JSON", data: obj,
                     success: function (data) {
                         var arrlist = data.rs;
@@ -382,15 +337,6 @@
                                         </td>
                                         <td></td>
                                     </tr> 
-                                    <tr>                                
-                                        <td colspan='3' >
-                                            <span style="margin-left:20px;">项目&nbsp;</span>
-                                            <select id="sel_menu1" multiple="multiple" style="width: 360px;">
-
-                                            </select>
-                                        </td>
-                                    </tr>
-
 
                                 </tbody>
                             </table>
@@ -440,14 +386,6 @@
                                         <input id="updemail" class="form-control"  style="width:175px;display: inline;" placeholder="请输入邮箱" type="text">
                                     </td>
                                 </tr>   
-                                <tr>                                
-                                    <td colspan='3' >
-                                        <span style="margin-left:20px;">项目&nbsp;</span>
-                                        <select id="sel_menu2" multiple="multiple" style="width: 360px;">
-
-                                        </select>
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>

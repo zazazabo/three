@@ -153,7 +153,7 @@
     
     
     
-    <xform desc="统计数据数据" id="reportmanage">
+    <xform desc="统计数据" id="reportmanage">
                          
         <xhandle desc="按日查询数据" id="getday" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select CONVERT(varchar(100),day, 23) as d,SUM( (CONVERT(decimal (18, 2), power45)-  CONVERT(decimal (18, 2), power00))) AS val  from t_power where  @CONDITION   GROUP BY day order by day desc" var="bootstrap">
@@ -355,8 +355,11 @@
     
     <xform desc="报警设置" id="warnning">
         <xhandle desc="告警列表" id="queryData" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_people" var="bootstrap">
-                   
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_people where @CONDITION" var="bootstrap">
+                <xflt id="CONDITION" nrp="" tpl="@u_pid">
+                    <xfltpara id="u_pid" nrp="1=1" para="pid" sql="u_pid = ':pid'">
+                    </xfltpara>
+                </xflt> 
             </xsql>               
         </xhandle>
         <xhandle desc="获取警告类型" id="warntype" rtnype="JSON">
@@ -368,7 +371,7 @@
             </xsql>
         </xhandle>
         <xhandle desc="修改警告人员信息" id="update" rtn="rs" rtnype="JSON">
-            <xsql id="a1" para="u_name,u_phone,u_email,u_warntype,u_pid" tpe="DDL" tpl="update t_people set u_name =':u_name' ,u_phone =':u_phone' ,u_email =':u_email' ,u_warntype =':u_warntype',u_pid=':u_pid'  where  @CONDITION " var="rs">
+            <xsql id="a1" para="u_name,u_phone,u_email,u_warntype" tpe="DDL" tpl="update t_people set u_name =':u_name' ,u_phone =':u_phone' ,u_email =':u_email' ,u_warntype =':u_warntype' where  @CONDITION " var="rs">
                 <xflt id="CONDITION" nrp="" tpl="@u_id ">
                     <xfltpara id="u_id" nrp="1=1" para="u_id" sql="u_id=:u_id">
                     </xfltpara>
@@ -478,7 +481,7 @@
         </xhandle> 
         
         <xhandle desc="修改项目表" id="updProject" rtn="rs" rtnype="JSON">
-            <xsql id="a1" para="area" tpe="DDL" tpl="update t_project set area = ':area' where  @CONDITION " var="rs">
+            <xsql id="a1" para="area,name" tpe="DDL" tpl="update t_project set area = ':area',name=':name' where  @CONDITION " var="rs">
                 <xflt id="CONDITION" nrp="" tpl="@id ">
                     <xfltpara id="id" nrp="1=1" para="id" sql="id=:id">
                     </xfltpara>

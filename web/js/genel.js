@@ -15,6 +15,18 @@ $.fn.serializeObject = function () {
     return o;
 }
 
+ Array.prototype.distinct = function () {
+        return this.reduce(function (new_array, old_array_value) {
+           var str1 =    JSON.stringify(new_array);
+           var str2=JSON.stringify(old_array_value);
+            if (str1.indexOf(str2) == -1) 
+                new_array.push(old_array_value);
+            return new_array; //最终返回的是 prev value 也就是recorder
+        }, []);
+    }
+
+
+
 
 String.prototype.trim = function () {
     return this.replace(/(^\s*)|(\s*$)/g, "");

@@ -209,7 +209,7 @@
                 }
                 var uPattern = /^[a-fA-F0-9]{12}$/;
                 if (uPattern.test(o.l_factorycode) == false) {
-                    layerAler("灯具编号是12位的十六进制");
+                    layerAler("灯具编号是12位的十进制");
                     return false;
                 }
                 addlogon(u_name, "添加", o_pid, "灯具管理", "添加灯具");
@@ -751,6 +751,7 @@
             <button class="btn btn-success ctrol" onclick="excel()" id="addexcel" >
                 <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;导入Excel
             </button>
+            <button type="button" id="btn_download" class="btn btn-primary" onClick ="$('#gravidaTable').tableExport({type: 'excel', escape: 'false'})">导出Excel</button>
         </div>
 
 
@@ -825,7 +826,7 @@
                                 <span class="menuBox">
                                     <select class="easyui-combobox" id="l_worktype" name="l_worktype" data-options='editable:false' style="width:150px; height: 30px">
                                         <option value="0" >时间</option>
-                                        <option value="1" >经纬度</option>
+                                        <!--<option value="1" >经纬度</option>-->
                                         <option value="2">场景</option>           
                                     </select>
                                 </span>
@@ -909,7 +910,7 @@
                                 </span>     
                             </td>
                             <td>
-                                <span id="span_worktype" style=" margin-left: 2px;"  onclick="resetGroupe()" class="label label-success" >更换</span>
+                                <span id="span_worktype" style=" margin-left: 2px;"  onclick="resetGroupe()" class="label label-success" >在线修改</span>
                             </td>
                             <td>
                                 <span style="margin-left:20px;">控制方式</span>&nbsp;
@@ -922,7 +923,7 @@
                                 </span>   
                             </td>
                             <td>
-                                <span  onclick="resetWowktype()" style=" margin-left: 2px;" class="label label-success" >更换</span>
+                                <span  onclick="resetWowktype()" style=" margin-left: 2px;" class="label label-success" >在线修改</span>
                             </td>
                         </tr> 
                         <tr id="trlamp1">
