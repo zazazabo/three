@@ -243,7 +243,7 @@
                     websocket = new WebSocket("ws://zhizhichun.eicp.net:18414/");
 //                    websocket = new WebSocket("ws://localhost:5050/");
                 } else {
-                    alert('当前浏览器不支持websocket')
+                    alert('当前浏览器不支持websocket');
                 }
 //                // 连接成功建立的回调方法
                 websocket.onopen = function (e) {

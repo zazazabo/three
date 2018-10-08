@@ -12,37 +12,40 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>操作日志</title>
         <script type="text/javascript" src="js/getdate.js"></script>
+        <link rel="stylesheet" type="text/css" href="bootstrap-datetimepicker/bootstrap-datetimepicker.css">
+        <link rel="stylesheet" type="text/css" href="bootstrap-3.3.7-dist/css/bootstrap.css">
+        <script src="bootstrap-datetimepicker/bootstrap-datetimepicker.js"></script>
         <script>
-            $(function(){
-                 var pid  = parent.parent.getpojectId();
-                 $('#oplogtabel').bootstrapTable({
-                    url: 'login.oplog.oplogInfo.action?pid='+pid,
+            $(function () {
+                var pid = parent.parent.getpojectId();
+                $('#oplogtabel').bootstrapTable({
+                    url: 'login.oplog.oplogInfo.action?pid=' + pid,
                     columns: [
-                         {
+                        {
                             field: 'o_type',
                             title: '操作类型',
                             width: 25,
                             align: 'center',
                             valign: 'middle'
-                        },{
+                        }, {
                             field: 'o_page',
                             title: '操作页面',
                             width: 25,
                             align: 'center',
                             valign: 'middle'
-                        },{
+                        }, {
                             field: 'o_comment',
                             title: '详细内容',
                             width: 25,
                             align: 'center',
                             valign: 'middle'
-                        },{
+                        }, {
                             field: 'o_time',
                             title: '时间',
                             width: 25,
                             align: 'center',
                             valign: 'middle'
-                        },{
+                        }, {
                             field: 'o_name',
                             title: '操作人',
                             width: 25,
@@ -77,10 +80,10 @@
                         };      
                         return temp;  
                     },
-                }); 
-                 $("#select").click(function () {
-                    var statr = $("#startime").val();
-                    var end = $("#endtime").val();
+                });
+                $("#select").click(function () {
+                    var statr = $("#sday").val();
+                    var end = $("#eday").val();
                     var obj = {};
 
                     if (statr == "" && end == "") {
@@ -88,12 +91,12 @@
                         return;
                     }
                     if (statr == "") {
-                       
+
                         obj.statr = "2017-01-01";
                     } else {
                         obj.statr = statr;
                     }
-                    if (end == "") {      
+                    if (end == "") {
                         obj.end = getNowFormatDate2();
                     } else {
                         obj.end = end;
@@ -105,15 +108,46 @@
                     };
                     $("#oplogtabel").bootstrapTable('refresh', opt);
                 });
+                $(".day").datetimepicker({
+                    format: 'yyyy/mm/dd',
+                    language: 'zh-CN',
+                    minView: "month",
+                    todayBtn: 1,
+                    autoclose: 1
+                });
             });
         </script>
     </head>
-    
+
     <body>
-         <div style="float:left;position:relative;z-index:100;margin:12px 0 20px 50px; font-size: 18px">
+<!--        <div style="float:left;position:relative;z-index:100;margin:12px 0 20px 50px; font-size: 18px">
             <span>搜索时间：<input type="date" id="startime"/></span>
             <span style="margin-left: 10px">至：<input type="date" id="endtime"/></span>
             <span><input type="button" class="btn btn-sm btn-success" value="查询" id="select"></span>
+        </div>-->
+        <div style="margin-top:15px; font-size: 18px;margin-left: 10px;" id="Day">
+            <form action="" id="day1" class="form-horizontal" role="form" style="float:left; width: 166px;">
+                <label for="dtp_input2" class="control-label" style="float: left;"></label>
+                <input id="dtp_input2" value="" type="hidden">
+                <span class="input-group date col-md-2 day" style="float:initial;" data-date=""  data-link-field="dtp_input2">
+                    <input id="sday" name="day"  class="form-control" style="width:90px;" size="16" readonly="readonly" type="text">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                </span>
+            </form>
+            <span style=" font-size: 18px; float: left; margin-top: 4px;">&nbsp;至&nbsp;</span>
+            <form action="" id="day2" class="form-horizontal" role="form" style="float:left; width: 166px;">
+                <label for="dtp_input2" class="control-label" style="float: left;"></label>
+                <input id="dtp_input2" value="" type="hidden">
+                <span class="input-group date col-md-2 day" style="float:initial;" data-date=""  data-link-field="dtp_input2">
+                    <input id="eday" name="day"  class="form-control" style="width:90px;" size="16" readonly="readonly" type="text">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                </span>
+            </form>
+            <span style="font-size: 18px; margin-left: 10px;">
+                <button type="button" class="btn btn-sm btn-success" id="select" >查询</button>
+            </span>
         </div>
         <div>
             <table id="oplogtabel">

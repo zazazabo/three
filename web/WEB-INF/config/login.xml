@@ -153,7 +153,7 @@
     
     
     
-    <xform desc="统计数据数据" id="reportmanage">
+    <xform desc="统计数据" id="reportmanage">
                          
         <xhandle desc="按日查询数据" id="getday" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select CONVERT(varchar(100),day, 23) as d,SUM( (CONVERT(decimal (18, 2), power45)-  CONVERT(decimal (18, 2), power00))) AS val  from t_power where  @CONDITION   GROUP BY day order by day desc" var="bootstrap">
