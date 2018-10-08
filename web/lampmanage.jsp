@@ -209,7 +209,7 @@
                 }
                 var uPattern = /^[a-fA-F0-9]{12}$/;
                 if (uPattern.test(o.l_factorycode) == false) {
-                    layerAler("灯具编号是12位的十六进制");
+                    layerAler("灯具编号是12位的十进制");
                     return false;
                 }
                 addlogon(u_name, "添加", o_pid, "灯具管理", "添加灯具");
@@ -910,7 +910,7 @@
                                 </span>     
                             </td>
                             <td>
-                                <span id="span_worktype" style=" margin-left: 2px;"  onclick="resetGroupe()" class="label label-success" >更换</span>
+                                <span id="span_worktype" style=" margin-left: 2px;"  onclick="resetGroupe()" class="label label-success" >在线修改</span>
                             </td>
                             <td>
                                 <span style="margin-left:20px;">控制方式</span>&nbsp;
@@ -923,7 +923,7 @@
                                 </span>   
                             </td>
                             <td>
-                                <span  onclick="resetWowktype()" style=" margin-left: 2px;" class="label label-success" >更换</span>
+                                <span  onclick="resetWowktype()" style=" margin-left: 2px;" class="label label-success" >在线修改</span>
                             </td>
                         </tr> 
                         <tr id="trlamp1">
