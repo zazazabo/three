@@ -47,7 +47,7 @@
                 }
                 addlogon(u_name, "灯具调光", o_pid, "灯具调光", "开灯");
                 for (var i = 0; i < selects.length; i++) {
-                    console.log("cs:"+i);
+                    console.log("cs:" + i);
                     var vv = new Array();
                     //var l_comaddr = $("#l_comaddr").combobox('getValue');
                     var select = selects[i];
@@ -116,7 +116,7 @@
                             success: function (data) {
                                 var arrlist = data.rs;
                                 if (arrlist.length == 1) {
-                                     $("#gravidaTable").bootstrapTable('updateCell', {index: param.row, field: "l_value", value: obj.val});
+                                    $("#gravidaTable").bootstrapTable('updateCell', {index: param.row, field: "l_value", value: obj.val});
                                 }
                             },
                             error: function () {
@@ -276,6 +276,7 @@
             }
 
             function lightCB(obj) {
+
                 if (obj.status == "success") {
                     if (obj.fn == 301) {
                         layerAler("单灯调光成功");
@@ -544,18 +545,41 @@
                     }
                 })
 
-                $('#l_comaddr').combobox({
-                    url: "lamp.lampform.getComaddr.action?l_deplayment=1&pid=${param.pid}",
-                    onLoadSuccess: function (data) {
-                        if (Array.isArray(data) && data.length > 0) {
-                            $(this).combobox('select', data[0].id);
-                        } 
-                    },
-                    onSelect: function (record) {
-                        var url = "lamp.GroupeForm.getGroupe.action?l_comaddr=" + record.id + "&l_deplayment=1";
-                        $("#l_groupe").combobox("reload", url);
-                    }
-                });
+
+
+
+
+                        $('#l_comaddr').combobox({
+                            url:"lamp.lampform.getComaddr.action?l_deplayment=1&pid=${param.pid}",
+                            onLoadSuccess: function (data) {
+                                 data = data.distinct();
+                                if (Array.isArray(data) && data.length > 0) {
+                                    $(this).combobox('select', data[0].id);
+                                }
+                            },
+                            onSelect: function (record) {
+                                var url = "lamp.GroupeForm.getGroupe.action?l_comaddr=" + record.id + "&l_deplayment=1";
+                                $("#l_groupe").combobox("reload", url);
+                            }
+                        })
+
+
+
+//                $.ajax({async: false, url: "lamp.lampform.getComaddr.action?l_deplayment=1&pid=${param.pid}", type: "get", datatype: "JSON", data: {},
+//                    success: function (data) {
+//                        data = data.distinct();
+//
+//                    },
+//                    error: function () {
+//                        alert("提交失败！");
+//                    }
+//                });
+
+
+
+
+
+
 
 
                 $('#scenetype').combobox({
@@ -665,9 +689,9 @@
                             <td>
                                 <span style="margin-left:10px;">恢复模式&nbsp;</span>
                                 <select class="easyui-combobox" id="type" name="type" style="width:150px; height: 30px">
-                                    <option value="1">单灯恢复时间控制</option>
-                                    <option value="2">按组恢复时间控制</option>    
-                                    <option value="3">全部恢复时间控制</option>  
+                                    <option value="1">单灯恢复</option>
+                                    <option value="2">按组恢复</option>    
+                                    <option value="3">全部恢复</option>  
                                 </select>
                                 <button  type="button" style="margin-left:20px;" onclick="restore()" class="btn btn-success btn-sm">恢复自动运行</button>
                             </td>

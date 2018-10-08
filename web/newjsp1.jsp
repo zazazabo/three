@@ -9,7 +9,7 @@
 <html>
     <head>
         <%@include  file="js.jspf" %>
-
+<script type="text/javascript" src="js/genel.js"></script>
 
         <!--        <script type="text/javascript" src="jquery-easyui-1.5.5.4/jquery.easyui.min.js"></script>-->
         
@@ -22,6 +22,7 @@
                 
         -->
 
+      
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <script>
@@ -31,6 +32,15 @@
             }
 
             $(function () {
+                
+                var arr=[{id:11,text:11},{id:11,text:11}];
+                console.log(arr.distinct());
+//                alert(['a','b','c','d','b','a','e'].distinct());
+
+
+
+
+
 
                 // Dialog Link
                 $('#dialog_link').click(function () {

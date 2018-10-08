@@ -28,7 +28,7 @@
             </xsql>
         </xhandle>
         <xhandle desc="灯具的网关" id="getComaddr" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT   tl.l_comaddr as id,tl.l_comaddr as text FROM t_lamp tl where @CONDITION 
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT DISTINCT  tl.l_comaddr as id,tl.l_comaddr as text FROM t_lamp tl where @CONDITION 
              " var="list">
                 <xflt id="CONDITION" nrp="" tpl="@l_comaddr AND @l_deplayment AND @pid ">
                     <xfltpara id="l_comaddr" nrp="1=1" para="l_comaddr" sql="l_comaddr = ':l_comaddr' ">
@@ -182,7 +182,7 @@
     </xform>
     <xform desc="灯具分组" id="GroupeForm">
         <xhandle desc="" id="getGroupe" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT l_groupe AS id,l_groupe AS text FROM t_lamp where @CONDITION " var="list">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT DISTINCT l_groupe AS id,l_groupe AS text FROM t_lamp where @CONDITION " var="list">
                 <xflt id="CONDITION" nrp="" tpl="@l_comaddr AND @l_deplayment">
                     <xfltpara id="l_comaddr" nrp="1=2" para="l_comaddr" sql="l_comaddr = ':l_comaddr'">
                     </xfltpara>

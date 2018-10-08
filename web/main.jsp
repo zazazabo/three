@@ -25,7 +25,7 @@
            
                 console.log("通信状态:",websocket.readyState);
                 if (websocket.readyState == 3) {
-//                    layerAler("通迅已断开");
+                   layerAler("通迅已断开");
                 }
                 if (websocket != null && websocket.readyState == 1) {
                    
@@ -243,8 +243,8 @@
             $(function () {
 
                 if ('WebSocket' in window) {
-                   // websocket = new WebSocket("ws://zhizhichun.eicp.net:18414/");
-                    websocket = new WebSocket("ws://localhost:5050/");
+                    websocket = new WebSocket("ws://zhizhichun.eicp.net:18414/");
+//                    websocket = new WebSocket("ws://localhost:5050/");
                 } else {
                     alert('当前浏览器不支持websocket');
                 }
@@ -571,6 +571,7 @@
                         $(".list:eq(0)").addClass("active");
                         var ifrsrc = $(".list:eq(0)").attr("name");
                          ifrsrc = ifrsrc + "?pid=" + getpojectId(); 
+                         console.log(ifrsrc);
                         $("#iframe").attr("src", ifrsrc);
                     }
 

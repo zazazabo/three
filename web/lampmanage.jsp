@@ -825,7 +825,7 @@
                                 <span class="menuBox">
                                     <select class="easyui-combobox" id="l_worktype" name="l_worktype" data-options='editable:false' style="width:150px; height: 30px">
                                         <option value="0" >时间</option>
-                                        <option value="1" >经纬度</option>
+                                        <!--<option value="1" >经纬度</option>-->
                                         <option value="2">场景</option>           
                                     </select>
                                 </span>
