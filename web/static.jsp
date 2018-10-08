@@ -21,10 +21,10 @@
                 display: none;
             }
             #div1{
-/*                display: none;*/
+                display: none;
             }
             #div3{
-                display: none;
+                /*                display: none;*/
             }
             #gravidaMonthTable{
                 border: 1px solid;
@@ -62,7 +62,7 @@
     </head>
 
     <body>
-         <div style=" margin-top: 10px;">
+        <div style=" margin-top: 10px;">
             <span style="margin-top: 10px; font-size: 18px;margin-left: 10px;">
                 查询方式：
                 <select  id="YMD" style="width:150px; height: 30px">
@@ -94,6 +94,7 @@
                 <span style="font-size: 18px; margin-left: 10px;">
                     <button type="button" class="btn btn-sm btn-success" onclick="getday()" >按日显示数据</button>
                 </span>
+                <button style=" height: 30px;" type="button" id="btn_download" class="btn btn-primary" onClick ="$('#getdayTable').tableExport({type: 'excel', escape: 'false'})">导出Excel</button>
             </div>
 
             <div style="margin-top:15px; font-size: 18px;margin-left: 10px; display: none" id="MOth">
@@ -119,6 +120,7 @@
                 <span style="font-size: 18px; margin-left: 10px;">
                     <button type="button" class="btn btn-sm btn-success" onclick="getMoth()" >按月显示数据</button>
                 </span>
+                <button style=" height: 30px;" type="button" id="btn_download" class="btn btn-primary" onClick ="$('#getMotherTable').tableExport({type: 'excel', escape: 'false'})">导出Excel</button>
             </div>
 
             <div style="margin-top:15px; font-size: 18px;margin-left: 10px;" id="Year">
@@ -144,6 +146,7 @@
                 <span style=" margin-left: 10px;">
                     <button type="button" class="btn btn-sm btn-success" onclick="getyear()" >按年份显示数据</button>
                 </span>
+                <button style=" height: 30px;" type="button" id="btn_download" class="btn btn-primary" onClick ="$('#getYearTable').tableExport({type: 'excel', escape: 'false'})">导出Excel</button>
             </div>
         </div>
         <div style=" margin-left: 250px; margin-top: -95px;">
@@ -156,7 +159,7 @@
                 </select>
             </span>
             <span id="list" style="display:none; margin-top: 10px;">
-                <input id="comaddrlist" data-options='editable:false,valueField:"id", textField:"text"' class="easyui-combobox"/>
+                <input id="comaddrlist" data-options='editable:false,valueField:"id", textField:"text" ' class="easyui-combobox"/>
             </span>
         </div>
         <div style="" id="div1">
@@ -173,21 +176,30 @@
         </div>
 
         <script>
+
+            $("#comaddrlist").combobox({
+                url: "login.map.getallcomaddr.action?pid=${param.pid}",
+                onLoadSuccess: function (data) {
+                    $(this).combobox("select", data[0].id);
+                    $(this).val(data[0].text);
+                }
+            });
             $(function () {
                 var pid2 = parent.parent.getpojectId();
-                 $('#getdayTable').bootstrapTable({
-                     url: 'login.reportmanage.getday.action?pid=' + pid2,
+                //按年查询
+                $('#getYearTable').bootstrapTable({
+                    url: 'login.reportmanage.getyear.action?pid=' + pid2,
                     columns: [[{
                                 field: '',
-                                title: '日消耗量',
+                                title: '年消耗量',
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
                                 colspan: 5
                             }], [
                             {
-                                field: 'd',
-                                title: '日期',
+                                field: 'years',
+                                title: '年份',
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle'
@@ -229,9 +241,6 @@
                     }
                 });
 
-                var id = "#comaddrlist";
-                var pid = parent.parent.getpojectId();
-                combobox(id, pid);
 
                 $("#fs").change(function () {
                     if ($(this).val() == "2") {
@@ -288,33 +297,50 @@
                 });
             });
 
-            //网关下拉框
-            function combobox(id, pid) {
-                $(id).combobox({
-                    url: "login.map.getallcomaddr.action?pid=" + pid,
-                    onLoadSuccess: function (data) {
-                        $(this).combobox("select", data[0].id);
-                        $(this).val(data[0].text);
-                    }
-                });
+
+            function getyear() {
+                var porjectId = parent.parent.getpojectId();
+                var obj = {};
+
+                if ($("#fs").val() == "2") {
+                    obj.comaddr = $("#comaddrlist").val();
+                } else {
+                    obj.pid = porjectId;
+                }
+
+                if ($("#syear").val() != "" && $("#eyear").val() != "") {
+                    obj.star = $("#syear").val();
+                    obj.end = $("#eyear").val();
+                }
+                //加载所有网关信息
+                var opt = {
+                    //method: "post",
+                    url: "login.reportmanage.getyear.action",
+                    silent: true,
+                    query: obj
+                };
+                $("#getYearTable").bootstrapTable('refresh', opt);
+
+                $("#div1").hide();
+                $("#div2").hide();
+                $("#div3").show();
             }
-            
-            
-             function getyear() {
-                //按年查询
-                $('#getYearTable').bootstrapTable({
-                    //url: 'login.reportmanage.getyear.action?pid=' + pid2,
+
+            //按日查询
+            function getday() {
+                $('#getdayTable').bootstrapTable({
+                    //url: 'login.reportmanage.getday.action?pid=' + pid2,
                     columns: [[{
                                 field: '',
-                                title: '年消耗量',
+                                title: '日消耗量',
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
                                 colspan: 5
                             }], [
                             {
-                                field: 'years',
-                                title: '年份',
+                                field: 'd',
+                                title: '日期',
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle'
@@ -355,35 +381,6 @@
                         return temp;  
                     }
                 });
-                var porjectId = parent.parent.getpojectId();
-                var obj = {};
-
-                if ($("#fs").val() == "2") {
-                    obj.comaddr = $("#comaddrlist").val();
-                } else {
-                    obj.pid = porjectId;
-                }
-
-                if ($("#syear").val() != "" && $("#eyear").val() != "") {
-                    obj.star = $("#syear").val();
-                    obj.end = $("#eyear").val();
-                }
-                //加载所有网关信息
-                var opt = {
-                    //method: "post",
-                    url: "login.reportmanage.getyear.action",
-                    silent: true,
-                    query: obj
-                };
-                $("#getYearTable").bootstrapTable('refresh', opt);
-
-                $("#div1").hide();
-                $("#div2").hide();
-                $("#div3").show();
-            }
-
-            //按日查询
-            function getday() {
                 var porjectId = parent.parent.getpojectId();
                 var obj = {};
 

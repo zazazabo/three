@@ -644,6 +644,8 @@
 
                 $("#pojects").change(function () {
                     fualtCount();
+                   $(".MenuBox .list:eq(0)").click();
+                    
                 });
                 var pid2 = $("#pojects").val();
                 $('#fauttable').bootstrapTable({

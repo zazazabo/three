@@ -751,6 +751,7 @@
             <button class="btn btn-success ctrol" onclick="excel()" id="addexcel" >
                 <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;导入Excel
             </button>
+            <button type="button" id="btn_download" class="btn btn-primary" onClick ="$('#gravidaTable').tableExport({type: 'excel', escape: 'false'})">导出Excel</button>
         </div>
 
 

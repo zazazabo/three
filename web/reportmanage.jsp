@@ -611,6 +611,7 @@
                                         }
                                     </script>
                                     <button type="button" class="btn btn-sm btn-success" onclick="search()" >查找</button>
+                                    <button style=" height: 30px;" type="button" id="btn_download" class="btn btn-primary" onClick ="$('#gravidaTable').tableExport({type: 'excel', escape: 'false'})">导出Excel</button>
                                 </td>
                                 <td>
 

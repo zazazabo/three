@@ -32,7 +32,7 @@
         <script type="text/javascript" src="js/getdate.js"></script>
         <script>
             var u_name = parent.parent.getusername();
-            var o_pid =  parent.parent.getpojectId();
+            var o_pid = parent.parent.getpojectId();
 
             function excel() {
                 $('#dialog-excel').dialog('open');
@@ -46,51 +46,51 @@
                     offset: 'center'
                 });
             }
-            function deleteGateway(){
-                    var selects = $('#gravidaTable').bootstrapTable('getSelections');
-                    var num = selects.length;
-                    if (num == 0) {
-                        layerAler("请选择您要删除的记录");
-                    } else {
-                        layer.confirm('您确定要删除吗？', {
-                            btn: ['确定', '取消'], //按钮
-                            icon: 3,
-                            offset: 'center',
-                            title: '提示'
-                        }, function (index) {
-                            addlogon(u_name, "删除", o_pid, "网关管理", "删除网关");
-                            var o = {l_comaddr: selects[0].comaddr, id: selects[0].id};
-                            $.ajax({url: "gayway.GaywayForm.existcomaddr.action", async: false, type: "POST", datatype: "JSON", data: o,
-                                success: function (data) {
-                                    if (data.length >= 1) {
-                                        layerAler("此网关在灯具或回路有数据,请先清空回路和灯具的网关");
-                                    } else if (data.length == 0) {
-                                        $.ajax({url: "gayway.GaywayForm.deleteGateway.action", type: "POST", datatype: "JSON", data: o,
-                                            success: function (data) {
-                                                var arrlist = data.rs;
-                                                if (arrlist.length == 1) {
-                                                    layer.open({content: '删除成功', icon: 1,
-                                                        yes: function (index, layero) {
-                                                            $("#gravidaTable").bootstrapTable('refresh');
-                                                            layer.close(index);
-                                                        }
-                                                    });
-                                                }
-
-                                                //                                    
-                                            },
-                                            error: function () {
-                                                alert("提交失败！");
+            function deleteGateway() {
+                var selects = $('#gravidaTable').bootstrapTable('getSelections');
+                var num = selects.length;
+                if (num == 0) {
+                    layerAler("请选择您要删除的记录");
+                } else {
+                    layer.confirm('您确定要删除吗？', {
+                        btn: ['确定', '取消'], //按钮
+                        icon: 3,
+                        offset: 'center',
+                        title: '提示'
+                    }, function (index) {
+                        addlogon(u_name, "删除", o_pid, "网关管理", "删除网关");
+                        var o = {l_comaddr: selects[0].comaddr, id: selects[0].id};
+                        $.ajax({url: "gayway.GaywayForm.existcomaddr.action", async: false, type: "POST", datatype: "JSON", data: o,
+                            success: function (data) {
+                                if (data.length >= 1) {
+                                    layerAler("此网关在灯具或回路有数据,请先清空回路和灯具的网关");
+                                } else if (data.length == 0) {
+                                    $.ajax({url: "gayway.GaywayForm.deleteGateway.action", type: "POST", datatype: "JSON", data: o,
+                                        success: function (data) {
+                                            var arrlist = data.rs;
+                                            if (arrlist.length == 1) {
+                                                layer.open({content: '删除成功', icon: 1,
+                                                    yes: function (index, layero) {
+                                                        $("#gravidaTable").bootstrapTable('refresh');
+                                                        layer.close(index);
+                                                    }
+                                                });
                                             }
-                                        });
-                                    }
-                                }
 
-                            });
-                            layer.close(index);
+                                            //                                    
+                                        },
+                                        error: function () {
+                                            alert("提交失败！");
+                                        }
+                                    });
+                                }
+                            }
 
                         });
-                    }
+                        layer.close(index);
+
+                    });
+                }
             }
 
 
@@ -152,7 +152,7 @@
                 obj.latitude = latitudemstr;
                 var longitudemstr = obj.longitudem26d + "." + obj.longitudem26m + "." + obj.longitudem26s;
                 obj.longitude = longitudemstr;
-               addlogon(u_name, "修改", o_pid, "网关管理", "修改网关");
+                addlogon(u_name, "修改", o_pid, "网关管理", "修改网关");
                 $.ajax({async: false, cache: false, url: "gayway.GaywayForm.modifyGateway.action", type: "GET", data: obj,
                     success: function (data) {
                         // namesss = true;
@@ -170,7 +170,7 @@
             }
 
             $(function () {
-                
+
                 $('#warningtable').bootstrapTable({
                     columns: [
                         {
@@ -326,7 +326,7 @@
                     onLoadSuccess: function (data) {
                         if (Array.isArray(data) && data.length > 0) {
                             $(this).combobox('select', data[0].id)
-                        } 
+                        }
                     }
                 })
 
@@ -356,9 +356,9 @@
                                     $("#shanchu").attr("disabled", false);
                                     continue;
                                 }
-                        }
+                            }
 
-                    }
+                        }
                     },
                     error: function () {
                         alert("提交失败！");
@@ -419,13 +419,13 @@
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index) {
-                                if (value==1) {
-                                     return "<img  src='img/online1.png'/>";  //onclick='hello()'
-                                  
-                                }else{
-                                     return "<img  src='img/off.png'/>";  //onclick='hello()'
+                                if (value == 1) {
+                                    return "<img  src='img/online1.png'/>";  //onclick='hello()'
+
+                                } else {
+                                    return "<img  src='img/off.png'/>";  //onclick='hello()'
                                 }
-                                
+
                             },
                         }],
                     showExport: true, //是否显示导出
@@ -530,7 +530,7 @@
                 }
                 addlogon(u_name, "添加", o_pid, "网关管理", "添加网关");
                 var obj = $("#formadd").serializeObject();
-                
+
                 var namesss = false;
                 $.ajax({async: false, cache: false, url: "gayway.GaywayForm.queryGateway.action", type: "GET", data: obj,
                     success: function (data) {
@@ -593,6 +593,10 @@
             <button class="btn btn-success ctrol" onclick="excel()" id="addexcel" >
                 <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;导入Excel
             </button>
+<!--            <button class="btn btn-success ctrol" onClick ="$('#tb_departments').tableExport({type: 'excel', escape: 'false'})" id="outexcel" >
+                <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;导出Excel
+            </button>-->
+            <button type="button" id="download" id="btn_download" class="btn btn-primary" onClick ="$('#gravidaTable').tableExport({type: 'excel', escape: 'false'})">导出Excel</button>
 
 
         </div>

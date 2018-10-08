@@ -122,7 +122,7 @@
                         },
                         {
                             field: 'name',
-                            title: '姓名',
+                            title: '用户名',
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -415,7 +415,7 @@
                                 <tbody>
                                     <tr>
                                         <td>
-                                            <span style="margin-left:20px;">名字</span>&nbsp;
+                                            <span style="margin-left:5px;">用户名</span>&nbsp;
                                             <input id="name"    class="form-control"  name="name" style="width:150px;display: inline;" placeholder="请输入名字" type="text"></td>
                                         <td></td>
                                         <td>
@@ -491,7 +491,7 @@
                                 <tbody>
                                     <tr>
                                         <td>
-                                            <span style="margin-left:20px;">名字</span>&nbsp;
+                                            <span style="margin-left:5px;">用户名</span>&nbsp;
                                             <input id="name_edit" readonly="true"   class="form-control"  name="name_edit" style="width:150px;display: inline;"  type="text" readonly="readonly"></td>
                                         <td></td>
                                         <td>
