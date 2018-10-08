@@ -148,6 +148,7 @@
             <span style="font-size: 18px; margin-left: 10px;">
                 <button type="button" class="btn btn-sm btn-success" id="select" >查询</button>
             </span>
+            <button style=" height: 30px;" type="button" id="btn_download" class="btn btn-primary" onClick ="$('#oplogtabel').tableExport({type: 'excel', escape: 'false'})">导出Excel</button>
         </div>
         <div>
             <table id="oplogtabel">
