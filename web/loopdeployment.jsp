@@ -172,6 +172,13 @@
                 console.log(obj);
 
                 var v = obj.p_type;
+
+                if (v=="") {
+                    layerAler("请选择策略方案");
+                    return;
+                }
+   
+
                 var s = selects[0];
 //                console.log(s);
                 if (s.l_deplayment == 0) {
@@ -240,10 +247,14 @@
                     layerAler("请勾选列表读取");
                     return;
                 }
-                addlogon(u_name, "读取", o_pid, "回路部署", "读取回路时间表");
+         
                 var obj = $("#form1").serializeObject();
                 console.log(obj);
                 var v = obj.p_type;
+                              if (v=="") {
+                    layerAler("请选择策略方案");
+                    return;
+                }
                 var s = selects[0];
                 if (s.l_deplayment == 0) {
                     layerAler("部署后的回路才能设置回路运行方案");
@@ -261,7 +272,7 @@
                     vv.push(l);
                     vv.push(h);
                 }
-
+                addlogon(u_name, "读取", o_pid, "回路部署", "读取回路时间表");
                 var comaddr = s.l_comaddr;
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xAA, num, 0, 320, vv); //01 03 F24    
