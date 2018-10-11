@@ -223,7 +223,7 @@
                     pagination: true,
                     sidePagination: 'server',
                     pageNumber: 1,
-                    pageSize: 5,
+                    pageSize: 15,
                     showRefresh: false,
                     showToggle: true,
                     // 设置默认分页为 50
@@ -311,9 +311,9 @@
                     pagination: true,
                     sidePagination: 'server',
                     pageNumber: 1,
-                    pageSize: 5,
+                    pageSize: 10,
                     showRefresh: false, //是否显示刷新
-                    showToggle: true,
+                   // showToggle: true,
                     // 设置默认分页为 50
                     pageList: [5, 10, 15, 20, 25],
                     onLoadSuccess: function () {  //加载成功时执行  表格加载完成时 获取集中器在线状态

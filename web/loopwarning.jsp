@@ -16,8 +16,12 @@
         <style>
             .pull-right.pagination-detail{display:none;}
             table thead{
-               background-color:  #ddd
+                background-color:  #ddd
             }
+/*            table.table-bordered > tr >td {
+                height: 80px;
+                max-height: 80px;
+            }*/
         </style>
     </head>
 

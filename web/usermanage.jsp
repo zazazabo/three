@@ -63,7 +63,7 @@
                 //获取所有项目
                 var pid;
                 var id = parent.parent.getuserId();
-                $.ajax({url: "login.project.getuserProject.action", async: false, type: "get", datatype: "JSON", data:{id:id},
+                $.ajax({url: "login.project.getuserProject.action", async: false, type: "get", datatype: "JSON", data: {id: id},
                     success: function (data) {
                         pid = data.rs[0].pid;
                     },
@@ -326,21 +326,30 @@
                     btn: ['确定', '取消']//按钮
                 }, function (index) {
                     addlogon(u_name, "删除", o_pid, "用户管理", "删除用户");
-                    for (var i = 0; i < num; i++) {
-                        var select = selects[i];
-                        $.ajax({async: false, url: "formuser.user.deleteUser.action", type: "POST", datatype: "JSON", data: {id: select.id},
-                            success: function (data) {
-                                var arrlist = data.rs;
-                                if (arrlist.length == 1) {
-                                    $("#gravidaTable").bootstrapTable('refresh');
-                                }
-                            },
-                            error: function () {
-                                layerAler("提交失败");
+                    var select = selects[0];
+                    $.ajax({async: false, url: "login.usermanage.loopsunuser.action", type: "POST", datatype: "JSON", data: {id: select.id},
+                        success: function (data) {
+                            var arrlist = data.rs;
+                            if (arrlist.length > 0) {
+                                layerAler("该用户存在子用户不可删除");
+                            } else {
+                                $.ajax({async: false, url: "login.usermanage.deleteUser.action", type: "POST", datatype: "JSON", data: {id: select.id},
+                                    success: function (data) {
+                                        var arrlist = data.rs;
+                                        if (arrlist.length == 1) {
+                                            $("#gravidaTable").bootstrapTable('refresh');
+                                        }
+                                    },
+                                    error: function () {
+                                        layerAler("提交失败");
+                                    }
+                                });
                             }
-                        });
-
-                    }
+                        },
+                        error: function () {
+                            layerAler("提交失败");
+                        }
+                    });
                     layer.close(index);
                     //此处请求后台程序，下方是成功后的前台处理……
                 });

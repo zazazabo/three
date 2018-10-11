@@ -1,4 +1,5 @@
-<%-- 
+
+ <%-- 
     Document   : newjsp
     Created on : 2018-8-6, 18:02:51
     Author     : Administrator
@@ -415,12 +416,12 @@
                         <table id="fauttable">
 
                         </table>
-                        <table id="peopletable"></table>
+<!--                        <table id="peopletable"></table>-->
                     </div>
                     <!-- 注脚 -->
                     <div class="modal-footer" id="modal_footer_edit" >
                         <!-- 添加按钮 -->
-                        <button id="xiugai" type="button" onclick="handle()" class="btn btn-primary">处理报警</button>
+<!--                        <button id="xiugai" type="button" onclick="handle()" class="btn btn-primary">处理报警</button>-->
                         <!-- 关闭按钮 -->
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                     </div>
@@ -721,72 +722,72 @@
                     }
                 });
 
-                $('#peopletable').bootstrapTable({
-                    url: 'login.main.peopleInfo.action?pid=' + pid2,
-                    columns: [[{
-                                field: '',
-                                title: '告警处理人员信息',
-                                width: 25,
-                                align: 'center',
-                                valign: 'middle',
-                                colspan: 5
-                            }], [
-                            {
-                                title: '单选',
-                                field: 'select',
-                                //复选框
-                                checkbox: true,
-                                width: 25,
-                                align: 'center',
-                                valign: 'middle',
-                            }, {
-                                field: 'u_name',
-                                title: '姓名',
-                                width: 25,
-                                align: 'center',
-                                valign: 'middle'
-                            }, {
-                                field: 'u_phone',
-                                title: '电话',
-                                width: 25,
-                                align: 'center',
-                                valign: 'middle'
-                            }, {
-                                field: 'u_email',
-                                title: '邮箱',
-                                width: 25,
-                                align: 'center',
-                                valign: 'middle'
-                            }]
-                    ],
-                    singleSelect: false,
-                    sortName: 'id',
-                    locale: 'zh-CN', //中文支持,
-                    // minimumCountColumns: 7, //最少显示多少列
-                    showColumns: true,
-                    sortOrder: 'desc',
-                    pagination: true,
-                    sidePagination: 'server',
-                    pageNumber: 1,
-                    pageSize: 5,
-                    showRefresh: true,
-                    showToggle: true,
-                    // 设置默认分页为 50
-                    pageList: [5, 10, 15, 20, 25],
-                    onLoadSuccess: function () {  //加载成功时执行  表格加载完成时 获取集中器在线状态
-                        console.info("加载成功");
-                    },
-                    //服务器url
-                    queryParams: function (params)  {   //配置参数     
-                        var temp  =   {    //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的 
-                            search: params.search,
-                            skip: params.offset,
-                            limit: params.limit,
-                            type_id: "1"   
-                        };      
-                        return temp;  
-                    }
-                });
+//                $('#peopletable').bootstrapTable({
+//                    url: 'login.main.peopleInfo.action?pid=' + pid2,
+//                    columns: [[{
+//                                field: '',
+//                                title: '告警处理人员信息',
+//                                width: 25,
+//                                align: 'center',
+//                                valign: 'middle',
+//                                colspan: 5
+//                            }], [
+//                            {
+//                                title: '单选',
+//                                field: 'select',
+//                                //复选框
+//                                checkbox: true,
+//                                width: 25,
+//                                align: 'center',
+//                                valign: 'middle',
+//                            }, {
+//                                field: 'u_name',
+//                                title: '姓名',
+//                                width: 25,
+//                                align: 'center',
+//                                valign: 'middle'
+//                            }, {
+//                                field: 'u_phone',
+//                                title: '电话',
+//                                width: 25,
+//                                align: 'center',
+//                                valign: 'middle'
+//                            }, {
+//                                field: 'u_email',
+//                                title: '邮箱',
+//                                width: 25,
+//                                align: 'center',
+//                                valign: 'middle'
+//                            }]
+//                    ],
+//                    singleSelect: false,
+//                    sortName: 'id',
+//                    locale: 'zh-CN', //中文支持,
+//                    // minimumCountColumns: 7, //最少显示多少列
+//                    showColumns: true,
+//                    sortOrder: 'desc',
+//                    pagination: true,
+//                    sidePagination: 'server',
+//                    pageNumber: 1,
+//                    pageSize: 5,
+//                    showRefresh: true,
+//                    showToggle: true,
+//                    // 设置默认分页为 50
+//                    pageList: [5, 10, 15, 20, 25],
+//                    onLoadSuccess: function () {  //加载成功时执行  表格加载完成时 获取集中器在线状态
+//                        console.info("加载成功");
+//                    },
+//                    //服务器url
+//                    queryParams: function (params)  {   //配置参数     
+//                        var temp  =   {    //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的 
+//                            search: params.search,
+//                            skip: params.offset,
+//                            limit: params.limit,
+//                            type_id: "1"   
+//                        };      
+//                        return temp;  
+//                    }
+//                });
             });
 
         </script>

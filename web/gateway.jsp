@@ -719,7 +719,7 @@
 
                                     <!--<input id="model_" class="easyui-combobox" name="model" style="width:150px; height: 30px" data-options="editable:true,valueField:'id', textField:'text',url:'test1.f5.h2.action'" />-->
                                     <select class="easyui-combobox" readonly="true" id="model_" name="model" style="width:150px; height: 30px">
-                                        <option value="lc001">lc001</option>
+                                        <option value="LC001">LC001</option>
                                     </select>
                                 </span>
                             </td>
