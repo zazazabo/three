@@ -20,6 +20,7 @@
         <script type="text/javascript"  src="js/getdate.js"></script>
 
         <script>
+        
             var websocket = null;
 
             function sendData(obj) {
