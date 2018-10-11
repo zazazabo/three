@@ -736,7 +736,7 @@
             }
 
             $(function () {
-                dealsend();
+               // dealsend();
             })
 
         </script>
