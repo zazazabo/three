@@ -1,8 +1,8 @@
 
- <%-- 
-    Document   : newjsp
-    Created on : 2018-8-6, 18:02:51
-    Author     : Administrator
+<%-- 
+   Document   : newjsp
+   Created on : 2018-8-6, 18:02:51
+   Author     : Administrator
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -23,15 +23,15 @@
             var websocket = null;
 
             function sendData(obj) {
-           
-                console.log("通信状态:",websocket.readyState);
+
+                console.log("通信状态:", websocket.readyState);
                 if (websocket.readyState == 3) {
-                   layerAler("通迅已断开");
+                    layerAler("通迅已断开");
                 }
                 if (websocket != null && websocket.readyState == 1) {
-                   
+
                     //delete obj.msg;
-                     console.log(obj);
+                    console.log(obj);
                     var datajson = JSON.stringify(obj);
 
                     websocket.send(datajson);
@@ -52,8 +52,8 @@
                 var name = $("#u_name").text();
                 return name;
             }
-            
-            function  getupid(){
+
+            function  getupid() {
                 var upid = $("#upid").val();
                 return upid;
             }
@@ -242,6 +242,10 @@
             }
 
             $(function () {
+                
+            <c:if test="${empty param.id }">
+                window.location = "${pageContext.request.contextPath }/login.jsp";
+            </c:if>
 
                 if ('WebSocket' in window) {
                     websocket = new WebSocket("ws://zhizhichun.eicp.net:18414/");
@@ -302,7 +306,7 @@
                 <div class="bodyLeftTop listdisplayNone" style="background:#5cb75c ">
                     <span class="menuMessage" style="width:80px;margin-left:30px;">智慧城市照明管理系统</span>
                 </div>
-         
+
                 <ul class="layui-nav layui-nav-tree  MenuBox " >
                 </ul>
             </div>
@@ -327,7 +331,7 @@
                         <li class="one" style="width:74px;">
 
                             <i class="layui-icon  indexIcon"></i>   
-<!--                            <span class="glyphicon glyphicon-tags indexIcon"/>-->
+                            <!--                            <span class="glyphicon glyphicon-tags indexIcon"/>-->
                             <span class="Till" style="width: 74px; text-align: center; color: rgb(255, 255, 255);">语言</span>
 
 
@@ -373,19 +377,19 @@
                             <tbody>
                                 <tr>
                                     <td>
-                                        <span style="margin-left:35px;">原密码：</span>&nbsp;
-                                        <input id="oldPwd" class="form-control" style="width:150px;display: inline;" placeholder="请输入原密码" type="password">
+                                        <span style="margin-left:92px;">密码：</span>&nbsp;
+                                        <input id="oldPwd" class="form-control" style="width:150px;display: inline;" placeholder="请输入密码" type="password">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <span style="margin-left:35px;">新密码：</span>&nbsp;
+                                        <span style="margin-left:35px;">请输入新密码：</span>&nbsp;
                                         <input id="newPwd" class="form-control" style="width:150px;display: inline;" placeholder="请输入新密码" type="password">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <span style="margin-left:20px;">确定密码：</span>&nbsp;
+                                        <span style="margin-left:49px;">请确认密码：</span>&nbsp;
                                         <input id="okPwd" class="form-control" style="width:150px;display: inline;" placeholder="请确认密码" type="password">
                                     </td>
                                 </tr>
@@ -416,12 +420,12 @@
                         <table id="fauttable">
 
                         </table>
-<!--                        <table id="peopletable"></table>-->
+                        <!--                        <table id="peopletable"></table>-->
                     </div>
                     <!-- 注脚 -->
                     <div class="modal-footer" id="modal_footer_edit" >
                         <!-- 添加按钮 -->
-<!--                        <button id="xiugai" type="button" onclick="handle()" class="btn btn-primary">处理报警</button>-->
+                        <!--                        <button id="xiugai" type="button" onclick="handle()" class="btn btn-primary">处理报警</button>-->
                         <!-- 关闭按钮 -->
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                     </div>
@@ -446,9 +450,10 @@
 //                    $("#alarmTable").css("display", "block");
 //                    document.getElementById('alarmTable').contentWindow.document.location.reload();
 //                });
+
                 var pid = '${rs[0].pid}';
                 var pids = pid.split(",");   //项目编号
-               // $("#pojects").val(pids[0]);
+                // $("#pojects").val(pids[0]);
                 var pname = [];   //项目名称
                 for (var i = 0; i < pids.length; i++) {
                     var obj = {};
@@ -468,10 +473,10 @@
                     options += "<option value=\"" + pids[i] + "\">" + pname[i] + "</option>";
                     $("#pojects").html(options);
                 }
-                
-                
-                
-                
+
+
+
+
 
                 $("body").delegate(".list", "click", function () {
                     if ($(this).siblings(".secondMenu").length != 0) {
@@ -571,8 +576,8 @@
                         $(".MenuBox").html(htmls);
                         $(".list:eq(0)").addClass("active");
                         var ifrsrc = $(".list:eq(0)").attr("name");
-                         ifrsrc = ifrsrc + "?pid=" + getpojectId(); 
-                         console.log(ifrsrc);
+                        ifrsrc = ifrsrc + "?pid=" + getpojectId();
+                        console.log(ifrsrc);
                         $("#iframe").attr("src", ifrsrc);
                     }
 
@@ -636,6 +641,7 @@
             });
 
             $(function () {
+
                 $(".navTop").delegate("li", "click", function () {
                     var html = $(this).attr('name');
                     //console.log(html);
@@ -645,8 +651,8 @@
 
                 $("#pojects").change(function () {
                     fualtCount();
-                   $(".MenuBox .list:eq(0)").click();
-                    
+                    $(".MenuBox .list:eq(0)").click();
+
                 });
                 var pid2 = $("#pojects").val();
                 $('#fauttable').bootstrapTable({
@@ -660,14 +666,6 @@
                                 colspan: 5
                             }], [
                             {
-                                title: '单选',
-                                field: 'select',
-                                //复选框
-                                checkbox: true,
-                                width: 25,
-                                align: 'center',
-                                valign: 'middle',
-                            }, {
                                 field: 'f_comaddr',
                                 title: '网关地址',
                                 width: 25,
@@ -693,7 +691,7 @@
                                 valign: 'middle'
                             }]
                     ],
-                    singleSelect: true,
+                   // singleSelect: true,
                     sortName: 'id',
                     locale: 'zh-CN', //中文支持,
                     // minimumCountColumns: 7, //最少显示多少列

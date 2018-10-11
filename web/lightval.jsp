@@ -736,8 +736,8 @@
                                         <option value="7">场景7</option> 
                                         <option value="8">场景8</option> 
                                     </select>
-                                    <button  type="button"  name="btnsingle" style="margin-left:20px;" onclick="scenesingle()" class="btn btn-success btn-sm">立即场景</button>
-                                    <button  type="button" name="btngroupe" style="margin-left:20px; display: none" onclick="scenegroupe()" class="btn btn-success btn-sm">按组场景</button>
+                                    <button  type="button"  name="btnsingle" style="margin-left:20px;" onclick="scenesingle()" class="btn btn-success btn-sm">单灯场景调光</button>
+                                    <button  type="button" name="btngroupe" style="margin-left:20px; display: none" onclick="scenegroupe()" class="btn btn-success btn-sm">按组场景调光</button>
                                 </td>
 
                             </tr>
