@@ -1,11 +1,15 @@
+
 <%-- 
-    Document   : newjsp
-    Created on : 2018-8-6, 18:02:51
-    Author     : Administrator
+   Document   : newjsp
+   Created on : 2018-8-6, 18:02:51
+   Author     : Administrator
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="/WEB-INF/fn.tld" prefix="fn" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -19,18 +23,19 @@
         <script type="text/javascript"  src="js/getdate.js"></script>
 
         <script>
+        
             var websocket = null;
 
             function sendData(obj) {
-           
-                console.log("通信状态:",websocket.readyState);
+
+                console.log("通信状态:", websocket.readyState);
                 if (websocket.readyState == 3) {
-                   layerAler("通迅已断开");
+                    layerAler("通迅已断开");
                 }
                 if (websocket != null && websocket.readyState == 1) {
-                   
+
                     //delete obj.msg;
-                     console.log(obj);
+                    console.log(obj);
                     var datajson = JSON.stringify(obj);
 
                     websocket.send(datajson);
@@ -51,8 +56,8 @@
                 var name = $("#u_name").text();
                 return name;
             }
-            
-            function  getupid(){
+
+            function  getupid() {
                 var upid = $("#upid").val();
                 return upid;
             }
@@ -241,6 +246,10 @@
             }
 
             $(function () {
+                
+            <c:if test="${empty param.id }">
+                window.location = "${pageContext.request.contextPath }/login.jsp";
+            </c:if>
 
                 if ('WebSocket' in window) {
                     websocket = new WebSocket("ws://zhizhichun.eicp.net:18414/");
@@ -295,13 +304,13 @@
         </script>
     </head>
     <body>
-
+           
         <div class="wraper"> 
             <div class="bodyLeft" style="background: rgb(14, 98, 199) none repeat scroll 0% 0%;">
                 <div class="bodyLeftTop listdisplayNone" style="background:#5cb75c ">
                     <span class="menuMessage" style="width:80px;margin-left:30px;">智慧城市照明管理系统</span>
                 </div>
-         
+
                 <ul class="layui-nav layui-nav-tree  MenuBox " >
                 </ul>
             </div>
@@ -326,7 +335,7 @@
                         <li class="one" style="width:74px;">
 
                             <i class="layui-icon  indexIcon"></i>   
-<!--                            <span class="glyphicon glyphicon-tags indexIcon"/>-->
+                            <!--                            <span class="glyphicon glyphicon-tags indexIcon"/>-->
                             <span class="Till" style="width: 74px; text-align: center; color: rgb(255, 255, 255);">语言</span>
 
 
@@ -372,19 +381,19 @@
                             <tbody>
                                 <tr>
                                     <td>
-                                        <span style="margin-left:35px;">原密码：</span>&nbsp;
-                                        <input id="oldPwd" class="form-control" style="width:150px;display: inline;" placeholder="请输入原密码" type="password">
+                                        <span style="margin-left:92px;">密码：</span>&nbsp;
+                                        <input id="oldPwd" class="form-control" style="width:150px;display: inline;" placeholder="请输入密码" type="password">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <span style="margin-left:35px;">新密码：</span>&nbsp;
+                                        <span style="margin-left:35px;">请输入新密码：</span>&nbsp;
                                         <input id="newPwd" class="form-control" style="width:150px;display: inline;" placeholder="请输入新密码" type="password">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <span style="margin-left:20px;">确定密码：</span>&nbsp;
+                                        <span style="margin-left:49px;">请确认密码：</span>&nbsp;
                                         <input id="okPwd" class="form-control" style="width:150px;display: inline;" placeholder="请确认密码" type="password">
                                     </td>
                                 </tr>
@@ -415,12 +424,12 @@
                         <table id="fauttable">
 
                         </table>
-                        <table id="peopletable"></table>
+                        <!--                        <table id="peopletable"></table>-->
                     </div>
                     <!-- 注脚 -->
                     <div class="modal-footer" id="modal_footer_edit" >
                         <!-- 添加按钮 -->
-                        <button id="xiugai" type="button" onclick="handle()" class="btn btn-primary">处理报警</button>
+                        <!--                        <button id="xiugai" type="button" onclick="handle()" class="btn btn-primary">处理报警</button>-->
                         <!-- 关闭按钮 -->
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                     </div>
@@ -445,9 +454,10 @@
 //                    $("#alarmTable").css("display", "block");
 //                    document.getElementById('alarmTable').contentWindow.document.location.reload();
 //                });
+
                 var pid = '${rs[0].pid}';
                 var pids = pid.split(",");   //项目编号
-               // $("#pojects").val(pids[0]);
+                // $("#pojects").val(pids[0]);
                 var pname = [];   //项目名称
                 for (var i = 0; i < pids.length; i++) {
                     var obj = {};
@@ -467,10 +477,10 @@
                     options += "<option value=\"" + pids[i] + "\">" + pname[i] + "</option>";
                     $("#pojects").html(options);
                 }
-                
-                
-                
-                
+
+
+
+
 
                 $("body").delegate(".list", "click", function () {
                     if ($(this).siblings(".secondMenu").length != 0) {
@@ -531,52 +541,51 @@
                 })
                 /* 加载左边菜单 */
                 //传角色权限 获取菜单 
-                var rotype = $("#m_code").val(); //角色id
-                var objrole = {role: rotype};
-                var u_id = $("#userid").val(); //用户id
-                var objrole = {role: rotype, uid: u_id};
-                $.ajax({type: "post", url: "formuser.mainmenu.querysub.action", dataType: "json", data: objrole,
-                    success: function (data) {
-                        var htmls = '';
-                        data = data2tree(data);
+              
+            
 
-                        for (var i = 0; i < data.length; i++) {
+                
+                // var rotype = $("#m_code").val(); //角色id
+                // var objrole = {role: rotype};
+                // var u_id = $("#userid").val(); //用户id
+                //  var objrole = {role: rotype, uid: u_id};
+                // var objrole = {role: "${param.m_code}", uid: "${param.id}"};
+                // console.log(objrole);
+                // $.ajax({type: "post", url: "formuser.mainmenu.querysub.action", dataType: "json", data: objrole,
+                //     success: function (data) {
+                        var data='${menulist}';
+                        // var htmls = '';
+                        // data = data2tree(data);
 
-                            var action = data[i].action;
-                            if (data[i].children.length > 0) {
-                                console.log(objrole);
+                        // for (var i = 0; i < data.length; i++) {
 
-                                action = action + "?m_parent=" + data[i].code + "&role=" + objrole.role;
-                            }
+                        //     var action = data[i].action;
+                        //     if (data[i].children.length > 0) {
+                        //         console.log(objrole);
 
+                        //         action = action + "?m_parent=" + data[i].code + "&role=" + objrole.role;
+                        //     }
 
-//                            if (data[i].children.length == 0) {
-                            var lang = "zh_CN";
-                            var obj = eval('(' + data[i].title + ')');
-                            console.log(obj);
-                            console.log(obj[lang]);
-                            htmls += '<li class="eachMenu layui-nav-item" >'
-                                    + '<a class="list listdisplayNone" href="javascript:;" name="' + action + '">'
-                                    + '<span class="' + data[i].icon + '">' + '</span>'
-                                    + '<span class="menuMessage" style=" padding-left: 3px;" >' + obj[lang] + '</span>'
-                                    + '</a>'
-                                    + '</li>';
-                            if (data[i].code == 6) {
-                            }
-//                            } else {
-//                            }         
-                        }
+                        //     var lang = "zh_CN";
+                        //     var obj = eval('(' + data[i].title + ')');
+                        //     console.log(obj);
+                        //     console.log(obj[lang]);
+                        //     htmls += '<li class="eachMenu layui-nav-item" >'
+                        //             + '<a class="list listdisplayNone" href="javascript:;" name="' + action + '">'
+                        //             + '<span class="' + data[i].icon + '">' + '</span>'
+                        //             + '<span class="menuMessage" style=" padding-left: 3px;" >' + obj[lang] + '</span>'
+                        //             + '</a>'
+                        //             + '</li>';                                
+                        // }
 
-                        $(".MenuBox").html(htmls);
-                        $(".list:eq(0)").addClass("active");
-                        var ifrsrc = $(".list:eq(0)").attr("name");
-                         ifrsrc = ifrsrc + "?pid=" + getpojectId(); 
-                         console.log(ifrsrc);
-                        $("#iframe").attr("src", ifrsrc);
-                    }
-
-
-                });
+                        // $(".MenuBox").html(htmls);
+                        // $(".list:eq(0)").addClass("active");
+                        // var ifrsrc = $(".list:eq(0)").attr("name");
+                        // ifrsrc = ifrsrc + "?pid=" + getpojectId();
+                        // console.log(ifrsrc);
+                        // $("#iframe").attr("src", ifrsrc);
+                //     }
+                // });
 
 
 
@@ -635,6 +644,7 @@
             });
 
             $(function () {
+
                 $(".navTop").delegate("li", "click", function () {
                     var html = $(this).attr('name');
                     //console.log(html);
@@ -644,8 +654,8 @@
 
                 $("#pojects").change(function () {
                     fualtCount();
-                   $(".MenuBox .list:eq(0)").click();
-                    
+                    $(".MenuBox .list:eq(0)").click();
+
                 });
                 var pid2 = $("#pojects").val();
                 $('#fauttable').bootstrapTable({
@@ -659,14 +669,6 @@
                                 colspan: 5
                             }], [
                             {
-                                title: '单选',
-                                field: 'select',
-                                //复选框
-                                checkbox: true,
-                                width: 25,
-                                align: 'center',
-                                valign: 'middle',
-                            }, {
                                 field: 'f_comaddr',
                                 title: '网关地址',
                                 width: 25,
@@ -692,7 +694,7 @@
                                 valign: 'middle'
                             }]
                     ],
-                    singleSelect: true,
+                   // singleSelect: true,
                     sortName: 'id',
                     locale: 'zh-CN', //中文支持,
                     // minimumCountColumns: 7, //最少显示多少列
@@ -721,72 +723,72 @@
                     }
                 });
 
-                $('#peopletable').bootstrapTable({
-                    url: 'login.main.peopleInfo.action?pid=' + pid2,
-                    columns: [[{
-                                field: '',
-                                title: '告警处理人员信息',
-                                width: 25,
-                                align: 'center',
-                                valign: 'middle',
-                                colspan: 5
-                            }], [
-                            {
-                                title: '单选',
-                                field: 'select',
-                                //复选框
-                                checkbox: true,
-                                width: 25,
-                                align: 'center',
-                                valign: 'middle',
-                            }, {
-                                field: 'u_name',
-                                title: '姓名',
-                                width: 25,
-                                align: 'center',
-                                valign: 'middle'
-                            }, {
-                                field: 'u_phone',
-                                title: '电话',
-                                width: 25,
-                                align: 'center',
-                                valign: 'middle'
-                            }, {
-                                field: 'u_email',
-                                title: '邮箱',
-                                width: 25,
-                                align: 'center',
-                                valign: 'middle'
-                            }]
-                    ],
-                    singleSelect: false,
-                    sortName: 'id',
-                    locale: 'zh-CN', //中文支持,
-                    // minimumCountColumns: 7, //最少显示多少列
-                    showColumns: true,
-                    sortOrder: 'desc',
-                    pagination: true,
-                    sidePagination: 'server',
-                    pageNumber: 1,
-                    pageSize: 5,
-                    showRefresh: true,
-                    showToggle: true,
-                    // 设置默认分页为 50
-                    pageList: [5, 10, 15, 20, 25],
-                    onLoadSuccess: function () {  //加载成功时执行  表格加载完成时 获取集中器在线状态
-                        console.info("加载成功");
-                    },
-                    //服务器url
-                    queryParams: function (params)  {   //配置参数     
-                        var temp  =   {    //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的 
-                            search: params.search,
-                            skip: params.offset,
-                            limit: params.limit,
-                            type_id: "1"   
-                        };      
-                        return temp;  
-                    }
-                });
+//                $('#peopletable').bootstrapTable({
+//                    url: 'login.main.peopleInfo.action?pid=' + pid2,
+//                    columns: [[{
+//                                field: '',
+//                                title: '告警处理人员信息',
+//                                width: 25,
+//                                align: 'center',
+//                                valign: 'middle',
+//                                colspan: 5
+//                            }], [
+//                            {
+//                                title: '单选',
+//                                field: 'select',
+//                                //复选框
+//                                checkbox: true,
+//                                width: 25,
+//                                align: 'center',
+//                                valign: 'middle',
+//                            }, {
+//                                field: 'u_name',
+//                                title: '姓名',
+//                                width: 25,
+//                                align: 'center',
+//                                valign: 'middle'
+//                            }, {
+//                                field: 'u_phone',
+//                                title: '电话',
+//                                width: 25,
+//                                align: 'center',
+//                                valign: 'middle'
+//                            }, {
+//                                field: 'u_email',
+//                                title: '邮箱',
+//                                width: 25,
+//                                align: 'center',
+//                                valign: 'middle'
+//                            }]
+//                    ],
+//                    singleSelect: false,
+//                    sortName: 'id',
+//                    locale: 'zh-CN', //中文支持,
+//                    // minimumCountColumns: 7, //最少显示多少列
+//                    showColumns: true,
+//                    sortOrder: 'desc',
+//                    pagination: true,
+//                    sidePagination: 'server',
+//                    pageNumber: 1,
+//                    pageSize: 5,
+//                    showRefresh: true,
+//                    showToggle: true,
+//                    // 设置默认分页为 50
+//                    pageList: [5, 10, 15, 20, 25],
+//                    onLoadSuccess: function () {  //加载成功时执行  表格加载完成时 获取集中器在线状态
+//                        console.info("加载成功");
+//                    },
+//                    //服务器url
+//                    queryParams: function (params)  {   //配置参数     
+//                        var temp  =   {    //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的 
+//                            search: params.search,
+//                            skip: params.offset,
+//                            limit: params.limit,
+//                            type_id: "1"   
+//                        };      
+//                        return temp;  
+//                    }
+//                });
             });
 
         </script>

@@ -190,7 +190,6 @@
                 $("#name").val(s.name);
                 $("#l_name1").val(s.l_name);
                 $("#hide_id").val(s.id);
-//                $("#pjj2").modal();
                 $('#dialog-edit').dialog('open');
                 return false;
 
@@ -267,14 +266,13 @@
                         }
                     });
 
-                    layerAler("修改灯具组号成功");
+                    layerAler("修改灯具动作模式成功");
 
                 }
             }
             function resetWowktype() {
                 var o = $("#form2").serializeObject();
                 console.log(o);
-
                 var oldlgroupe = ""
                 var vv = [];
                 vv.push(parseInt(o.type));  //灯控器组号  1 所有灯控器  2 按组   3 个个灯控器
@@ -843,6 +841,8 @@
             <form action="" method="POST" id="form2" onsubmit="return editlamp()">  
                 <input type="hidden" id="hide_id" name="id" />
                 <input type="hidden" id="l_deployment" name="l_deployment" />
+                 <input type="hidden" id="type" value="3" name="type" />
+                  <input type="hidden" id="l_code"  name="l_code" />
                 <table>
                     <tbody>
                         <tr>

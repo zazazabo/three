@@ -278,7 +278,7 @@
                 planvalue = "";
             </c:if>
             <c:if test="${fn:length(rs4)>0}">
-                planvalue = ${rs4[0].warnpower eq null?"":rs4[0].warnpower};
+                planvalue = ${rs4[0].power eq null?"":rs4[0].power};
             </c:if>
 
             <c:if test="${fn:length(rs3)==0 }">
@@ -709,6 +709,7 @@
                 };
                 myChart5.setOption(option);
             }
+<<<<<<< HEAD
 
             function dealsend() {
 
@@ -739,6 +740,8 @@
                // dealsend();
             })
 
+=======
+>>>>>>> 29f4969004a94e675b0999490dacad3f123d310b
         </script>
 
 
@@ -801,7 +804,7 @@
                 <div class="topCenter3MessMM" style="margin-top:40%;">
                     <div class="first">
                         <span class="subPara">计划能耗：</span>
-                        <span class="paraValue" id="planConsumption">${rs4[0].warnpower}</span>
+                        <span class="paraValue" id="planConsumption">${rs4[0].power}</span>
                     </div>
                     <!-- <div class="second"></div> -->
                     <div class="first">

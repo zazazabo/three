@@ -103,7 +103,6 @@
 
             }
             function onoff(obj) {
-                alert("1");
                 console.log(obj);
                 if (obj.status == "success") {
                     if (obj.fn == 301) {
@@ -226,7 +225,7 @@
                     layerAler("网关或组号不是数字");
                     return
                 }
-
+                console.log(obj);
                 addlogon(u_name, "灯具调光", o_pid, "灯具调光", "按组场景调光");
                 var vv = new Array();
                 var l_comaddr = obj.l_comaddr;
@@ -240,8 +239,7 @@
                 vv.push(parseInt(obj.scennum));
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 308, vv); //01 03
-                //dealsend(sss, o1);
-                dealsend2(data, 308, "sceneCB", l_comaddr, obj.lighttype, groupe, scenenum);
+                dealsend2("A5",data, 308, "sceneCB", l_comaddr, obj.lighttype, groupe, scenenum);
             }
 
             function scenesingle() {
@@ -439,7 +437,10 @@
                                     value = "0(时间)";
                                     return value;
                                 } else if (value == 1) {
-                                    value = "1";
+                                    value = "1(经纬度)";
+                                    return value;
+                                }else if (value==2) {
+                                    value = "1(场景)";
                                     return value;
                                 }
                             }
@@ -737,8 +738,8 @@
                                         <option value="7">场景7</option> 
                                         <option value="8">场景8</option> 
                                     </select>
-                                    <button  type="button"  name="btnsingle" style="margin-left:20px;" onclick="scenesingle()" class="btn btn-success btn-sm">立即场景</button>
-                                    <button  type="button" name="btngroupe" style="margin-left:20px; display: none" onclick="scenegroupe()" class="btn btn-success btn-sm">按组场景</button>
+                                    <button  type="button"  name="btnsingle" style="margin-left:20px;" onclick="scenesingle()" class="btn btn-success btn-sm">单灯场景调光</button>
+                                    <button  type="button" name="btngroupe" style="margin-left:20px; display: none" onclick="scenegroupe()" class="btn btn-success btn-sm">按组场景调光</button>
                                 </td>
 
                             </tr>

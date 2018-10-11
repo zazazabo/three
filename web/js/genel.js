@@ -33,6 +33,11 @@ String.prototype.trim = function () {
 
 }
 
+
+
+
+
+
 function str_repeat(i, m) {
     for (var o = []; m > 0; o[--m] = i)
         ;

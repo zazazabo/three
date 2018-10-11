@@ -329,7 +329,10 @@
                     -ms-border-radius:15px;  
                     -o-border-radius:15px;
                     /*                    background:rgba(2,8,25,0.49);*/
-                    margin: 50px auto 0 auto; 
+/*                    margin: 50px auto 0 auto; */
+                    margin-left: 50%;
+                    margin-top: 70%;
+                    
                     display:none;  
                 }
                 .inputText{
@@ -403,7 +406,9 @@
                     -ms-border-radius:15px;  
                     -o-border-radius:15px;
                     background:rgba(2,8,25,0.49);                  
-                    margin: 50px auto 0 auto;
+/*                    margin: 50px auto 0 auto;*/
+                    margin-left: 50%;
+                    margin-top: 60%;
                     display:none;  
                 }
                 .logion{
@@ -457,6 +462,26 @@
         <script type="text/javascript" src="js/md5.js"></script>
         <script type="text/javascript" src="js/getdate.js"></script>
         <script type="text/javascript">
+            $.extend({
+    PostSubmitForm: function (url, args) {
+        var body = $(document.body),
+              form = $("<form method='post' style='display:none'></form>"),
+           input;
+        form.attr({ "action": url });
+        $.each(args, function (key, value) {
+            input = $("<input type='hidden'>");
+            input.attr({ "name": key });
+            input.val(value);
+            form.append(input);
+        });
+
+        //IE低版本和火狐下
+        form.appendTo(document.body);
+        form.submit();
+        document.body.removeChild(form[0]);
+    }
+});
+
             function layerAler(str) {
                 layer.alert(str, {
                     icon: 6,
@@ -490,7 +515,7 @@
                             var arrlist1 = data.rs;
                             if (arrlist1.length == 1) {
                                 var id = arrlist1[0].id;
-                                window.location = "login.main.home.action?id=" + id;
+//                                window.location = "login.main.home.action?id=" + id;
                                 var nobj = {};
                                 nobj.name = name;
                                 var day =getNowFormatDate2();
@@ -505,9 +530,16 @@
                                         }
                                     }
                                 });
+                                
+                                var o1=arrlist1[0];
+                                o1.role=arrlist1[0].m_code;
+                                // console.log(o1);
+                                 $.PostSubmitForm('login.main.home.action', arrlist1[0]);  
+                                
+                                
                             } else if (arrlist1.length == 0) {
                                 //alert("用户名或密码错误！");
-                                layerAler("用户名或密码错误！");
+                                layerAler("账号或密码错误！");
 
                             }
                         },

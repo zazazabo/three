@@ -3,16 +3,18 @@
     <xform desc="回路" id="loopForm">
         <xhandle desc="查询回路表" id="getLoopList" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT * FROM  t_loop  WHERE @CONDITION  " var="bootstrap">
-                <xflt id="CONDITION" nrp="" tpl="@l_comaddr AND @l_code AND @pid">
+                <xflt id="CONDITION" nrp="" tpl="@l_comaddr AND @l_code AND @l_factorycode  AND @pid">
                     <xfltpara id="l_comaddr" nrp="1=1" para="l_comaddr" sql="l_comaddr = ':l_comaddr'">
                     </xfltpara>
                     <xfltpara id="l_code" nrp="1=1" para="l_code" sql="l_code = :l_code">
                     </xfltpara>
-                    <xfltpara id="pid" nrp="1=2" para="pid" sql="l_comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE  pid = ':pid')">
+                    <xfltpara id="l_factorycode" nrp="1=1" para="l_factorycode" sql="l_factorycode = :l_factorycode">
+                    </xfltpara>
+                    <xfltpara id="pid" nrp="1=2" para="pid" sql="l_comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE   pid = ':pid')">
                     </xfltpara>
                 </xflt>
             </xsql>
-        </xhandle>
+        </xhandle> 
         <xhandle desc="回路的网关" id="getComaddr" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT DISTINCT  tl.l_comaddr as id,tl.l_comaddr as text FROM t_loop tl where @CONDITION 
              " var="list">
@@ -21,8 +23,8 @@
                     </xfltpara>
                     <xfltpara id="l_deplayment" nrp="1=1" para="l_deplayment" sql="l_deplayment = :l_deplayment ">
                     </xfltpara>
-                    <xfltpara id="pid" nrp="1=2" para="pid" sql="l_comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE  pid = ':pid')">
-                    </xfltpara>
+                    <xfltpara id="pid" nrp="1=2" para="pid" sql="l_comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE online=1 AND  pid = ':pid')">
+                    </xfltpara>  
                 </xflt>
             </xsql>
         </xhandle>
@@ -31,7 +33,7 @@
                 <xflt id="CONDITION" nrp="" tpl="@id ">
                     <xfltpara id="id" nrp="1=1" para="id" sql="id=:id">
                     </xfltpara>
-                </xflt>
+                </xflt> 
             </xsql>
         </xhandle>
         <xhandle desc="修改回路部署状态" id="modifyDepayment" rtnype="JSON">
@@ -59,7 +61,7 @@
             </xsql>
         </xhandle>
         <xhandle desc="添加回路" id="addloop" rtn="rs" rtnype="JSON">
-            <xsql id="a1" para="l_worktype,l_groupe,l_name,l_code,l_comaddr,name" tpe="DDL" tpl="insert into t_loop(l_worktype,l_groupe,l_name,l_code,l_comaddr,name,l_deplayment) values(:l_worktype,:l_groupe,':l_name',':l_code',':l_comaddr',':name',0) " var="rs">
+            <xsql id="a1" para="l_worktype,l_groupe,l_name,l_factorycode,l_comaddr,name" tpe="DDL" tpl="insert into t_loop(l_worktype,l_groupe,l_name,l_factorycode,l_comaddr,name,l_deplayment) values(:l_worktype,:l_groupe,':l_name',':l_factorycode',':l_comaddr',':name',0) " var="rs">
             </xsql>
         </xhandle>
 

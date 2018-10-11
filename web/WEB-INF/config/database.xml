@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xdatabases>
+
   <xinfo class="com.microsoft.jdbc.sqlserver.SQLServerDriver" url="jdbc:microsoft:sqlserver://127.0.0.1;databaseName=data" psw="123" uname="sa">
   </xinfo>  
 

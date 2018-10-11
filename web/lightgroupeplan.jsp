@@ -164,11 +164,11 @@
 
 
                         var ret = false;
-                        $.ajax({async: false, url: "test1.plan.editlampscene.action", type: "get", datatype: "JSON", data: o,
+                        $.ajax({async: false, url: "lamp.planForm.editlampscene.action", type: "get", datatype: "JSON", data: o,
                             success: function (data) {
                                 var arrlist = data.rs;
                                 if (arrlist.length == 1) {
-                                    $('#p_plan').combobox('reload');
+                                    // $('#p_plan').combobox('reload');
                                 }
                             },
                             error: function () {
