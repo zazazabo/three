@@ -782,7 +782,7 @@
                                                     <select class="easyui-combobox" id="type" name="type" data-options="editable:false,valueField:'id', textField:'text' " style="width:200px; height: 30px">
                                                         <option value="1" >主站域名或IP设置</option>
                                                         <option value="2">设置换日冻结时间参数</option>    
-                                                        <option value="3">设置通信巡检次数</option> 
+                                                        <!--<option value="3">设置通信巡检次数</option>--> 
                                                         <option value="4">读取网关时间</option> 
                                                         <option value="5">网关行政区划码</option> 
                                                         <option value="6">设置灯具</option> 

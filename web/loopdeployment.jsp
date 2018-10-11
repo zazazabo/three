@@ -76,6 +76,7 @@
                 var ele = selects[0];
                 var comaddr = ele.l_comaddr;
                 var setcode = ele.l_code;
+                var l_factorycode=ele.l_factorycode;
                 var l_code = parseInt(setcode);
                 var a = l_code >> 8 & 0x00FF;
                 var b = l_code & 0x00ff;
@@ -85,14 +86,9 @@
                 vv.push(b);//测量点号  2字节            
                 vv.push(a);//测量点号  2字节  
 
-//                    var dd = get2byte(setcode);
-//                    var set1 = Str2BytesH(dd);
-//                    vv.push(set1[1]);
-//                    vv.push(set1[0]); //装置序号  2字节
-//                    vv.push(set1[1]);
-//                    vv.push(set1[0]); //测量点号  2字节 
 
-                vv.push(parseInt(setcode, 16)); //通信地址
+
+                vv.push(parseInt(l_factorycode)); //通信地址
                 var iworktype = parseInt(ele.l_worktype);
                 vv.push(iworktype); //工作方式
                 var igroupe = parseInt(ele.l_groupe); //组号
@@ -118,6 +114,7 @@
                 var ele = selects[0];
                 var comaddr = ele.l_comaddr;
                 var setcode = ele.l_code;
+                 var l_factorycode=ele.l_factorycode;
                 var l_code = parseInt(setcode);
                 var a = l_code >> 8 & 0x00FF;
                 var b = l_code & 0x00ff;
@@ -126,7 +123,7 @@
                 vv.push(a);//装置序号  2字节                   
                 vv.push(0);
                 vv.push(0); //测量点号  2字节 
-                vv.push(parseInt(setcode, 16)); //通信地址
+                vv.push(parseInt(l_factorycode, 10)); //通信地址
                 var iworktype = parseInt(ele.l_worktype);
                 vv.push(iworktype); //工作方式
                 var igroupe = parseInt(ele.l_groupe); //组号
@@ -172,8 +169,14 @@
                 console.log(obj);
 
                 var v = obj.p_type;
+
+                if (v=="") {
+                    layerAler("请选择策略方案");
+                    return;
+                }
+   
+
                 var s = selects[0];
-//                console.log(s);
                 if (s.l_deplayment == 0) {
                     layerAler("部署后的回路才能设置回路运行方案");
                     return;
@@ -240,10 +243,14 @@
                     layerAler("请勾选列表读取");
                     return;
                 }
-                addlogon(u_name, "读取", o_pid, "回路部署", "读取回路时间表");
+         
                 var obj = $("#form1").serializeObject();
                 console.log(obj);
                 var v = obj.p_type;
+                              if (v=="") {
+                    layerAler("请选择策略方案");
+                    return;
+                }
                 var s = selects[0];
                 if (s.l_deplayment == 0) {
                     layerAler("部署后的回路才能设置回路运行方案");
@@ -261,18 +268,12 @@
                     vv.push(l);
                     vv.push(h);
                 }
-
+                addlogon(u_name, "读取", o_pid, "回路部署", "读取回路时间表");
                 var comaddr = s.l_comaddr;
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xAA, num, 0, 320, vv); //01 03 F24    
                 console.log(data);
                 dealsend2("AA", data, 320, "readLoopPlanCB", comaddr, s.index, obj.p_type, 0, s.id);
-
-
-//                var v1 = [];
-//                var num = randnum(0, 9) + 0x70;
-//                var data1 = buicode(obj.comaddr, 0x04, 0x00, num, 0, 1, v1); //01 03 F24    
-//                dealsend2("00", data1, 1, "", obj.comaddr, 0, 0, 0);
             }
 
             function layerAler(str) {
@@ -285,7 +286,7 @@
             $(function () {
 
                 $('#gravidaTable').bootstrapTable({
-                    url: "loop.loopForm.getLoopList.action",
+                   // url: "loop.loopForm.getLoopList.action",
                     columns: [
                         {
                             title: '单选',
@@ -310,6 +311,12 @@
                         }, {
                             field: 'l_code',
                             title: '装置序号',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: 'l_factorycode',
+                            title: '回路编号',
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -401,7 +408,15 @@
                         } 
                     },
                     onSelect: function (record) {
-                        $("#gravidaTable").bootstrapTable('refresh');
+                       var obj = {};
+                       obj.l_comaddr = record.id;
+                       var opt = {
+                            url:"loop.loopForm.getLoopList.action",
+                           query: obj
+                       };
+                       $("#gravidaTable").bootstrapTable('refresh', opt);
+
+                       // $("#gravidaTable").bootstrapTable('refresh');
                     }
                 });
                 $('#p_plan').combobox({
