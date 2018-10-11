@@ -329,7 +329,10 @@
                     -ms-border-radius:15px;  
                     -o-border-radius:15px;
                     /*                    background:rgba(2,8,25,0.49);*/
-                    margin: 50px auto 0 auto; 
+/*                    margin: 50px auto 0 auto; */
+                    margin-left: 50%;
+                    margin-top: 70%;
+                    
                     display:none;  
                 }
                 .inputText{
@@ -403,7 +406,9 @@
                     -ms-border-radius:15px;  
                     -o-border-radius:15px;
                     background:rgba(2,8,25,0.49);                  
-                    margin: 50px auto 0 auto;
+/*                    margin: 50px auto 0 auto;*/
+                    margin-left: 50%;
+                    margin-top: 60%;
                     display:none;  
                 }
                 .logion{

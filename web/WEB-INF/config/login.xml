@@ -271,7 +271,23 @@
                     </xfltpara>
                 </xflt>
             </xsql>
-        </xhandle>     
+        </xhandle>  
+        <xhandle desc="查看用户是否存在子用户" id="loopsunuser" rtn="rs" rtnype="JSON">
+            <xsql id="a1" tpe="SQL" tpl="select * from t_user where  @CONDITION " var="rs">
+                <xflt id="CONDITION" tpl="@u_parent_id ">
+                    <xfltpara id="u_parent_id" nrp="1=1" para="id" sql="u_parent_id =  :id ">
+                    </xfltpara>
+                </xflt>
+            </xsql>
+        </xhandle>   
+        <xhandle desc="删除用户表" id="deleteUser" rtn="rs" rtnype="JSON">
+            <xsql id="a1" tpe="DDL" tpl="delete from t_user where @CONDITION " var="rs">
+                <xflt id="CONDITION" tpl="@id ">
+                    <xfltpara id="id" nrp="1=1" para="id" sql="id =  :id ">
+                    </xfltpara>
+                </xflt>
+            </xsql>
+        </xhandle>
     </xform>
     
     <xform desc="权限管理" id="rolemanage">
