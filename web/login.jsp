@@ -516,7 +516,6 @@
                             if (arrlist1.length == 1) {
                                 var id = arrlist1[0].id;
 //                                window.location = "login.main.home.action?id=" + id;
-                                console.log(arrlist1[0]);
                                 var nobj = {};
                                 nobj.name = name;
                                 var day =getNowFormatDate2();
@@ -532,7 +531,10 @@
                                     }
                                 });
                                 
-                                   $.PostSubmitForm('login.main.home.action', arrlist1[0]);  
+                                var o1=arrlist1[0];
+                                o1.role=arrlist1[0].m_code;
+                                // console.log(o1);
+                                 $.PostSubmitForm('login.main.home.action', arrlist1[0]);  
                                 
                                 
                             } else if (arrlist1.length == 0) {

@@ -7,6 +7,9 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="/WEB-INF/fn.tld" prefix="fn" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -301,7 +304,7 @@
         </script>
     </head>
     <body>
-
+           
         <div class="wraper"> 
             <div class="bodyLeft" style="background: rgb(14, 98, 199) none repeat scroll 0% 0%;">
                 <div class="bodyLeftTop listdisplayNone" style="background:#5cb75c ">
@@ -538,52 +541,51 @@
                 })
                 /* 加载左边菜单 */
                 //传角色权限 获取菜单 
-                var rotype = $("#m_code").val(); //角色id
-                var objrole = {role: rotype};
-                var u_id = $("#userid").val(); //用户id
-                var objrole = {role: rotype, uid: u_id};
-                $.ajax({type: "post", url: "formuser.mainmenu.querysub.action", dataType: "json", data: objrole,
-                    success: function (data) {
-                        var htmls = '';
-                        data = data2tree(data);
+              
+            
 
-                        for (var i = 0; i < data.length; i++) {
+                
+                // var rotype = $("#m_code").val(); //角色id
+                // var objrole = {role: rotype};
+                // var u_id = $("#userid").val(); //用户id
+                //  var objrole = {role: rotype, uid: u_id};
+                // var objrole = {role: "${param.m_code}", uid: "${param.id}"};
+                // console.log(objrole);
+                // $.ajax({type: "post", url: "formuser.mainmenu.querysub.action", dataType: "json", data: objrole,
+                //     success: function (data) {
+                        var data='${menulist}';
+                        // var htmls = '';
+                        // data = data2tree(data);
 
-                            var action = data[i].action;
-                            if (data[i].children.length > 0) {
-                                console.log(objrole);
+                        // for (var i = 0; i < data.length; i++) {
 
-                                action = action + "?m_parent=" + data[i].code + "&role=" + objrole.role;
-                            }
+                        //     var action = data[i].action;
+                        //     if (data[i].children.length > 0) {
+                        //         console.log(objrole);
 
+                        //         action = action + "?m_parent=" + data[i].code + "&role=" + objrole.role;
+                        //     }
 
-//                            if (data[i].children.length == 0) {
-                            var lang = "zh_CN";
-                            var obj = eval('(' + data[i].title + ')');
-                            console.log(obj);
-                            console.log(obj[lang]);
-                            htmls += '<li class="eachMenu layui-nav-item" >'
-                                    + '<a class="list listdisplayNone" href="javascript:;" name="' + action + '">'
-                                    + '<span class="' + data[i].icon + '">' + '</span>'
-                                    + '<span class="menuMessage" style=" padding-left: 3px;" >' + obj[lang] + '</span>'
-                                    + '</a>'
-                                    + '</li>';
-                            if (data[i].code == 6) {
-                            }
-//                            } else {
-//                            }         
-                        }
+                        //     var lang = "zh_CN";
+                        //     var obj = eval('(' + data[i].title + ')');
+                        //     console.log(obj);
+                        //     console.log(obj[lang]);
+                        //     htmls += '<li class="eachMenu layui-nav-item" >'
+                        //             + '<a class="list listdisplayNone" href="javascript:;" name="' + action + '">'
+                        //             + '<span class="' + data[i].icon + '">' + '</span>'
+                        //             + '<span class="menuMessage" style=" padding-left: 3px;" >' + obj[lang] + '</span>'
+                        //             + '</a>'
+                        //             + '</li>';                                
+                        // }
 
-                        $(".MenuBox").html(htmls);
-                        $(".list:eq(0)").addClass("active");
-                        var ifrsrc = $(".list:eq(0)").attr("name");
-                        ifrsrc = ifrsrc + "?pid=" + getpojectId();
-                        console.log(ifrsrc);
-                        $("#iframe").attr("src", ifrsrc);
-                    }
-
-
-                });
+                        // $(".MenuBox").html(htmls);
+                        // $(".list:eq(0)").addClass("active");
+                        // var ifrsrc = $(".list:eq(0)").attr("name");
+                        // ifrsrc = ifrsrc + "?pid=" + getpojectId();
+                        // console.log(ifrsrc);
+                        // $("#iframe").attr("src", ifrsrc);
+                //     }
+                // });
 
 
 

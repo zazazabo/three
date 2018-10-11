@@ -22,7 +22,15 @@
                     <xfltpara id="id" nrp="1=1" para="id" sql="id = ':id'">
                     </xfltpara>
                 </xflt>      
-            </xsql>                    
+            </xsql>  
+            <xsql id="a2" list="true" page="true" tpe="SQL" tpl=" SELECT * FROM   t_menu tm,t_role tr WHERE tm.m_code=tr.code AND tr.enable=1 AND  @CONDITION   ORDER BY m_code ASC" var="menulist">
+                <xflt id="CONDITION" nrp="" tpl="@role AND @m_parent  ">
+                    <xfltpara id="role" nrp="1=1" para="role" sql="roletype = :role">
+                    </xfltpara>
+                    <xfltpara id="m_parent" nrp="1=1" para="m_parent" sql="tm.m_parent = :m_parent">
+                    </xfltpara>
+                </xflt>
+            </xsql>                           
         </xhand>
         
         <xhandle desc="查看故障信息数量" id="fualtCount" rtnype="JSON">
