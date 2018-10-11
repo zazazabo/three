@@ -15,7 +15,7 @@
         <script type="text/javascript" src="js/getdate.js"></script>
         <script>
             var u_name = parent.parent.getusername();
-            var o_pid =  parent.parent.getpojectId();
+            var o_pid = parent.parent.getpojectId();
             function layerAler(str) {
                 layer.alert(str, {
                     icon: 6,
@@ -67,9 +67,9 @@
                                                 success: function (data) {
                                                     var arrlist = data.rs;
                                                     if (arrlist.length == 1) {
-                                                        
+
                                                         var ids = [];//定义一个数组
-                                                        var xh = selects[i].序号;        
+                                                        var xh = selects[i].序号;
                                                         ids.push(xh);//将要删除的id存入数组
                                                         $("#warningtable").bootstrapTable('remove', {field: '序号', values: ids});
                                                     }
@@ -103,16 +103,27 @@
 
             function checkLoopAdd() {
                 var o = $("#formadd").serializeObject();
-                if (o.l_code == "" || o.l_comaddr == "") {
-                    layerAler("网关或回路和编号不能为空");
+                if (o.l_comaddr == "") {
+                    layerAler("网关不能为空");
                     return  false;
                 }
+                if (isNumber(o.l_factorycode) == false) {
+                    layerAler("回路编号必须数字");
+                    return false;
+                }
+                if (parseInt(o.l_factorycode) > 54&&parseInt(o.l_factorycode)>=1) {
+                    layerAler("回路编号1字节必须在1-54");
+                    return false;
+                }
+                console.log(o);
+
                 o.name = o.comaddrname;
+
                 var namesss = false;
-                addlogon(u_name, "添加", o_pid, "回路管理", "添加回路");
+       
+                 addlogon(u_name, "添加", o_pid, "回路管理", "添加回路");
                 $.ajax({async: false, cache: false, url: "loop.loopForm.getLoopList.action", type: "GET", data: o,
                     success: function (data) {
-
                         if (data.total > 0) {
                             layerAler("此回路已存在");
                             return false;
@@ -175,28 +186,6 @@
             }
 
 
-            // function dealsend2(msg, data, fn, func, comaddr, type, param, val) {
-            //     var user = new Object();
-            //     user.begin = '6A';
-            //     user.res = 1;
-            //     user.status = "";
-            //     user.comaddr = comaddr;
-            //     user.fn = fn;
-            //     user.function = func;
-            //     user.param = param;
-            //     user.page = 2;
-            //     user.msg = msg;
-            //     user.val = val;
-            //     user.type = type;
-            //     user.addr = getComAddr(comaddr); //"02170101";
-            //     user.data = data;
-            //     user.len = data.length;
-            //     user.end = '6A';
-            //     console.log(user);
-            //     parent.parent.sendData(user);
-            // }
-
-
             function modifyLoopName() {
                 var o = $("#form2").serializeObject();
                 o.id = o.hide_id;
@@ -234,7 +223,7 @@
                 var select = selects[0];
                 console.log(select);
 
-                $("#l_code1").val(select.l_code);
+                $("#l_factorycode1").val(select.l_factorycode);
                 $("#l_comaddr1").combobox('setValue', select.l_comaddr);
                 $("#l_deployment").val(select.l_deplayment);
                 $("#comaddrname1").val(select.name);
@@ -251,10 +240,6 @@
                 }
 
                 $('#dialog-edit').dialog('open');
-                return false;
-
-//                $("#pjj2").modal();
-
 
             }
 
@@ -503,6 +488,12 @@
                             valign: 'middle'
                         }, {
                             field: 'l_code',
+                            title: '回路装置号',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: 'l_factorycode',
                             title: '回路编号',
                             width: 25,
                             align: 'center',
@@ -732,7 +723,7 @@
                         <tr>
                             <td>
                                 <span style="margin-left:20px;">回路编号&nbsp;</span>
-                                <input id="l_code" class="form-control" name="l_code" style="width:150px;display: inline;" placeholder="请输入回路编号" type="text">
+                                <input id="l_factorycode" class="form-control" name="l_factorycode" style="width:150px;display: inline;" placeholder="请输入回路编号" type="text">
 
                             <td></td>
                             <td>
@@ -801,7 +792,7 @@
                         <tr>
                             <td>
                                 <span style="margin-left:20px;">回路编号&nbsp;</span>
-                                <input id="l_code1" readonly="true" class="form-control" name="l_code"  style="width:150px;display: inline;" placeholder="回路编号" type="text">
+                                <input id="l_factorycode1" readonly="true"  class="form-control" name="l_factorycode"  style="width:150px;display: inline;" placeholder="回路编号" type="text">
 
                             <td></td>
                             <td>

@@ -354,7 +354,7 @@
                         obj.end = timeobj.d2;
                         var opt = {
                             url: "login.reportmanage.getday.action",
-                            silent: true,
+                            silent: false,
                             query: obj
                         };
                         $("#getdayTable").bootstrapTable('refresh', opt);
@@ -367,7 +367,7 @@
                         //加载所有网关信息
                         var opt = {
                             url: "login.reportmanage.getmother.action",
-                            silent: true,
+                            silent: false,
                             query: obj
                         };
                         $("#getMotherTable").bootstrapTable('refresh', opt);
@@ -379,7 +379,7 @@
                         obj.end = timeobj.y2;
                         var opt = {
                             url: "login.reportmanage.getyear.action",
-                            silent: true,
+                            silent: false,
                             query: obj
                         };
 
@@ -449,7 +449,7 @@
 
         <form id="searchForm">
             <div class="row" style=" border: 1px solid #16645629; margin-left: 20px; margin-top: 10px; "  >
-                <div class="col-md-3" id="div1">  
+                <div class="col-md-3" id="div1" style="display:none">  
                     <div class="input-group input-inline-sm col-sm-12" >  
                         <span class="input-group-addon " >时间</span>  
                         <input type="text" class="form-control form_datetime" name="d1"  readOnly id="timeMin1" onchange="changeTime(1)">  
@@ -458,7 +458,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-3" id="div2">  
+                <div class="col-md-3" id="div2" style="display:none">  
                     <div class="input-group input-inline-sm col-sm-12" >  
                         <span class="input-group-addon " >时间</span>  
                         <input type="text" class="form-control form_datetime2" name="m1"  readOnly id="timeMin2" onchange="changeTime(3)">  
@@ -476,7 +476,7 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <button type="button" class="btn btn-primary btn-sm" onclick="search();">搜索</button>
+                    <button type="button" class="btn btn-success btn-sm" onclick="search();">搜索</button>
                 </div>
             </div>
         </form>

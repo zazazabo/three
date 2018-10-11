@@ -35,7 +35,7 @@
                     </xfltpara>
                     <xfltpara id="l_deplayment" nrp="1=1" para="l_deplayment" sql="l_deplayment = :l_deplayment ">
                     </xfltpara>
-                    <xfltpara id="pid" nrp="1=2" para="pid" sql="l_comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE  pid = ':pid')">
+                    <xfltpara id="pid" nrp="1=2" para="pid" sql="l_comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE online=1 AND  pid = ':pid')">
                     </xfltpara>
                 </xflt>
             </xsql>
