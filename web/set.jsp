@@ -49,7 +49,7 @@
                     var minl = data[19] & 0x0F;
                     var sh = data[18] >> 4 & 0x0F;
                     var sl = data[18] & 0x0F;
-                    var y = sprintf("%d%d", yh, yl);
+                    var y = sprintf("20%d%d", yh, yl);
                     var m = sprintf("%d%d", mh, ml);
                     var d = sprintf("%d%d", dh, dl);
                     var h = sprintf("%d%d", hh, hl);

@@ -709,6 +709,35 @@
                 };
                 myChart5.setOption(option);
             }
+            function dealsend() {
+
+                var user = new Object();
+                user.count = 0;
+                user.res = 1;
+                user.afn = 0;
+                user.status = "";
+                user.function = "getCount";
+                user.errcode = 0;
+                user.frame = 0;
+                user.msg = "Online";
+                user.res = 1;
+                user.page = 1;
+                parent.sendData(user);
+            }
+
+
+            function getCount(obj) {
+                console.log(obj)
+                var count = obj.count;
+                var a = count /${rs5[0].count} * 100;
+                var str = a.toString() + '%';
+                $('#online').html(str);
+            }
+
+            $(function () {
+               // dealsend();
+            })
+
         </script>
 
 
