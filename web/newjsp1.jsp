@@ -90,7 +90,7 @@
     </head>
     <body>
         <h1>Hello World!</h1>
-
+<%int a=80; out.println(a);%>
         <input type="button" value="hit" onclick="hit()"/>
         <div class="container">
             <input class="easyui-combobox" name="language[]" style="width:100%;" data-options="
