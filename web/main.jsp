@@ -4,7 +4,6 @@
    Created on : 2018-8-6, 18:02:51
    Author     : Administrator
 --%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -21,9 +20,13 @@
         <script type="text/javascript" src="js/genel.js"></script>
         <script type="text/javascript" src="js/md5.js"></script>
         <script type="text/javascript"  src="js/getdate.js"></script>
-
+        <style>
+            .menuMessage{
+                padding-left: 5px;
+            }
+        </style>
         <script>
-        
+
             var websocket = null;
 
             function sendData(obj) {
@@ -246,7 +249,8 @@
             }
 
             $(function () {
-                
+
+
             <c:if test="${empty param.id }">
                 window.location = "${pageContext.request.contextPath }/login.jsp";
             </c:if>
@@ -304,14 +308,48 @@
         </script>
     </head>
     <body>
-           
+
         <div class="wraper"> 
             <div class="bodyLeft" style="background: rgb(14, 98, 199) none repeat scroll 0% 0%;">
                 <div class="bodyLeftTop listdisplayNone" style="background:#5cb75c ">
-                    <span class="menuMessage" style="width:80px;margin-left:30px;">智慧城市照明管理系统</span>
+                    <span  style="width:80px;margin-left:30px;">智慧城市照明管理系统</span>
                 </div>
 
                 <ul class="layui-nav layui-nav-tree  MenuBox " >
+                    <c:forEach items="${menulist}" var="t" varStatus="i">
+                        <c:if test="${t.m_parent==0}">
+                            <c:if test="${i.index==0}">
+                                <li class="eachMenu layui-nav-item">
+                                    <a class="list listdisplayNone active" href="javascript:;" name="${t.m_action}?m_parent=${t.m_code}&role=${t.roletype}&lang=${empty cookie.lang.value?"zh_CN":cookie.lang.value}">
+                                        <span class="${t.m_icon}"></span>
+                                        <span class="menuMessage" >
+                                            <script>
+                                                var temp =${t.m_title};
+                                                var lan = "${empty cookie.lang.value?"zh_CN":cookie.lang.value}";
+                                                document.write(temp[lan]);
+                                            </script>
+
+                                        </span>
+                                    </a>
+                                </li>         
+                            </c:if>
+                            <c:if test="${i.index>0}">  
+                                <li class="eachMenu layui-nav-item">
+                                    <a class="list listdisplayNone" href="javascript:;" name="${t.m_action}?m_parent=${t.m_code}&role=${t.roletype}&lang=${empty cookie.lang.value?"zh_CN":cookie.lang.value}">
+                                        <span class="${t.m_icon}"></span>
+                                        <span class="menuMessage" >
+                                            <script>
+                                                var temp =${t.m_title};
+                                                var lan = "${empty cookie.lang.value?"zh_CN":cookie.lang.value}";
+                                                document.write(temp[lan]);
+                                            </script>
+                                        </span>
+                                    </a>
+                                </li>
+                            </c:if>
+                        </c:if>
+
+                    </c:forEach>
                 </ul>
             </div>
 
@@ -364,7 +402,7 @@
                 </div>
                 <input  id="names" value="" type="hidden">
                 <!--<input id="configurations" value="[{&quot;title&quot;:&quot;参数配置&quot;,&quot;action&quot;:&quot;config/paramConfig.action&quot;,&quot;icon&quot;:&quot;imgs/manager/paramConfiguration.png&quot;},{&quot;title&quot;:&quot;网关配置&quot;,&quot;action&quot;:&quot;config/gateway.action&quot;,&quot;icon&quot;:&quot;imgs/manager/gatewayConfiguration.png&quot;},{&quot;title&quot;:&quot;项目配置&quot;,&quot;action&quot;:&quot;config/alarmConfig.action&quot;,&quot;icon&quot;:&quot;imgs/manager/alarmConfiguration.png&quot;}]" type="hidden">-->
-                <iframe id="iframe" name="iframe" src="" seamless="" style="height: 886px;" width="100%" frameborder="0">
+                <iframe id="iframe" name="iframe" src="formuser.mainsub.home.action?pid=${fn:split(param.pid,",")[0]}" seamless="" style="height: 886px;" width="100%" frameborder="0">
                 </iframe>
             </div>
         </div>
@@ -449,12 +487,69 @@
                 });
             }
 
-            $(function () {
-//                $(".alarmLi").click(function () {
-//                    $("#alarmTable").css("display", "block");
-//                    document.getElementById('alarmTable').contentWindow.document.location.reload();
-//                });
 
+            function changeLanguage(language) {
+                setCookie("lang", language);
+//                location.reload(true);
+                $(".MenuBox").children().remove();
+                var lang = language;
+            <c:forEach items="${menulist}" var="t" varStatus="i">
+                <c:if test="${t.m_parent==0}">
+                var title =${t.m_title};
+                    <c:if test="${i.index==0}">
+                var li = document.createElement("li");
+                $(li).addClass("eachMenu layui-nav-item");
+                var a = document.createElement("a");
+                $(a).addClass("list listdisplayNone active");
+                $(a).attr("href", "javascript:;");
+                $(a).attr("name", "${t.m_action}?m_parent=${t.m_code}&role=${t.roletype}&lang=" + lang);
+                var spanicon = document.createElement("span");
+                var spantext = document.createElement("span");
+                $(spanicon).addClass("${t.m_icon}");
+                $(spantext).addClass("menuMessage");
+                $(spantext).append(title[lang]);
+                $(a).append(spanicon);
+                $(a).append(spantext);
+                $(li).append(a);
+                $(".MenuBox").append(li);
+
+
+                    </c:if>
+                    <c:if test="${i.index>0}">
+                var li = document.createElement("li");
+                $(li).addClass("eachMenu layui-nav-item");
+                var a = document.createElement("a");
+                $(a).addClass("list listdisplayNone active");
+                $(a).attr("href", "javascript:;");
+
+                $(a).attr("name", "${t.m_action}?m_parent=${t.m_code}&role=${t.roletype}&lang=" + lang);
+                var spanicon = document.createElement("span");
+                var spantext = document.createElement("span");
+                $(spanicon).addClass("${t.m_icon}");
+                $(spantext).addClass("menuMessage");
+                $(spantext).append(title[lang]);
+                $(a).append(spanicon);
+                $(a).append(spantext);
+                $(li).append(a);
+                $(".MenuBox").append(li);
+                    </c:if>
+                </c:if>
+
+            </c:forEach>
+                $(".MenuBox .list:eq(0)").click();
+            }
+
+
+
+
+
+
+
+
+
+
+
+            $(function () {
                 var pid = '${rs[0].pid}';
                 var pids = pid.split(",");   //项目编号
                 // $("#pojects").val(pids[0]);
@@ -492,16 +587,15 @@
                                 $(this).siblings(".secondMenu").css("display", "block");
                                 $(this).parent().addClass('layui-nav-itemed');
                             }
-                        } else {
                         }
                     } else {
                         $(this).addClass("active");
                         $(this).parent(".eachMenu").siblings(".eachMenu").children(".list").removeClass("active");
                         $(this).parent(".eachMenu").siblings(".eachMenu").children(".secondMenu").children(".secondMenuList").removeClass("active");
                         var iframesrc = $(this).attr("name");
-                        if (iframesrc.indexOf("?") == -1) {
-                            iframesrc += "?mmm=2";
-                        }
+//                        if (iframesrc.indexOf("?") == -1) {
+//                            iframesrc += "?mmm=2";
+//                        }
 
                         iframesrc = iframesrc + "&pid=" + getpojectId();
                         console.log(iframesrc);
@@ -541,51 +635,43 @@
                 })
                 /* 加载左边菜单 */
                 //传角色权限 获取菜单 
-              
-            
 
-                
+
                 // var rotype = $("#m_code").val(); //角色id
                 // var objrole = {role: rotype};
                 // var u_id = $("#userid").val(); //用户id
                 //  var objrole = {role: rotype, uid: u_id};
-                // var objrole = {role: "${param.m_code}", uid: "${param.id}"};
-                // console.log(objrole);
-                // $.ajax({type: "post", url: "formuser.mainmenu.querysub.action", dataType: "json", data: objrole,
-                //     success: function (data) {
-                        var data='${menulist}';
-                        // var htmls = '';
-                        // data = data2tree(data);
-
-                        // for (var i = 0; i < data.length; i++) {
-
-                        //     var action = data[i].action;
-                        //     if (data[i].children.length > 0) {
-                        //         console.log(objrole);
-
-                        //         action = action + "?m_parent=" + data[i].code + "&role=" + objrole.role;
-                        //     }
-
-                        //     var lang = "zh_CN";
-                        //     var obj = eval('(' + data[i].title + ')');
-                        //     console.log(obj);
-                        //     console.log(obj[lang]);
-                        //     htmls += '<li class="eachMenu layui-nav-item" >'
-                        //             + '<a class="list listdisplayNone" href="javascript:;" name="' + action + '">'
-                        //             + '<span class="' + data[i].icon + '">' + '</span>'
-                        //             + '<span class="menuMessage" style=" padding-left: 3px;" >' + obj[lang] + '</span>'
-                        //             + '</a>'
-                        //             + '</li>';                                
-                        // }
-
-                        // $(".MenuBox").html(htmls);
-                        // $(".list:eq(0)").addClass("active");
-                        // var ifrsrc = $(".list:eq(0)").attr("name");
-                        // ifrsrc = ifrsrc + "?pid=" + getpojectId();
-                        // console.log(ifrsrc);
-                        // $("#iframe").attr("src", ifrsrc);
-                //     }
-                // });
+//                 var objrole = {role: "${param.m_code}", uid: "${param.id}"};
+//                 console.log(objrole);
+//                 $.ajax({type: "post", url: "formuser.mainmenu.querysub.action", dataType: "json", data: objrole,
+//                     success: function (data) {
+//                         var htmls = '';
+//                         data = data2tree(data);
+//                         for (var i = 0; i < data.length; i++) {
+//                             var action = data[i].action;
+//                             if (data[i].children.length > 0) {
+//                                 console.log(objrole);
+//                                 action = action + "?m_parent=" + data[i].code + "&role=" + objrole.role;
+//                             }
+//                             var lang = "zh_CN";
+//                             var obj = eval('(' + data[i].title + ')');
+//                             console.log(obj);
+//                             console.log(obj[lang]);
+//                             htmls += '<li class="eachMenu layui-nav-item" >'
+//                                     + '<a class="list listdisplayNone" href="javascript:;" name="' + action + '">'
+//                                     + '<span class="' + data[i].icon + '">' + '</span>'
+//                                     + '<span class="menuMessage" style=" padding-left: 3px;" >' + obj[lang] + '</span>'
+//                                     + '</a>'
+//                                     + '</li>';                                
+//                         }
+//                         $(".MenuBox").html(htmls);
+//                         $(".list:eq(0)").addClass("active");
+//                         var ifrsrc = $(".list:eq(0)").attr("name");
+//                         ifrsrc = ifrsrc + "?pid=" + getpojectId();
+//                         console.log(ifrsrc);
+//                         $("#iframe").attr("src", ifrsrc);
+//                     }
+//                 });
 
 
 
@@ -601,44 +687,7 @@
 
                 //语言切换
                 var obj = {type: 1};
-                function changeLanguage(language) {
-                    console.log(language);
-//                    var obj = obj;
-//                    $.ajax({
-//                        type: "post",
-//                        url: "formuser.mainmenu.query.action",
-//                        dataType: "json",
-//                        data: obj,
-//                        success: function (data) {
-//                            $(".MenuBox").children('li').remove();
-//                            var htmls = '';
-//                            data = data2tree(data);
-//                            console.log(data);
-//                            for (var i = 0; i < data.length; i++) {
-//                                if (data[i].children.length == 0) {
-//                                    var lang = language;
-//                                    var obj = eval('(' + data[i].title + ')');
-//
-//                                    htmls += '<li class="eachMenu layui-nav-item" >'
-//                                            + '<a class="list listdisplayNone" href="javascript:;" name="' + data[i].action + '">'
-//                                            + '<span class="' + data[i].icon + '">' + '</span>'
-//                                            + '<span class="menuMessage" style=" padding-left: 3px;" >' + obj[lang] + '</span>'
-//                                            + '</a>'
-//                                            + '</li>';
-//
-//                                }
-//                            }
-//
-//                            $(".MenuBox").html(htmls);
-//                            $(".list:eq(0)").addClass("active");
-//                            var ifrsrc = $(".list:eq(0)").attr("name");
-//                            $("#iframe").attr("src", ifrsrc);
-//                        }
-//
-//
-//                    });
 
-                }
 
 
             });
@@ -694,7 +743,7 @@
                                 valign: 'middle'
                             }]
                     ],
-                   // singleSelect: true,
+                    // singleSelect: true,
                     sortName: 'id',
                     locale: 'zh-CN', //中文支持,
                     // minimumCountColumns: 7, //最少显示多少列

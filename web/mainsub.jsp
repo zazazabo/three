@@ -709,8 +709,6 @@
                 };
                 myChart5.setOption(option);
             }
-<<<<<<< HEAD
-
             function dealsend() {
 
                 var user = new Object();
@@ -740,8 +738,6 @@
                // dealsend();
             })
 
-=======
->>>>>>> 29f4969004a94e675b0999490dacad3f123d310b
         </script>
 
 

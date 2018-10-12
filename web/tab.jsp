@@ -69,7 +69,8 @@
                         var i = 0;
                         datas.forEach(function (data) {
                             var action = data.m_action;
-                            var lang = "zh_CN";
+                            var lang = "${param.lang}";
+                            
                             var objlang = eval('(' + data.m_title + ')');
                             var u1 = action + "?m_parent=" + data.m_code + "&role=${param.role}&pid=${param.pid}";
                             //console.log(u1);
@@ -82,7 +83,7 @@
                                     + '</li>'
                         });
                         htmls += '<span class="layui-nav-bar" style="width: 0px; left: 484px; opacity: 0; top: 45px;"></span>';
-                        // console.log(htmls);
+                         console.log(htmls);
                         $(".secondMenu").html(htmls);
                     }
                 });

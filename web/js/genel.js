@@ -14,16 +14,31 @@ $.fn.serializeObject = function () {
     });
     return o;
 }
+function setCookie(name, value)
+{
+    var Days = 30;
+    var exp = new Date();
+    exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
+    document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString();
+}
 
- Array.prototype.distinct = function () {
-        return this.reduce(function (new_array, old_array_value) {
-           var str1 =    JSON.stringify(new_array);
-           var str2=JSON.stringify(old_array_value);
-            if (str1.indexOf(str2) == -1) 
-                new_array.push(old_array_value);
-            return new_array; //最终返回的是 prev value 也就是recorder
-        }, []);
-    }
+function getCookie(name)
+{
+    var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+    if (arr = document.cookie.match(reg))
+        return unescape(arr[2]);
+    else
+        return null;
+}
+Array.prototype.distinct = function () {
+    return this.reduce(function (new_array, old_array_value) {
+        var str1 = JSON.stringify(new_array);
+        var str2 = JSON.stringify(old_array_value);
+        if (str1.indexOf(str2) == -1)
+            new_array.push(old_array_value);
+        return new_array; //最终返回的是 prev value 也就是recorder
+    }, []);
+}
 
 
 
@@ -430,7 +445,7 @@ function dealsend2(msg, data, fn, func, comaddr, type, param, val) {
     user.function = func;
     user.param = param;
     user.page = 2;
-    user.frame=-1;
+    user.frame = -1;
     user.msg = msg;
     user.val = val;
     user.type = type;
