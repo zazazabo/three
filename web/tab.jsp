@@ -83,7 +83,6 @@
                                     + '</li>'
                         });
                         htmls += '<span class="layui-nav-bar" style="width: 0px; left: 484px; opacity: 0; top: 45px;"></span>';
-                         console.log(htmls);
                         $(".secondMenu").html(htmls);
                     }
                 });
