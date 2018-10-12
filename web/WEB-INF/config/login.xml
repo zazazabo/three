@@ -22,16 +22,20 @@
                     <xfltpara id="id" nrp="1=1" para="id" sql="id = ':id'">
                     </xfltpara>
                 </xflt>      
-            </xsql>  
-            <xsql id="a2" list="true" page="true" tpe="SQL" tpl=" SELECT * FROM   t_menu tm,t_role tr WHERE tm.m_code=tr.code AND tr.enable=1 AND  @CONDITION   ORDER BY m_code ASC" var="menulist">
-                <xflt id="CONDITION" nrp="" tpl="@role AND @m_parent  ">
+            </xsql>
+            <xsql id="a2" list="true" page="true" tpe="SQL" tpl="select * from t_lan " var="lans">     
+            </xsql>   
+
+            <xsql id="a3" list="true" page="true" tpe="SQL" tpl=" SELECT * FROM   t_menu tm,t_role tr WHERE tm.m_code=tr.code AND tr.enable=1 AND  @CONDITION   ORDER BY m_code ASC" var="menulist">
+                <xflt id="CONDITION" nrp="" tpl="@role AND @m_parent  ">  
                     <xfltpara id="role" nrp="1=1" para="role" sql="roletype = :role">
                     </xfltpara>
                     <xfltpara id="m_parent" nrp="1=1" para="m_parent" sql="tm.m_parent = :m_parent">
                     </xfltpara>
                 </xflt>
-            </xsql>                           
+            </xsql>                   
         </xhand>
+   
         
         <xhandle desc="查看故障信息数量" id="fualtCount" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select count(f_state) as number from t_fault where f_state = 1 and f_comaddr in (select comaddr from t_baseinfo where @CONDITION )" var="rs">
@@ -596,7 +600,7 @@
     
     
     <xform desc="回路管理" id="loop">
-       <xhandle desc="判断该网关是否属于该项目" id="isporject" rtn="rs" rtnype="JSON">
+        <xhandle desc="判断该网关是否属于该项目" id="isporject" rtn="rs" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select comaddr from t_baseinfo where @CONDITION " var="rs">
                 <xflt id="CONDITION" nrp="" tpl="@comaddr AND  @pid ">
                     <xfltpara id="comaddr" nrp="1=1" para="comaddr" sql="comaddr=':comaddr'">

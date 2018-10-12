@@ -9,10 +9,10 @@
 <html>
     <head>
         <%@include  file="js.jspf" %>
-<script type="text/javascript" src="js/genel.js"></script>
+        <script type="text/javascript" src="js/genel.js"></script>
 
         <!--        <script type="text/javascript" src="jquery-easyui-1.5.5.4/jquery.easyui.min.js"></script>-->
-        
+
         <!--        <link type="text/css" href="jquery-ui-bootstrap/css/custom-theme/jquery-ui-1.10.0.custom.css" rel="stylesheet" />
                 <script src="jquery-ui-bootstrap/assets/js/jquery-ui-1.10.0.custom.min.js" type="text/javascript"></script>
                 
@@ -22,7 +22,7 @@
                 
         -->
 
-      
+
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <script>
@@ -32,9 +32,24 @@
             }
 
             $(function () {
-                
-                var arr=[{id:11,text:11},{id:11,text:11}];
-                console.log(arr.distinct());
+//                 var o={};
+//                 var v= [{id:1,zh_ch:"aaa"}]
+//                 
+//                  o[v[i].id]={zh_ch:"计划能耗",en_us:"计划能耗1"};
+//                  
+//                 var ooo={};
+//                 ooo[v[0].id]=v[0];
+//                 o[1]={zh_ch:"计划能耗",en_us:"计划能耗1"};
+//                 
+//                 console.log(o);
+//                 var a=1;
+//                 var b="en_us";
+//                 o[a][b]
+//                 console.log(o[a][b]);
+//                 
+//                 
+//                var arr=[{id:11,text:11},{id:11,text:11}];
+//                console.log(arr.distinct());
 //                alert(['a','b','c','d','b','a','e'].distinct());
 
 
@@ -89,8 +104,26 @@
 
     </head>
     <body>
+<<<<<<< HEAD
         <h1>Hello World!</h1>
 <%int a=80; out.println(a);%>
+=======
+        <h1>
+
+        </h1>
+
+        <script>
+            var o = {};
+            o[1] = {zh_ch: "计划能耗", en_us: "计划能耗1"};
+            console.log(o);
+            var a = 1;
+            var b = "en_us";
+            document.write(o[a][b]);
+            
+        </script>
+
+
+>>>>>>> 667e3cdfec7b76c1e2fc09d614334d67db0f70f8
         <input type="button" value="hit" onclick="hit()"/>
         <div class="container">
             <input class="easyui-combobox" name="language[]" style="width:100%;" data-options="

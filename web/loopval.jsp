@@ -16,38 +16,28 @@
         <script type="text/javascript" src="js/genel.js"></script>
         <script type="text/javascript"  src="js/getdate.js"></script>
         <script>
-             
+
             var u_name = parent.parent.getusername();
             var o_pid = parent.parent.getpojectId();
 
-  
+
             function switchloopCB(obj) {
                 console.log(obj);
                 if (obj.status == "success") {
-                    if (obj.type == "0") {
-                        var param = obj.param;
-                        var o = {};
-                        o.id = param.id;
-                        o.l_switch = obj.val;
-                        $.ajax({async: false, url: "loop.loopForm.modifySwitch.action", type: "get", datatype: "JSON", data: o,
-                            success: function (data) {
-                                $("#gravidaTable").bootstrapTable('updateCell', {index: param.row, field: "l_switch", value: obj.val});
-                                //$("#gravidaTable").bootstrapTable('refresh');
-                            },
-                            error: function () {
-                                alert("提交失败！");
-                            }
-                        });
-                    } else if (obj.type == 1) {
-                        $.ajax({async: false, url: "loop.loopForm.modifyAllSwitch.action", type: "get", datatype: "JSON", data: o,
-                            success: function (data) {
-                                $("#gravidaTable").bootstrapTable('refresh');
-                            },
-                            error: function () {
-                                alert("提交失败！");
-                            }
-                        });
-                    }
+                    var param = obj.param;
+                    var o = {};
+                    o.id = param.id;
+                    o.l_switch = obj.val;
+                    $.ajax({async: false, url: "loop.loopForm.modifySwitch.action", type: "get", datatype: "JSON", data: o,
+                        success: function (data) {
+                            $("#gravidaTable").bootstrapTable('updateCell', {index: param.row, field: "l_switch", value: obj.val});
+                            layerAler("回路控制成功")
+                            //$("#gravidaTable").bootstrapTable('refresh');
+                        },
+                        error: function () {
+                            alert("提交失败！");
+                        }
+                    });
 
                 }
             }
@@ -58,46 +48,46 @@
                     layerAler("网关地址不能为空");
                     return;
                 }
-                if (o1.type == "0") {
-                    var selects = $('#gravidaTable').bootstrapTable('getSelections');
-                    if (selects.length == 0) {
-                        layerAler("请勾选表格数据");
-                        return;
-                    }
-                    var select = selects[0];
-                    if (select.l_deplayment=="0") {
-                        layerAler("请部署后再操作");
-                        return;
-                    }
-                   addlogon(u_name, "合闸开关", o_pid, "回路断合闸", "回路断合闸");
-                    var comaddr = select.l_comaddr;
-                    var switchval = o1.switch;
-
-                    var vv = new Array();
-                    var c = parseInt(select.l_code);
-                    var h = c >> 8 & 0x00ff;
-                    var l = c & 0x00ff;
-                    vv.push(l);
-                    vv.push(h); //装置序号  2字节
-
-                    vv.push(parseInt(switchval));
-                    var num = randnum(0, 9) + 0x70;
-                    var param = {};
-
-                    param.row = select.index;
-                    param.id = select.id;
-
-                    var data = buicode(comaddr, 0x04, 0xA5, num, 0, 208, vv); //01 03 F24     
-                    dealsend2("A5", data, 208, "switchloopCB", comaddr, o1.type, param, switchval);
-                } else if (o1.type == "1") {
-                    var comaddr = o1.l_comaddr;
-                    var vv = new Array();
-                    var switchval = o1.switch;
-                    vv.push(parseInt(switchval));
-                    var num = randnum(0, 9) + 0x70;
-                    var data = buicode(comaddr, 0x04, 0xA5, num, 0, 208, vv); //01 03 F24     
-                    dealsend2("A5", data, 208, "switchloopCB", comaddr, o1.type, 0, switchval);
+//                if (o1.type == "0") {
+                var selects = $('#gravidaTable').bootstrapTable('getSelections');
+                if (selects.length == 0) {
+                    layerAler("请勾选表格数据");
+                    return;
                 }
+                var select = selects[0];
+                if (select.l_deplayment == "0") {
+                    layerAler("请部署后再操作");
+                    return;
+                }
+                addlogon(u_name, "合闸开关", o_pid, "回路断合闸", "回路断合闸");
+                var comaddr = select.l_comaddr;
+                var switchval = o1.switch;
+
+                var vv = new Array();
+                var c = parseInt(select.l_code);
+                var h = c >> 8 & 0x00ff;
+                var l = c & 0x00ff;
+                vv.push(l);
+                vv.push(h); //装置序号  2字节
+
+                vv.push(parseInt(switchval));
+                var num = randnum(0, 9) + 0x70;
+                var param = {};
+
+                param.row = select.index;
+                param.id = select.id;
+
+                var data = buicode(comaddr, 0x04, 0xA5, num, 0, 208, vv); //01 03 F24     
+                dealsend2("A5", data, 208, "switchloopCB", comaddr, o1.type, param, switchval);
+//                } else if (o1.type == "1") {
+//                    var comaddr = o1.l_comaddr;
+//                    var vv = new Array();
+//                    var switchval = o1.switch;
+//                    vv.push(parseInt(switchval));
+//                    var num = randnum(0, 9) + 0x70;
+//                    var data = buicode(comaddr, 0x04, 0xA5, num, 0, 208, vv); //01 03 F24     
+//                    dealsend2("A5", data, 208, "switchloopCB", comaddr, o1.type, 0, switchval);
+//                }
             }
             function restoreloopCB(obj) {
                 console.log(obj);
@@ -262,7 +252,7 @@
                         if (Array.isArray(data) && data.length > 0) {
                             $(this).combobox('select', data[0].id);
 
-                        } 
+                        }
                     },
                     onSelect: function (record) {
                         var obj = {};
@@ -297,15 +287,6 @@
                             </span>    
                         </td>
                         <td>
-                            <span style="margin-left:10px;">回路</span>
-                            <select class="easyui-combobox" id="type" name="type" style="width:100px; height: 30px">
-                                <option value="0">单个回路</option>
-                                <option value="1">所有回路</option>           
-                            </select>
-
-                        </td>
-
-                        <td>
                             <span style="margin-left:10px;">合闸开关&nbsp;</span>
 
                             <select class="easyui-combobox" id="switch" name="switch" style="width:100px; height: 30px">
@@ -313,8 +294,19 @@
                                 <option value="85">闭合</option>           
                             </select>
                             <button type="button" id="btnswitch" onclick="switchloop()" class="btn btn-success btn-sm">合闸开关</button>
-                            <button type="button" id="btnswitch" onclick="restoreloop()" class="btn btn-success btn-sm">恢复自动运行</button>
                         </td>
+
+                        <td>
+                            <span style="margin-left:10px;">回路</span>
+                            <select class="easyui-combobox" id="type" name="type" style="width:100px; height: 30px">
+                                <option value="0">单个回路</option>
+                                <option value="1">所有回路</option>           
+                            </select>
+                            <button type="button" id="btnswitch" onclick="restoreloop()" class="btn btn-success btn-sm">恢复自动运行</button>
+
+                        </td>
+
+
 
                         <td>
 

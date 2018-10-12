@@ -8,7 +8,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib uri="/WEB-INF/fn.tld" prefix="fn" %>
+<%@ taglib uri="/WEB-INF/tld/fn.tld" prefix="fn" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -248,9 +248,25 @@
                 }
             }
 
+            //获取语言
+            function getLnas() {
+//                var lans;
+//                $.ajax({async: false, url: "login.main.lan.action", type: "get", datatype: "JSON", data: {},
+//                    success: function (data) {
+//                        lans = data.lans;
+//
+//                    }
+//                });
+//                var ooo = {};
+//                for (var i = 0; i < lans.length; i++) {
+//                    ooo[lans[i].id]=lans[0];
+//                }
+//                console.log(ooo);
+//                return ooo;
+            }
+
             $(function () {
-
-
+                getLnas();
             <c:if test="${empty param.id }">
                 window.location = "${pageContext.request.contextPath }/login.jsp";
             </c:if>

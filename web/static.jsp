@@ -6,7 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib uri="/WEB-INF/fn.tld" prefix="fn" %>
+<%@ taglib uri="/WEB-INF/tld/fn.tld" prefix="fn" %>
 <!DOCTYPE html>
 <html xmlns:f="http://java.sun.com/jsf/core">
     <head>
