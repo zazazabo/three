@@ -746,7 +746,21 @@
                     <div class="Mess energySavingRate">
                         <span id="jnl">
                         </span>
-                        <span>节能率</span>
+                        <span>
+                                   <script>
+            var o = {};
+            o[7] = {zh_ch: "节能率", en_us: "jnl"};
+            console.log(o);
+            var a = 7;
+            var b = "en_us";
+            document.write(o[a][b]);
+            
+        </script>
+                            
+                            
+                            <!--节能率-->
+                        
+                        </span>
                     </div>
                 </div>
                 <!--                <div class="topLeftOneBox">
