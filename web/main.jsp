@@ -20,7 +20,7 @@
         <script type="text/javascript"  src="js/getdate.js"></script>
 
         <script>
-        
+
             var websocket = null;
 
             function sendData(obj) {
@@ -242,8 +242,25 @@
                 }
             }
 
+            //获取语言
+            function getLnas() {
+                var lans;
+                $.ajax({async: false, url: "login.main.lan.action", type: "get", datatype: "JSON", data: {},
+                    success: function (data) {
+                        lans = data.lans;
+
+                    }
+                });
+                var ooo = {};
+                for (var i = 0; i < lans.length; i++) {
+                    ooo[lans[i].id]=lans[0];
+                }
+                console.log(ooo);
+                return ooo;
+            }
+
             $(function () {
-                
+                getLnas();
             <c:if test="${empty param.id }">
                 window.location = "${pageContext.request.contextPath }/login.jsp";
             </c:if>
@@ -692,7 +709,7 @@
                                 valign: 'middle'
                             }]
                     ],
-                   // singleSelect: true,
+                    // singleSelect: true,
                     sortName: 'id',
                     locale: 'zh-CN', //中文支持,
                     // minimumCountColumns: 7, //最少显示多少列
