@@ -58,7 +58,7 @@
             </xsql>
         </xhandle>
         <xhandle desc="网关" id="getComaddr" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT   tl.comaddr as id,tl.comaddr as text,name FROM t_baseinfo tl where @CONDITION 
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT   tl.comaddr as id,tl.comaddr as text,name,online FROM t_baseinfo tl where @CONDITION 
              " var="list">
                 <xflt id="CONDITION" nrp="" tpl="@l_comaddr  AND @pid ">
                     <xfltpara id="l_comaddr" nrp="1=1" para="l_comaddr" sql="comaddr = ':l_comaddr' ">

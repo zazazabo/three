@@ -247,9 +247,22 @@
                 });
 
                 $('#l_comaddr').combobox({
-                    url: "loop.loopForm.getComaddr.action?pid=${param.pid}",
+                    url: "gayway.GaywayForm.getComaddr.action?pid=${param.pid}",
+                    formatter: function (row) {
+                        var v1 = row.online == 1 ? "&nbsp;<img src='img/online1.png'>" : "&nbsp;<img src='img/off.png'>";
+                        var v = row.text + v1;
+                        row.id = row.id;
+                        row.text = v;
+                        var opts = $(this).combobox('options');
+                        console.log(row[opts.textField]);
+                        return row[opts.textField];
+                    },
                     onLoadSuccess: function (data) {
                         if (Array.isArray(data) && data.length > 0) {
+                            for (var i = 0; i < data.length; i++) {
+                                data[i].text = data[i].id;
+                            }
+
                             $(this).combobox('select', data[0].id);
 
                         }
@@ -257,6 +270,7 @@
                     onSelect: function (record) {
                         var obj = {};
                         obj.l_comaddr = record.id;
+               
                         obj.pid = "${param.pid}";
                         console.log(obj);
                         var opt = {

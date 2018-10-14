@@ -239,7 +239,7 @@
                 vv.push(parseInt(obj.scennum));
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 308, vv); //01 03
-                dealsend2("A5",data, 308, "sceneCB", l_comaddr, obj.lighttype, groupe, scenenum);
+                dealsend2("A5", data, 308, "sceneCB", l_comaddr, obj.lighttype, groupe, scenenum);
             }
 
             function scenesingle() {
@@ -439,7 +439,7 @@
                                 } else if (value == 1) {
                                     value = "1(经纬度)";
                                     return value;
-                                }else if (value==2) {
+                                } else if (value == 2) {
                                     value = "1(场景)";
                                     return value;
                                 }
@@ -550,19 +550,34 @@
 
 
 
-                        $('#l_comaddr').combobox({
-                            url:"lamp.lampform.getComaddr.action?l_deplayment=1&pid=${param.pid}",
-                            onLoadSuccess: function (data) {
-                                 data = data.distinct();
-                                if (Array.isArray(data) && data.length > 0) {
-                                    $(this).combobox('select', data[0].id);
-                                }
-                            },
-                            onSelect: function (record) {
-                                var url = "lamp.GroupeForm.getGroupe.action?l_comaddr=" + record.id + "&l_deplayment=1";
-                                $("#l_groupe").combobox("reload", url);
+                $('#l_comaddr').combobox({
+                    url: "gayway.GaywayForm.getComaddr.action?pid=${param.pid}",
+                     formatter: function (row) {
+                        var v1 = row.online == 1 ? "&nbsp;<img src='img/online1.png'>" : "&nbsp;<img src='img/off.png'>";
+                        var v = row.text + v1;
+                        row.id = row.id;
+                        row.text = v;
+                        var opts = $(this).combobox('options');
+                        console.log(row[opts.textField]);
+                        return row[opts.textField];
+                    },
+                    onLoadSuccess: function (data) {
+                        if (Array.isArray(data) && data.length > 0) {
+                            for (var i = 0; i < data.length; i++) {
+                                data[i].text = data[i].id;
                             }
-                        })
+
+                            $(this).combobox('select', data[0].id);
+
+                        }
+                    },                
+                    onSelect: function (record) {
+                        var url = "lamp.GroupeForm.getGroupe.action?l_comaddr=" + record.id + "&l_deplayment=1";
+                        $("#l_groupe").combobox("clear");
+        
+                        $("#l_groupe").combobox("reload", url);
+                    }
+                })
 
 
 
