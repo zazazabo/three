@@ -48,6 +48,47 @@
                     layerAler("网关地址不能为空");
                     return;
                 }
+<<<<<<< HEAD
+                if (o1.type == "0") {
+                    var selects = $('#gravidaTable').bootstrapTable('getSelections');
+                    if (selects.length == 0) {
+                        layerAler("请勾选表格数据");
+                        return;
+                    }
+                    var select = selects[0];
+                    if (select.l_deplayment == "0") {
+                        layerAler("请部署后再操作");
+                        return;
+                    }
+                    addlogon(u_name, "合闸开关", o_pid, "回路断合闸", "回路断合闸");
+                    var comaddr = select.l_comaddr;
+                    var switchval = o1.switch;
+
+                    var vv = new Array();
+                    var c = parseInt(select.l_code);
+                    var h = c >> 8 & 0x00ff;
+                    var l = c & 0x00ff;
+                    vv.push(l);
+                    vv.push(h); //装置序号  2字节
+
+                    vv.push(parseInt(switchval));
+                    var num = randnum(0, 9) + 0x70;
+                    var param = {};
+
+                    param.row = select.index;
+                    param.id = select.id;
+
+                    var data = buicode(comaddr, 0x04, 0xA5, num, 0, 208, vv); //01 03 F24     
+                    dealsend2("A5", data, 208, "switchloopCB", comaddr, o1.type, param, switchval);
+                } else if (o1.type == "1") {
+                    var comaddr = o1.l_comaddr;
+                    var vv = new Array();
+                    var switchval = o1.switch;
+                    vv.push(parseInt(switchval));
+                    var num = randnum(0, 9) + 0x70;
+                    var data = buicode(comaddr, 0x04, 0xA5, num, 0, 208, vv); //01 03 F24     
+                    dealsend2("A5", data, 208, "switchloopCB", comaddr, o1.type, 0, switchval);
+=======
 //                if (o1.type == "0") {
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
                 if (selects.length == 0) {
@@ -58,6 +99,7 @@
                 if (select.l_deplayment == "0") {
                     layerAler("请部署后再操作");
                     return;
+>>>>>>> bba05a797550e388dee33c53653ed1f3de0f4669
                 }
                 addlogon(u_name, "合闸开关", o_pid, "回路断合闸", "回路断合闸");
                 var comaddr = select.l_comaddr;
@@ -138,6 +180,14 @@
             }
 
             $(function () {
+                var lang = '${param.lang}';//'zh_CN';
+                var langs1 = parent.parent.getLnas();
+                var aaa = $("span[name=xxx]");
+                for (var i = 0; i < aaa.length; i++) {
+                    var d = aaa[i];
+                    var e = $(d).attr("id");
+                    $(d).html(langs1[e][lang]);
+                }
                 $('#gravidaTable').on("check.bs.table", function (field, value, row, element) {
                     var index = row.data('index');
                     value.index = index;
@@ -293,7 +343,10 @@
                 <tbody>
                     <tr>
                         <td>
-                            <span style="margin-left:10px;">网关地址&nbsp;</span>
+                            <span style="margin-left:10px;">
+                                <!-- 网关地址-->
+                                <span id="25" name="xxx"></span>
+                                &nbsp;</span>
                             <span class="menuBox">
 
                                 <input id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 34px" 
@@ -301,12 +354,40 @@
                             </span>    
                         </td>
                         <td>
+<<<<<<< HEAD
+                            <span style="margin-left:10px;" id="48" name="xxx">
+                                <!--回路-->
+                            </span>
+                            <select class="easyui-combobox" id="type" name="type" style="width:100px; height: 30px">
+                                <option value="0">单个回路</option>
+                                <option value="1">所有回路</option>           
+                            </select>
+
+                        </td>
+
+                        <td>
+                            <span style="margin-left:10px;">
+                                <!-- 合闸开关-->
+                                <span id="49" name="xxx"></span>
+                                &nbsp;</span>
+=======
                             <span style="margin-left:10px;">合闸开关&nbsp;</span>
+>>>>>>> bba05a797550e388dee33c53653ed1f3de0f4669
 
                             <select class="easyui-combobox" id="switch" name="switch" style="width:100px; height: 30px">
                                 <option value="170">断开</option>
                                 <option value="85">闭合</option>           
                             </select>
+<<<<<<< HEAD
+                            <button type="button" id="btnswitch" onclick="switchloop()" class="btn btn-success btn-sm">
+                                <!--合闸开关-->
+                                <span id="49" name="xxx"></span>
+                            </button>
+                            <button type="button" id="btnswitch" onclick="restoreloop()" class="btn btn-success btn-sm">
+                                <!--恢复自动运行-->
+                                <span id="41" name="xxx"></span>
+                            </button>
+=======
                             <button type="button" id="btnswitch" onclick="switchloop()" class="btn btn-success btn-sm">合闸开关</button>
                         </td>
 
@@ -318,6 +399,7 @@
                             </select>
                             <button type="button" id="btnswitch" onclick="restoreloop()" class="btn btn-success btn-sm">恢复自动运行</button>
 
+>>>>>>> bba05a797550e388dee33c53653ed1f3de0f4669
                         </td>
 
 

@@ -259,14 +259,24 @@
 //                });
 //                var ooo = {};
 //                for (var i = 0; i < lans.length; i++) {
-//                    ooo[lans[i].id]=lans[0];
+//                    ooo[lans[i].id]=lans[i];
 //                }
-//                console.log(ooo);
-//                return ooo;
+                return o;
             }
-
+            var o = {};
             $(function () {
-                getLnas();
+                
+            <c:forEach items="${lans}" var="t" varStatus="i">
+                var id =${t.id};
+                var zh_CN1 ="${empty t.zh_CN?"":t.zh_CN}";
+                var en_US1 ="${empty t.en_US?"":t.en_US}";
+                var e_BY1 ="${empty t.e_BY?"":t.e_BY}";
+
+                o[id] ={zh_CN:zh_CN1,en_US:en_US1,e_BY:e_BY1};
+            </c:forEach>
+              //  console.log(o);
+
+
             <c:if test="${empty param.id }">
                 window.location = "${pageContext.request.contextPath }/login.jsp";
             </c:if>
@@ -418,7 +428,7 @@
                 </div>
                 <input  id="names" value="" type="hidden">
                 <!--<input id="configurations" value="[{&quot;title&quot;:&quot;参数配置&quot;,&quot;action&quot;:&quot;config/paramConfig.action&quot;,&quot;icon&quot;:&quot;imgs/manager/paramConfiguration.png&quot;},{&quot;title&quot;:&quot;网关配置&quot;,&quot;action&quot;:&quot;config/gateway.action&quot;,&quot;icon&quot;:&quot;imgs/manager/gatewayConfiguration.png&quot;},{&quot;title&quot;:&quot;项目配置&quot;,&quot;action&quot;:&quot;config/alarmConfig.action&quot;,&quot;icon&quot;:&quot;imgs/manager/alarmConfiguration.png&quot;}]" type="hidden">-->
-                <iframe id="iframe" name="iframe" src="formuser.mainsub.home.action?pid=${fn:split(param.pid,",")[0]}" seamless="" style="height: 886px;" width="100%" frameborder="0">
+                <iframe id="iframe" name="iframe" src="formuser.mainsub.home.action?pid=${fn:split(param.pid,",")[0]}&lang=${empty cookie.lang.value?"zh_CN":cookie.lang.value}" seamless="" style="height: 886px;" width="100%" frameborder="0">
                 </iframe>
             </div>
         </div>
