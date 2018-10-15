@@ -560,19 +560,8 @@
 
 
                 $('#l_comaddr').combobox({
-<<<<<<< HEAD
-                    url: "lamp.lampform.getComaddr.action?l_deplayment=1&pid=${param.pid}",
-                    onLoadSuccess: function (data) {
-                        data = data.distinct();
-                        if (Array.isArray(data) && data.length > 0) {
-                            $(this).combobox('select', data[0].id);
-                        }
-                    },
-                    onSelect: function (record) {
-                        var url = "lamp.GroupeForm.getGroupe.action?l_comaddr=" + record.id + "&l_deplayment=1";
-=======
                     url: "gayway.GaywayForm.getComaddr.action?pid=${param.pid}",
-                     formatter: function (row) {
+                    formatter: function (row) {
                         var v1 = row.online == 1 ? "&nbsp;<img src='img/online1.png'>" : "&nbsp;<img src='img/off.png'>";
                         var v = row.text + v1;
                         row.id = row.id;
@@ -590,33 +579,13 @@
                             $(this).combobox('select', data[0].id);
 
                         }
-                    },                
+                    },
                     onSelect: function (record) {
                         var url = "lamp.GroupeForm.getGroupe.action?l_comaddr=" + record.id + "&l_deplayment=1";
                         $("#l_groupe").combobox("clear");
-        
->>>>>>> bba05a797550e388dee33c53653ed1f3de0f4669
                         $("#l_groupe").combobox("reload", url);
                     }
                 })
-
-
-
-//                $.ajax({async: false, url: "lamp.lampform.getComaddr.action?l_deplayment=1&pid=${param.pid}", type: "get", datatype: "JSON", data: {},
-//                    success: function (data) {
-//                        data = data.distinct();
-//
-//                    },
-//                    error: function () {
-//                        alert("提交失败！");
-//                    }
-//                });
-
-
-
-
-
-
 
 
                 $('#scenetype').combobox({
@@ -686,16 +655,19 @@
                                         &nbsp;</span>
                                 </td>
                                 <td>
+                                            <select class="easyui-combobox" id="groupetype" name="groupetype" style="width:150px; height: 30px">
+                                        <option value="0"> 单灯调光</option>
+                                        <option value="1">组号调光</option>           
+                                    </select>
 
-
-                                    <select class="easyui-combobox" id="groupetype" name="groupetype" style="width:150px; height: 30px">
+<!--                                    <select class="easyui-combobox" id="groupetype" name="groupetype"  style="width:150px; height: 30px">
                                         <option value="0">
                                             单灯调光
                                         </option>
                                         <option value="1">
                                             组号调光
                                         </option>           
-                                    </select>   
+                                    </select>   -->
 
 
                                 </td>
