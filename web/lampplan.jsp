@@ -475,7 +475,7 @@
                             },
                             {
                                 field: 'p_time',
-                                title: '时间一',
+                                title: '时间一',   //时间一
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
