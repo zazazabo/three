@@ -72,7 +72,7 @@
                             var lang = "${param.lang}";
                             
                             var objlang = eval('(' + data.m_title + ')');
-                            var u1 = action + "?m_parent=" + data.m_code + "&role=${param.role}&pid=${param.pid}";
+                            var u1 = action + "?m_parent=" + data.m_code + "&role=${param.role}&pid=${param.pid}&lang=${param.lang}";
                             //console.log(u1);
 //                            htmls += '<li class="layui-nav-item" name="' + action + '">'
 

@@ -29,6 +29,8 @@
         <script>
             var u_name = parent.parent.getusername();
             var o_pid = parent.parent.getpojectId();
+            var lang = '${param.lang}';//'zh_CN';
+            var langs1 = parent.parent.getLnas();
             function layerAler(str) {
                 layer.alert(str, {
                     icon: 6,
@@ -311,7 +313,12 @@
             }
 
             $(function () {
-
+                var aaa = $("span[name=xxx]");
+                for (var i = 0; i < aaa.length; i++) {
+                    var d = aaa[i];
+                    var e = $(d).attr("id");
+                    $(d).html(langs1[e][lang]);
+                }
                 $("#dialog-add").dialog({
                     autoOpen: false,
                     modal: true,
@@ -450,7 +457,7 @@
                             },
                             {
                                 field: 'p_name',
-                                title: '方案名',
+                                title:langs1[69][lang] ,  //方案名称
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -459,7 +466,7 @@
                             },
                             {
                                 field: 'p_code',
-                                title: '方案编号',
+                                title: langs1[70][lang],
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',

@@ -261,10 +261,18 @@
         </style>
 
         <script>
-
             var myChart, myChart2, myChart3, myChart4, myChart5;
             var echarts;
             $(function () {
+                var lang = '${param.lang}';
+                var langs1 = parent.parent.getLnas();
+                var aaa = $("span[name=xxx]");
+                for (var i = 0; i < aaa.length; i++) {
+                    var d = aaa[i];
+                    var e = $(d).attr("id");
+                    $(d).html(langs1[e][lang]);
+                    
+                }
                 var truevalmap = "";
                 var status1 = "";
                 var planvalue = "";
@@ -293,14 +301,14 @@
                 var fatualpower = parseFloat(atualvalue);
                 var diffpower = fplanpower - fatualpower;
                 $("#actualConsumption").html(atualvalue);
-                diffpower=  isNaN(diffpower)==true?0:diffpower;
-                
+                diffpower = isNaN(diffpower) == true ? 0 : diffpower;
+
                 $("#differenceConsumption").html(diffpower.toString());
                 var status = diffpower < 0 ? "异常" : "正常";
                 $("#status").html(status);
 
                 var jnl = 1 - fatualpower / fplanpower
-                  jnl=  isNaN(jnl)==true?0:jnl;
+                jnl = isNaN(jnl) == true ? 0 : jnl;
                 $("#jnl").html((jnl * 100).toFixed(2) + "%");
 
 
@@ -312,7 +320,9 @@
                 obj.status = status;
                 aa.push(obj);
                 var data = aa;
-                var pieData = [{value: data[0].plan_value, name: '计划能耗'}, {value: data[0].num, name: '实际能耗'}];
+                var jhnh = $("#9").html();  //计划能耗
+                var sjnh = $("#10").html(); //实际能耗
+                var pieData = [{value: data[0].plan_value, name: jhnh}, {value: data[0].num, name: sjnh}];
                 pieChart("echarts2", "", pieData, "用能计划");
             })
 
@@ -379,7 +389,8 @@
                 var data = a4;
                 var echarts4DataX = [data[0].date1, data[0].date2, data[0].date3];
                 var echarts4DataY = [data[0].thisYear1, data[0].thisYear2, data[0].thisYear3];
-                ech4('echarts4', '数据趋势', '能耗', echarts4DataX, echarts4DataY, 'bar', 'kW·h', "#337dd7");
+                var sjqs = $("#16").html();
+                ech4('echarts4',sjqs, '能耗', echarts4DataX, echarts4DataY, 'bar', 'kW·h', "#337dd7");
 
 
                 var date = new Date();
@@ -387,15 +398,18 @@
                 var year2 = year1 - 1;
 //                var month1 = date.getMonth() + 1;
 //                var month2 = month1 - 1;
-
-                var dataX = ["当月能耗", "上月能耗", "去年同期"];
+                var thisM = $("#18").html();  //本月耗能
+                var latM = $("#19").html();  //上月耗能
+                var latY = $("#21").html();  //去年同期
+                var dataX = [thisM, latM, latY];
 
                 var nowmonth = yearobj[year.toString()][month - 1]; //Math.floor(yearobj[year.toString()][month - 1] * 100) / 100;  //当月
                 var premonth = yearobj[year.toString()][month - 2]; //Math.floor(yearobj[year1.toString()][month2 - 1] * 100) / 100;  //前个月
 
                 var preyear = yearobj[(year - 1).toString()][month - 1];          //Math.floor(yearobj[year2.toString()][month1 - 1] * 100) / 100;  //去年当月
                 var dataY = [nowmonth, premonth, preyear];
-                ech('echarts1', '能耗分析', '能耗', dataX, dataY, 'bar', 'kW·h', "#68b928");
+                var nhfx = $("#17").html();//能耗分析
+                ech('echarts1', nhfx, '能耗', dataX, dataY, 'bar', 'kW·h', "#68b928");
 
                 $("#benyue").html(nowmonth);
                 $("#shangyue").html(premonth);
@@ -727,7 +741,7 @@
 
 
             function getCount(obj) {
-                console.log(obj)
+                console.log(obj);
                 var count = obj.count;
                 var a = count /${rs5[0].count} * 100;
                 var str = a.toString() + '%';
@@ -735,7 +749,7 @@
             }
 
             $(function () {
-               // dealsend();
+                // dealsend();
             })
 
         </script>
@@ -750,7 +764,10 @@
 
         <br>
         <div class="top" style="width:100%;height:450px;position:relative;">
-            <div class="topTitle" style="position:absolute;top:2%;left:2%;color:#000;font-size:20px;font-weight:600;">设备分析</div>
+            <div class="topTitle" style="position:absolute;top:2%;left:2%;color:#000;font-size:20px;font-weight:600;">
+                <span id="5" name="xxx"></span>
+                <!-- 设备分析-->
+            </div>
             <div class="topLeft" style="height:400px;padding-top:60px;">
                 <div class="topLeftOneBox">
                     <span class="redius" style="background:#fdd237;">
@@ -767,7 +784,9 @@
 
 
                         </span>
-                        <span>亮灯率</span>
+                        <span name="xxx" id="6">
+                            <!-- 亮灯率-->
+                        </span>
                     </div>
                 </div>
                 <div class="topLeftOneBox">
@@ -775,36 +794,24 @@
                     <div class="Mess energySavingRate">
                         <span id="jnl">
                         </span>
-                        <span>
-                                   <script>
-            var o = {};
-            o[7] = {zh_ch: "节能率", en_us: "jnl"};
-            console.log(o);
-            var a = 7;
-            var b = "en_us";
-            document.write(o[a][b]);
-            
-        </script>
-                            
-                            
+                        <span name="xxx" id="7">
                             <!--节能率-->
-                        
                         </span>
                     </div>
                 </div>
-                <!--                <div class="topLeftOneBox">
-                                    <span class="redius" style="background:#68b928;"><img src="img/online.png"></span>
-                                    <div class="Mess AlarmTimes">
-                                        <span id="online">10%</span>
-                                        <span>在线率</span>
-                                    </div>
-                                </div>-->
             </div>
 
             <!--用能计划-->
-            <div class="topTitle" style="position:absolute;top:2%;left:24%;color:#000;font-size:20px;font-weight:600;">用能计划
+            <div class="topTitle" style="position:absolute;top:2%;left:24%;color:#000;font-size:20px;font-weight:600;">
+                <!--用能计划-->
+                <span id="27" name="xxx">
+                </span>
+               
                 <br><br>
-                <span style="color:#777;font-size:18px;font-weight:500;">单位：kW·h</span>
+                <span style="color:#777;font-size:18px;font-weight:500;">
+                    <!--单位-->
+                    <span id="8" name="xxx"></span>
+                    ：kW·h</span>
             </div>
             <div class="topCenter3" id="echarts2"  style="height: 400px;">    
 
@@ -813,24 +820,36 @@
 
                 <div class="topCenter3MessMM" style="margin-top:40%;">
                     <div class="first">
-                        <span class="subPara">计划能耗：</span>
+                        <span class="subPara">
+                            <!-- 计划能耗-->
+                            <span id="9" name="xxx"></span>
+                            ：</span>
                         <span class="paraValue" id="planConsumption">${rs4[0].power}</span>
                     </div>
                     <!-- <div class="second"></div> -->
                     <div class="first">
-                        <span class="subPara">实际能耗：</span>
+                        <span class="subPara">
+                            <!--实际能耗-->
+                            <span id="10" name="xxx"></span>
+                            ：</span>
                         <span class="paraValue" id="actualConsumption">
 
                         </span>
                     </div>
                     <!-- <div class="second">1000</div> -->
                     <div class="first">
-                        <span class="subPara">差值：</span>
+                        <span class="subPara">
+                            <!--差值-->
+                            <span id="11" name="xxx"></span>
+                            ：</span>
                         <span class="paraValue" id="differenceConsumption"></span>
                     </div>
                     <!-- <div class="second">250</div> -->
                     <div class="first">
-                        <span class="subPara">状态：</span>
+                        <span class="subPara">
+                            <!-- 状态-->
+                            <span name="xxx" id="12"></span>
+                            ：</span>
                         <span class="subPara" id="status">
 
                         </span>
@@ -840,7 +859,11 @@
             </div>
 
             <!--横向对比分析-->
-            <div class="topTitle" style="position:absolute;top:2%;left:61%;color:#000;font-size:20px;font-weight:600;">横向对比分析</div>
+            <div class="topTitle" style="position:absolute;top:2%;left:61%;color:#000;font-size:20px;font-weight:600;">
+
+                <!-- 横向对比分析-->
+                <span id="15" name="xxx"></span>
+            </div>
             <div class="echarts3" id="echarts3" style="height: 430px;">
             </div>
 
@@ -849,27 +872,43 @@
 
 
         <div class="bottom1">
+            <!--数据趋势-->
+            <span name="xxx" id="16" style=" display: none" ></span>
             <div class="echarts4" id="echarts4" style="width: 35%; height: 85%; float: left; margin: 20px 0px 20px 30px;">
 
 
             </div>
-
+            <!--能耗分析-->
+            <span name="xxx" id="17" style=" display: none" ></span>
             <div class="topCenter4" style="width:10%;height:85%;float:right;">
                 <div class="topCenter2Mess">	
                     <div class="nenghao">
-                        <span class="subPara">本月能耗:</span><br>
+                        <span class="subPara">
+                                <!--本月耗能-->
+                            <span name="xxx" id="18"></span>
+                            :</span><br>
                         <span id="benyue" class="paraValue"></span>kW·h</div>
                     <div class="nenghao1">
-                        <span class="subPara">上月能耗:</span><br>
+                        <span class="subPara">
+                                <!--上月耗能-->
+                            <span id="19" name="xxx"></span>
+                            :</span><br>
                         <span id="shangyue" class="paraValue"></span>kW·h<br>
-                        <span>环比：</span>
+                        <span><span id="20" name="xxx"></span>：</span>
                         <span class="tongbi" id="lastMonth"></span>
                         kW·h
                     </div>
                     <div class="nenghao1">
-                        <span class="subPara">去年同期:</span><br>
+                        
+                        <span class="subPara">
+                            <!--去年同期-->
+                            <span id="21" name="xxx"></span>
+                            :</span><br>
                         <span id="qunian" class="paraValue"></span>
-                        <span>同比：</span>
+                        <span>
+                            <!--同比-->
+                            <span id="22" name="xxx"></span>
+                            ：</span>
                         <span class="tongbi" id="lastYearSameMonth"></span>
                         kW·h
                     </div>

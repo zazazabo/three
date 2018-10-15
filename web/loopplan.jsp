@@ -26,7 +26,9 @@
         <script type="text/javascript" src="js/getdate.js"></script>
         <script>
             var u_name = parent.parent.getusername();
-            var o_pid =  parent.parent.getpojectId();
+            var o_pid = parent.parent.getpojectId();
+            var lang = '${param.lang}';//'zh_CN';
+            var langs1 = parent.parent.getLnas();
             function layerAler(str) {
                 layer.alert(str, {
                     icon: 6,
@@ -71,10 +73,10 @@
             function editloopplan() {
                 var selects = $('#table_loop').bootstrapTable('getSelections');
                 if (selects.length == 0) {
-                    layerAler("请选择表格数据");
+                    layerAler(langs1[73][lang]);//请选择表格数据
                     return false;
                 } else if (selects.length > 1) {
-                    layerAler("只能编辑单行数据");
+                    layerAler(langs1[74][lang]); //只能编辑单行数据
                     return false;
                 }
 
@@ -181,8 +183,12 @@
             }
 
             $(function () {
-
-
+                var aaa = $("span[name=xxx]");
+                for (var i = 0; i < aaa.length; i++) {
+                    var d = aaa[i];
+                    var e = $(d).attr("id");
+                    $(d).html(langs1[e][lang]);
+                }
                 $("#add").attr("disabled", true);
                 $("#update").attr("disabled", true);
                 $("#del").attr("disabled", true);
@@ -323,29 +329,29 @@
                             valign: 'middle'
                         }, {
                             field: 'p_name',
-                            title: '方案名',
+                            title: langs1[69][lang],//方案名称
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'p_code',
-                            title: '方案编号',
+                            title: langs1[70][lang], //方案编号
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'p_intime',
-                            title: '闭合时间',
+                            title: langs1[71][lang],    //闭合时间
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'p_outtime',
-                            title: '断开时间',
+                            title: langs1[72][lang],  //断开时间
                             width: 25,
                             align: 'center',
                             valign: 'middle'
-                        }, 
+                        },
 //                        {
 //                            field: 'p_Longitude',
 //                            title: '经度',
@@ -359,9 +365,9 @@
 //                            align: 'center',
 //                            valign: 'middle'
 //                        }
-                         {
+                        {
                             field: 'p_attr',
-                            title: '方案类型',
+                            title: langs1[68][lang],  //方案类型
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -415,16 +421,25 @@
         <div class="btn-group zuheanniu" id="btn_add" style="float:left;position:relative;z-index:100;margin:12px 0 0 10px;">
             <!-- data-toggle="modal" data-target="#pjj" -->
             <button class="btn btn-success ctrol" onclick="showDialog()" data-toggle="modal" data-target="#modal_add22" id="add" >
-                <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;添加
+                <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;
+                <!--添加-->
+                <span id="65" name="xxx"></span>
             </button>
             <button class="btn btn-primary ctrol" type="button"   onclick="editloopplan();" id="update" >
-                <span class="glyphicon glyphicon-pencil"></span>&nbsp;编辑
+                <span class="glyphicon glyphicon-pencil"></span>&nbsp;
+                <!--编辑-->
+                <span id="66" name="xxx"></span>
             </button>
             <button class="btn btn-danger ctrol" onclick="deleteloopplan();" id="del">
-                <span class="glyphicon glyphicon-trash"></span>&nbsp;删除
+                <span class="glyphicon glyphicon-trash"></span>&nbsp;
+                <!--删除-->
+                <span id="67" name="xxx"></span>
             </button>
 
-            <span style="margin-left:20px;">方案类型&nbsp;</span>
+            <span style="margin-left:20px;">
+                <!--方案类型-->
+                <span id="68" name="xxx"></span>
+                &nbsp;</span>
             <span class="menuBox">
 
                 <select class="easyui-combobox" data-options="editable:false" id="p_type_query" name="p_type_query" style="width:150px; height: 30px">
@@ -466,7 +481,10 @@
                     <tbody>
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">方案类型&nbsp;</span>
+                                <span style="margin-left:20px;">
+                                    <!--方案类型-->
+                                    <span id="68" name="xxx"></span>
+                                    &nbsp;</span>
                                 <span class="menuBox">
                                     <select class="easyui-combobox" data-options="editable:false" id="p_type" name="p_type" style="width:150px; height: 30px">
                                         <option value="0">时间</option>
@@ -476,7 +494,8 @@
                             </td>
                             <td></td>
                             <td>
-                                <span style="margin-left:20px;">方案名字</span>&nbsp;
+                                <!--方案名称-->
+                                <span style="margin-left:20px;" id="69" name="xxx"></span>&nbsp;
                                 <input id="p_name" class="form-control"  name="p_name" style="width:150px;display: inline;" placeholder="请输入方案名" type="text"></td>
 
                             </td>
@@ -484,13 +503,15 @@
 
                         <tr id="tr_time_hide_add">
                             <td>
-                                <span style="margin-left:20px;">闭合时间</span>&nbsp;
+                                <!--闭合时间-->
+                                <span style="margin-left:20px;" id="71" name="xxx"></span>&nbsp;
                                 <!--<input id="intime" class="form-control"  name="intime" style="width:150px;display: inline;" placeholder="请输入闭合时间" type="text">-->
                                 <input id="intime" name="p_intime" style=" height: 34px; width: 150px;  "  class="easyui-timespinner">
                             </td>
                             <td></td>
                             <td>
-                                <span style="margin-left:20px;">断开时间&nbsp;</span>
+                                <!--断开时间-->
+                                <span style="margin-left:20px;" id="72" name="xxx"></span>&nbsp;
                                 <input id="outtime" name="p_outtime" style=" height: 34px; width: 150px;  "  class="easyui-timespinner">
                             </td>
                             </td>
@@ -527,7 +548,10 @@
                     <tbody>
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">方案类型&nbsp;</span>
+                                <span style="margin-left:20px;">
+                                    <!--方案类型-->
+                                    <span id="68" name="xxx"></span>
+                                    &nbsp;</span>
                                 <span class="menuBox">
 
 
@@ -540,7 +564,8 @@
                             </td>
                             <td></td>
                             <td>
-                                <span style="margin-left:20px;">方案名字</span>&nbsp;
+                                <!--方案名称-->
+                                <span style="margin-left:20px;" id="69" name="xxx"></span>&nbsp;
                                 <input id="p_name_" class="form-control"  name="p_name" style="width:150px;display: inline;" placeholder="请输入方案名" type="text"></td>
 
                             </td>
@@ -548,14 +573,14 @@
 
                         <tr id="tr_time_hide">
                             <td>
-                                <span style="margin-left:20px;">闭合时间</span>&nbsp;
+                                <span style="margin-left:20px;" id="71" name="xxx"></span>&nbsp;
                                 <!--<input id="intime_edit" class="form-control"  name="intime_edit" style="width:150px;display: inline;" placeholder="请输入闭合时间" type="text">-->
                                 <input id="p_intime_" name="p_intime" style=" height: 34px; width: 150px;  "  class="easyui-timespinner">
 
                             </td>
                             <td></td>
                             <td>
-                                <span style="margin-left:20px;">断开时间&nbsp;</span>
+                                <span style="margin-left:20px;" id="72" name="xxx"></span>&nbsp;
                                 <!--<input id="outtime_edit" class="form-control" name="outtime_edit" style="width:150px;display: inline;" placeholder="请输入断开时间" type="text">-->
                                 <input id="p_outtime_" name="p_outtime" style=" height: 34px; width: 150px;  "  class="easyui-timespinner">
                             </td>

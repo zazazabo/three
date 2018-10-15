@@ -239,7 +239,7 @@
                 vv.push(parseInt(obj.scennum));
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 308, vv); //01 03
-                dealsend2("A5",data, 308, "sceneCB", l_comaddr, obj.lighttype, groupe, scenenum);
+                dealsend2("A5", data, 308, "sceneCB", l_comaddr, obj.lighttype, groupe, scenenum);
             }
 
             function scenesingle() {
@@ -381,6 +381,15 @@
 
 
             $(function () {
+                var lang = '${param.lang}';
+                var langs1 = parent.parent.getLnas();
+                var aaa = $("span[name=xxx]");
+                for (var i = 0; i < aaa.length; i++) {
+                    var d = aaa[i];
+                    var e = $(d).attr("id");
+                    $(d).html(langs1[e][lang]);
+                }
+
                 $('#gravidaTable').bootstrapTable({
                     showExport: true, //是否显示导出
                     exportDataType: "basic", //basic', 'a
@@ -439,7 +448,7 @@
                                 } else if (value == 1) {
                                     value = "1(经纬度)";
                                     return value;
-                                }else if (value==2) {
+                                } else if (value == 2) {
                                     value = "1(场景)";
                                     return value;
                                 }
@@ -550,19 +559,19 @@
 
 
 
-                        $('#l_comaddr').combobox({
-                            url:"lamp.lampform.getComaddr.action?l_deplayment=1&pid=${param.pid}",
-                            onLoadSuccess: function (data) {
-                                 data = data.distinct();
-                                if (Array.isArray(data) && data.length > 0) {
-                                    $(this).combobox('select', data[0].id);
-                                }
-                            },
-                            onSelect: function (record) {
-                                var url = "lamp.GroupeForm.getGroupe.action?l_comaddr=" + record.id + "&l_deplayment=1";
-                                $("#l_groupe").combobox("reload", url);
-                            }
-                        })
+                $('#l_comaddr').combobox({
+                    url: "lamp.lampform.getComaddr.action?l_deplayment=1&pid=${param.pid}",
+                    onLoadSuccess: function (data) {
+                        data = data.distinct();
+                        if (Array.isArray(data) && data.length > 0) {
+                            $(this).combobox('select', data[0].id);
+                        }
+                    },
+                    onSelect: function (record) {
+                        var url = "lamp.GroupeForm.getGroupe.action?l_comaddr=" + record.id + "&l_deplayment=1";
+                        $("#l_groupe").combobox("reload", url);
+                    }
+                })
 
 
 
@@ -618,7 +627,10 @@
                             <tr>
 
                                 <td>
-                                    <span style="margin-left:10px;">网关地址&nbsp;</span>
+                                    <span style="margin-left:10px;">
+                                        <!--网关地址-->
+                                        <span id="25" name="xxx"></span>
+                                        &nbsp;</span>
                                 </td>
                                 <td>
 
@@ -628,7 +640,10 @@
                                     </span>  
                                 </td>
                                 <td>
-                                    <span style="margin-left:10px;">灯具组号&nbsp;</span>
+                                    <span style="margin-left:10px;">
+                                        <!--灯具组号-->
+                                        <span id="26" name="xxx"></span>
+                                        &nbsp;</span>
                                 </td>
                                 <td>
 
@@ -638,21 +653,31 @@
                                     </span>  
                                 </td>
                                 <td>
-                                    <span style="margin-left:10px;">分组方式&nbsp;</span>
+                                    <span style="margin-left:10px;">
+                                        <!-- 分组方式-->
+                                        <span id="28" name="xxx"></span>
+                                        &nbsp;</span>
                                 </td>
                                 <td>
 
 
                                     <select class="easyui-combobox" id="groupetype" name="groupetype" style="width:150px; height: 30px">
-                                        <option value="0">单灯调光</option>
-                                        <option value="1">组号调光</option>           
+                                        <option value="0">
+                                            单灯调光
+                                        </option>
+                                        <option value="1">
+                                            组号调光
+                                        </option>           
                                     </select>   
 
 
                                 </td>
 
                                 <td>
-                                    <span style="margin-left:10px;">调光模式&nbsp;</span>
+                                    <span style="margin-left:10px;">
+                                        <!--  调光模式-->
+                                        <span id="31" name="xxx"></span>
+                                        &nbsp;</span>
                                 </td>
                                 <td>
                                     <select class="easyui-combobox" id="scenetype" name="scenetype" style="width:150px; height: 30px">
@@ -664,14 +689,22 @@
 
 
                                 <td>
-                                    <button  type="button" style="margin-left:20px;" onclick="search()" class="btn btn-success btn-xm">搜索</button>&nbsp;
-
+                                    <button  type="button" style="margin-left:20px;" onclick="search()" class="btn btn-success btn-xm">
+                                        <!-- 搜索-->
+                                        <span id="34" name="xxx"></span>
+                                    </button>&nbsp;
                                 </td>
                                 <td>
-                                    <button  type="button" style="margin-left:20px;" onclick="onlamp()" class="btn btn-success btn-xm">开灯</button>&nbsp;                                    
+                                    <button  type="button" style="margin-left:20px;" onclick="onlamp()" class="btn btn-success btn-xm">
+                                        <!--开灯-->
+                                        <span id="35" name="xxx"></span>
+                                    </button>&nbsp;                                    
                                 </td>
                                 <td>
-                                    <button  type="button" style="margin-left:20px;" onclick="offlamp()" class="btn btn-success btn-xm">关灯</button>&nbsp;
+                                    <button  type="button" style="margin-left:20px;" onclick="offlamp()" class="btn btn-success btn-xm">
+                                        <!--关灯-->
+                                        <span id="36" name="xxx"></span>
+                                    </button>&nbsp;
                                 </td>
 
                             </tr>
@@ -688,13 +721,19 @@
                     <table  style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; width: 350px;margin-left: 20px;">
                         <tr>
                             <td>
-                                <span style="margin-left:10px;">恢复模式&nbsp;</span>
+                                <span style="margin-left:10px;">
+                                    <!--恢复模式-->
+                                    <span id="37" name="xxx"></span>
+                                    &nbsp;</span>
                                 <select class="easyui-combobox" id="type" name="type" style="width:150px; height: 30px">
                                     <option value="1">单灯恢复</option>
                                     <option value="2">按组恢复</option>    
                                     <option value="3">全部恢复</option>  
                                 </select>
-                                <button  type="button" style="margin-left:20px;" onclick="restore()" class="btn btn-success btn-sm">恢复自动运行</button>
+                                <button  type="button" style="margin-left:20px;" onclick="restore()" class="btn btn-success btn-sm">
+                                    <!--恢复自动运行-->
+                                    <span id="41" name="xxx"></span>
+                                </button>
                             </td>
                         </tr>
                     </table>
@@ -703,7 +742,10 @@
                     <table  style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; width: 350px;margin-left: 20px;">
                         <tr>
                             <td>
-                                <span style="margin-left:10px;">调光值&nbsp;</span>
+                                <span style="margin-left:10px;">
+                                    <!--调光值-->
+                                    <span id="42" name="xxx"></span>
+                                    &nbsp;</span>
                                 <input id="val" value="0" class="form-control" readonly="true" name="val" style="width:50px;display: inline; height: 30px; " placeholder="调光值" type="text">
 
                             </td>
@@ -712,8 +754,14 @@
 
                             </td>
                             <td>
-                                <button  type="button"  name="btnsingle"  onclick="lightsingle()" class="btn btn-success btn-sm">单灯立即调光</button>
-                                <button  type="button" name="btngroupe"  style="display: none"  onclick="lightgroupe()" class="btn btn-success btn-sm">按组立即调光</button>
+                                <button  type="button"  name="btnsingle"  onclick="lightsingle()" class="btn btn-success btn-sm">
+                                    <!--单灯立即调光-->
+                                    <span id="43" name="xxx"></span>
+                                </button>
+                                <button  type="button" name="btngroupe"  style="display: none"  onclick="lightgroupe()" class="btn btn-success btn-sm">
+                                    <!-- 按组立即调光-->
+                                    <span id="44" name="xxx"></span>
+                                </button>
                             </td>
                         </tr>
                     </table>
@@ -726,7 +774,10 @@
                             <tr>
                                 <td>
 
-                                    <span style="margin-left:10px;">场景号&nbsp;</span>
+                                    <span style="margin-left:10px;">
+                                        <!--场景号-->
+                                        <span id="47" name="xxx"></span>
+                                        &nbsp;</span>
                                     <!--<input id="scennum" class="form-control" name="scennum" style="width:50px;display: inline;" placeholder="场景号" type="text">&nbsp;-->
                                     <select class="easyui-combobox" id="scennum" name="scennum" style="width:150px; height: 30px">
                                         <option value="1">场景1</option>
@@ -738,8 +789,14 @@
                                         <option value="7">场景7</option> 
                                         <option value="8">场景8</option> 
                                     </select>
-                                    <button  type="button"  name="btnsingle" style="margin-left:20px;" onclick="scenesingle()" class="btn btn-success btn-sm">单灯场景调光</button>
-                                    <button  type="button" name="btngroupe" style="margin-left:20px; display: none" onclick="scenegroupe()" class="btn btn-success btn-sm">按组场景调光</button>
+                                    <button  type="button"  name="btnsingle" style="margin-left:20px;" onclick="scenesingle()" class="btn btn-success btn-sm">
+                                        <!--单灯场景调光-->
+                                        <span id="45" name="xxx"></span>
+                                    </button>
+                                    <button  type="button" name="btngroupe" style="margin-left:20px; display: none" onclick="scenegroupe()" class="btn btn-success btn-sm">
+                                        <!--按组场景调光-->
+                                        <span id="46" name="xxx"></span>
+                                    </button>
                                 </td>
 
                             </tr>
