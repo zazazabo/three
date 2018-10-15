@@ -560,6 +560,7 @@
 
 
                 $('#l_comaddr').combobox({
+<<<<<<< HEAD
                     url: "lamp.lampform.getComaddr.action?l_deplayment=1&pid=${param.pid}",
                     onLoadSuccess: function (data) {
                         data = data.distinct();
@@ -569,6 +570,32 @@
                     },
                     onSelect: function (record) {
                         var url = "lamp.GroupeForm.getGroupe.action?l_comaddr=" + record.id + "&l_deplayment=1";
+=======
+                    url: "gayway.GaywayForm.getComaddr.action?pid=${param.pid}",
+                     formatter: function (row) {
+                        var v1 = row.online == 1 ? "&nbsp;<img src='img/online1.png'>" : "&nbsp;<img src='img/off.png'>";
+                        var v = row.text + v1;
+                        row.id = row.id;
+                        row.text = v;
+                        var opts = $(this).combobox('options');
+                        console.log(row[opts.textField]);
+                        return row[opts.textField];
+                    },
+                    onLoadSuccess: function (data) {
+                        if (Array.isArray(data) && data.length > 0) {
+                            for (var i = 0; i < data.length; i++) {
+                                data[i].text = data[i].id;
+                            }
+
+                            $(this).combobox('select', data[0].id);
+
+                        }
+                    },                
+                    onSelect: function (record) {
+                        var url = "lamp.GroupeForm.getGroupe.action?l_comaddr=" + record.id + "&l_deplayment=1";
+                        $("#l_groupe").combobox("clear");
+        
+>>>>>>> bba05a797550e388dee33c53653ed1f3de0f4669
                         $("#l_groupe").combobox("reload", url);
                     }
                 })

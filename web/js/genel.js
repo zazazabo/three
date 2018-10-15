@@ -449,7 +449,6 @@ function dealsend2(msg, data, fn, func, comaddr, type, param, val) {
     user.msg = msg;
     user.val = val;
     user.type = type;
-    user.addr = comaddr; //getComAddr(comaddr); //"02170101";
     user.data = data;
     user.len = data.length;
     user.end = '6A';

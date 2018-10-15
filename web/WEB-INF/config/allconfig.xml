@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xfiles>
+<xfiles> 
     <xfile desc="path" id="/WEB-INF/config/test1.xml">
     </xfile>
     <xfile desc="path" id="/WEB-INF/config/test2.xml">
