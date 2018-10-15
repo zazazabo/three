@@ -11,4 +11,8 @@
 =======
 /nbproject/private/private.properties
 /nbproject/project.properties
+<<<<<<< HEAD
+/web/WEB-INF/config/database.xml
+=======
 >>>>>>> bba05a797550e388dee33c53653ed1f3de0f4669
+>>>>>>> c7daf9b17f7a11f6b81d62601fbdfe4ba99821e6
