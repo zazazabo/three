@@ -406,37 +406,37 @@
                             valign: 'middle'
                         }, {
                             field: 'name',
-                            title: '网关名称',
+                            title: '网关名称',  //网关名称
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_comaddr',
-                            title: '网关地址',
+                            title: '网关地址',  //网关地址
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_name',
-                            title: '灯具名称',
+                            title: '灯具名称',  //灯具名称
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_factorycode',
-                            title: '灯具编号',
+                            title: '灯具编号',  //灯具编号
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_code',
-                            title: '装置序号',
+                            title: '装置序号',  //装置序号
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_worktype',
-                            title: '控制方式',
+                            title: '控制方式',  //控制方式
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -456,7 +456,7 @@
                         },
                         {
                             field: 'l_groupe',
-                            title: '组号',
+                            title: '组号',   //组号
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -465,7 +465,7 @@
                             }
                         }, {
                             field: 'l_value',
-                            title: '调光值',
+                            title: '调光值',  //调光值
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -478,7 +478,7 @@
                             }
                         }, {
                             field: 'l_deployment',
-                            title: '部署情况',
+                            title: '部署情况',  //部署情况
                             width: 25,
                             align: 'center',
                             valign: 'middle',

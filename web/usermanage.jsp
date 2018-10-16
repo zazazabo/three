@@ -27,8 +27,6 @@
             var langs1 = parent.parent.getLnas();
             var u_name = parent.parent.getusername();
             var o_pid = parent.parent.getpojectId();
-            console.log(lang);
-            console.log(langs1);
             $(function () {
                 var aaa = $("span[name=xxx]");
                 for (var i = 0; i < aaa.length; i++) {

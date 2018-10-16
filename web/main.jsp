@@ -67,8 +67,10 @@
 
             //退出
             function getout() {
-                if (confirm("确定退出吗？")) {
-                    window.location = "${pageContext.request.contextPath }/login.jsp";
+                   layer.confirm(o[282][lang], {  //确认要删除吗？
+                    btn: [o[146][lang],o[147][lang]]//确定、取消按钮
+                }, function (index) {
+                     window.location = "${pageContext.request.contextPath }/login.jsp";
                     var nobj = {};
                     var name = $("#u_name").text();
                     nobj.name = name;
@@ -85,7 +87,12 @@
                             }
                         }
                     });
-                }
+            
+                    layer.close(index);
+
+                });
+                
+                
             }
 
             //修改密码
@@ -96,24 +103,24 @@
                 var newpwd = $("#newPwd").val();
                 var okpwd = $("#okPwd").val();
                 if (oldpwd == "") {
-                    layerAler("请输入原密码");
+                    layerAler(o[276][lang]);  //请输入原密码
                     return;
                 }
                 if (newpwd == "") {
-                    layerAler("请输入新密码");
+                    layerAler(o[277][lang]);  //请输入新密码
                     return;
                 }
                 if (okpwd == "") {
-                    layerAler("请确认密码");
+                    layerAler(o[278][lang]);  //请确认密码
                     return;
                 }
                 if (oldpwd2 != pwd) {
-                    layerAler("原密码不正确");
+                    layerAler(o[279][lang]);  //原密码不正确
                     return;
                 }
 
                 if (newpwd != okpwd) {
-                    layerAler("确认密码不一致");
+                    layerAler(o[280][lang]);  //密码不一致
                     return;
                 }
 
@@ -125,10 +132,10 @@
                     success: function (data) {
                         var arrlist = data.rs;
                         if (arrlist.length == 1) {
-                            layerAler("修改成功");
+                            layerAler(o[143][lang]); //修改成功
                             window.location = "${pageContext.request.contextPath }/login.jsp";
                         } else {
-                            layerAler("修改失败");
+                            layerAler(o[281][lang]);  //修改失败
                         }
                     },
                     error: function () {
@@ -264,18 +271,30 @@
                 return o;
             }
             var o = {};
+            var lang = getCookie("lang");
             $(function () {
-                
+
             <c:forEach items="${lans}" var="t" varStatus="i">
                 var id =${t.id};
-                var zh_CN1 ="${empty t.zh_CN?"":t.zh_CN}";
-                var en_US1 ="${empty t.en_US?"":t.en_US}";
-                var e_BY1 ="${empty t.e_BY?"":t.e_BY}";
+                var zh_CN1 = "${empty t.zh_CN?"":t.zh_CN}";
+                var en_US1 = "${empty t.en_US?"":t.en_US}";
+                var e_BY1 = "${empty t.e_BY?"":t.e_BY}";
 
-                o[id] ={zh_CN:zh_CN1,en_US:en_US1,e_BY:e_BY1};
+                o[id] = {zh_CN: zh_CN1, en_US: en_US1, e_BY: e_BY1};
             </c:forEach>
-              //  console.log(o);
-
+                //  console.log(o);
+                var aaa = $("span[name=xxx]");
+                for (var i = 0; i < aaa.length; i++) {
+                    var d = aaa[i];
+                    var e = $(d).attr("id");
+                    $(d).html(o[e][lang]);
+                }
+                var bbb = $("label[name=xxx]");
+                for (var i = 0; i < bbb.length; i++) {
+                    var d = bbb[i];
+                    var e = $(d).attr("id");
+                    $(d).html(o[e][lang]);
+                }
 
             <c:if test="${empty param.id }">
                 window.location = "${pageContext.request.contextPath }/login.jsp";
@@ -338,7 +357,7 @@
         <div class="wraper"> 
             <div class="bodyLeft" style="background: rgb(14, 98, 199) none repeat scroll 0% 0%;">
                 <div class="bodyLeftTop listdisplayNone" style="background:#5cb75c ">
-                    <span  style="width:80px;margin-left:30px;">智慧城市照明管理系统</span>
+                    <span  style="width:80px;margin-left:30px;"><label name="xxx" id="275">智慧城市照明管理系统</label></span>
                 </div>
 
                 <ul class="layui-nav layui-nav-tree  MenuBox " >
@@ -386,7 +405,7 @@
                     </div>
                     <ul class="controlMessage animated fadeInRight">
                         <li class="one">
-                            <span>项目&nbsp;&nbsp;</span>
+                            <span id="1" name="xxx">项目</span>&nbsp;&nbsp;
                             <select style="width: 200px; height: 30px; margin-top:0px; font-size: 16px; border: 1px solid;" id="pojects">
 
                             </select>
@@ -400,13 +419,14 @@
 
                             <i class="layui-icon  indexIcon"></i>   
                             <!--                            <span class="glyphicon glyphicon-tags indexIcon"/>-->
-                            <span class="Till" style="width: 74px; text-align: center; color: rgb(255, 255, 255);">语言</span>
+                            <span class="Till" style="width: 74px; text-align: center; color: rgb(255, 255, 255);" name="xxx" id="2">语言</span>
 
 
 
                             <ul class="two animated fadeInDown language" style="background: rgb(57, 61, 73) none repeat scroll 0% 0%; color: rgb(255, 255, 255);">
-                                <li language="zh_CN" id="chinese">中文</li>
-                                <li language="en_US" id="english">英文</li>
+                                <li language="zh_CN"><label name="xxx" id="268">中文</label></li>
+                                <li language="en_US"><label name="xxx" id="269">英文</label></li>
+                                <li language="e_BY"><label  name="xxx" id="270">俄文</label></li>
                             </ul>
                         </li>
                         <li class="one" style=" margin-right: 10px;">
@@ -420,8 +440,8 @@
                                 <input id="upid" type="hidden" value="${rs[0].pid}"/>
                             </span>
                             <ul class="two animated fadeInDown twoL" style="background: rgb(57, 61, 73) none repeat scroll 0% 0%; color: rgb(255, 255, 255);">
-                                <li id="out" onclick="getout()">退出</li>
-                                <li data-toggle="modal" data-target="#updpwdDiv" >修改密码</li>
+                                <li id="out" onclick="getout()"><label name="xxx" id="3">退出</label></li>
+                                <li data-toggle="modal" data-target="#updpwdDiv" ><label name="xxx" id="4">修改密码</label></li>
                             </ul>
                         </li>
                     </ul> 
@@ -439,25 +459,25 @@
                         <button type="button" class="close" data-dismiss="modal">
                             <span style="font-size:20px ">×</span></button>
                         <span class="glyphicon glyphicon-floppy-disk" style="font-size: 20px"></span>
-                        <h4 class="modal-title" style="display: inline;">修改密码</h4></div>    
+                        <h4 class="modal-title" style="display: inline;"><label name="xxx" id="4">修改密码</label></h4></div>    
                     <div class="modal-body">
                         <table>
                             <tbody>
                                 <tr>
                                     <td>
-                                        <span style="margin-left:92px;">密码：</span>&nbsp;
+                                        <span style="margin-left:92px;"><label name="xxx" id="271">密码</label>：</span>&nbsp;
                                         <input id="oldPwd" class="form-control" style="width:150px;display: inline;" placeholder="请输入密码" type="password">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <span style="margin-left:35px;">请输入新密码：</span>&nbsp;
+                                        <span style="margin-left:35px;"><label id="272" name="xxx">请输入新密码</label>：</span>&nbsp;
                                         <input id="newPwd" class="form-control" style="width:150px;display: inline;" placeholder="请输入新密码" type="password">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <span style="margin-left:49px;">请确认密码：</span>&nbsp;
+                                        <span style="margin-left:49px;"><label id="273" name="xxx">请确认密码</label>：</span>&nbsp;
                                         <input id="okPwd" class="form-control" style="width:150px;display: inline;" placeholder="请确认密码" type="password">
                                     </td>
                                 </tr>
@@ -467,9 +487,9 @@
                     <!-- 注脚 -->
                     <div class="modal-footer" id="modal_footer_edit" >
                         <!-- 添加按钮 -->
-                        <button id="xiugai" type="button" onclick="updatepwd()" class="btn btn-primary">修改</button>
+                        <button id="xiugai" type="button" onclick="updatepwd()" class="btn btn-primary"><label name="xxx" id="151">修改</label></button>
                         <!-- 关闭按钮 -->
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><label name="xxx" id="57">关闭</label></button>
                     </div>
 
                 </div>
@@ -483,7 +503,7 @@
                         <button type="button" class="close" data-dismiss="modal">
                             <span style="font-size:20px ">×</span></button>
                         <span class="glyphicon glyphicon-floppy-disk" style="font-size: 20px"></span>
-                        <h4 class="modal-title" style="display: inline;">告警信息</h4></div>    
+                        <h4 class="modal-title" style="display: inline;"><label name="xxx" id="274">告警信息</label></h4></div>    
                     <div class="modal-body">
                         <table id="fauttable">
 
@@ -495,7 +515,7 @@
                         <!-- 添加按钮 -->
                         <!--                        <button id="xiugai" type="button" onclick="handle()" class="btn btn-primary">处理报警</button>-->
                         <!-- 关闭按钮 -->
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><label name="xxx" id="57">关闭</label></button>
                     </div>
 
                 </div>
@@ -516,7 +536,6 @@
 
             function changeLanguage(language) {
                 setCookie("lang", language);
-//                location.reload(true);
                 $(".MenuBox").children().remove();
                 var lang = language;
             <c:forEach items="${menulist}" var="t" varStatus="i">
@@ -659,56 +678,45 @@
                                 alert(error.message);
                             });
                 })
-                /* 加载左边菜单 */
-                //传角色权限 获取菜单 
-
-
-                // var rotype = $("#m_code").val(); //角色id
-                // var objrole = {role: rotype};
-                // var u_id = $("#userid").val(); //用户id
-                //  var objrole = {role: rotype, uid: u_id};
-//                 var objrole = {role: "${param.m_code}", uid: "${param.id}"};
-//                 console.log(objrole);
-//                 $.ajax({type: "post", url: "formuser.mainmenu.querysub.action", dataType: "json", data: objrole,
-//                     success: function (data) {
-//                         var htmls = '';
-//                         data = data2tree(data);
-//                         for (var i = 0; i < data.length; i++) {
-//                             var action = data[i].action;
-//                             if (data[i].children.length > 0) {
-//                                 console.log(objrole);
-//                                 action = action + "?m_parent=" + data[i].code + "&role=" + objrole.role;
-//                             }
-//                             var lang = "zh_CN";
-//                             var obj = eval('(' + data[i].title + ')');
-//                             console.log(obj);
-//                             console.log(obj[lang]);
-//                             htmls += '<li class="eachMenu layui-nav-item" >'
-//                                     + '<a class="list listdisplayNone" href="javascript:;" name="' + action + '">'
-//                                     + '<span class="' + data[i].icon + '">' + '</span>'
-//                                     + '<span class="menuMessage" style=" padding-left: 3px;" >' + obj[lang] + '</span>'
-//                                     + '</a>'
-//                                     + '</li>';                                
-//                         }
-//                         $(".MenuBox").html(htmls);
-//                         $(".list:eq(0)").addClass("active");
-//                         var ifrsrc = $(".list:eq(0)").attr("name");
-//                         ifrsrc = ifrsrc + "?pid=" + getpojectId();
-//                         console.log(ifrsrc);
-//                         $("#iframe").attr("src", ifrsrc);
-//                     }
-//                 });
-
-
-
 
                 $(".language li:eq(0)").click(function () {
                     var language = $(this).attr("language");
                     changeLanguage(language);
+                    lang = language;
+                    $("#1").html(o[1][language]);  //项目
+                    $("#2").html(o[2][language]);  //语言
+                    var bbb = $("label[name=xxx]");
+                    for (var i = 0; i < bbb.length; i++) {
+                        var d = bbb[i];
+                        var e = $(d).attr("id");
+                        $(d).html(o[e][language]);
+                    }
                 });
                 $(".language li:eq(1)").click(function () {
                     var language = $(this).attr("language");
                     changeLanguage(language);
+                    lang = language;
+                    $("#1").html(o[1][language]);  //项目
+                    $("#2").html(o[2][language]);  //语言
+                    var bbb = $("label[name=xxx]");
+                    for (var i = 0; i < bbb.length; i++) {
+                        var d = bbb[i];
+                        var e = $(d).attr("id");
+                        $(d).html(o[e][language]);
+                    }
+                });
+                $(".language li:eq(2)").click(function () {
+                    var language = $(this).attr("language");
+                    changeLanguage(language);
+                    lang = language;
+                    $("#1").html(o[1][language]);  //项目
+                    $("#2").html(o[2][language]);  //语言
+                    var bbb = $("label[name=xxx]");
+                    for (var i = 0; i < bbb.length; i++) {
+                        var d = bbb[i];
+                        var e = $(d).attr("id");
+                        $(d).html(o[e][language]);
+                    }
                 });
 
                 //语言切换
