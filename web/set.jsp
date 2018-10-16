@@ -22,6 +22,8 @@
         <script>
             var u_name = parent.parent.getusername();
             var o_pid = parent.parent.getpojectId();
+            var lang = '${param.lang}';//'zh_CN';
+            var langs1 = parent.parent.getLnas();
             function isValidIP(ip) {
                 var reg = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/
                 return reg.test(ip);
@@ -79,7 +81,7 @@
                         success: function (data) {
                             var arrlist = data.rs;
                             if (arrlist.length == 1) {
-                                layerAler("读取站点信息成功");
+                                layerAler(langs1[161][lang]); //读取站点信息成功
                                 var opt = {
                                     url: "test1.f5.h1.action",
                                     silent: true,
@@ -105,7 +107,7 @@
                         $.ajax({async: false, url: "lamp.lampform.modifyAllgroup.action", type: "get", datatype: "JSON", data: o,
                             success: function (data) {
                                 if (data == null) {
-                                    layerAler("更新灯具表组号失败");
+                                    layerAler(langs1[162][lang]);   //更新灯具表组号失败
                                 }
 
                             },
@@ -113,7 +115,7 @@
                                 alert("提交失败！");
                             }
                         });
-                        layerAler("更换分组成功");
+                        layerAler(langs1[163][lang]); //更换分组成功
 
                     } else if (obj.msg == "A4" && obj.fn == 120) {
                         //更换工作方式
@@ -121,7 +123,7 @@
                         $.ajax({async: false, url: "lamp.lampform.modifyALLworktype.action", type: "get", datatype: "JSON", data: o,
                             success: function (data) {
                                 if (data == null) {
-                                    layerAler("更新灯具表工作模式失败");
+                                    layerAler(langs1[164][lang]); //更新灯具表工作模式失败
                                 }
                                 console.log(data);
 
@@ -130,14 +132,14 @@
                                 alert("提交失败！");
                             }
                         });
-                        layerAler("更换工作方式");
+                        layerAler(langs1[165][lang]); //更换工作方式
                     } else if (obj.msg == "A4" && obj.fn == 108) {
                         //删除所有灯配置
                         var o = {l_comaddr: obj.comaddr, l_deplayment: 0};
                         $.ajax({async: false, url: "lamp.lampform.modifyAllDepayment.action", type: "get", datatype: "JSON", data: o,
                             success: function (data) {
                                 if (data == null) {
-                                    layerAler("更新灯具表部署状态失败");
+                                    layerAler(langs1[166][lang]); //更新灯具表部署状态失败
                                 }
                                 console.log(data);
 
@@ -146,16 +148,16 @@
                                 alert("提交失败！");
                             }
                         });
-                        layerAler("删除全部灯具信息成功");
+                        layerAler(langs1[167][lang]); //删除全部灯具信息成功
                     } else if (obj.msg == "A4" && obj.fn == 180) {
-                        layerAler("删除全部灯时间表成功");
+                        layerAler(langs1[168][lang]);  //删除全部灯时间表成功
                     } else if (obj.msg == "A4" && obj.fn == 340) {
                         //删除全部回路信息
                         var o = {l_comaddr: obj.comaddr, l_deplayment: 0};
                         $.ajax({async: false, url: "loop.loopForm.modifyAllDepayment.action", type: "get", datatype: "JSON", data: o,
                             success: function (data) {
                                 if (data == null) {
-                                    layerAler("更新回路表部署状态失败");
+                                    layerAler(langs1[169][lang]);  //更新回路表部署状态失败
                                 }
                                 console.log(data);
 
@@ -164,10 +166,10 @@
                                 alert("提交失败！");
                             }
                         });
-                        layerAler("删除所有回路信息");
+                        layerAler(langs1[170][lang]);  //删除所有回路信息
 
                     } else if (obj.msg == "A4" && obj.fn == 402) {
-                        layerAler("删除全部回路时间表成功");
+                        layerAler(langs1[171][lang]);  //删除全部回路时间表成功
                     }
 
                 }
@@ -236,7 +238,12 @@
             }
 
             $(function () {
-
+                var aaa = $("span[name=xxx]");
+                for (var i = 0; i < aaa.length; i++) {
+                    var d = aaa[i];
+                    var e = $(d).attr("id");
+                    $(d).html(langs1[e][lang]);
+                }
                 var d = [];
                 for (var i = 0; i < 18; i++) {
                     var o = {"id": i + 1, "text": i + 1};
@@ -333,7 +340,7 @@
             function readSite() {
                 var obj = $("#form1").serializeObject();
                 if (obj.l_comaddr == "") {
-                    layerAler("网关不能为空");
+                    layerAler(langs1[172][lang]); //网关不能为空
                     return;
                 }
 
@@ -392,11 +399,11 @@
 
                 console.log(obj);
                 if (obj.status == "success") {
-                    layer.confirm('确定修改网关指向的域名？', {
-                        btn: ['确定', '取消'], //按钮
+                    layer.confirm(langs1[173][lang], {  //确定修改网关指向的域名？
+                        btn: [langs1[146][lang], langs1[147][lang]], //确定、取消按钮
                         icon: 3,
                         offset: 'center',
-                        title: '提示'
+                        title: langs1[174][lang]  //提示
                     }, function (index) {
                         var v1 = [];
                         var num = randnum(0, 9) + 0x70;
@@ -413,12 +420,12 @@
                 var obj1 = $("#form1").serializeObject();
                 console.log(obj);
                 if (isNumber(obj.port) == false) {
-                    layerAler("端口只能是数字");
+                    layerAler(langs1[175][lang]); //端口只能是数字
                     return;
                 }
 
                 if (obj.apn.length > 16) {
-                    layerAler("apn长度不能超过16");
+                    layerAler(langs1[176][lang]); //apn长度不能超过16
                     return;
                 }
                 var hexport = parseInt(obj.port);
@@ -428,7 +435,7 @@
                 var vv = [];
                 if (obj.sitetype == "1") {
                     if (isValidIP(obj.ip) == false) {
-                        layerAler("不是合法ip");
+                        layerAler(langs1[177][lang]);  //不是合法ip
                         return;
                     }
                     for (var i = 0; i < 12; i++) {
@@ -470,7 +477,7 @@
 
 
                     if (isValidIP(obj.ip) == true) {
-                        layerAler("请填写正确的域名");
+                        layerAler(langs1[178][lang]);  // 请填写正确的域名
                         return;
                     }
 
@@ -520,7 +527,7 @@
 
             function setChgTimeCB(obj) {
                 if (obj.status == "success") {
-                    layerAler("设置换日时间和冻结时间成功");
+                    layerAler(langs1[179][lang]);  //设置换日时间和冻结时间成功
                 }
             }
 
@@ -552,7 +559,7 @@
 
             function setAPNCB(obj) {
                 if (obj.status == "success") {
-                    layerAler("设置运营商APN成功");
+                    layerAler(langs1[180][lang]);  //设置运营商APN成功
                 }
             }
 
@@ -560,11 +567,11 @@
                 var o = $("#form1").serializeObject();
                 var obj = $("#form2").serializeObject();
                 if (obj.apn == "") {
-                    layerAler("apn不能为空");
+                    layerAler(langs1[181][lang]);  //apn不能为空
                     return;
                 }
                 if (obj.apn.length > 16) {
-                    layerAler("apn长度不能超过16");
+                    layerAler(langs1[176][lang]);
                     return;
                 }
                 addlogon(u_name, "设置", o_pid, "网关参数设置", "设置运营商APN");
@@ -590,10 +597,10 @@
             function setInspectcb(obj) {
                 console.log(obj);
                 if (obj.status == "success") {
-                    layerAler("灯具通信失联巡检次数成功");
+                    layerAler(langs1[182][lang]);  //灯具通信失联巡检次数成功
                 }
                 if (obj.status == "fail") {
-                    layerAler("灯具通信失联巡检次数失败");
+                    layerAler(langs1[183][lang]);  //灯具通信失联巡检次数失败
                 }
             }
             function setInspect() {
@@ -601,7 +608,7 @@
                 var obj = $("#form2").serializeObject();
                 var o = obj.inspect;
                 if (o == "") {
-                    layerAler("请填写巡检次数");
+                    layerAler(langs1[184][lang]);  //请填写巡检次数
                     return;
                 }
                 var vv = [];
@@ -673,30 +680,30 @@
                 var obj = $("#form1").serializeObject();
                 var obj1 = $("#form2").serializeObject();
                 if (!isNumber(obj1.area) || obj1.area.length != 4) {
-                    layerAler("区划码是2位字节4数字长度");
+                    layerAler(langs1[185][lang]); //区划码是2位字节4数字长度
                     return;
                 }
                 if (!isNumber(obj1.addr) || obj1.addr.length != 4) {
-                    layerAler("区划码是2位字节4数字长度");
+                    layerAler(langs1[185][lang]);
                     return;
                 }
-  
-                var arr=Str2BytesH(obj1.area);                
+
+                var arr = Str2BytesH(obj1.area);
                 vv.push(arr[1]);
                 vv.push(arr[0]);
 
-                 arr=Str2BytesH(obj1.addr);                
+                arr = Str2BytesH(obj1.addr);
                 vv.push(arr[1]);
                 vv.push(arr[0]);
-                
+
 
 //                var h = area >> 8 && 0x00ff;
 //                var l = area & 0x00ff;
 //                vv.push(l);
 //                vv.push(h);
-                
-                
-                
+
+
+
 //                var addr = parseInt(obj1.addr, 106);
 //                var h1 = addr >> 8 && 0x0f;
 //                var l1 = addr & 0x0f;
@@ -753,7 +760,7 @@
 
         <div class="panel panel-success" >
             <div class="panel-heading">
-                <h3 class="panel-title">网关参数设置</h3>
+                <h3 class="panel-title"><span id="186" name="xxx">网关参数设置</span></h3>
             </div>
             <div class="panel-body" >
                 <div class="container" style=" height:400px;"  >
@@ -768,7 +775,7 @@
                                         <tr>
 
                                             <td>
-                                                <span style="margin-left:10px;">网关地址&nbsp;</span>
+                                                <span style="margin-left:10px;" name="xxx" id="25">网关地址</span>&nbsp;
 
                                                 <span class="menuBox">
                                                     <input id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 
@@ -776,7 +783,7 @@
                                                 </span>  
                                             </td>
                                             <td>
-                                                <span style="margin-left:10px;">功能选择&nbsp;</span>
+                                                <span style="margin-left:10px;" name="xxx" id="187">功能选择</span>&nbsp;
 
                                                 <span class="menuBox">
                                                     <select class="easyui-combobox" id="type" name="type" data-options="editable:false,valueField:'id', textField:'text' " style="width:200px; height: 30px">
@@ -805,7 +812,7 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                <span  style=" float: right; margin-right: 2px;" >域名IP选择:</span>
+                                                <span  style=" float: right; margin-right: 2px;" name="xxx" id="188">域名IP选择</span>
                                             </td>
                                             <td>
 
@@ -818,7 +825,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <span  style=" float: right; margin-right: 2px;" >主站ip或域名:</span>
+                                                <span  style=" float: right; margin-right: 2px;" name="xxx" id="189">主站ip或域名</span>
                                             </td>
                                             <td>
                                                 <input id="ip"  class="form-control" name="ip"  style="width:150px; " placeholder="输入主站域名" type="text">
@@ -827,7 +834,7 @@
 
                                         <tr >
                                             <td>
-                                                <span  style=" float: right; margin-right: 2px;" >端口:</span>
+                                                <span  style=" float: right; margin-right: 2px;" name="xxx" id="190" >端口</span>
                                             <td>
 
                                                 <input id="port"  class="form-control" name="port" style="width:150px;"  placeholder="输入端口" type="text">
@@ -837,7 +844,7 @@
 
                                         <tr>
                                             <td>
-                                                <span  style=" float: right; margin-right: 2px;" >运营商APN:</span>
+                                                <span  style=" float: right; margin-right: 2px;" name="xxx" id="191" >运营商APN</span>
                                             </td>
 
                                             <td >
@@ -847,9 +854,9 @@
                                         </tr>
                                         <tr>
                                             <td colspan="2">
-                                                <button type="button"  onclick="setSite()" class="btn  btn-success btn-sm" style="margin-left: 2px;">设置主站信息</button>
-                                                <button  type="button" onclick="readSite()" class="btn btn-success btn-sm">读取主站信息 </button>
-                                                <button  type="button"  onclick="setAPN()" class="btn btn-success btn-sm">设置运营商APN </button>
+                                                <button type="button"  onclick="setSite()" class="btn  btn-success btn-sm" style="margin-left: 2px;"><span name="xxx" id="192">设置主站信息</span></button>
+                                                <button  type="button" onclick="readSite()" class="btn btn-success btn-sm"><span name="xxx" id="193">读取主站信息</span></button>
+                                                <button  type="button"  onclick="setAPN()" class="btn btn-success btn-sm"><span name="xxx" id="194">设置运营商APN</span></button>
                                             </td>
 
                                     </tbody>
@@ -863,19 +870,19 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                <span  style="margin-left:10px;" >换日时间</span>
+                                                <span  style="margin-left:10px;"  name="xxx" id="195">换日时间</span>
                                                 <input id="time4" name="time4" style=" height: 30px; width: 100px;  "  class="easyui-timespinner">
-                                                <span  style="margin-left:10px;" >冻结时间</span>
+                                                <span  style="margin-left:10px;"  name="xxx" id="196">冻结时间</span>
                                                 <input id="time3" name="time3" style=" height: 30px; width: 100px;"  class="easyui-timespinner">
-                                                    &nbsp;
+                                                &nbsp;
                                             </td>
 
                                         </tr>
                                         <tr><td></td></tr>
                                         <tr>
                                             <td>
-                                                <button   type="button" onclick="setChgTime()" class="btn btn-success btn-sm">设置换日冻结时间</button>
-                                                <button  type="button" onclick="readTime()" class="btn btn-success btn-sm">读取换日冻结时间</button>
+                                                <button   type="button" onclick="setChgTime()" class="btn btn-success btn-sm"><span name="xxx" id="197">设置换日冻结时间</span></button>
+                                                <button  type="button" onclick="readTime()" class="btn btn-success btn-sm"><span name="xxx" id="198">读取换日冻结时间</span></button>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -891,10 +898,10 @@
                                             <td>
 
 
-                                                <span style="margin-left:10px;  ">通信巡检次数&nbsp;</span>
+                                                <span style="margin-left:10px; " name="xxx" id="199">通信巡检次数</span>&nbsp;
                                                 <input id="inspect" class="form-control" name="inspect" value="" style="width:100px;" placeholder="灯具通信失联巡检次数" type="text">
-                                                <button  type="button" onclick="setInspect()" class="btn btn-success btn-sm">设置通信失联巡检次数</button>
-                                                <button  type="button"  onclick="readInspect()" class="btn btn-success btn-sm">读取通信失联巡检次数</button>
+                                                <button  type="button" onclick="setInspect()" class="btn btn-success btn-sm"><span name="xxx" id="200">设置通信失联巡检次数</span></button>
+                                                <button  type="button"  onclick="readInspect()" class="btn btn-success btn-sm"><span name="xxx" id="201">读取通信失联巡检次数</span></button>
                                             </td>
 
                                         </tr>
@@ -911,9 +918,9 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                <span style="margin-left:10px;  ">网关终端时间&nbsp;</span>
+                                                <span style="margin-left:10px; " name="xxx" id="202">网关终端时间</span>&nbsp;
                                                 <input id="gaytime" readonly="true" class="form-control" name="gaytime" value="" style="width:150px;" placeholder="网关终端时间" type="text">
-                                                <button  type="button" onclick="readTrueTime()" class="btn btn-success btn-sm">读取时间</button>&nbsp;
+                                                <button  type="button" onclick="readTrueTime()" class="btn btn-success btn-sm"><span name="xxx" id="203">读取时间</span></button>&nbsp;
                                             </td>
                                         </tr>
                                     </tbody>
@@ -929,7 +936,7 @@
 
                                         <tr >
                                             <td>
-                                                <span  style=" float: right; margin-right: 2px;" >行政区域码:</span>
+                                                <span  style=" float: right; margin-right: 2px;" name="xxx" id="204" >行政区域码</span>
                                             <td>
 
                                                 <input id="area"  class="form-control" name="area" style="width:150px;"  placeholder="区域码" type="text">&nbsp;
@@ -939,7 +946,7 @@
 
                                         <tr>
                                             <td>
-                                                <span  style=" float: right; margin-right: 2px;" >网关地址:</span>
+                                                <span  style=" float: right; margin-right: 2px;" name="xxx" id="25" >网关地址</span>
                                             </td>
 
                                             <td >
@@ -950,8 +957,8 @@
                                         </tr>
                                         <tr>
                                             <td colspan="2">
-                                                <button  type="button" onclick="readArea()" class="btn btn-success btn-sm">读取 </button>
-                                                <button type="button"  onclick="setArea()" class="btn  btn-success btn-sm" style="margin-left: 2px;">设置</button>
+                                                <button  type="button" onclick="readArea()" class="btn btn-success btn-sm"><span id="205" name="xxx">读取</span> </button>
+                                                <button type="button"  onclick="setArea()" class="btn  btn-success btn-sm" style="margin-left: 2px;"><span id="49" name="xxx">设置</span></button>
 
                                             </td>
 
@@ -966,15 +973,15 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                <span style="margin-left:10px;">新组号</span>
+                                                <span style="margin-left:10px;" name="xxx" id="206">新组号</span>
                                                 <span class="menuBox">
                                                     <input id="l_groupe" class="easyui-combobox" name="l_groupe" style="width:100px; height: 30px" 
                                                            data-options="editable:true,valueField:'id', textField:'text' " />
                                                 </span> 
                                                 <!-- <button  type="button" onclick="chgLampGroupe()" class="btn btn-success btn-sm">更换所有灯具的组号</button>&nbsp; -->
-                                                <span  onclick="setGroupe()" style=" margin-left: 2px;" class="label label-success" >更换</span>
+                                                <span  onclick="setGroupe()" style=" margin-left: 2px;" class="label label-success" name="xxx" id="207" >更换</span>
 
-                                                <span style=" margin-left: 10px;">新工作方式</span>&nbsp;
+                                                <span style=" margin-left: 10px;" name="xxx" id="208">新工作方式</span>&nbsp;
                                                 <span class="menuBox">
                                                     <select class="easyui-combobox" id="l_worktype" name="l_worktype" data-options='editable:false' style="width:100px; height: 30px">
                                                         <option value="0" >时间</option>
@@ -982,18 +989,18 @@
                                                         <option value="2">场景</option>           
                                                     </select>
                                                 </span> 
-                                                <span  onclick="setWowktype()" style=" margin-left: 2px;" class="label label-success" >更换</span>
+                                                <span  onclick="setWowktype()" style=" margin-left: 2px;" class="label label-success"  name="xxx" id="207">更换</span>
                                                 &nbsp;
                                                 <!-- <button  type="button" onclick="setLampWowktype()" class="btn btn-success btn-sm">更换所有灯工作方式</button>&nbsp; -->
-                                          
+
                                             </td>
                                         </tr>
                                         <tr><td></td></tr>
                                         <tr>
                                             <td>
-                                                      <button  type="button" onclick="delAllLamp()" class="btn btn-success btn-sm">删除全部灯具信息</button>&nbsp;
-                                                <button  style="float:right; margin-right: 5px;" type="button" onclick="delAllplan()" class="btn btn-success btn-sm">删除全部灯时间表</button>&nbsp;
-                                            &nbsp;
+                                                <button  type="button" onclick="delAllLamp()" class="btn btn-success btn-sm"><span id="209" name="xxx">删除全部灯具信息</span></button>&nbsp;
+                                                <button  style="float:right; margin-right: 5px;" type="button" onclick="delAllplan()" class="btn btn-success btn-sm"><span name="xxx" id="210">删除全部灯时间表</span></button>&nbsp;
+                                                &nbsp;
                                             </td>
                                         </tr>
                                     </tbody>
@@ -1007,8 +1014,8 @@
                                     <tbody>
                                         <tr>
                                             <td>       
-                                                <button  type="button" onclick="delAllLoop()" class="btn btn-success btn-sm">删除全部回路开关信息</button>&nbsp;
-                                                <button  type="button" onclick="delAllLoopPlan()" class="btn btn-success btn-sm">删除全部回路时间表</button>&nbsp;
+                                                <button  type="button" onclick="delAllLoop()" class="btn btn-success btn-sm"><span id="211" name="xxx">删除全部回路开关信息</span></button>&nbsp;
+                                                <button  type="button" onclick="delAllLoopPlan()" class="btn btn-success btn-sm"><span id="212">删除全部回路时间表</span></button>&nbsp;
                                             </td>
                                         </tr>
                                     </tbody>

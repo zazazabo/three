@@ -21,6 +21,8 @@
             .btn{ margin-left: 20px; }
         </style>
         <script>
+            var lang = '${param.lang}';//'zh_CN';
+            var langs1 = parent.parent.getLnas();
             var websocket = null;
             function layerAler(str) {
                 layer.alert(str, {
@@ -147,6 +149,13 @@
 
 
             $(function () {
+                var aaa = $("span[name=xxx]");
+                for (var i = 0; i < aaa.length; i++) {
+                    var d = aaa[i];
+                    var e = $(d).attr("id");
+                    $(d).html(langs1[e][lang]);
+                }
+                
                 var curr_time = new Date();
                 $("#dd").datebox("setValue", myformatter(curr_time));
                 var val = $("#dd").datebox("getValue");
@@ -181,7 +190,7 @@
                         [
                             {
                                 field: 'detail',
-                                title: '详细数据',
+                                title: langs1[92][lang], //详细数据
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -191,21 +200,21 @@
                         [
                             {
                                 field: 'dayalis',
-                                title: '日期',
+                                title: langs1[93][lang], //日期
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
                                 rowspan: 2
                             }, {
                                 field: 'time',
-                                title: '时间点',
+                                title: langs1[94][lang],  //时间点
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
                                 rowspan: 2
                             }, {
                                 field: 'voltage',
-                                title: '电压',
+                                title: langs1[95][lang],  //电压
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -213,7 +222,7 @@
                                 rowspan: 1
                             }, {
                                 field: 'electric',
-                                title: '电流',
+                                title: langs1[96][lang],  //电流
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -221,7 +230,7 @@
                                 rowspan: 1
                             }, {
                                 field: 'activepower',
-                                title: '有功功率',
+                                title: langs1[97][lang], //有功功率
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -229,7 +238,7 @@
                                 rowspan: 1
                             }, {
                                 field: 'powerfactor',
-                                title: '功率因数',
+                                title: langs1[98][lang],  //功率因数
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -237,7 +246,7 @@
                                 rowspan: 1
                             }, {
                                 field: 'power',
-                                title: '正向有功电能量',
+                                title: langs1[99][lang], //正向有功电能量
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -248,79 +257,79 @@
 
                             {
                                 field: 'VAField',
-                                title: 'A相',
+                                title: langs1[100][lang],  //A相
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle'
                             }, {
                                 field: 'VBField',
-                                title: 'B相',
+                                title: langs1[101][lang],  //B相
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle'
                             }, {
                                 field: 'VCField',
-                                title: 'C相',
+                                title: langs1[102][lang],  //C相
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle'
                             }, {
                                 field: 'EAField',
-                                title: 'A相',
+                                title: langs1[100][lang],  //A相
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle'
                             }, {
                                 field: 'EBField',
-                                title: 'B相',
+                                title: langs1[101][lang],  //B相
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle'
                             }, {
                                 field: 'ECField',
-                                title: 'C相',
+                                title: langs1[102][lang],  //C相
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle'
                             }, {
                                 field: 'ACTIVEAField',
-                                title: 'A相有功功率',
+                                title: langs1[103][lang],  //A相有功功率
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle'
                             }, {
                                 field: 'ACTIVEBField',
-                                title: 'B相有功功率',
+                                title: langs1[104][lang],  //B相有功功率
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle'
                             }, {
                                 field: 'ACTIVECField',
-                                title: 'C相有功功率',
+                                title: langs1[105][lang],  //C相有功功率
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle'
                             }, {
                                 field: 'FACTORAField',
-                                title: 'A相功率因数',
+                                title: langs1[106][lang], //A相功率因数
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle'
                             }, {
                                 field: 'FACTORBField',
-                                title: 'B相功率因数',
+                                title:  langs1[107][lang], //B相功率因数
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle'
                             }, {
                                 field: 'FACTORCField',
-                                title: 'C相功率因数',
+                                title: langs1[108][lang], //C相功率因数
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle'
                             }, {
                                 field: 'FACTORDField',
-                                title: '总功率因数',
+                                title: langs1[109][lang], //总功率因数
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle'
@@ -577,13 +586,13 @@
                             <tr>
 
                                 <td>
-                                    <span style="margin-left:10px;">网关地址&nbsp;</span>
+                                    <span style="margin-left:10px;" name="xxx" id="25">网关地址</span>&nbsp;
 
                                     <span class="menuBox">
                                         <input id="comaddr" class="easyui-combobox" name="comaddr" style="width:150px; height: 30px" 
                                                data-options="editable:true,valueField:'id', textField:'text' " />
                                     </span>  
-                                    <span style="margin-left:10px;">日期&nbsp;</span>
+                                    <span style="margin-left:10px;" name="xxx" id="93">日期</span>&nbsp;
                                     <input id="dd" class="easyui-datebox" name="day" data-options="formatter:myformatter,parser:myparser"></input>
                                     <script type="text/javascript">
                                         function myformatter(date) {
@@ -606,8 +615,12 @@
                                             }
                                         }
                                     </script>
-                                    <button type="button" class="btn btn-sm btn-success" onclick="search()" >查找</button>
-                                    <button style=" height: 30px;" type="button" id="btn_download" class="btn btn-primary" onClick ="$('#gravidaTable').tableExport({type: 'excel', escape: 'false'})">导出Excel</button>
+                                    <button type="button" class="btn btn-sm btn-success" onclick="search()" >
+                                        <span name="xxx" id="34">搜索</span>
+                                    </button>
+                                    <button style=" height: 30px;" type="button" id="btn_download" class="btn btn-primary" onClick ="$('#gravidaTable').tableExport({type: 'excel', escape: 'false'})">
+                                        <span id="110" name="xxx">导出Excel</span>
+                                    </button>
                                 </td>
                                 <td>
 

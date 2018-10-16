@@ -15,62 +15,70 @@
         <link rel="stylesheet" type="text/css" href="bootstrap-3.3.7-dist/css/bootstrap.css">
         <script src="bootstrap-datetimepicker/bootstrap-datetimepicker.js"></script>
         <script>
+            var lang = '${param.lang}';//'zh_CN';
+            var langs1 = parent.parent.getLnas();
             $(function () {
+                var aaa = $("span[name=xxx]");
+                for (var i = 0; i < aaa.length; i++) {
+                    var d = aaa[i];
+                    var e = $(d).attr("id");
+                    $(d).html(langs1[e][lang]);
+                }
                 $('#reordtabel').bootstrapTable({
                     url: 'login.policereord.reordInfo.action',
                     columns: [
                         {
                             field: 'f_comaddr',
-                            title: '设备名称',
+                            title: langs1[120][lang],  //设备名称
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'f_type',
-                            title: '异常类型',
+                            title: langs1[121][lang],  //异常类型
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'f_day',
-                            title: '时间',
+                            title: langs1[82][lang],      //时间
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'f_status1',
-                            title: '处理状态',
+                            title: langs1[122][lang],   //处理状态
                             width: 25,
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
                                 if (value == 0) {
-                                    value = "已处理";
+                                    value = langs1[127][lang];  //已处理
                                     return  value;
                                 }
                                 if (value == 1) {
-                                    value = "未处理";
+                                    value = langs1[127][lang];   //未处理
                                     return  value;
                                 }
                             }
                         }, {
                             field: 'f_comment',
-                            title: '异常说明',
+                            title: langs1[123][lang],   //异常说明
                             width: 25,
                             align: 'center',
                             valign: 'middle',
                         }, {
                             field: 'f_state',
-                            title: '信息发送状态',
+                            title: langs1[124][lang], //信息发送状态
                             width: 25,
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
                                 if (value == 0) {
-                                    value = "已发送";
+                                    value = langs1[125][lang];  //已发送
                                     return value;
                                 } else if (value == 1) {
-                                    value = "未发送";
+                                    value = langs[126][lang]; //未发送
                                     return value;
                                 }
                             }
@@ -110,11 +118,11 @@
                     var obj = {};
 
                     if (statr == "" && end == "") {
-                        alert("请选择要查询的时间段");
+                        alert(langs1[129][lang]); //请选择查询的时间段
                         return;
                     }
                     if (statr == "") {
-                       
+
                         obj.statr = "2017-01-01";
                     } else {
                         obj.statr = statr;
@@ -133,7 +141,7 @@
                     };
                     $("#reordtabel").bootstrapTable('refresh', opt);
                 });
-                 $(".day").datetimepicker({
+                $(".day").datetimepicker({
                     format: 'yyyy/mm/dd',
                     language: 'zh-CN',
                     minView: "month",
@@ -144,11 +152,11 @@
         </script>
     </head>
     <body>
-<!--        <div style="float:left;position:relative;z-index:100;margin:12px 0 20px 50px; font-size: 18px">
-            <span>搜索时间：<input type="date" id="startime"/></span>
-            <span style="margin-left: 10px">至：<input type="date" id="endtime"/></span>
-            <span><input type="button" class="btn btn-sm btn-success" value="查询" id="select"></span>
-        </div>-->
+        <!--        <div style="float:left;position:relative;z-index:100;margin:12px 0 20px 50px; font-size: 18px">
+                    <span>搜索时间：<input type="date" id="startime"/></span>
+                    <span style="margin-left: 10px">至：<input type="date" id="endtime"/></span>
+                    <span><input type="button" class="btn btn-sm btn-success" value="查询" id="select"></span>
+                </div>-->
         <div style="margin-top:15px; font-size: 18px;margin-left: 10px;" id="Day">
             <form action="" id="day1" class="form-horizontal" role="form" style="float:left; width: 166px;">
                 <label for="dtp_input2" class="control-label" style="float: left;"></label>
@@ -159,7 +167,9 @@
                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                 </span>
             </form>
-            <span style=" font-size: 18px; float: left; margin-top: 4px;">&nbsp;至&nbsp;</span>
+            <span style=" font-size: 18px; float: left; margin-top: 4px;">&nbsp;
+                <span name="xxx" id="119">至</span>
+                &nbsp;</span>
             <form action="" id="day2" class="form-horizontal" role="form" style="float:left; width: 166px;">
                 <label for="dtp_input2" class="control-label" style="float: left;"></label>
                 <input id="dtp_input2" value="" type="hidden">
@@ -170,9 +180,13 @@
                 </span>
             </form>
             <span style="font-size: 18px; margin-left: 10px;">
-                <button type="button" class="btn btn-sm btn-success" id="select" >查询</button>
+                <button type="button" class="btn btn-sm btn-success" id="select" >
+                    <span name="xxx" id="34">搜索</span>
+                </button>
             </span>
-            <button style=" height: 30px;" type="button" id="btn_download" class="btn btn-primary" onClick ="$('#reordtabel').tableExport({type: 'excel', escape: 'false'})">导出Excel</button>
+            <button style=" height: 30px;" type="button" id="btn_download" class="btn btn-primary" onClick ="$('#reordtabel').tableExport({type: 'excel', escape: 'false'})">
+                <span id="110" name="xxx">导出Excel</span>
+            </button>
         </div>
         <div>
             <table id="reordtabel">
