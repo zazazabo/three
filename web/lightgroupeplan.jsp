@@ -117,13 +117,24 @@
 
 
             function setLampPlanCB(obj) {
-                console.log(obj);
 
-
-
-//                               console.log(obj)
                 if (obj.status == "success") {
                     if (obj.fn == 140) { //时间
+                       
+                        var ooo={l_comaddr:obj.comaddr,l_groupe:obj.val,l_plantime:obj.param};
+                        $.ajax({async: false, url: "lamp.planForm.modifylampplantime.action", type: "get", datatype: "JSON", data: ooo,
+                            success: function (data) {
+
+                                var arrlist = data.rs;
+                                if (arrlist.length == 1) {
+                  
+                                }
+                            },
+                            error: function () {
+                                alert("提交灯具挂钩的方案！");
+                            }
+                        });
+
                         var a = $("#form1").serializeObject();
                         var obj1 = {"time": a.time1, "value": parseInt(a.val1)};
                         var obj2 = {"time": a.time2, "value": parseInt(a.val2)};
@@ -142,7 +153,7 @@
                             success: function (data) {
                                 var arrlist = data.rs;
                                 if (arrlist.length == 1) {
-                                    $('#p_plan').combobox('reload');
+                                   // $('#p_plan').combobox('reload');
                                     layerAler("部署灯具时间方案成功");
                                     // $('#p_plan').combobox('setValue', a.p_code);
                                 }
@@ -152,6 +163,24 @@
                             }
                         });
                     } else if (obj.fn == 480) {  //场景
+
+
+                        var ooo={l_comaddr:obj.comaddr,l_groupe:obj.val,l_planscene:obj.param};
+                        $.ajax({async: false, url: "lamp.planForm.modifylampplanscene.action", type: "get", datatype: "JSON", data: ooo,
+                            success: function (data) {
+                                var arrlist = data.rs;
+                                if (arrlist.length == 1) {
+                  
+                                }
+                            },
+                            error: function () {
+                                alert("提交灯具挂钩场景的方案！");
+                            }
+                        });
+
+
+
+
                         var a = $("#form1").serializeObject();
                         console.log(a);
                         var o = {};
@@ -288,7 +317,7 @@
                     var comaddr = obj.l_comaddr;
                     var num = randnum(0, 9) + 0x70;
                     var data = buicode(comaddr, 0x04, 0xA4, num, 0, 140, vv); //01 03 F24    
-                    dealsend2("A4", data, 140, "setLampPlanCB", comaddr, obj.p_type, 0, obj.l_groupe);
+                    dealsend2("A4", data, 140, "setLampPlanCB", comaddr, obj.p_type, obj.p_code, obj.l_groupe);
                 }
 
                 if (v == "1") {
@@ -307,7 +336,7 @@
                     var comaddr = obj.l_comaddr;
                     var num = randnum(0, 9) + 0x70;
                     var data = buicode(comaddr, 0x04, 0xA4, num, 0, 480, vv); //01 03 F24    
-                    dealsend2("A4", data, 480, "setLampPlanCB", comaddr, 0, obj.p_type, 0, obj.p_code);
+                    dealsend2("A4", data, 480, "setLampPlanCB", comaddr, obj.p_type, obj.p_code, obj.l_groupe);
                 }
 
             }
@@ -355,7 +384,6 @@
                         row.id = row.id;
                         row.text = v;
                         var opts = $(this).combobox('options');
-                        console.log(row[opts.textField]);
                         return row[opts.textField];
                     },
                     onLoadSuccess: function (data) {
@@ -380,18 +408,28 @@
                 $('#p_plan').combobox({
                     url: "lamp.GroupeForm.getPlanlist.action?attr=1&pid=${param.pid}",
                     formatter: function (row) {
+                        console.log(row);
                         var v1 = row.p_type == 0 ? "(时间)" : "(场景)";
-                        var v = row.text + v1;
+                        var v =  row.p_name + v1;
                         row.id = row.id;
                         row.text = v;
                         var opts = $(this).combobox('options');
                         return row[opts.textField];
                     },
                     onLoadSuccess: function (data) {
+
                         if (Array.isArray(data) && data.length > 0) {
+                            for (var i = 0; i < data.length; i++) {
+                                data[i].text = data[i].p_name;
+                            }
+
                             $(this).combobox('select', data[0].id);
 
-                        } 
+                        }
+
+
+
+
                         for (var i = 1; i < 9; i++) {
                             $("#__num" + i.toString()).attr('readonly', true);
                         }

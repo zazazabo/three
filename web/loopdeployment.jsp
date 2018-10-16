@@ -435,7 +435,7 @@
                     url: "loop.planForm.getPlanlist.action?attr=0&pid=${param.pid}",
                     formatter: function (row) {
                         var v1 = row.p_type == 0 ? "(时间)" : "(经纬度)";
-                        var v = row.text + v1;
+                        var v = row.p_name + v1;
                         row.id = row.id;
                         row.text = v;
                         var opts = $(this).combobox('options');

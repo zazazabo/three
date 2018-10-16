@@ -311,7 +311,12 @@
                             title: '通信地址',
                             width: 25,
                             align: 'center',
-                            valign: 'middle'
+                            valign: 'middle',
+                            formatter: function (value, row, index, field) {
+                                 value =  value.replace(/\b(0+)/gi,"");
+                                    return value.toString();
+                             }
+                           
                         }, {
                             field: 'l_name',
                             title: '名称',

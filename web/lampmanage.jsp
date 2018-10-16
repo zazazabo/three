@@ -603,6 +603,49 @@
                     }, });
 
 
+                    $('#gravidaTable').on('click-cell.bs.table', function (field, value, row, element) 
+                    {
+                          if (value=="l_plan") {
+                          if (element.l_deplayment=="1") {
+                            if (element.l_worktype=="0") {
+
+                                    console.log(element.l_plantime);
+                                    var o={p_code:element.l_plantime};
+                                $.ajax({async: false, url: "lamp.planForm.getLampPlanData.action", type: "get", datatype: "JSON", data: o,
+                                    success: function (data) {
+                                        var arrlist = data.rs;
+                                        if (arrlist.length == 1) {
+                                            var str="";
+                                            var oo=arrlist[0];
+                                            for (var i = 0; i <8; i++) {
+                                                    var aa="p_time" + (i+1).toString();
+
+
+                                                 var obj = eval('(' + oo[aa] + ')');
+                                                 if (typeof obj=='object') {
+                                                    str=str +  "时间"  + (i+1).toString() + ":" + obj.time + "&nbsp;&nbsp;调光值:" + obj.value.toString() + "<br>";
+                                                 }
+                                                   
+
+                                                }
+                                                layerAler(str);
+                                        }
+                                    },
+                                    error: function () {
+                                        alert("提交失败！");
+                                    }
+                                });
+
+                            }
+                        }
+                          }
+                 
+                        
+                    });
+
+
+
+
                 $('#gravidaTable').bootstrapTable({
                     url: 'lamp.lampform.getlampList.action',
                     showExport: true, //是否显示导出
@@ -639,7 +682,14 @@
                             title: '灯具编号',
                             width: 25,
                             align: 'center',
-                            valign: 'middle'
+                            valign: 'middle',
+                             formatter: function (value, row, index, field) {
+                                if (value != null) {
+                                    value =  value.replace(/\b(0+)/gi,"");
+                                    return value.toString();
+                                }
+
+                            }
                         }, {
                             field: 'l_groupe',
                             title: '组号',
@@ -667,20 +717,32 @@
                             formatter: function (value, row, index, field) {
                                 if (value != null) {
                                     if (value == 0) {
-                                        value = "0(时间)";
+                                        value = "(走时间)";
                                         return value;
                                     } else if (value == 1) {
-                                        value = "1(经纬度)";
+                                        value = "(走经纬度)";
                                         return value;
                                     } else if (value == 2) {
-                                        value = "1(场景)";
+                                        value = "(走场景)";
                                         return value;
                                     }
 
                                 }
-
-//                                console.log(value);
-
+                            }
+                        }, {
+                            field: 'l_plan',
+                            title: '控制方案',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle',
+                            formatter: function (value, row, index, field) {
+                                 if (row.l_deplayment==1) {
+                                      if (row.l_worktype==0) {
+                                        return row.l_plantime;
+                                      }else if (row.l_worktype=="1") {
+                                        return row.l_planscene;
+                                      }
+                                 }
                             }
                         }, {
                             field: 'l_deployment',
