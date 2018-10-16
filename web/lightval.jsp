@@ -38,112 +38,136 @@
             }
             //开灯
             function onlamp() {
-                //var o = $("#formsearch").serializeObject();
-                var selects = $('#gravidaTable').bootstrapTable('getSelections');
+                var o = $("#formsearch").serializeObject();
+                var groupearr = $("#l_groupe").combobox("getData");
+                console.log(groupearr);
+                if (groupearr.length==0) {
+                    layerAler("网关没部署灯具");
+                    return;
+                }
 
-                if (selects.length == 0) {
-                    layerAler("请勾选灯具数据");
+                if (o.l_comaddr=="") {
+
+                     layerAler("网关不能空");
                     return;
                 }
                 addlogon(u_name, "灯具调光", o_pid, "灯具调光", "开灯");
-                for (var i = 0; i < selects.length; i++) {
-                    console.log("cs:" + i);
-                    var vv = new Array();
-                    //var l_comaddr = $("#l_comaddr").combobox('getValue');
-                    var select = selects[i];
-                    var l_comaddr = select.l_comaddr;
-                    var lampval = 100;
-                    var setcode = select.l_code;
-                    var dd = get2byte(setcode);
-                    var set1 = Str2BytesH(dd);
-                    vv.push(set1[1]);
-                    vv.push(set1[0]); //装置序号  2字节
-                    vv.push(parseInt(lampval));
-                    var num = randnum(0, 9) + 0x70;
-                    var param = {};
-                    param.id = select.id;
-                    param.row = i;
-                    var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 301, vv); //01 03
-                    //dealsend(sss, o1);
-                    dealsend2("A5", data, 301, "onoff", l_comaddr, 0, param, lampval);
+                var vv = new Array();
+                vv.push(groupearr.length);
+                var comaddr = o.l_comaddr;
 
+                for(var i=0;i<groupearr.length;i++){
+                    vv.push(parseInt(groupearr[i].id));
+                    vv.push(100);
                 }
+
+                var num = randnum(0, 9) + 0x70;
+
+                var param = {};
+                param.l_groupe = l_groupe;
+                var data = buicode(comaddr, 0x04, 0xA5, num, 0, 302, vv); //01 03 F24     
+                dealsend2("A5", data, 302, "lightCB", comaddr, 3, 0, 100);
+                // var selects = $('#gravidaTable').bootstrapTable('getSelections');
+
+                // if (selects.length == 0) {
+                //     layerAler("请勾选灯具数据");
+                //     return;
+                // }
+                // addlogon(u_name, "灯具调光", o_pid, "灯具调光", "开灯");
+                // for (var i = 0; i < selects.length; i++) {
+                //     console.log("cs:" + i);
+                //     var vv = new Array();
+                //     //var l_comaddr = $("#l_comaddr").combobox('getValue');
+                //     var select = selects[i];
+                //     var l_comaddr = select.l_comaddr;
+                //     var lampval = 100;
+                //     var setcode = select.l_code;
+                //     var dd = get2byte(setcode);
+                //     var set1 = Str2BytesH(dd);
+                //     vv.push(set1[1]);
+                //     vv.push(set1[0]); //装置序号  2字节
+                //     vv.push(parseInt(lampval));
+                //     var num = randnum(0, 9) + 0x70;
+                //     var param = {};
+                //     param.id = select.id;
+                //     param.row = i;
+                //     var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 301, vv); //01 03
+                //     //dealsend(sss, o1);
+                //     dealsend2("A5", data, 301, "onoff", l_comaddr, 0, param, lampval);
+
+                // }
 
             }
             //关灯
             function offlamp() {
-                var selects = $('#gravidaTable').bootstrapTable('getSelections');
 
-                if (selects.length == 0) {
-                    layerAler("请勾选灯具数据");
+            var o = $("#formsearch").serializeObject();
+                var groupearr = $("#l_groupe").combobox("getData");
+                console.log(groupearr);
+                if (groupearr.length==0) {
+                    layerAler("网关没部署灯具");
                     return;
                 }
-                addlogon(u_name, "灯具调光", o_pid, "灯具调光", "关灯");
-                for (var i = 0; i < selects.length; i++) {
-                    var vv = new Array();
-                    //var l_comaddr = $("#l_comaddr").combobox('getValue');
-                    var select = selects[i];
-                    var l_comaddr = select.l_comaddr;
-                    var lampval = 0;
-                    var setcode = select.l_code;
-                    var dd = get2byte(setcode);
-                    var set1 = Str2BytesH(dd);
-                    vv.push(set1[1]);
-                    vv.push(set1[0]); //装置序号  2字节
-                    vv.push(parseInt(lampval));
-                    var num = randnum(0, 9) + 0x70;
-                    var param = {};
-                    param.id = select.id;
-                    param.row = i;
-                    var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 301, vv); //01 03
-                    //dealsend(sss, o1);
-                    dealsend2("A5", data, 301, "onoff", l_comaddr, 0, param, lampval);
 
+                if (o.l_comaddr=="") {
+
+                     layerAler("网关不能空");
+                    return;
+                }
+               addlogon(u_name, "灯具调光", o_pid, "灯具调光", "关灯");
+                var vv = new Array();
+                vv.push(groupearr.length);
+                var comaddr = o.l_comaddr;
+
+                for(var i=0;i<groupearr.length;i++){
+                    vv.push(parseInt(groupearr[i].id));
+                    vv.push(0);
                 }
 
-            }
-            function onoff(obj) {
-                console.log(obj);
-                if (obj.status == "success") {
-                    if (obj.fn == 301) {
-                        layerAler("灯具打开/关闭成功");
-                        var param = obj.param;
-                        var o = {};
-                        o.l_value = obj.val;
-                        o.id = param.id;
-                        $.ajax({async: false, url: "test1.lamp.modifyvalue.action", type: "get", datatype: "JSON", data: o,
-                            success: function (data) {
-                                var arrlist = data.rs;
-                                if (arrlist.length == 1) {
-                                    $("#gravidaTable").bootstrapTable('updateCell', {index: param.row, field: "l_value", value: obj.val});
-                                }
-                            },
-                            error: function () {
-                                alert("提交失败！");
-                            }
-                        });
-                    } else if (obj.fn == 302) {
+                var num = randnum(0, 9) + 0x70;
 
-                        var param = obj.param;
-                        var o = {};
-                        o.l_value = obj.val;
-                        o.l_comaddr = obj.comaddr;
-                        o.l_groupe = param.l_groupe;
-                        $.ajax({async: false, url: "test1.lamp.modifygroupeval.action", type: "get", datatype: "JSON", data: o,
-                            success: function (data) {
-                                var arrlist = data.rs;
-                                if (arrlist.length >= 1) {
+                var param = {};
+                param.l_groupe = l_groupe;
+                var data = buicode(comaddr, 0x04, 0xA5, num, 0, 302, vv); //01 03 F24     
+                dealsend2("A5", data, 302, "lightCB", comaddr, 3, param, 0);
 
-                                    $('#gravidaTable').bootstrapTable('refresh');
-                                }
-                            },
-                            error: function () {
-                                alert("提交失败！");
-                            }
-                        });
-                    }
-                }
+
+
+
+
+
+                // var selects = $('#gravidaTable').bootstrapTable('getSelections');
+
+                // if (selects.length == 0) {
+                //     layerAler("请勾选灯具数据");
+                //     return;
+                // }
+                // addlogon(u_name, "灯具调光", o_pid, "灯具调光", "关灯");
+                // for (var i = 0; i < selects.length; i++) {
+                //     var vv = new Array();
+                //     //var l_comaddr = $("#l_comaddr").combobox('getValue');
+                //     var select = selects[i];
+                //     var l_comaddr = select.l_comaddr;
+                //     var lampval = 0;
+                //     var setcode = select.l_code;
+                //     var dd = get2byte(setcode);
+                //     var set1 = Str2BytesH(dd);
+                //     vv.push(set1[1]);
+                //     vv.push(set1[0]); //装置序号  2字节
+                //     vv.push(parseInt(lampval));
+                //     var num = randnum(0, 9) + 0x70;
+                //     var param = {};
+                //     param.id = select.id;
+                //     param.row = i;
+                //     var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 301, vv); //01 03
+                //     //dealsend(sss, o1);
+                //     dealsend2("A5", data, 301, "onoff", l_comaddr, 0, param, lampval);
+
+                // }
+
             }
+
+
             function sceneCB(obj) {
                 console.log(obj);
                 if (obj.status == "success") {
@@ -294,24 +318,40 @@
                             }
                         });
                     } else if (obj.fn == 302) {
-
                         var param = obj.param;
                         var o = {};
                         o.l_value = obj.val;
                         o.l_comaddr = obj.comaddr;
                         o.l_groupe = param.l_groupe;
-                        $.ajax({async: false, url: "test1.lamp.modifygroupeval.action", type: "get", datatype: "JSON", data: o,
-                            success: function (data) {
-                                var arrlist = data.rs;
-                                if (arrlist.length >= 1) {
+                        if (obj.type==3) {
+                            $.ajax({async: false, url: "lamp.lampform.modifygroupevalAll.action", type: "get", datatype: "JSON", data: o,
+                                    success: function (data) {
+                                                if (data!=null) {
+                                                    $('#gravidaTable').bootstrapTable('refresh');
+                                                }
 
-                                    $('#gravidaTable').bootstrapTable('refresh');
-                                }
-                            },
-                            error: function () {
-                                alert("提交失败！");
-                            }
-                        });
+                                            
+                                        
+                                    },
+                                    error: function () {
+                                        alert("提交失败！");
+                                    }
+                                });    
+                        }else{
+                                $.ajax({async: false, url: "lamp.lampform.modifygroupeval.action", type: "get", datatype: "JSON", data: o,
+                                    success: function (data) {
+                                        var arrlist = data.rs;
+                                        if (arrlist.length >= 1) {
+
+                                            $('#gravidaTable').bootstrapTable('refresh');
+                                        }
+                                    },
+                                    error: function () {
+                                        alert("提交失败！");
+                                    }
+                                });    
+                        }
+
                     }
                 }
 
@@ -698,7 +738,7 @@
                                         <!--开灯-->
                                         <span id="35" name="xxx"></span>
                                     </button>&nbsp;                                    
-                                </td>
+                                </td>            
                                 <td>
                                     <button  type="button" style="margin-left:20px;" onclick="offlamp()" class="btn btn-success btn-xm">
                                         <!--关灯-->

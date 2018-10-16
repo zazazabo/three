@@ -159,7 +159,7 @@
                 </xflt>
             </xsql>
         </xhandle>
-        <xhandle desc="修改灯具调光值" id="modifygroupeval" rtnype="JSON">
+<!--         <xhandle desc="修改灯具调光值" id="modifygroupeval" rtnype="JSON">
             <xsql id="a1" para="l_value" tpe="DDL" tpl="update t_lamp set l_value=:l_value where @CONDITION " var="rs">
                 <xflt id="CONDITION" tpl="@l_comaddr AND @l_groupe ">
                     <xfltpara id="l_comaddr" nrp="1=1" para="l_comaddr" sql="l_comaddr=':l_comaddr'">
@@ -168,7 +168,7 @@
                     </xfltpara>
                 </xflt>
             </xsql>
-        </xhandle>
+        </xhandle> -->
 <!--         <xhandle desc="修改灯具组号" id="modifygroup" rtnype="JSON">
             <xsql id="a1" para="l_groupe" tpe="DDL" tpl="update t_lamp set l_groupe=:l_groupe where l_deplayment=1 AND @CONDITION " var="rs">
                 <xflt id="CONDITION" nrp="" tpl="@l_comaddr AND @oldl_groupe  AND @l_code ">

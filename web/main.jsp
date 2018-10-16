@@ -28,7 +28,7 @@
         <script>
 
             var websocket = null;
-
+            var timestamp = 0;
             function sendData(obj) {
 
                 console.log("通信状态:", websocket.readyState);
@@ -38,10 +38,26 @@
                 if (websocket != null && websocket.readyState == 1) {
 
                     //delete obj.msg;
-                    console.log(obj);
-                    var datajson = JSON.stringify(obj);
+                    if (timestamp == 0) {
+                        timestamp = (new Date()).valueOf();
+                        console.log(obj);
+                        var datajson = JSON.stringify(obj);
+                        websocket.send(datajson);
 
-                    websocket.send(datajson);
+                    } else {
+                        var timestamptemp = (new Date()).valueOf();
+                        console.log(timestamp, timestamptemp);
+                        if ((timestamptemp - timestamp) / 1000 < 1) {
+                            //layerAler("请不要连续发送");
+                        } else {
+                            timestamp = timestamptemp;
+                            console.log(obj);
+                            var datajson = JSON.stringify(obj);
+                            websocket.send(datajson);
+                        }
+                    }
+
+
                 }
             }
 
@@ -265,20 +281,21 @@
             }
             var o = {};
             $(function () {
-                
+
             <c:forEach items="${lans}" var="t" varStatus="i">
                 var id =${t.id};
-                var zh_CN1 ="${empty t.zh_CN?"":t.zh_CN}";
-                var en_US1 ="${empty t.en_US?"":t.en_US}";
-                var e_BY1 ="${empty t.e_BY?"":t.e_BY}";
+                var zh_CN1 = "${empty t.zh_CN?"":t.zh_CN}";
+                var en_US1 = "${empty t.en_US?"":t.en_US}";
+                var e_BY1 = "${empty t.e_BY?"":t.e_BY}";
 
-                o[id] ={zh_CN:zh_CN1,en_US:en_US1,e_BY:e_BY1};
+                o[id] = {zh_CN: zh_CN1, en_US: en_US1, e_BY: e_BY1};
             </c:forEach>
-              //  console.log(o);
+                //  console.log(o);
 
 
             <c:if test="${empty param.id }">
                 window.location = "${pageContext.request.contextPath }/login.jsp";
+                return;
             </c:if>
 
                 if ('WebSocket' in window) {

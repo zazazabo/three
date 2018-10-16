@@ -528,7 +528,7 @@
                                                data-options="editable:true,valueField:'id', textField:'text' " />
                                     </span> 
 
-                                    <button type="button"  onclick="resetGroupe()" class="btn btn-success btn-sm">更换分组</button>
+                                    <button type="button"  onclick="resetGroupe()" class="btn btn-success btn-sm">更换分组</button>&nbsp
                                     <!--<span  onclick="resetGroupe()" style=" margin-left: 2px;" class="label label-success" >更换分组</span>-->
                                 </td>
                             </tr>
