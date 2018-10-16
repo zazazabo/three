@@ -462,17 +462,17 @@
 
                                     <tr>
                                         <td>
-                                            <span style="margin-left:20px;">部门</span>&nbsp;
+                                            <span style="margin-left:20px;" name="xxx" id="224">部门</span>&nbsp;
                                             <input id="department" class="form-control"  name="department" style="width:150px;display: inline;" placeholder="请输入部门名称" type="text"></td>
                                         <td></td>
                                         <td>
-                                            <span style="margin-left:10px;">角色&nbsp;</span>
+                                            <span style="margin-left:10px;" name="xxx" id="233">角色</span>&nbsp;
                                             <input id="role" class="easyui-combobox" name="m_code" style="width:150px; height: 34px" data-options="editable:true,valueField:'id', textField:'text',url:'login.usermanage.rolemenu.action?parent_id=${param.role}'" />
                                         </td>
                                     </tr> 
                                     <tr>
                                         <td colspan="3">
-                                            <span style="margin-left:20px;">项目</span>&nbsp;
+                                            <span style="margin-left:20px;" name="xxx" id="1">项目</span>&nbsp;
                                             <select id="sel_menu2" multiple="multiple" style="width: 360px;">
 
                                             </select>
@@ -487,9 +487,9 @@
                         <!-- 注脚 -->
                         <div class="modal-footer">
                             <!-- 添加按钮 -->
-                            <button id="tianjia1" type="button" class="btn btn-primary">添加</button>
+                            <button id="tianjia1" type="button" class="btn btn-primary"><span name="xxx" id="65">添加</span></button>
                             <!-- 关闭按钮 -->
-                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button></div>
+                            <button type="button" class="btn btn-default" data-dismiss="modal"><span name="xxx" id="57">关闭</span></button></div>
                     </form>
                 </div>
             </div>
@@ -503,7 +503,7 @@
                         <button type="button" class="close" data-dismiss="modal">
                             <span style="font-size:20px ">×</span></button>
                         <span class="glyphicon glyphicon-floppy-disk" style="font-size: 20px"></span>
-                        <h4 class="modal-title" style="display: inline;">修改用户信息</h4></div>
+                        <h4 class="modal-title" style="display: inline;"><span name="xxx" id="234">修改用户信息</span></h4></div>
                     <form action="" method="POST" id="Form_Edit" onsubmit="return checkLampModify()">     
                         <input type="hidden" id="id" name="id" />
                         <div class="modal-body">
@@ -511,11 +511,11 @@
                                 <tbody>
                                     <tr>
                                         <td>
-                                            <span style="margin-left:5px;">用户名</span>&nbsp;
+                                            <span style="margin-left:5px;" name="xxx" id="223">用户名</span>&nbsp;
                                             <input id="name_edit" readonly="true"   class="form-control"  name="name_edit" style="width:150px;display: inline;"  type="text" readonly="readonly"></td>
                                         <td></td>
                                         <td>
-                                            <span style="margin-left:10px;">姓别&nbsp;</span>
+                                            <span style="margin-left:10px;" name="xxx" id="225">姓别</span>&nbsp;
                                             <span class="menuBox">
                                                 <select name="sex_edit" id="sex_edit"  style="width:150px;">
                                                     <option value="男">男</option>
@@ -527,28 +527,28 @@
 
                                     <tr>
                                         <td>
-                                            <span style="margin-left:20px;">电话</span>&nbsp;
+                                            <span style="margin-left:20px;" name="xxx" id="136">电话</span>&nbsp;
                                             <input id="phone_edit" class="form-control"  name="phone_edit" style="width:150px;display: inline;" placeholder="请输入电话" type="text"></td>
                                         <td></td>
                                         <td>
-                                            <span style="margin-left:10px;">邮箱&nbsp;</span>
+                                            <span style="margin-left:10px;" name="xxx" id="137">邮箱</span>&nbsp;
                                             <input id="email_edit" class="form-control" name="email_edit" style="width:150px;display: inline;" placeholder="请输入邮箱" type="text"></td>
                                         </td>
                                     </tr>                                   
 
                                     <tr>
                                         <td>
-                                            <span style="margin-left:20px;">部门</span>&nbsp;
+                                            <span style="margin-left:20px;" name="xxx" id="224">部门</span>&nbsp;
                                             <input id="department_edit" class="form-control"  name="department_edit" style="width:150px;display: inline;" placeholder="请输入部门名称" type="text"></td>
                                         <td></td>
                                         <td>
-                                            <span style="margin-left:20px;">角色</span>&nbsp;
+                                            <span style="margin-left:20px;" name="xxx" id="233">角色</span>&nbsp;
                                             <input id="updaterole" class="easyui-combobox" name="up_role" style="width:150px; height: 34px" data-options="editable:true,valueField:'id', textField:'text',url:'login.usermanage.rolemenu.action?parent_id=${param.role}'" />
                                         </td>
                                     </tr>
                                     <tr>                                
                                         <td colspan='3' >
-                                            <span style="margin-left:10px;">项目&nbsp;</span>
+                                            <span style="margin-left:10px;" name="xxx" id="1">项目</span>&nbsp;
                                             <select id="sel_menu1" multiple="multiple" style="width: 360px;">
 
                                             </select>
@@ -561,11 +561,11 @@
                         <!-- 注脚 -->
                         <div class="modal-footer" id="modal_footer_edit" >
                             <!-- 添加按钮 -->
-                            <button  type="button" onclick="chongzhimima()" class="btn btn-primary">重置密码</button>
+                            <button  type="button" onclick="chongzhimima()" class="btn btn-primary"><span id="235" name="xxx">重置密码</span></button>
                             <!-- 添加按钮 -->
-                            <button id="xiugai" type="button" onclick="editaction()" class="btn btn-primary">修改</button>
+                            <button id="xiugai" type="button" onclick="editaction()" class="btn btn-primary"><span id="151" name="xxx">修改</span></button>
                             <!-- 关闭按钮 -->
-                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal"><span id="57" name="xxx">关闭</span></button>
                         </div>
                     </form>
                 </div>
