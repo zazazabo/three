@@ -143,6 +143,7 @@
                                 var arrlist = data.rs;
                                 if (arrlist.length == 1) {
                                     $('#p_plan').combobox('reload');
+                                    layerAler("部署灯具时间方案成功");
                                     // $('#p_plan').combobox('setValue', a.p_code);
                                 }
                             },
@@ -168,6 +169,7 @@
                             success: function (data) {
                                 var arrlist = data.rs;
                                 if (arrlist.length == 1) {
+                                    layerAler("部署灯具场景方案成功");
                                     // $('#p_plan').combobox('reload');
                                 }
                             },
