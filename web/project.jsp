@@ -19,10 +19,19 @@
 
 
         <script>
+            var lang = '${param.lang}';//'zh_CN';
+            var langs1 = parent.parent.getLnas();
             var u_name = parent.parent.getusername();
             var o_pid = parent.parent.getpojectId();
             var uid = parent.parent.getuserId();
             $(function () {
+                var aaa = $("span[name=xxx]");
+                for (var i = 0; i < aaa.length; i++) {
+                    var d = aaa[i];
+                    var e = $(d).attr("id");
+                    console.log(e);
+                    $(d).html(langs1[e][lang]);
+                }
                 //var pinfo = [];
                 $("#add").attr("disabled", true);
                 $("#del").attr("disabled", true);
@@ -35,7 +44,7 @@
                         var rs = data.rs;
                         if (rs.length > 0) {
                             for (var i = 0; i < rs.length; i++) {
-                                
+
                                 if (rs[i].code == "800301" && rs[i].enable != 0) {
                                     $("#add").attr("disabled", false);
                                     continue;
@@ -50,7 +59,7 @@
                                 }
                             }
                         }
-                        
+
                     },
                     error: function () {
                         alert("提交失败！");
@@ -70,19 +79,19 @@
                         },
                         {
                             field: 'name',
-                            title: '项目名称',
+                            title: langs1[256][lang], //项目名称
                             width: 25,
                             align: 'center',
                             valign: 'middle'
-                        },{
+                        }, {
                             field: 'code',
-                            title: '项目编号',
+                            title: langs1[257][lang],  //项目编号
                             width: 25,
                             align: 'center',
                             valign: 'middle'
-                        },{
+                        }, {
                             field: 'area',
-                            title: '项目地址',
+                            title: langs1[258][lang],   //项目地址
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -97,7 +106,7 @@
                 var pid = getuserporject(uid);
                 var pinfo = getprojectInfo(pid);
                 $('#gravidaTable').bootstrapTable('load', pinfo);
-                
+
             });
             //获取当前用户的管理项目
             function  getuserporject(uid) {
@@ -140,11 +149,11 @@
                     offset: 'center'
                 });
             }
-            
+
             function  checkProjectAdd() {
                 var obj = $("#Form_User").serializeObject();
                 if (obj.name == "") {
-                    layerAler("项目不能为空");
+                    layerAler(langs1[259][lang]);   //项目不能为空
                     return false;
                 }
                 addlogon(u_name, "添加", o_pid, "项目管理", "添加项目");
@@ -160,7 +169,7 @@
                                             success: function (data) {
                                                 var newcode;
                                                 var code = data.codes;
-                                                
+
                                                 if (code.length == 1) {
                                                     newcode = code[0].code;
                                                     var pidobj = {};
@@ -168,7 +177,7 @@
                                                     pidobj.npid = "," + newcode;
                                                     $.ajax({async: false, url: "login.project.addpid.action", type: "get", datatype: "JSON", data: pidobj,
                                                         success: function (data) {
-                                                            
+
                                                         },
                                                         error: function () {
                                                             alert("提交失败！");
@@ -178,7 +187,7 @@
                                                     pobj.id = uid;
                                                     var parentid = 0;
                                                     do {
-                                                        
+
                                                         $.ajax({async: false, url: "login.project.selectparent.action", type: "get", datatype: "JSON", data: pobj,
                                                             success: function (data) {
                                                                 var parentid = data.ups;
@@ -189,7 +198,7 @@
                                                                     ppobj.npid = "," + newcode;
                                                                     $.ajax({async: false, url: "login.project.addpid.action", type: "get", datatype: "JSON", data: ppobj,
                                                                         success: function (data) {
-                                                                            
+
                                                                         },
                                                                         error: function () {
                                                                             alert("提交失败！");
@@ -200,7 +209,7 @@
                                                         });
                                                     } while (parentid != 0);
                                                 }
-                                                
+
                                             },
                                             error: function () {
                                                 alert("提交失败！");
@@ -213,11 +222,11 @@
                                     alert("提交失败！");
                                 }
                             });
-                            
-                            
-                            
+
+
+
                         } else if (data.total > 0) {
-                            layerAler("此项目已存在");
+                            layerAler(langs1[260][lang]);  //此项目已存在
                         }
                         return  false;
 //             
@@ -228,13 +237,13 @@
                 });
                 return isflesh;
             }
-            
+
             //编辑
             function editporject() {
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
                 var num = selects.length;
                 if (num == 0) {
-                    layerAler("请选择您要编辑的项目");
+                    layerAler(langs1[261][lang]);  //请选择您要编辑的项目
                     return;
                 }
                 $("#pname").val(selects[0].name);
@@ -243,11 +252,11 @@
                 $("#p_id").val(selects[0].id);
                 $("#pjj2").modal();
             }
-            
+
             function update() {
                 var pname = $("#pname").val();
-                if(pname==""){
-                    layerAler("项目名不能为空");
+                if (pname == "") {
+                    layerAler(langs1[262][lang]);  //项目名不能为空
                     return;
                 }
                 addlogon(u_name, "修改", o_pid, "项目管理", "修改项目信息");
@@ -276,24 +285,24 @@
                 console.log(selects[0]);
                 var num = selects.length;
                 if (num == 0) {
-                    layerAler("请选择您要删除的记录");
+                    layerAler(langs1[263][lang]);  //请选择您要删除的记录
                     return;
                 }
-                layer.confirm('确认要删除吗？', {
-                    btn: ['确定', '取消']//按钮
+                layer.confirm(langs1[145][lang], {  //确认要删除吗？
+                    btn: [langs1[146][lang],langs1[147][lang]]//确定、取消按钮
                 }, function (index) {
                     addlogon(u_name, "删除", o_pid, "项目管理", "删除项目");
                     $.ajax({async: false, url: "login.project.getbase.action", type: "POST", datatype: "JSON", data: {pid: selects[0].code},
                         success: function (data) {
                             var arrlist = data.rs;
                             if (arrlist.length > 0) {
-                                layerAler("该项目下存在网关，不可删除");
+                                layerAler(langs1[264][lang]);  //该项目下存在网关，不可删除
                             } else {
                                 $.ajax({async: false, url: "login.project.getpidUser.action", type: "get", datatype: "JSON", data: {pid: selects[0].code},
                                     success: function (data) {
                                         var arrlist = data.rs;
                                         if (arrlist.length > 1) {
-                                            layerAler("该项目下拥有管理人员，不可删除");
+                                            layerAler(langs1[265][lang]);   //该项目下拥有管理人员，不可删除
                                         } else {
                                             $.ajax({async: false, url: "login.project.delete.action", type: "POST", datatype: "JSON", data: {id: selects[0].id},
                                                 success: function (data) {
@@ -337,7 +346,7 @@
                                                                             alert("提交失败！");
                                                                         }
                                                                     });
-                                                                    
+
                                                                 }
                                                             },
                                                             error: function () {
@@ -350,7 +359,7 @@
                                                     layerAler("提交失败");
                                                 }
                                             });
-                                            
+
                                         }
                                     },
                                     error: function () {
@@ -364,13 +373,13 @@
                         }
                     });
                     layer.close(index);
-                    
+
                 });
             }
-            
-            
-            
-            
+
+
+
+
         </script>
 
     </head>
@@ -378,13 +387,13 @@
 
         <div class="btn-group zuheanniu" id="zuheanniu" style="float:left;position:relative;z-index:100;margin:12px 0 0 10px;">
             <button class="btn btn-success ctrol" data-toggle="modal" data-target="#pjj" id="add">
-                <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;添加
+                <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;<span name="xxx" id="65">添加</span>
             </button>
             <button class="btn btn-primary ctrol"   onclick="editporject()"  id="update">
-                <span class="glyphicon glyphicon-pencil"></span>&nbsp;编辑
+                <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span name="xxx" id="66">编辑</span>
             </button>
             <button class="btn btn-danger ctrol" onclick="deleteUser();" id="del" >
-                <span class="glyphicon glyphicon-trash"></span>&nbsp;删除
+                <span class="glyphicon glyphicon-trash"></span>&nbsp;<span name="xxx" id="67">删除</span>
             </button> 
         </div>
 
@@ -403,7 +412,7 @@
                     <button type="button" class="close" data-dismiss="modal">
                         <span style="font-size:20px ">×</span></button>
                     <span class="glyphicon glyphicon-floppy-disk" style="font-size: 20px"></span>
-                    <h4 class="modal-title" style="display: inline;">添加项目</h4></div>
+                    <h4 class="modal-title" style="display: inline;"><span name="xxx" id="266">添加项目</span></h4></div>
 
                 <form action="" method="POST" id="Form_User" onsubmit="return checkProjectAdd()">      
                     <div class="modal-body">
@@ -412,7 +421,7 @@
 
                                 <tr>
                                     <td>
-                                        <span style="margin-left:20px;">项目名称</span>&nbsp;
+                                        <span style="margin-left:20px;" name="xxx" id="256">项目名称</span>&nbsp;
                                         <input id="name"    class="form-control"  name="name" style="width:150px;display: inline;" placeholder="项目名称" type="text">
                                     </td>
 
@@ -421,7 +430,7 @@
 
                                 <tr>
                                     <td>
-                                        <span style="margin-left:20px;">项目地址</span>&nbsp;
+                                        <span style="margin-left:20px;" name="xxx" id="258">项目地址</span>&nbsp;
                                         <input id="area"    class="form-control"  name="area" style="width:150px;display: inline;" placeholder="区域" type="text">
                                     </td>
                                     <td></td>
@@ -436,9 +445,9 @@
                     <!-- 注脚 -->
                     <div class="modal-footer">
                         <!-- 添加按钮 -->
-                        <button id="tianjia1" type="submit" class="btn btn-primary">添加</button>
+                        <button id="tianjia1" type="submit" class="btn btn-primary"><span id="65" name="xxx">添加</span></button>
                         <!-- 关闭按钮 -->
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button></div>
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><span id="57" name="xxx">关闭</span></button></div>
                 </form>
             </div>
         </div>
@@ -452,14 +461,14 @@
                     <button type="button" class="close" data-dismiss="modal">
                         <span style="font-size:20px ">×</span></button>
                     <span class="glyphicon glyphicon-floppy-disk" style="font-size: 20px"></span>
-                    <h4 class="modal-title" style="display: inline;">修改项目</h4></div>
+                    <h4 class="modal-title" style="display: inline;"><span name="xxx" id="267">修改项目</span></h4></div>
                 <div class="modal-body">
                     <input type="hidden" id="p_id" name="id" />
                     <table>
                         <tbody>
                             <tr>
                                 <td>
-                                    <span style="margin-left:20px;">项目编号</span>&nbsp;
+                                    <span style="margin-left:20px;" name="xxx" id="257">项目编号</span>&nbsp;
                                     <input id="code"    class="form-control"  name="name" style="width:150px;display: inline; " readonly="readonly" type="text">
                                 </td>
 
@@ -467,7 +476,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <span style="margin-left:20px;">项目名称</span>&nbsp;
+                                    <span style="margin-left:20px;" name="xxx" id="256">项目名称</span>&nbsp;
                                     <input id="pname"    class="form-control"  name="name" style="width:150px;display: inline; "  type="text">
                                 </td>
 
@@ -476,7 +485,7 @@
 
                             <tr>
                                 <td>
-                                    <span style="margin-left:20px;">项目地址</span>&nbsp;
+                                    <span style="margin-left:20px;" name="xxx" id="258">项目地址</span>&nbsp;
                                     <input id="parea"    class="form-control"  name="area" style="width:150px;display: inline;" placeholder="区域" type="text">
                                 </td>
                                 <td></td>
@@ -491,9 +500,9 @@
                 <!-- 注脚 -->
                 <div class="modal-footer">
                     <!-- 添加按钮 -->
-                    <button id="tianjia1" type="button" class="btn btn-primary" onclick="update()">修改</button>
+                    <button id="tianjia1" type="button" class="btn btn-primary" onclick="update()"><span name="xxx" id="151">修改</span></button>
                     <!-- 关闭按钮 -->
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><span name="xxx" id="57">关闭</span></button>
                 </div>
             </div>
         </div>
