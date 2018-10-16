@@ -275,7 +275,7 @@
                 obj.roletype = ${param.role};
                 var zNodes = [
                 ];
-                var lang = "zh_CN";
+                var lang = "${param.lang}";
                 $.ajax({async: false, url: "login.rolemanage.queryZtree.action", type: "get", datatype: "JSON", data: obj,
                     success: function (data) {
                         for (var i = 0; i < data.length; i++) {

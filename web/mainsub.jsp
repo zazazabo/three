@@ -303,7 +303,7 @@
                 $("#actualConsumption").html(atualvalue);
                 diffpower = isNaN(diffpower) == true ? 0 : diffpower;
 
-                $("#differenceConsumption").html(diffpower.toString());
+                $("#differenceConsumption").html(diffpower.toFixed(2));
                 var status = diffpower < 0 ? "异常" : "正常";
                 $("#status").html(status);
 

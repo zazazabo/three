@@ -40,7 +40,7 @@
                     </xfltpara>
                 </xflt>
             </xsql>
-            <xsql desc="有故障的灯具" id="a2" list="true" page="true" tpe="SQL" tpl=" SELECT COUNT(f_lampset) AS count FROM t_fault WHERE f_type='ERC44' AND f_wanning=1 AND CONVERT(Nvarchar, f_day, 23) = CONVERT(Nvarchar, GETDATE(), 23) and f_comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE online=1 and  @CONDITION  )  " var="rs2">
+            <xsql desc="有故障的灯具" id="a2" list="true" page="true" tpe="SQL" tpl=" SELECT COUNT(DISTINCT f_setcode) AS count FROM t_fault WHERE f_type='ERC44' AND f_uptype=1 AND CONVERT(Nvarchar, f_day, 23) = CONVERT(Nvarchar, GETDATE(), 23) and f_comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE online=1 and  @CONDITION  )  " var="rs2">
                 <xflt id="CONDITION" nrp="" tpl="@pid ">
                     <xfltpara id="pid" nrp="1=2" para="pid" sql="pid = ':pid'">
                     </xfltpara>

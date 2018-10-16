@@ -9,15 +9,167 @@
 <html>
     <head>
         <%@include  file="js.jspf" %>
+
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>报警记录</title>
         <link rel="stylesheet" type="text/css" href="bootstrap-datetimepicker/bootstrap-datetimepicker.css">
         <link rel="stylesheet" type="text/css" href="bootstrap-3.3.7-dist/css/bootstrap.css">
         <script src="bootstrap-datetimepicker/bootstrap-datetimepicker.js"></script>
+         <script type="text/javascript" src="js/genel.js"></script>
         <script>
+
+
+            var eventobj = {
+                "ERC44": {
+                    "status1": {
+                        "0": "灯具故障",
+                        "1": "温度故障",
+                        "2": "超负荷故障",
+                        "3": "功率因数过低故障",
+                        "4": "时钟故障",
+                        "5": "",
+                        "6": "灯珠故障",
+                        "7": "电源故障"
+                    },
+                    "status2": {
+                        "0": "",
+                        "1": "",
+                        "2": "",
+                        "3": "",
+                        "4": "",
+                        "6": "",
+                        "7": "",
+                    }
+                },
+                "ERC43": {
+                    "status1": {
+                        "0": "灯杆倾斜",
+                        "1": "",
+                        "2": "温度预警",
+                        "3": "漏电流预警",
+                        "4": "相位不符",
+                        "5": "线路不符",
+                        "6": "台区不符",
+                        "7": "使用寿命到期"
+                    },
+                    "status2": {
+                        "0": "",
+                        "1": "",
+                        "2": "",
+                        "3": "",
+                        "4": "",
+                        "6": "",
+                        "7": "",
+                    }
+                },
+                "ERC46": {
+                    "status1": {
+                        "0": "A相超限",
+                        "1": "B相超限",
+                        "2": "C相超限",
+                        "3": "A相过载",
+                        "4": "A相欠载",
+                        "5": "B相过载",
+                        "6": "B相欠载",
+                        "7": "C相过载"
+                    },
+                    "status2": {
+                        "0": "C相欠载",
+                        "1": "A相功率因数过低",
+                        "2": "B相功率因数过低",
+                        "3": "C相功率因数过低",
+                        "4": "D相功率因数过低",
+                        "5": "",
+                        "6": "",
+                        "7": ""
+                    }
+                },
+                "ERC47": {
+                    "status1": {
+                        "0": "配电箱后门开",
+                        "1": "",
+                        "2": "",
+                        "3": "",
+                        "4": "",
+                        "5": "",
+                        "6": "",
+                        "7": ""
+                    },
+                    "status2": {
+                        "0": "",
+                        "1": "",
+                        "2": "",
+                        "3": "",
+                        "4": "",
+                        "6": "",
+                        "7": "",
+                    }
+                },
+                "ERC48": {
+                    "status1": {
+                        "0": "PM2.5设备通信故障",
+                        "1": "",
+                        "2": "",
+                        "3": "",
+                        "4": "",
+                        "5": "",
+                        "6": "",
+                        "7": ""
+                    },
+                    "status2": {
+                        "0": "",
+                        "1": "",
+                        "2": "",
+                        "3": "",
+                        "4": "",
+                        "6": "",
+                        "7": "",
+                    }
+
+                },
+                "ERC51": {
+                    "status1": {
+                        "0": "线路负荷突增",
+                        "1": "线路缺相",
+                        "2": "",
+                        "3": "",
+                        "4": "",
+                        "5": "",
+                        "6": "",
+                        "7": ""
+                    },
+                    "status2": {
+                        "0": "",
+                        "1": "",
+                        "2": "",
+                        "3": "",
+                        "4": "",
+                        "6": "",
+                        "7": "",
+                    }
+
+                }
+            }
+
+
             var lang = '${param.lang}';//'zh_CN';
             var langs1 = parent.parent.getLnas();
+
+
             $(function () {
+                $.ajax({
+                    url: 'even.json',
+                    async: false,
+                    success: function (data) {
+                        console.log(data);
+                    }
+                });
+
+
+
+
+
+
                 var aaa = $("span[name=xxx]");
                 for (var i = 0; i < aaa.length; i++) {
                     var d = aaa[i];
@@ -26,63 +178,139 @@
                 }
                 $('#reordtabel').bootstrapTable({
                     url: 'login.policereord.reordInfo.action',
-                    columns: [
-                        {
-                            field: 'f_comaddr',
-                            title: langs1[120][lang],  //设备名称
+                    columns: [{
+                            title: '单选',
+                            field: 'select',
+                            //复选框
+                            checkbox: true,
                             width: 25,
                             align: 'center',
                             valign: 'middle'
-                        }, {
-                            field: 'f_type',
-                            title: langs1[121][lang],  //异常类型
+                        },
+                        {
+                            field: 'f_comaddr',
+                            title: langs1[120][lang], //设备名称
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'f_day',
-                            title: langs1[82][lang],      //时间
+                            title: langs1[82][lang], //时间
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
-                            field: 'f_status1',
-                            title: langs1[122][lang],   //处理状态
+                            field: 'f_type',
+                            title: langs1[121][lang], //异常类型
                             width: 25,
                             align: 'center',
-                            valign: 'middle',
-                            formatter: function (value, row, index, field) {
-                                if (value == 0) {
-                                    value = langs1[127][lang];  //已处理
-                                    return  value;
-                                }
-                                if (value == 1) {
-                                    value = langs1[127][lang];   //未处理
-                                    return  value;
-                                }
-                            }
+                            valign: 'middle'
                         }, {
                             field: 'f_comment',
-                            title: langs1[123][lang],   //异常说明
+                            title: langs1[123][lang], //异常说明
                             width: 25,
                             align: 'center',
                             valign: 'middle',
                         }, {
-                            field: 'f_state',
-                            title: langs1[124][lang], //信息发送状态
+                            field: 'f_setcode',
+                            title: langs1[236][lang], //装置号
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle',
+                        }, 
+                        //{
+                        //     field: 'f_status1',
+                        //     title: langs1[237][lang], //状态字1
+                        //     width: 25,
+                        //     align: 'center',
+                        //     valign: 'middle',
+                        // }, {
+                        //     field: 'f_status2',
+                        //     title: langs1[238][lang], //状态字2
+                        //     width: 25,
+                        //     align: 'center',
+                        //     valign: 'middle',
+                        // },
+                         {
+                            field: '',
+                            title: '详情', //状态字2
                             width: 25,
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
-                                if (value == 0) {
-                                    value = langs1[125][lang];  //已发送
-                                    return value;
-                                } else if (value == 1) {
-                                    value = langs[126][lang]; //未发送
-                                    return value;
+                                //console.log(row);
+                                 var str="";
+                                 var info= eventobj[row.f_type];
+                                if (typeof info == "object") {
+                                        var s1=info.status1;
+                                        var s2=info.status2;
+                                    for(var i=0;i<8;i++){
+                                        var temp= Math.pow(2,i);
+                                        if ((row.f_status1 &temp)==temp) {
+                                            console.log(s1[i]);
+                                            if (s1[i]!="") {
+                                                str=str + s1[i] + "|";
+                                            }
+                                                
+                                        }
+                                    }
+
+                                     for(var i=0;i<8;i++){
+                                        var temp= Math.pow(2,i);
+                                        if ((row.f_status2 &temp)==temp) {
+                                            if (s1[i]!="") {
+                                                str=str + s1[i] + "|";
+                                            }
+                                                
+                                        }
+                                    }
+
+                                    return str.substr(0, str.length - 1);
+                                }else if (row.f_type=="ERC49") {
+                                    var d= Str2BytesH(row.f_data);
+                                        var count= d[21]<<8+d[20];
                                 }
+
+
+                                // console.log(len1);
+
                             }
-                        }],
+                        },
+                                // , {
+                                //     field: 'f_status1',
+                                //     title: langs1[122][lang],   //处理状态
+                                //     width: 25,
+                                //     align: 'center',
+                                //     valign: 'middle',
+                                //     formatter: function (value, row, index, field) {
+                                //         if (value == 0) {
+                                //             value = langs1[127][lang];  //已处理
+                                //             return  value;
+                                //         }
+                                //         if (value == 1) {
+                                //             value = langs1[127][lang];   //未处理
+                                //             return  value;
+                                //         }
+                                //     }
+                                // }, 
+
+                                // {
+                                //     field: 'f_state',
+                                //     title: langs1[124][lang], //信息发送状态
+                                //     width: 25,
+                                //     align: 'center',
+                                //     valign: 'middle',
+                                //     formatter: function (value, row, index, field) {
+                                //         if (value == 0) {
+                                //             value = langs1[125][lang];  //已发送
+                                //             return value;
+                                //         } else if (value == 1) {
+                                //             value = langs[126][lang]; //未发送
+                                //             return value;
+                                //         }
+                                //     }
+                                // }
+                    ],
                     clickToSelect: true,
                     singleSelect: true,
                     sortName: 'id',
@@ -193,5 +421,28 @@
 
             </table>
         </div>
+
+
+        <%--             <div class="row" style=" margin-top: 10px;">
+                        <div class="col-xs-5">
+
+                        <table id="prewarningtable"> 
+
+                        </table> 
+                    </div>
+                    <div class="col-xs-5">
+                        <table id="warningtable"  > 
+                        </table> 
+                    </div>
+
+                </div>
+
+                <div style=" margin-top: 20px;">
+
+                </div>
+
+            </div> --%>
+
+
     </body>
 </html>

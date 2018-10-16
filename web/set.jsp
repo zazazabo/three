@@ -28,7 +28,14 @@
                 var reg = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/
                 return reg.test(ip);
             }
-
+            
+            function refleshgayway(obj){
+                var vv = [];
+                var l_comaddr = "17020101";
+                var num = randnum(0, 9) + 0x70;
+                var data ="0"
+                dealsend2("ALL", data, 1, "ALL", l_comaddr, 0, 0, 0);               
+            }
 
             function readTrueTimeCB(obj) {
                 if (obj.status == "success") {
@@ -65,7 +72,7 @@
             }
             function readTrueTime() {
                 var o1 = $("#form1").serializeObject();
-                var vv = [];
+                var vv = [0];
                 var l_comaddr = o1.l_comaddr;
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(l_comaddr, 0x04, 0xAC, num, 0, 1, vv); //01 03
@@ -796,6 +803,9 @@
                                                         <option value="7">设置回路</option> 
                                                     </select>
                                                 </span>  
+                                            </td>
+                                            <td>
+                                                <button type="button"  onclick="refleshgayway()" class="btn  btn-success btn-sm" style="margin-left: 2px;">刷新网关在线列表</button>
                                             </td>
                                         </tr>
                                     </tbody>
