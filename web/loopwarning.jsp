@@ -28,7 +28,8 @@
     <script type="text/javascript" src="js/genel.js"></script>
     <script type="text/javascript" src="js/getdate.js"></script>
     <script>
-
+        var lang = '${param.lang}';//'zh_CN';
+        var langs1 = parent.parent.getLnas();
         var u_name = parent.parent.getusername();
         var o_pid = parent.parent.getpojectId();
         function layerAler(str) {
@@ -41,6 +42,12 @@
         var flag = null;
 
         $(function () {
+            var aaa = $("span[name=xxx]");
+            for (var i = 0; i < aaa.length; i++) {
+                var d = aaa[i];
+                var e = $(d).attr("id");
+                $(d).html(langs1[e][lang]);
+            }
             $('#l_comaddr').combobox({
                 url: "gayway.GaywayForm.getComaddr.action?pid=${param.pid}",
                 onLoadSuccess: function (data) {
@@ -70,7 +77,7 @@
                         valign: 'middle'
                     }, {
                         field: 'name',
-                        title: '报警参数',
+                        title: langs1[216][lang],   //报警参数
                         width: 25,
                         align: 'center',
                         valign: 'middle'
@@ -95,7 +102,7 @@
             if (obj.status == "success") {
 
                 if (obj.msg == "A4" && obj.fn == 610) {
-                    layerAler("报警参数设置成功");
+                    layerAler(langs1[218][lang]);  //报警参数设置成功
                 }
             }
         }
@@ -104,7 +111,7 @@
 
             var obj = $("#form1").serializeObject();
             if (obj.l_comaddr == "") {
-                layerAler("请选择网关");
+                layerAler(langs1[219][lang]);  //请选择网关
                 return;
             }
             addlogon(u_name, "设置", o_pid, "回路预报警", "设置回路预报警参数");
@@ -155,7 +162,7 @@
 
     <div class="panel panel-success" >
         <div class="panel-heading">
-            <h3 class="panel-title">路灯预报警参数设置</h3>
+            <h3 class="panel-title"><span id="221" name="xxx">回路预报警参数设置</span></h3>
         </div>
         <div class="panel-body" >
             <div class="container"  >
@@ -169,12 +176,12 @@
                                     <tr>
 
                                         <td>
-                                            <span style="margin-left:10px;">网关地址&nbsp;</span>
+                                            <span style="margin-left:10px;"><span id="25" name="xxx">网关地址</span>&nbsp;</span>
                                             <span class="menuBox">
                                                 <input id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 
                                                        data-options="editable:true,valueField:'id', textField:'text' " />
                                             </span>  
-                                            <button  type="button" style="margin-left:20px;" onclick="setLoopWarning()" class="btn btn-success">设置回路报警参数</button>
+                                            <button  type="button" style="margin-left:20px;" onclick="setLoopWarning()" class="btn btn-success"><span name="xxx" id="222">设置回路报警参数</span></button>
                                             &nbsp;
                                         </td>
 

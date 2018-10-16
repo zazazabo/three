@@ -37,6 +37,8 @@
             }
         </style>
         <script>
+            var lang = '${param.lang}';//'zh_CN';
+            var langs1 = parent.parent.getLnas();
             function layerAler(str) {
                 layer.alert(str, {
                     icon: 6,
@@ -44,7 +46,12 @@
                 });
             }
             $(function () {
-
+                var aaa = $("span[name=xxx]");
+                for (var i = 0; i < aaa.length; i++) {
+                    var d = aaa[i];
+                    var e = $(d).attr("id");
+                    $(d).html(langs1[e][lang]);
+                }
                 for (var i = 0; i < 12; i++) {
                     var s = (i + 1).toString();
                     $("#warning_value" + s).attr('readonly', true);
@@ -59,7 +66,7 @@
                 var vday = $("#formyear").serializeObject();
 
                 if (vday.day == "") {
-                    layerAler("请选择年");
+                    layerAler(langs1[152][lang]); //请选择年
                     return;
                 }
 
@@ -71,7 +78,7 @@
                         var warningstr = "warning_value" + a;
                         //var warningval=f1[warningstr];
                         var warnbl = $("#warning_ration").val();
-                        var warningval = parseInt(f1[k]) * parseInt(warnbl)/100;
+                        var warningval = parseInt(f1[k]) * parseInt(warnbl) / 100;
                         var obj = {"day": vday.day, "m": a};
                         var oo = {"day": vday.day + "-" + a + "-01", "power": f1[k], "warnpower": warningval, "year": vday.day, "month": a};
                         console.log(oo);
@@ -177,7 +184,7 @@
 
         <div id="big" style="height:auto;width:100%;border:1px solid #CECECE;border-bottom:none;">
             <div id="condition" style="height:60px;width:100%;padding-top: 12px">
-                <span style="margin-left:360px;font-size:16px; ">时间(年)</span>
+                <span style="margin-left:360px;font-size:16px; " name="xxx" id="153">时间(年)</span>
                 <form action="" id="formyear" class="form-horizontal" role="form" style="float:left;position:absolute;top:21px;left:450px;width: 166px;">
                     <label for="dtp_input2" class="control-label" style="float: left;"></label>
                     <input id="dtp_input2" value="" type="hidden">
@@ -189,7 +196,7 @@
                 </form>
 
                 <button id="butt" name="But" onclick="querryPower();" class="btn btn-info btn-sm" style="display: inline;margin-left: 224px;">
-                    <span class="glyphicon glyphicon-search"></span>查询
+                    <span class="glyphicon glyphicon-search"></span><span name="xxx" id="154">查询</span>
                 </button>
             </div>
 
@@ -204,13 +211,13 @@
                         <td width="15%">
                         </td>
                         <td width="15%">
-                            年计划值：
+                            <span name="xxx" id="155">年计划值</span>：
                         </td>
                         <td style="text-align: left">
                             <div id="annual_plan_value" style="font-size:26px;font-weight: bold; color: #009933;width:20%;height:30px;">0</div>
                         </td>
                         <td width="10%">
-                            预警比例：
+                            <span name="xxx" id="156">预警比例</span>：
                         </td>
                         <td width="24%" align="left">
                             <input id="warning_ration" runat="server" name="warning_ration" cssclass="tdfont" font-size="20px" style="width: 150px; font-size: 26px; font-weight: bold; color: #009933; height: 30px;
@@ -218,7 +225,10 @@
                             <span style="font-size: 33px;">%</span>&nbsp;
                         </td>
                         <td width="200px" align="center">
-                            <input id="saveEnergyPlan" onclick="saveplan();" name="But" class="btn btn-info btn-sm" value="保存配置" style="display: inline; margin-left: 5px;" type="button">
+                            <!--                            <input id="saveEnergyPlan" onclick="saveplan();" name="But" class="btn btn-info btn-sm" value="保存配置" style="display: inline; margin-left: 5px;" type="button">-->
+                            <button id="saveEnergyPlan" onclick="saveplan();" name="But" class="btn btn-info btn-sm" style="display: inline; margin-left: 5px;" >
+                                <span id="157" name="xxx">保存配置</span>
+                            </button>
                         </td>
                     </tr>
                 </tbody></table>
@@ -231,26 +241,26 @@
                             <td style="width:5%;">
                             </td>
                             <td class="tdfont" width="10%" align="center">
-                                计划值
+                                <span name="xxx" id="158">计划值</span> 
                             </td>
                             <td class="tdfont" width="10%" align="center">
-                                去年计划值
+                                <span name="xxx" id="159">去年计划值</span>
                             </td>
                             <td class="tdfont" width="10%" align="center">
-                                预警值
+                                <span name="xxx" id="160">预警值</span>
                             </td>
                             <td style="width:5%;">
                             </td>
                             <td style="width:5%;">
                             </td>
                             <td class="tdfont" width="10%" align="center">
-                                计划值
+                               <span name="xxx" id="158">计划值</span>
                             </td>
                             <td class="tdfont" width="10%" align="center">
-                                去年计划值
+                                <span name="xxx" id="159">去年计划值</span>
                             </td>
                             <td class="tdfont" width="10%" align="center">
-                                预警值
+                                 <span name="xxx" id="160">预警值</span>
                             </td>
                             <td style="width:5%;">
                             </td>

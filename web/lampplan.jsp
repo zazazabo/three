@@ -457,7 +457,7 @@
                             },
                             {
                                 field: 'p_name',
-                                title:langs1[69][lang] ,  //方案名称
+                                title: langs1[69][lang],  //方案名称
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -466,7 +466,7 @@
                             },
                             {
                                 field: 'p_code',
-                                title: langs1[70][lang],
+                                title: langs1[70][lang],  //方案编码
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -475,7 +475,7 @@
                             },
                             {
                                 field: 'p_time',
-                                title: '时间一',
+                                title: langs1[75][lang],   //时间一
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -485,7 +485,7 @@
                             },
                             {
                                 field: 'p_time',
-                                title: '时间二',
+                                title: langs1[76][lang],  //时间二
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -495,7 +495,7 @@
                             },
                             {
                                 field: 'p_time',
-                                title: '时间三',
+                                title: langs1[78][lang],   //时间三
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -505,7 +505,7 @@
                             },
                             {
                                 field: 'p_time',
-                                title: '时间四',
+                                title: langs1[79][lang],   //时间四
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -515,7 +515,7 @@
                             },
                             {
                                 field: 'p_time',
-                                title: '时间五',
+                                title: langs1[80][lang],  //时间五
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -525,7 +525,7 @@
                             },
                             {
                                 field: 'p_time',
-                                title: '时间六',
+                                title: langs1[81][lang], //时间六
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -536,7 +536,7 @@
                         ], [
                             {
                                 field: 'p_time1',
-                                title: '时间',
+                                title: langs1[82][lang], //时间
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -552,7 +552,7 @@
                             },
                             {
                                 field: 'p_val1',
-                                title: '调光值',
+                                title: langs1[42][lang],  //调光值
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -572,7 +572,7 @@
 
                             }, {
                                 field: 'p_time2',
-                                title: '时间',
+                                title: langs1[82][lang],  //时间
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -588,7 +588,7 @@
                             },
                             {
                                 field: 'p_val2',
-                                title: '调光值',
+                                title: langs1[42][lang],  //调光值
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -606,7 +606,7 @@
                                 }
                             }, {
                                 field: 'p_time3',
-                                title: '时间',
+                                title: langs1[82][lang],  //时间
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -622,7 +622,7 @@
                             },
                             {
                                 field: 'p_val3',
-                                title: '调光值',
+                                title:langs1[42][lang], //调光值
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -640,7 +640,7 @@
                                 }
                             }, {
                                 field: 'p_time4',
-                                title: '时间',
+                                title: langs1[82][lang],    //时间
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -656,7 +656,7 @@
                             },
                             {
                                 field: 'p_val4',
-                                title: '调光值',
+                                title: langs1[42][lang],  //调光值
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -674,7 +674,7 @@
                                 }
                             }, {
                                 field: 'p_time5',
-                                title: '时间',
+                                title:langs1[82][lang],   //时间
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -690,7 +690,7 @@
                             },
                             {
                                 field: 'p_val5',
-                                title: '调光值',
+                                title: langs1[42][lang],  //调光值
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -708,7 +708,7 @@
                                 }
                             }, {
                                 field: 'p_time6',
-                                title: '时间',
+                                title: langs1[82][lang],  //时间
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -724,7 +724,7 @@
                             },
                             {
                                 field: 'p_val6',
-                                title: '调光值',
+                                title: langs1[42][lang],//调光值
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -795,7 +795,7 @@
                             },
                             {
                                 field: 'p_name',
-                                title: '方案名',
+                                title: langs1[69][lang],  //方案名称
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -804,7 +804,7 @@
                             },
                             {
                                 field: 'p_code',
-                                title: '方案编号',
+                                title: langs1[70][lang], //方案编号
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -813,7 +813,7 @@
                             },
                             {
                                 field: 'p_scene',
-                                title: '场景一',
+                                title: langs[83][lang],  //场景一
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -823,7 +823,7 @@
                             },
                             {
                                 field: 'p_scene',
-                                title: '场景二',
+                                title: langs[84][lang],   //场景二
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -833,7 +833,7 @@
                             },
                             {
                                 field: 'p_scene',
-                                title: '场景三',
+                                title: langs[85][lang],  //场景三
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -843,7 +843,7 @@
                             },
                             {
                                 field: 'p_scene',
-                                title: '场景四',
+                                title: langs1[86][lang],  //场景四
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -853,7 +853,7 @@
                             },
                             {
                                 field: 'p_scene',
-                                title: '场景五',
+                                title: langs1[87][lang],   //场景五
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -863,7 +863,7 @@
                             },
                             {
                                 field: 'p_scene',
-                                title: '场景六',
+                                title: langs1[88][lang],  //场景六
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -873,7 +873,7 @@
                             },
                             {
                                 field: 'p_scene',
-                                title: '场景七',
+                                title: langs1[90][lang],  //场景七
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -883,7 +883,7 @@
                             },
                             {
                                 field: 'p_scene',
-                                title: '场景八',
+                                title: langs1[91][lang],  //场景八
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -894,7 +894,7 @@
                         ], [
                             {
                                 field: 'p_scene1',
-                                title: '场景号',
+                                title: langs1[89][lang],  //场景号
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -910,7 +910,7 @@
                             },
                             {
                                 field: 'p_val1',
-                                title: '调光值',
+                                title: langs1[42][lang],  //调光值
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -930,7 +930,7 @@
 
                             }, {
                                 field: 'p_scene2',
-                                title: '场景号',
+                                title: langs1[89][lang],  //场景号
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -946,7 +946,7 @@
                             },
                             {
                                 field: 'p_val2',
-                                title: '调光值',
+                                title: langs1[42][lang],  //调光值
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -964,7 +964,7 @@
                                 }
                             }, {
                                 field: 'p_scene3',
-                                title: '场景号',
+                                title:langs1[89][lang], //场景号
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -980,7 +980,7 @@
                             },
                             {
                                 field: 'p_val3',
-                                title: '调光值',
+                                title: langs1[42][lang],  //调光值
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -998,7 +998,7 @@
                                 }
                             }, {
                                 field: 'p_scene4',
-                                title: '场景号',
+                                title: langs1[89][lang],  //场景号
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -1014,7 +1014,7 @@
                             },
                             {
                                 field: 'p_val4',
-                                title: '调光值',
+                                title: langs1[42][lang], //调光值
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -1032,7 +1032,7 @@
                                 }
                             }, {
                                 field: 'p_scene5',
-                                title: '场景号',
+                                title: langs1[89][lang], //场景号
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -1048,7 +1048,7 @@
                             },
                             {
                                 field: 'p_val5',
-                                title: '调光值',
+                                title: langs1[42][lang], //调光值
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -1066,7 +1066,7 @@
                                 }
                             }, {
                                 field: 'p_scene6',
-                                title: '场景号',
+                                title: langs1[89][lang], //场景号
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -1082,7 +1082,7 @@
                             },
                             {
                                 field: 'p_val6',
-                                title: '调光值',
+                                title: langs1[42][lang],//调光值
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -1100,7 +1100,7 @@
                                 }
                             }, {
                                 field: 'p_scene7',
-                                title: '场景',
+                                title: langs1[89][lang], //场景号
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -1116,7 +1116,7 @@
                             },
                             {
                                 field: 'p_val7',
-                                title: '调光值',
+                                title: langs1[42][lang], //调光值
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -1134,7 +1134,7 @@
                                 }
                             }, {
                                 field: 'p_scene8',
-                                title: '场景',
+                                title: langs1[89][lang], //场景号
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -1150,7 +1150,7 @@
                             },
                             {
                                 field: 'p_val8',
-                                title: '调光值',
+                                title: langs1[42][lang], //调光值
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -1220,15 +1220,18 @@
 
         <div class="btn-group zuheanniu" id="zuheanniu" style="float:left;position:relative;z-index:100;margin:12px 0 0 10px;">
             <button class="btn btn-success ctrol" data-toggle="modal" onclick="showDialog()" data-target="#modal_add1" id="add">
-                <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;添加
+                <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;
+                <span name="xxx" id="65">添加</span>
             </button>
             <button class="btn btn-primary ctrol"   onclick="editlampplan()"  id="update">
-                <span class="glyphicon glyphicon-pencil"></span>&nbsp;编辑
+                <span class="glyphicon glyphicon-pencil"></span>&nbsp;
+                <span name="xxx" id="66">编辑</span>
             </button>
             <button class="btn btn-danger ctrol" onclick="deletelampplan();" id="del" >
-                <span class="glyphicon glyphicon-trash"></span>&nbsp;删除
+                <span class="glyphicon glyphicon-trash"></span>&nbsp;
+                <span name="xxx" id="67">删除</span>
             </button>
-            <span style="margin-left:20px;">方案类型&nbsp;</span>
+            <span style="margin-left:20px;" name="xxx" id="68">方案类型</span>&nbsp;
             <span class="menuBox">
                 <select class="easyui-combobox" data-options="editable:false" id="p_type" name="p_type" style="width:150px; height: 30px; margin-left: 3px;">
                     <option value="0">时间</option>
@@ -1250,7 +1253,9 @@
                     <tbody>
                         <tr>
                             <td>
-                                <span >&nbsp;&nbsp;&nbsp;&nbsp;方案类型&nbsp;</span>
+                                <span >&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <span name="xxx" id="68">方案类型</span>
+                                    &nbsp;</span>
                                 <span class="menuBox">
                                     <select class="easyui-combobox" data-options="editable:false" id="p_type1" name="p_type" style="width:150px; height: 30px; margin-left: 3px;">
                                         <option value="0">时间</option>
@@ -1261,7 +1266,9 @@
                             <td></td>
                             <td>
 
-                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;方案名</span>&nbsp;
+                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;
+                                    <span id="69" name="xxx">方案名称</span>
+                                </span>&nbsp;
                                 <input id="p_name1" class="form-control"  name="p_name" style="width:150px;display: inline;" placeholder="请输入方案名" type="text"></td>
 
                             </td>
@@ -1275,68 +1282,80 @@
                     <tbody>
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">时间一</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="75">时间一</span>&nbsp;
 
                                 <input id="time1"  name="time1" style=" height: 30px; width: 150px" class="easyui-timespinner">
                             </td> 
                             <td></td>
                             <td>
-                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
+                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;
+                                    <span name="xxx" id="42">调光值</span>
+                                </span>&nbsp;
                                 <input id="val1" class="form-control" name="val1" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
                             </td>
                         </tr>                                   
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">时间二</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="76">时间二</span>&nbsp;
                                 <input id="time2" name="time2" style=" height: 30px; width: 150px" class="easyui-timespinner">
                             </td> 
                             <td></td>
                             <td>
-                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
+                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;
+                                   <span name="xxx" id="42">调光值</span>
+                                </span>&nbsp;
                                 <input id="val2" class="form-control" name="val2" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
                             </td>
                         </tr> 
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">时间三</span>&nbsp;
+                                <span style="margin-left:20px;" id="78" name="xxx">时间三</span>&nbsp;
                                 <input id="time3" name="time3" style=" height: 30px; width: 150px" class="easyui-timespinner">
                             </td> 
                             <td></td>
                             <td>
-                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
+                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;
+                                   <span name="xxx" id="42">调光值</span>
+                                </span>&nbsp;
                                 <input id="val3" class="form-control" name="val3" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
                             </td>
                         </tr> 
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">时间四</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="79">时间四</span>&nbsp;
                                 <input id="time4" name="time4" style=" height: 30px; width: 150px" class="easyui-timespinner">
                             </td> 
                             <td></td>
                             <td>
-                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
+                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;
+                                   <span name="xxx" id="42">调光值</span>
+                                </span>&nbsp;
                                 <input id="val4" class="form-control" name="val4" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
                             </td>
                         </tr> 
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">时间五</span>&nbsp;
+                                <span style="margin-left:20px;" id="80" name="xxx">时间五</span>&nbsp;
                                 <input id="time5" name="time5" style=" height: 30px; width: 150px" class="easyui-timespinner">
                             </td> 
                             <td></td>
                             <td>
-                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
+                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;
+                                    <span name="xxx" id="42">调光值</span>
+                                </span>&nbsp;
                                 <input id="val5" class="form-control" name="val5" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
                             </td>
                         </tr> 
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">时间六</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="81">时间六</span>&nbsp;
                                 <input id="time6" name="time6" style=" height: 30px; width: 150px" class="easyui-timespinner">
                             </td> 
                             <td></td>
                             <td>
-                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
+                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;
+                                    <span name="xxx" id="42">调光值</span>
+                                </span>&nbsp;
                                 <input id="val6" class="form-control" name="val6" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
                             </td>
                         </tr> 
@@ -1348,90 +1367,90 @@
                     <tbody>
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="89">场景号</span>&nbsp;
                                 <input id="num1" class="form-control" name="num1" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
                             </td> 
                             <td></td>
                             <td>
-                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                <span style="margin-left:20px;" id="42" name="xxx">调光值</span>&nbsp;
                                 <input id="_val1" class="form-control" name="_val1" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
                             </td>
                         </tr> 
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                <span style="margin-left:20px;" id="89" name="xxx">场景号</span>&nbsp;
                                 <input id="num2" class="form-control" name="num2" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
                             </td> 
                             <td></td>
                             <td>
-                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                <span style="margin-left:20px;" id="42" name="xxx">调光值</span>&nbsp;
                                 <input id="_val2" class="form-control" name="_val2" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
                             </td>
                         </tr> 
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="89">场景号</span>&nbsp;
                                 <input id="num3" class="form-control" name="num3" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
                             </td> 
                             <td></td>
                             <td>
-                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="42">调光值</span>&nbsp;
                                 <input id="_val3" class="form-control" name="_val3" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
                             </td>
                         </tr> 
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="89">场景号</span>&nbsp;
                                 <input id="num4" class="form-control" name="num4" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
                             </td> 
                             <td></td>
                             <td>
-                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="42">调光值</span>&nbsp;
                                 <input id="_val4" class="form-control" name="_val4" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
                             </td>
                         </tr> 
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="89">场景号</span>&nbsp;
                                 <input id="num5" class="form-control" name="num5" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
                             </td> 
                             <td></td>
                             <td>
-                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="42">调光值</span>&nbsp;
                                 <input id="_val5" class="form-control" name="_val5" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
                             </td>
                         </tr> 
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="89">场景号</span>&nbsp;
                                 <input id="num6" class="form-control" name="num6" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
                             </td> 
                             <td></td>
                             <td>
-                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="42">调光值</span>&nbsp;
                                 <input id="_val6" class="form-control" name="_val6" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
                             </td>
                         </tr> 
 
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="89">场景号</span>&nbsp;
                                 <input id="num7" class="form-control" name="num7" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
                             </td> 
                             <td></td>
                             <td>
-                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="42">调光值</span>&nbsp;
                                 <input id="_val7" class="form-control" name="_val7" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
                             </td>
                         </tr> 
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="89">场景号</span>&nbsp;
                                 <input id="num8" class="form-control" name="num8" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
                             </td> 
                             <td></td>
                             <td>
-                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="42">调光值</span>&nbsp;
                                 <input id="_val8" class="form-control" name="_val8" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
                             </td>
                         </tr> 
@@ -1451,7 +1470,9 @@
                     <tbody>
                         <tr>
                             <td>
-                                <span >&nbsp;&nbsp;&nbsp;&nbsp;方案类型&nbsp;</span>
+                                <span >&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <span name="xxx" id="68">方案类型</span>
+                                    &nbsp;</span>
                                 <span class="menuBox">
                                     <select class="easyui-combobox" data-options="editable:false" id="p_type2" name="p_type" style="width:150px; height: 30px; margin-left: 3px;">
                                         <option value="0">时间</option>
@@ -1462,7 +1483,9 @@
                             <td></td>
                             <td>
 
-                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;方案名</span>&nbsp;
+                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;
+                                  <span name="xxx" id="69">方案名称</span>
+                                </span>&nbsp;
                                 <input id="p_name1" class="form-control"  name="p_name" style="width:150px;display: inline;" placeholder="请输入方案名" type="text"></td>
 
                             </td>
@@ -1477,67 +1500,79 @@
 
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">时间一</span>&nbsp;
+                                <span style="margin-left:20px;" id="75" name="xxx">时间一</span>&nbsp;
                                 <input id="time1_"  name="time1" style=" height: 30px; width: 150px" class="easyui-timespinner">
                             </td> 
                             <td></td>
                             <td>
-                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
+                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;
+                                    <span name="xxx" id="42">调光值</span>
+                                </span>&nbsp;
                                 <input id="val1_" class="form-control" name="val1" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
                             </td>
                         </tr>                                   
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">时间二</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="76">时间二</span>&nbsp;
                                 <input id="time2_" name="time2" style=" height: 30px; width: 150px" class="easyui-timespinner">
                             </td> 
                             <td></td>
                             <td>
-                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
+                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;
+                                    <span name="xxx" id="42">调光值</span>
+                                </span>&nbsp;
                                 <input id="val2_" class="form-control" name="val2" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
                             </td>
                         </tr> 
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">时间三</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="78">时间三</span>&nbsp;
                                 <input id="time3_" name="time3" style=" height: 30px; width: 150px" class="easyui-timespinner">
                             </td> 
                             <td></td>
                             <td>
-                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
+                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;
+                                     <span name="xxx" id="42">调光值</span>
+                                </span>&nbsp;
                                 <input id="val3_" class="form-control" name="val3" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
                             </td>
                         </tr> 
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">时间四</span>&nbsp;
+                                <span style="margin-left:20px;" id="79" name="xxx">时间四</span>&nbsp;
                                 <input id="time4_" name="time4" style=" height: 30px; width: 150px" class="easyui-timespinner">
                             </td> 
                             <td></td>
                             <td>
-                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
+                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;
+                                    <span name="xxx" id="42">调光值</span>
+                                </span>&nbsp;
                                 <input id="val4_" class="form-control" name="val4" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
                             </td>
                         </tr> 
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">时间五</span>&nbsp;
+                                <span style="margin-left:20px;" id="80" name="xxx">时间五</span>&nbsp;
                                 <input id="time5_" name="time5" style=" height: 30px; width: 150px" class="easyui-timespinner">
                             </td> 
                             <td></td>
                             <td>
-                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
+                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;
+                                    <span name="xxx" id="42">调光值</span>
+                                </span>&nbsp;
                                 <input id="val5_" class="form-control" name="val5" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
                             </td>
                         </tr> 
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">时间六</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="81">时间六</span>&nbsp;
                                 <input id="time6_" name="time6" style=" height: 30px; width: 150px" class="easyui-timespinner">
                             </td> 
                             <td></td>
                             <td>
-                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;调光值</span>&nbsp;
+                                <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;
+                                     <span name="xxx" id="42">调光值</span>
+                                </span>&nbsp;
                                 <input id="val6_" class="form-control" name="val6" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
                             </td>
                         </tr> 
@@ -1549,90 +1584,90 @@
 
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                <span style="margin-left:20px;" id="89" name="xxx">场景号</span>&nbsp;
                                 <input id="__num1" class="form-control" name="num1" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
                             </td> 
                             <td></td>
                             <td>
-                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                <span style="margin-left:20px;" id="42" name="xxx">调光值</span>&nbsp;
                                 <input id="__val1" class="form-control" name="_val1" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
                             </td>
                         </tr> 
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="89">场景号</span>&nbsp;
                                 <input id="__num2" class="form-control" name="num2" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
                             </td> 
                             <td></td>
                             <td>
-                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="42">调光值</span>&nbsp;
                                 <input id="__val2" class="form-control" name="_val2" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
                             </td>
                         </tr> 
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="89">场景号</span>&nbsp;
                                 <input id="__num3" class="form-control" name="num3" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
                             </td> 
                             <td></td>
                             <td>
-                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="42">调光值</span>&nbsp;
                                 <input id="__val3" class="form-control" name="_val3" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
                             </td>
                         </tr> 
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="89">场景号</span>&nbsp;
                                 <input id="__num4" class="form-control" name="num4" value="4" readonly="true" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
                             </td> 
                             <td></td>
                             <td>
-                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="42">调光值</span>&nbsp;
                                 <input id="__val4" class="form-control" name="_val4"   style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
                             </td>
                         </tr> 
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="89">场景号</span>&nbsp;
                                 <input id="__num5" class="form-control" name="num5" value="5" readonly="true" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
                             </td> 
                             <td></td>
                             <td>
-                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                <span style="margin-left:20px;" id="42" name="xxx">调光值</span>&nbsp;
                                 <input id="__val5" class="form-control" name="_val5" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
                             </td>
                         </tr> 
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="89">场景号</span>&nbsp;
                                 <input id="__num6" class="form-control" name="num6"  style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
                             </td> 
                             <td></td>
                             <td>
-                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="42">调光值</span>&nbsp;
                                 <input id="__val6" class="form-control" name="_val6" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
                             </td>
                         </tr> 
 
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="89">场景号</span>&nbsp;
                                 <input id="__num7" class="form-control" name="num7" value="7" readonly="true" style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
                             </td> 
                             <td></td>
                             <td>
-                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                <span style="margin-left:20px;" id="42" name="xxx">调光值</span>&nbsp;
                                 <input id="__val7" class="form-control" name="_val7" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
                             </td>
                         </tr> 
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">场景号</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="89">场景号</span>&nbsp;
                                 <input id="__num8" class="form-control" name="num8"  style="width:150px;display: inline;" placeholder="请输入场景号" type="text">
                             </td> 
                             <td></td>
                             <td>
-                                <span style="margin-left:20px;">调光值</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="42">调光值</span>&nbsp;
                                 <input id="__val8" class="form-control" name="_val8" style="width:150px;display: inline;" placeholder="请输入场景值" type="text">
                             </td>
                         </tr>                   

@@ -19,7 +19,15 @@
 
     </head>
     <script>
+        var lang = '${param.lang}';//'zh_CN';
+        var langs1 = parent.parent.getLnas();
         $(function () {
+            var aaa = $("span[name=xxx]");
+            for (var i = 0; i < aaa.length; i++) {
+                var d = aaa[i];
+                var e = $(d).attr("id");
+                $(d).html(langs1[e][lang]);
+            }
             $('#project').combobox({
                 onSelect: function (record) {
                     if (record.id == "1") {
@@ -175,7 +183,7 @@
                 url: "login.reportmanage.getyear.action?pid=${param.pid}",
                 columns: [[{
                             field: '',
-                            title: '年消耗量',
+                            title: langs1[111][lang], //年消耗量
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -183,13 +191,13 @@
                         }], [
                         {
                             field: 'years',
-                            title: '年份',
+                            title: langs1[113][lang], //年份
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'val',
-                            title: '消耗量',
+                            title: langs1[112][lang]+'(KW•h)', //消耗量
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -230,7 +238,7 @@
             $('#getMotherTable').bootstrapTable({
                 columns: [[{
                             field: '',
-                            title: '月消耗量',
+                            title: langs1[114][lang],  //月消耗量
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -238,14 +246,14 @@
                         }], [
                         {
                             field: 'mother',
-                            title: '月份',
+                            title: langs1[115][lang],  //月份
                             width: 25,
                             align: 'center',
                             valign: 'middle'
 
                         }, {
                             field: 'val',
-                            title: '消耗量',
+                            title: langs1[112][lang]+'(KW•h)', //消耗量
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -284,7 +292,7 @@
             $('#getdayTable').bootstrapTable({
                 columns: [[{
                             field: '',
-                            title: '日消耗量',
+                            title: langs1[116][lang],  //日消耗量
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -292,13 +300,13 @@
                         }], [
                         {
                             field: 'd',
-                            title: '日期',
+                            title: langs1[93][lang],//日期
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'val',
-                            title: '消耗量',
+                            title: langs1[112][lang]+'(KW•h)', //消耗量
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -405,7 +413,7 @@
                             <tr>
 
                                 <td>
-                                    <span style="margin-left:10px;">查询方式&nbsp;</span>
+                                    <span style="margin-left:10px;" id="117" name="xxx">查询方式</span>&nbsp;
                                 </td>
 
                                 <td>
@@ -416,7 +424,7 @@
                                     </select>  
                                 </td>
                                 <td>
-                                    <span style="margin-left:10px;">查看方式&nbsp;</span>
+                                    <span style="margin-left:10px;" id="118" name="xxx">查询范围</span>&nbsp;
                                 </td>
 
                                 <td>
@@ -428,7 +436,7 @@
                                 </td>
                                 <td id="g1"  style=" display: none">
 
-                                    <span style="margin-left:10px;">网关地址&nbsp;</span>
+                                    <span style="margin-left:10px;" name="xxx" id="25">网关地址</span>&nbsp;
 
                                     <span class="menuBox">
                                         <input id="comaddr" class="easyui-combobox" name="comaddr" style="width:150px; height: 30px" 
@@ -451,32 +459,34 @@
             <div class="row" style=" border: 1px solid #16645629; margin-left: 20px; margin-top: 10px; "  >
                 <div class="col-md-3" id="div1" style="display:none">  
                     <div class="input-group input-inline-sm col-sm-12" >  
-                        <span class="input-group-addon " >时间</span>  
+                        <span class="input-group-addon " id="82" name="xxx" >时间</span>  
                         <input type="text" class="form-control form_datetime" name="d1"  readOnly id="timeMin1" onchange="changeTime(1)">  
-                        <span class="input-group-addon">至</span>  
+                        <span class="input-group-addon" id="119" name="xxx">至</span>  
                         <input type="text" class="form-control form_datetime" name="d2"   readOnly id="timeMax1" onchange="changeTime(2)">
                     </div>
                 </div>
 
                 <div class="col-md-3" id="div2" style="display:none">  
                     <div class="input-group input-inline-sm col-sm-12" >  
-                        <span class="input-group-addon " >时间</span>  
+                        <span class="input-group-addon " id="82" name="xxx" >时间</span>  
                         <input type="text" class="form-control form_datetime2" name="m1"  readOnly id="timeMin2" onchange="changeTime(3)">  
-                        <span class="input-group-addon">至</span>  
+                        <span class="input-group-addon" id="119" name="xxx">至</span>  
                         <input type="text" class="form-control form_datetime2"  name="m2"   readOnly id="timeMax2" onchange="changeTime(4)">
                     </div>
                 </div>
 
                 <div class="col-md-3" id="div3">  
                     <div class="input-group input-inline-sm col-sm-12" >  
-                        <span class="input-group-addon " >时间</span>  
+                        <span class="input-group-addon " id="82" name="xxx" >时间</span>  
                         <input type="text" class="form-control form_datetime3" name="y1"  readOnly id="timeMin3" onchange="changeTime(5)">  
-                        <span class="input-group-addon">至</span>  
+                        <span class="input-group-addon" id="119" name="xxx">至</span>  
                         <input type="text" class="form-control form_datetime3" name="y2"   readOnly id="timeMax3" onchange="changeTime(6)">
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <button type="button" class="btn btn-success btn-sm" onclick="search();">搜索</button>
+                    <button type="button" class="btn btn-success btn-sm" onclick="search();">
+                        <span id="34" name="xxx">搜索</span>
+                    </button>
                 </div>
             </div>
         </form>

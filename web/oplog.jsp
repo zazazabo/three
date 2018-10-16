@@ -16,38 +16,46 @@
         <link rel="stylesheet" type="text/css" href="bootstrap-3.3.7-dist/css/bootstrap.css">
         <script src="bootstrap-datetimepicker/bootstrap-datetimepicker.js"></script>
         <script>
+            var lang = '${param.lang}';//'zh_CN';
+            var langs1 = parent.parent.getLnas();
             $(function () {
+                var aaa = $("span[name=xxx]");
+                for (var i = 0; i < aaa.length; i++) {
+                    var d = aaa[i];
+                    var e = $(d).attr("id");
+                    $(d).html(langs1[e][lang]);
+                }
                 var pid = parent.parent.getpojectId();
                 $('#oplogtabel').bootstrapTable({
                     url: 'login.oplog.oplogInfo.action?pid=' + pid,
                     columns: [
                         {
                             field: 'o_type',
-                            title: '操作类型',
+                            title: langs1[130][lang], //操作类型
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'o_page',
-                            title: '操作页面',
+                            title: langs1[131][lang], //操作页面
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'o_comment',
-                            title: '详细内容',
+                            title: langs1[132][lang], //详细内容
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'o_time',
-                            title: '时间',
+                            title: langs1[82][lang],  //时间
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'o_name',
-                            title: '操作人',
+                            title: langs1[133][lang],  //操作人
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -87,7 +95,7 @@
                     var obj = {};
 
                     if (statr == "" && end == "") {
-                        alert("请选择要查询的时间段");
+                        alert(langs1[129][lang]);
                         return;
                     }
                     if (statr == "") {
@@ -120,11 +128,11 @@
     </head>
 
     <body>
-<!--        <div style="float:left;position:relative;z-index:100;margin:12px 0 20px 50px; font-size: 18px">
-            <span>搜索时间：<input type="date" id="startime"/></span>
-            <span style="margin-left: 10px">至：<input type="date" id="endtime"/></span>
-            <span><input type="button" class="btn btn-sm btn-success" value="查询" id="select"></span>
-        </div>-->
+        <!--        <div style="float:left;position:relative;z-index:100;margin:12px 0 20px 50px; font-size: 18px">
+                    <span>搜索时间：<input type="date" id="startime"/></span>
+                    <span style="margin-left: 10px">至：<input type="date" id="endtime"/></span>
+                    <span><input type="button" class="btn btn-sm btn-success" value="查询" id="select"></span>
+                </div>-->
         <div style="margin-top:15px; font-size: 18px;margin-left: 10px;" id="Day">
             <form action="" id="day1" class="form-horizontal" role="form" style="float:left; width: 166px;">
                 <label for="dtp_input2" class="control-label" style="float: left;"></label>
@@ -135,7 +143,9 @@
                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                 </span>
             </form>
-            <span style=" font-size: 18px; float: left; margin-top: 4px;">&nbsp;至&nbsp;</span>
+            <span style=" font-size: 18px; float: left; margin-top: 4px;">&nbsp;
+                <span name="xxx" id="119">至</span>
+                &nbsp;</span>
             <form action="" id="day2" class="form-horizontal" role="form" style="float:left; width: 166px;">
                 <label for="dtp_input2" class="control-label" style="float: left;"></label>
                 <input id="dtp_input2" value="" type="hidden">
@@ -146,9 +156,13 @@
                 </span>
             </form>
             <span style="font-size: 18px; margin-left: 10px;">
-                <button type="button" class="btn btn-sm btn-success" id="select" >查询</button>
+                <button type="button" class="btn btn-sm btn-success" id="select" >
+                    <span id="34" name="xxx">搜索</span>
+                </button>
             </span>
-            <button style=" height: 30px;" type="button" id="btn_download" class="btn btn-primary" onClick ="$('#oplogtabel').tableExport({type: 'excel', escape: 'false'})">导出Excel</button>
+            <button style=" height: 30px;" type="button" id="btn_download" class="btn btn-primary" onClick ="$('#oplogtabel').tableExport({type: 'excel', escape: 'false'})">
+                <span id="110" name="xxx">导出Excel</span>
+            </button>
         </div>
         <div>
             <table id="oplogtabel">

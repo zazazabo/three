@@ -21,8 +21,16 @@
         </style>
         <script>
             var u_name = parent.parent.getusername();
-            var o_pid =  parent.parent.getpojectId();
+            var o_pid = parent.parent.getpojectId();
+            var lang = '${param.lang}';//'zh_CN';
+            var langs1 = parent.parent.getLnas();
             $(function () {
+                var aaa = $("span[name=xxx]");
+                for (var i = 0; i < aaa.length; i++) {
+                    var d = aaa[i];
+                    var e = $(d).attr("id");
+                    $(d).html(langs1[e][lang]);
+                }
                 $("#add").attr("disabled", true);
                 $("#update").attr("disabled", true);
                 $("#del").attr("disabled", true);
@@ -56,15 +64,15 @@
                 });
 
                 $('#gravidaTable').bootstrapTable({
-                    url: 'login.warnning.queryData.action?pid='+o_pid,
+                    url: 'login.warnning.queryData.action?pid=' + o_pid,
                     columns: [[{
                                 field: '',
-                                title: '告警配置',
+                                title: langs1[134][lang],  //告警配置
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
                                 colspan: 6
-                            }],[
+                            }], [
                             {
                                 title: '单选',
                                 field: 'select',
@@ -76,35 +84,37 @@
                             },
                             {
                                 field: 'u_name',
-                                title: '姓名',
+                                title: langs1[135][lang],  //姓名
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle'
                             }, {
                                 field: 'u_phone',
-                                title: '联系电话',
+                                title: langs1[136][lang], //联系电话
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle'
                             }, {
                                 field: 'u_email',
-                                title: '邮箱',
+                                title: langs1[137][lang],  //邮箱
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle'
                             }, {
                                 field: 'u_warntype',
-                                title: '告警类型',
+                                title: langs1[138][lang],  //告警类型
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle'
-                            }, {
-                                field: 'u_pid',
-                                title: '管理项目',
-                                width: 25,
-                                align: 'center',
-                                valign: 'middle'
-                            }]
+                            }
+//                            , {
+//                                field: 'u_pid',
+//                                title: '管理项目', 
+//                                width: 25,
+//                                align: 'center',
+//                                valign: 'middle'
+//                            }
+                        ]
                     ],
                     clickToSelect: true,
                     singleSelect: true,
@@ -142,22 +152,22 @@
                     var uemail = $("#updemail").val();
                     var uwarntype = $("#upd_warntype").val();
                     if (uname == "") {
-                        alert("用户名不能为空");
+                        alert(langs1[139][lang]);  //姓名不能为空
                         return;
                     }
                     if (uphone == "") {
-                        alert("手机不能为空");
+                        alert(langs1[140][lang]);  //电话不能为空
                         return;
                     }
                     if (uemail == "") {
-                        alert("邮箱不能为空");
+                        alert(langs1[141][lang]); //邮箱不能为空
                         return;
                     }
                     if (uwarntype == "") {
-                        alert("警告类型不能为空");
+                        alert(langs1[142][lang]); //告警类型不能为空
                         return;
                     }
-                   
+
                     addlogon(u_name, "修改", o_pid, "报警设置", "修改报警管理人员");
                     var obj = {};
                     obj.u_name = uname;
@@ -169,7 +179,7 @@
                         success: function (data) {
                             var arrlist = data.rs;
                             if (arrlist.length == 1) {
-                                alert("修改成功");
+                                alert(langs1[143][lang]);  //修改成功
                                 $("#gravidaTable").bootstrapTable('refresh');
                                 $("#updatetable").modal('hide');  //手动关闭
                             }
@@ -179,13 +189,13 @@
                         }
                     });
                 });
-               
+
             });
 
             function updatepeople() {
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
                 if (selects.length < 1) {
-                    alert("请勾选要编辑的数据");
+                    alert(langs1[73][lang]); //请勾选表格数据
                     return;
                 }
                 var select = selects[0];
@@ -205,22 +215,22 @@
                 var content = $("#adu_content").val();
                 var pid = o_pid;
                 if (name == "") {
-                    alert("请输入名字");
+                    alert(langs1[139][lang]);  //姓名不能为空
                     return;
                 }
                 if (phone == "") {
-                    alert("请输入电话");
+                    alert(langs1[140][lang]);  //电话不能为空
                     return;
                 }
                 if (email == "") {
-                    alert("请输入Email");
+                    alert(langs1[141][lang]);  //邮箱不能为空
                     return;
                 }
                 if (warntype == "") {
-                    alert("请输选择警告类型");
+                    alert(langs1[142][lang]); //告警类型不能为空
                     return;
                 }
-               
+
                 addlogon(u_name, "添加", o_pid, "报警设置", "添加报警管理人员");
                 var obj = {};
                 obj.u_phone = phone;
@@ -233,7 +243,7 @@
                     success: function (data) {
                         var arrlist = data.rs;
                         if (arrlist.length == 1) {
-                            alert("添加成功");
+                            alert(langs1[144][lang]);//添加成功
                             $("#gravidaTable").bootstrapTable('refresh');
                             $("#addtable").modal('hide');  //手动关闭
                         }
@@ -249,11 +259,11 @@
             function deletepeople() {
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
                 if (selects.length < 1) {
-                    alert("请勾选要编辑的数据");
+                    alert(langs1[73][lang]);  //请勾选数据
                     return;
                 }
-                layer.confirm('确认要删除吗？', {
-                    btn: ['确定', '取消']//按钮
+                layer.confirm(langs1[145][lang], {    //确定要删除吗？
+                    btn: [langs1[146][lang], langs1[147][lang]]//按钮
                 }, function (index) {
                     addlogon(u_name, "删除", o_pid, "报警设置", "删除报警管理人员");
                     var select = selects[0];
@@ -279,15 +289,18 @@
 
         <div class="btn-group zuheanniu" id="zuheanniu" style="float:left;position:relative;z-index:100;margin:12px 0 0 10px;">
             <button class="btn btn-success ctrol" data-toggle="modal" data-target="#addtable" id="add">
-                <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;添加
+                <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;
+                <span name="xxx" id="65">添加</span>
             </button>
             <button class="btn btn-primary ctrol"   onclick="updatepeople()" id="update" >
-                <span class="glyphicon glyphicon-pencil"></span>&nbsp;编辑
+                <span class="glyphicon glyphicon-pencil"></span>&nbsp;
+                 <span name="xxx" id="66">编辑</span>
             </button>
             <button class="btn btn-danger ctrol" onclick="deletepeople();"  id="del">
-                <span class="glyphicon glyphicon-trash"></span>&nbsp;删除
+                <span class="glyphicon glyphicon-trash"></span>&nbsp;
+                 <span name="xxx" id="67">删除</span>
             </button> 
-           
+
         </div>
         <div class="bootstrap-table">
             <div class="fixed-table-container" style="height: 350px; padding-bottom: 0px;">
@@ -302,7 +315,7 @@
                         <button type="button" class="close" data-dismiss="modal">
                             <span style="font-size:20px ">×</span></button>
                         <span class="glyphicon glyphicon-floppy-disk" style="font-size: 20px"></span>
-                        <h4 class="modal-title" style="display: inline;">添加告警配置人员</h4></div>
+                        <h4 class="modal-title" style="display: inline;"><span name="xxx" id="148">添加告警配置人员</span></h4></div>
 
                     <form action="" method="POST" id="Form_User" onsubmit="return checkUserAdd()">      
                         <div class="modal-body">
@@ -310,29 +323,29 @@
                                 <tbody>
                                     <tr>
                                         <td>
-                                            <span style="margin-left:20px;">名字</span>&nbsp;
+                                            <span style="margin-left:20px;" name="xxx" id="135">姓名</span>&nbsp;
                                             <input id="adname"    class="form-control"   style="width:150px;display: inline;" placeholder="请输入名字" type="text">
                                         </td>
                                         <td></td>
                                         <td>
-                                            <span style="margin-left:50px;">内容</span>&nbsp;
-                                            <input id="adu_content"    class="form-control"   style="width:150px;display: inline;" placeholder="请输入警告类型内容" type="text">
+                                            <span style="margin-left:50px;" name="xxx" id="149">备注</span>&nbsp;
+                                            <input id="adu_content"    class="form-control"   style="width:150px;display: inline;" placeholder="请输入备注" type="text">
                                         </td>
                                     </tr>
 
                                     <tr>
                                         <td>
-                                            <span style="margin-left:20px;">电话</span>&nbsp;
+                                            <span style="margin-left:20px;" name="xxx" id="136">电话</span>&nbsp;
                                             <input id="adphone" class="form-control"  name="phone" style="width:150px;display: inline;" placeholder="请输入电话" type="text"></td>
                                         <td></td>
                                         <td>
-                                            <span style="margin-left:20px;">警告类型</span>&nbsp;
+                                            <span style="margin-left:20px;" name="xxx" id="138">警告类型</span>&nbsp;
                                             <input id="adu_warntype" class="easyui-combobox" name="u_warntype" style="width:150px; height: 34px" data-options="editable:true,valueField:'w_id', textField:'w_name',url:'login.warnning.warntype.action'"/>
                                         </td>
                                     </tr> 
                                     <tr>
                                         <td>
-                                            <span style="margin-left:20px;">邮箱&nbsp;</span>
+                                            <span style="margin-left:20px;" name="xxx" id="137">邮箱</span>&nbsp;
                                             <input id="ademail" class="form-control" name="email" style="width:150px;display: inline;" placeholder="请输入邮箱" type="text">
                                         </td>
                                         <td></td>
@@ -344,9 +357,13 @@
                         <!-- 注脚 -->
                         <div class="modal-footer">
                             <!-- 添加按钮 -->
-                            <button id="tianjia1" type="button" class="btn btn-primary" onclick="add()">添加</button>
+                            <button id="tianjia1" type="button" class="btn btn-primary" onclick="add()">
+                                <span name="xxx" id="65">添加</span>
+                            </button>
                             <!-- 关闭按钮 -->
-                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button></div>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">
+                                <sapn name="xxx" id="57">关闭</sapn> 
+                            </button></div>
                     </form>
                 </div>
             </div>
@@ -358,31 +375,31 @@
                         <button type="button" class="close" data-dismiss="modal">
                             <span style="font-size:20px ">×</span></button>
                         <span class="glyphicon glyphicon-floppy-disk" style="font-size: 20px"></span>
-                        <h4 class="modal-title" style="display: inline;">修改告警配置人员信息</h4></div>   
+                        <h4 class="modal-title" style="display: inline;"><span name="xxx" id="150">修改告警配置人员信息</span></h4></div>   
                     <div class="modal-body">
                         <input type="hidden" id="updid" name="id" />
                         <table>
                             <tbody>
                                 <tr>
                                     <td>
-                                        <span style="margin-left:20px;">名字</span>&nbsp;
+                                        <span style="margin-left:20px;" name="xxx" id="135">姓名</span>&nbsp;
                                         <input id="updname"    class="form-control"  name="name" style="width:150px;display: inline;" placeholder="请输入名字" type="text">
                                     </td>
                                     <td></td>
                                     <td>
-                                        <span style="margin-left:20px;">警告类型</span>&nbsp;
+                                        <span style="margin-left:20px;" name="xxx" id="138">警告类型</span>&nbsp;
                                         <input id="upd_warntype" class="easyui-combobox"  style="width:150px; height: 34px" data-options="editable:true,valueField:'w_id', textField:'w_name',url:'login.warnning.warntype.action'">
                                     </td>
                                 </tr>
 
                                 <tr>
                                     <td>
-                                        <span style="margin-left:20px;">电话</span>&nbsp;
+                                        <span style="margin-left:20px;" name="xxx" id="136">电话</span>&nbsp;
                                         <input id="updphone" class="form-control"  style="width:150px;display: inline;" placeholder="请输入电话" type="text">
                                     </td>
                                     <td></td>
                                     <td>
-                                        <span style="margin-left:48px;">邮箱&nbsp;</span>
+                                        <span style="margin-left:48px;" name="xxx" id="137">邮箱</span>&nbsp;
                                         <input id="updemail" class="form-control"  style="width:175px;display: inline;" placeholder="请输入邮箱" type="text">
                                     </td>
                                 </tr>   
@@ -392,9 +409,14 @@
                     <!-- 注脚 -->
                     <div class="modal-footer">
                         <!-- 修改按钮 -->
-                        <button id="update2" type="button" class="btn btn-success">修改</button>
+                        <button id="update2" type="button" class="btn btn-success">
+                            <span name="xxx" id="151">修改</span>
+                        </button>
                         <!-- 关闭按钮 -->
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button></div>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            <span name="xxx" id="57">关闭</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

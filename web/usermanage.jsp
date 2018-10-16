@@ -23,9 +23,20 @@
 
 
         <script>
+            var lang = '${param.lang}';//'zh_CN';
+            var langs1 = parent.parent.getLnas();
             var u_name = parent.parent.getusername();
             var o_pid = parent.parent.getpojectId();
+            console.log(lang);
+            console.log(langs1);
             $(function () {
+                var aaa = $("span[name=xxx]");
+                for (var i = 0; i < aaa.length; i++) {
+                    var d = aaa[i];
+                    var e = $(d).attr("id");
+                    console.log(e);
+                    $(d).html(langs1[e][lang]);
+                }
                 $("#sel_menu2").select2();
                 $("#sel_menu1").select2();
                 $("#add").attr("disabled", true);
@@ -122,37 +133,37 @@
                         },
                         {
                             field: 'name',
-                            title: '用户名',
+                            title: langs1[223][lang],  //用户名
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'department',
-                            title: '部门',
+                            title: langs1[224][lang],   //部门
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'phone',
-                            title: '联系电话',
+                            title: langs1[136][lang],  //电话
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'sex',
-                            title: '性别',
+                            title:langs1[225][lang] ,    //性别
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'email',
-                            title: '邮箱',
+                            title:langs1[137][lang],//邮箱
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'pid',
-                            title: '所属项目',
+                            title: langs1[226][lang],  //管理项目
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -192,7 +203,7 @@
                     //alert( $("#userid").val());
                     var obj = $("#Form_User").serializeObject();
                     if (obj.name == "") {
-                        layerAler("用户名不能为空");
+                        layerAler(langs1[227][lang]); // 用户名不能为空
                         return false;
                     }
                     var nobj = {};
@@ -202,7 +213,7 @@
                         success: function (data) {
                             var arrlist = data.rs;
                             if (arrlist.length > 0) {
-                                alert("该用户名已存在，请输入新的用户名");
+                                alert(langs1[228][lang]);  //该用户名已存在，请输入新的用户名
                                 isok = false;
                             }
                         },
@@ -229,7 +240,7 @@
                             success: function (data) {
                                 var arrlist = data.rs;
                                 if (arrlist.length == 1) {
-                                    layerAler("添加成功！");
+                                    layerAler(langs1[144][lang]); //添加成功
                                     $("#gravidaTable").bootstrapTable('refresh');
                                     $("#pjj").modal('hide'); //手动关闭
                                 }
@@ -263,7 +274,7 @@
             function edituser() {
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
                 if (selects.length <= 0) {
-                    layerAler("请选择数据编辑");
+                    layerAler(langs1[73][lang]); //请勾选表格数据
                     return;
                 }
                 var select = selects[0];
@@ -304,7 +315,7 @@
                     success: function (data) {
                         var arrlist = data.rs;
                         if (arrlist.length == 1) {
-                            layerAler("修改成功");
+                            layerAler(langs1[143][lang]); //修改成功
                             $("#gravidaTable").bootstrapTable('refresh');
                             $("#pjj2").modal('hide'); //手动关闭
                         }
@@ -319,11 +330,11 @@
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
                 var num = selects.length;
                 if (num == 0) {
-                    layerAler("请选择您要删除的记录");
+                   layerAler(langs1[73][lang]); //请勾选表格数据
                     return;
                 }
-                layer.confirm('确认要删除吗？', {
-                    btn: ['确定', '取消']//按钮
+                layer.confirm(langs1[145][lang], {  //确定要删除吗？
+                    btn: [langs1[146][lang], langs1[147][lang]]//确定、取消按钮
                 }, function (index) {
                     addlogon(u_name, "删除", o_pid, "用户管理", "删除用户");
                     var select = selects[0];
@@ -331,7 +342,7 @@
                         success: function (data) {
                             var arrlist = data.rs;
                             if (arrlist.length > 0) {
-                                layerAler("该用户存在子用户不可删除");
+                                layerAler(langs1[229][lang]);  //该用户存在子用户不可删除
                             } else {
                                 $.ajax({async: false, url: "login.usermanage.deleteUser.action", type: "POST", datatype: "JSON", data: {id: select.id},
                                     success: function (data) {
@@ -368,9 +379,9 @@
                     success: function (data) {
                         var arrlist = data.rs;
                         if (arrlist.length == 1) {
-                            layerAler("重置成功");
+                            layerAler(langs1[230][lang]);  //重置成功
                         } else {
-                            layerAler("重置失败");
+                            layerAler(langs1[231][lang]);  //重置失败
                         }
                     },
                     error: function () {
@@ -389,13 +400,13 @@
 
         <div class="btn-group zuheanniu" id="zuheanniu" style="float:left;position:relative;z-index:100;margin:12px 0 0 10px;">
             <button class="btn btn-success ctrol" data-toggle="modal" data-target="#pjj" name="8000101" id="add">
-                <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;添加
+                <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;<span name="xxx" id="65">添加</span>
             </button>
             <button class="btn btn-primary ctrol"   onclick="edituser()"  id="update">
-                <span class="glyphicon glyphicon-pencil"></span>&nbsp;编辑
+                <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span name="xxx" id="66">编辑</span>
             </button>
             <button class="btn btn-danger ctrol" onclick="deleteUser();" id="del" >
-                <span class="glyphicon glyphicon-trash"></span>&nbsp;删除
+                <span class="glyphicon glyphicon-trash"></span>&nbsp;<span name="xxx" id="67">删除</span>
             </button>       
 
         </div>
@@ -416,7 +427,7 @@
                         <button type="button" class="close" data-dismiss="modal">
                             <span style="font-size:20px ">×</span></button>
                         <span class="glyphicon glyphicon-floppy-disk" style="font-size: 20px"></span>
-                        <h4 class="modal-title" style="display: inline;">添加用户</h4></div>
+                        <h4 class="modal-title" style="display: inline;"><span id="232" name="xxx">添加用户</span></h4></div>
 
                     <form action="" method="POST" id="Form_User">      
                         <div class="modal-body">
@@ -424,11 +435,11 @@
                                 <tbody>
                                     <tr>
                                         <td>
-                                            <span style="margin-left:5px;">用户名</span>&nbsp;
+                                            <span style="margin-left:5px;"><span name="xxx" id="223">用户名</span>&nbsp;</span>
                                             <input id="name"    class="form-control"  name="name" style="width:150px;display: inline;" placeholder="请输入名字" type="text"></td>
                                         <td></td>
                                         <td>
-                                            <span style="margin-left:10px;">姓别&nbsp;</span>
+                                            <span style="margin-left:10px;" name="xxx" id="225">姓别</span>&nbsp;
                                             <span class="menuBox">
                                                 <select name="sex" id="sex"  style="width:150px;">
                                                     <option value="男">男</option>
@@ -440,11 +451,11 @@
 
                                     <tr>
                                         <td>
-                                            <span style="margin-left:20px;">电话</span>&nbsp;
+                                            <span style="margin-left:20px;" name="xxx" id="136">电话</span>&nbsp;
                                             <input id="phone" class="form-control"  name="phone" style="width:150px;display: inline;" placeholder="请输入电话" type="text"></td>
                                         <td></td>
                                         <td>
-                                            <span style="margin-left:10px;">邮箱&nbsp;</span>
+                                            <span style="margin-left:10px;" name="xxx" id="137" >邮箱</span>&nbsp;
                                             <input id="email" class="form-control" name="email" style="width:150px;display: inline;" placeholder="请输入邮箱" type="text"></td>
                                         </td>
                                     </tr>                                   

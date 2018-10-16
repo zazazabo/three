@@ -16,14 +16,15 @@
         <style>
             .btn{ margin-left: 10px; }
             .pull-right.pagination-detail{display:none;}
-            
+
         </style>
     </head>
 
     <script type="text/javascript" src="js/genel.js"></script>
     <script type="text/javascript" src="js/getdate.js"></script>
     <script>
-
+        var lang = '${param.lang}';//'zh_CN';
+        var langs1 = parent.parent.getLnas();
         var u_name = parent.parent.getusername();
         var o_pid = parent.parent.getpojectId();
         function layerAler(str) {
@@ -36,7 +37,12 @@
 
 
         $(function () {
-
+            var aaa = $("span[name=xxx]");
+            for (var i = 0; i < aaa.length; i++) {
+                var d = aaa[i];
+                var e = $(d).attr("id");
+                $(d).html(langs1[e][lang]);
+            }
             $('#l_comaddr').combobox({
                 url: "gayway.GaywayForm.getComaddr.action?pid=${param.pid}",
                 onLoadSuccess: function (data) {
@@ -59,7 +65,7 @@
             var data2 = [{"name": "灯控器故障开关"}, {"name": "温度故障开关"}, {"name": "超负荷故障开关"}, {"name": "功率因数过低故障开关"}, {"name": "时钟故障开关"}, {"name": "集中器与灯控器通信中断"}, {"name": "灯珠故障"}, {"name": "电源故障"}];
 
 
-            var str = "<button  type='button'  onclick='setPreWarning()' class='btn btn-success btn-sm'>设置灯具预警参数</button>";
+            var str = "<button  type='button'  onclick='setPreWarning()' class='btn btn-success btn-sm'>"+langs1[214][lang]+"</button>";  //设置灯具预警参数
             $('#prewarningtable').bootstrapTable({
                 columns: [[{
                             title: str,
@@ -80,7 +86,7 @@
                             valign: 'middle'
                         }, {
                             field: 'name',
-                            title: '预警参数',
+                            title: langs1[213][lang], //预警参数
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -97,7 +103,7 @@
 
             });
 
-            var str1 = "<button   type='button'  onclick='setWarning()' class='btn btn-success btn-sm'>设置灯具报警参数</button>";
+            var str1 = "<button   type='button'  onclick='setWarning()' class='btn btn-success btn-sm'>"+langs1[215][lang]+"</button>";  //设置灯具报警参数
             $('#warningtable').bootstrapTable({
                 columns: [[{
                             title: str1,
@@ -118,7 +124,7 @@
                             valign: 'middle'
                         }, {
                             field: 'name',
-                            title: '报警参数',
+                            title: langs1[216][lang],  //报警参数
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -142,9 +148,9 @@
             if (obj.status == "success") {
 
                 if (obj.msg == "A4" && obj.fn == 602) {
-                    layerAler("预警参数设置成功");
+                    layerAler(langs1[217][lang]);  //预警参数设置成功
                 } else if (obj.msg == "A4" && obj.fn == 604) {
-                    layerAler("报警参数设置成功");
+                    layerAler(langs1[218][lang]);  //报警参数设置成功
                 }
 
             }
@@ -153,7 +159,7 @@
         function setPreWarning() {
             var obj = $("#form1").serializeObject();
             if (obj.l_comaddr == "") {
-                layerAler("请选择网关");
+                layerAler(langs1[219][lang]);  //请选择网关
                 return;
             }
             addlogon(u_name, "设置", o_pid, "路灯预报警", "设置灯具预警参数");
@@ -188,7 +194,7 @@
         function setWarning() {
             var obj = $("#form1").serializeObject();
             if (obj.l_comaddr == "") {
-                layerAler("请选择网关");
+                layerAler(langs1[219][lang]);  //请选择网关
                 return;
             }
             addlogon(u_name, "设置", o_pid, "路灯预报警", "设置灯具报警参数");
@@ -221,7 +227,7 @@
 
     <div class="panel panel-success" >
         <div class="panel-heading">
-            <h3 class="panel-title">路灯预报警参数设置</h3>
+            <h3 class="panel-title"><span id="220" name="xxx">路灯预报警参数设置</span></h3>
         </div>
         <div class="panel-body" >
             <div class="container"  >
@@ -235,7 +241,7 @@
                                     <tr>
 
                                         <td>
-                                            <span style="margin-left:10px;">网关地址&nbsp;</span>
+                                            <span style="margin-left:10px;"><span id="25" name="xxx">网关地址</span>&nbsp;</span>
 
                                             <span class="menuBox">
                                                 <input id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 
