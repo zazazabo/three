@@ -366,13 +366,12 @@
                     $(d).html(langs1[e][lang]);
                 }
                 
-                var option = $("option[name=xxx]");
-                for (var i = 0; i < option.length; i++) {
-                    var d = option[i];
-                    var e = $(d).attr("id");
-                    console.log(e);
-                    $(d).html(langs1[e][lang]);
-                }
+//                var option = $("option[name=xxx]");
+//                for (var i = 0; i < option.length; i++) {
+//                    var d = option[i];
+//                    var e = $(d).attr("id");
+//                    $(d).html(langs1[e][lang]);
+//                }
 
                 $('#gravidaTable').bootstrapTable({
                     showExport: true, //是否显示导出
@@ -660,7 +659,7 @@
                                 <td>
                                     <span style="margin-left:10px;">
                                         <!--  调光模式-->
-                                        <span id="31" name="xxx"></span>
+                                        <span id="31" name="xxx">调光模式</span>
                                         &nbsp;</span>
                                 </td>
                                 <td>

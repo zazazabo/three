@@ -111,7 +111,7 @@
                     layerAler("回路编号必须数字");
                     return false;
                 }
-                if (parseInt(o.l_factorycode) > 54&&parseInt(o.l_factorycode)>=1) {
+                if (parseInt(o.l_factorycode) > 54 && parseInt(o.l_factorycode) >= 1) {
                     layerAler("回路编号1字节必须在1-54");
                     return false;
                 }
@@ -120,8 +120,8 @@
                 o.name = o.comaddrname;
 
                 var namesss = false;
-       
-                 addlogon(u_name, "添加", o_pid, "回路管理", "添加回路");
+
+                addlogon(u_name, "添加", o_pid, "回路管理", "添加回路");
                 $.ajax({async: false, cache: false, url: "loop.loopForm.getLoopList.action", type: "GET", data: o,
                     success: function (data) {
                         if (data.total > 0) {
@@ -242,8 +242,88 @@
                 $('#dialog-edit').dialog('open');
 
             }
+            $('#l_comaddr').combobox({
+                url: "gayway.GaywayForm.getComaddr.action?pid=${param.pid}",
+                formatter: function (row) {
+                    var v1 = row.online == 1 ? "&nbsp;<img src='img/online1.png'>" : "&nbsp;<img src='img/off.png'>";
+                    var v = row.text + v1;
+                    row.id = row.id;
+                    row.text = v;
+                    var opts = $(this).combobox('options');
+                    console.log(row[opts.textField]);
+                    return row[opts.textField];
+                },
+                onLoadSuccess: function (data) {
+                    if (Array.isArray(data) && data.length > 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            data[i].text = data[i].id;
+                        }
+
+                        $(this).combobox('select', data[0].id);
+
+                    }
+                },
+                onSelect: function (record) {
+                    var url = "lamp.GroupeForm.getGroupe.action?l_comaddr=" + record.id + "&l_deplayment=1";
+                    $("#l_groupe").combobox("clear");
+                    $("#l_groupe").combobox("reload", url);
+                }
+            });
+            $('#l_comaddr').combobox({
+                url: "gayway.GaywayForm.getComaddr.action?pid=${param.pid}",
+                formatter: function (row) {
+                    var v1 = row.online == 1 ? "&nbsp;<img src='img/online1.png'>" : "&nbsp;<img src='img/off.png'>";
+                    var v = row.text + v1;
+                    row.id = row.id;
+                    row.text = v;
+                    var opts = $(this).combobox('options');
+                    console.log(row[opts.textField]);
+                    return row[opts.textField];
+                },
+                onLoadSuccess: function (data) {
+                    if (Array.isArray(data) && data.length > 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            data[i].text = data[i].id;
+                        }
+
+                        $(this).combobox('select', data[0].id);
+
+                    }
+                },
+                onSelect: function (record) {
+                    var url = "lamp.GroupeForm.getGroupe.action?l_comaddr=" + record.id + "&l_deplayment=1";
+                    $("#l_groupe").combobox("clear");
+                    $("#l_groupe").combobox("reload", url);
+                }
+            });
+            //搜索
+            function  search() {
+                var l_comaddr = $("#l_comaddr").val();  //网关地址
+                var l_deplayment = $("#busu").val();  //部署情况
+                var obj = {};
+                obj.type = "ALL";
+                if (l_comaddr != "") {
+                    //obj.l_name = encodeURI(lampname);
+                    obj.l_comaddr = l_comaddr;
+                }
+                obj.l_deplayment = l_deplayment;
+                obj.pid = o_pid;
+                var opt = {
+                    url: "loop.loopForm.getLoopList.action",
+                    silent: true,
+                    query: obj
+                };
+                $("#gravidaTable").bootstrapTable('refresh', opt);
+            }
 
             $(function () {
+                $("#l_comaddr").combobox({
+                    url: "login.map.getallcomaddr.action?pid=" + o_pid,
+                    onLoadSuccess: function (data) {
+//                        $(this).combobox("select", data[0].id);
+//                        $(this).val(data[0].text);
+                    }
+                });
 
                 $('#warningtable').bootstrapTable({
                     columns: [
@@ -391,31 +471,6 @@
                     }
                 });
 
-                $('#comaddr').combobox({
-                    url: "gayway.GaywayForm.getComaddr.action?pid=${param.pid}",
-                    formatter: function (row) {
-                        var v1 = row.online == 1 ? "&nbsp;<img src='img/online1.png'>" : "&nbsp;<img src='img/off.png'>";
-                        var v = row.text + v1;
-                        row.id = row.id;
-                        row.text = v;
-                        var opts = $(this).combobox('options');
-                        return row[opts.textField];
-                    },
-                    onLoadSuccess: function (data) {
-                        if (Array.isArray(data) && data.length > 0) {
-                            for (var i = 0; i < data.length; i++) {
-                                data[i].text = data[i].id;
-                            }
-                            $(this).combobox('select', data[0].id);
-                        }
-                    },
-                            
-                            
-                    onSelect: function (record) {
-                        $("#comaddrname").val(record.name);
-
-                    }
-                });
 
                 var d = [];
                 for (var i = 0; i < 19; i++) {
@@ -684,22 +739,50 @@
             </button>
             <button type="button" id="btn_download" class="btn btn-primary" onClick ="$('#gravidaTable').tableExport({type: 'excel', escape: 'false'})">导出Excel</button>
         </div>
-        <!--        <form id="importForm" action="importGateway.action" method="post" enctype="multipart/form-data" onsubmit="return check()">
-                    <div style="float:left;margin:12px 0 0 10px;border-radius:5px 0 0 5px;position:relative;z-index:100;width:230px;height:30px;">
-                        <a href="javascript:;" class="a-upload" style="width:130px;">
-                            <input name="excel" id="excel" type="file">
-                            <div class="filess">点击这里选择文件</div></a>
-                        <input style="float:right;" class="btn btn-default" value="导入Excel" type="submit"></div>
-                </form>
-                
-                <form id="exportForm" action="exportGateway.action" method="post" style="display: inline;">
-                    <input id="daochu" class="btn btn-default" style="float:left;margin:12px 0 0 20px;" value="导出Excel" type="button">
-                </form>-->
+        <div class="row" >
+            <div class="col-xs-12">
+                <table style="border-collapse:separate;  border-spacing:0px 10px;border: 1px solid #16645629; margin-left: 10px; margin-top: 10px; align-content:  center">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <span style="margin-left:10px;">
+                                    <span id="25" name="xxx">网关地址</span>
+                                    &nbsp;</span>
+                            </td>
+                            <td>
+
+                                <span class="menuBox">
+                                    <input id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 
+                                           data-options="editable:true,valueField:'id', textField:'text' " />
+                                </span>  
+                            </td>
+                            <td>
+                                <span style="margin-left:10px;">
+                                    <span id="217" name="xxx">部署情况</span>
+                                    &nbsp;</span>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox" id="busu" style="width:150px; height: 30px">
+                                    <option value="0">未部署</option>
+                                    <option value="1">已部署</option>           
+                                </select>
+                            </td>
+                            <td>
+                                <button  type="button" style="margin-left:20px;" onclick="search()" class="btn btn-success btn-xm">
+                                    <!-- 搜索-->
+                                    <span id="34" name="xxx">搜索</span>
+                                </button>&nbsp;
+                            </td>
+                        </tr>
+                    </tbody>
+                </table> 
+            </div>
+        </div>
 
         <div style="width:100%;">
             <table id="gravidaTable" style="width:100%;" class="text-nowrap table table-hover table-striped">
             </table>
-        </div
+        </div>
 
 
         <!-- 添加 -->

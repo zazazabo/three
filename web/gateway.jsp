@@ -33,7 +33,8 @@
         <script>
             var u_name = parent.parent.getusername();
             var o_pid = parent.parent.getpojectId();
-
+            var lang = '${param.lang}';//'zh_CN';
+            var langs1 = parent.parent.getLnas();
             function excel() {
                 $('#dialog-excel').dialog('open');
                 return false;
@@ -50,26 +51,27 @@
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
                 var num = selects.length;
                 if (num == 0) {
-                    layerAler("请选择您要删除的记录");
+                    layerAler(langs1[263][lang]);//请选择您要删除的数据
                 } else {
-                    layer.confirm('您确定要删除吗？', {
-                        btn: ['确定', '取消'], //按钮
+                    layer.confirm(langs1[145][lang], {   //确定要删除吗？
+                        btn: [langs1[146][lang],langs1[147][lang]], //按钮、取消按钮
                         icon: 3,
                         offset: 'center',
-                        title: '提示'
+                        title: langs1[174][lang]  //提示
                     }, function (index) {
                         addlogon(u_name, "删除", o_pid, "网关管理", "删除网关");
                         var o = {l_comaddr: selects[0].comaddr, id: selects[0].id};
                         $.ajax({url: "gayway.GaywayForm.existcomaddr.action", async: false, type: "POST", datatype: "JSON", data: o,
                             success: function (data) {
                                 if (data.length >= 1) {
-                                    layerAler("此网关在灯具或回路有数据,请先清空回路和灯具的网关");
+                                    layerAler(langs1[341][lang]); //此网关在灯具或回路有数据,请先清空回路和灯具的网关
                                 } else if (data.length == 0) {
                                     $.ajax({url: "gayway.GaywayForm.deleteGateway.action", type: "POST", datatype: "JSON", data: o,
                                         success: function (data) {
                                             var arrlist = data.rs;
                                             if (arrlist.length == 1) {
-                                                layer.open({content: '删除成功', icon: 1,
+                                                //删除成功
+                                                layer.open({content: langs1[342][lang], icon: 1,
                                                     yes: function (index, layero) {
                                                         $("#gravidaTable").bootstrapTable('refresh');
                                                         layer.close(index);
@@ -105,12 +107,14 @@
 
                 var selectRow1 = $("#gravidaTable").bootstrapTable("getSelections");
                 if (selectRow1.length > 1) {
-                    layer.alert('只能选择一行进行修改', {
+                    //只能选择一行进行修改
+                    layer.alert(langs1[74][lang], {
                         icon: 6,
                         offset: 'center'
                     });
                 } else if (selectRow1.length == 0) {
-                    layer.alert('请先选择', {
+                    //请勾选表格数据
+                    layer.alert(langs1[73][lang], {
                         icon: 6,
                         offset: 'center'
                     });
@@ -170,6 +174,12 @@
             }
 
             $(function () {
+                var aaa = $("span[name=xxx]");
+                for (var i = 0; i < aaa.length; i++) {
+                    var d = aaa[i];
+                    var e = $(d).attr("id");
+                    $(d).html(langs1[e][lang]);
+                }
 
                 $('#warningtable').bootstrapTable({
                     columns: [
@@ -182,44 +192,44 @@
                             align: 'center',
                             valign: 'middle'
                         }, {
-                            title: '序号',
+                            title: langs1[345][lang],  //序号
                             field: '序号',
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
-                            title: '网关地址',
+                            title: langs1[25][lang],  //网关地址
                             field: '网关地址',
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
-                            field: '名称',
-                            title: '网关名称',
+                            title: langs1[314][lang],
+                            field: '名称', //网关名称
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
-                            field: '经度',
-                            title: '经度',
+                            title: langs1[59][lang], //经度
+                            field: '经度',  
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
-                            field: '纬度',
-                            title: '纬度',
+                            field: '纬度',  //纬度
+                            title: langs1[60][lang],
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
-                            field: '倍率',
-                            title: '倍率',
+                            field: '倍率',  
+                            title: langs1[346][lang], //倍率
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
-                            field: '安装位置',
-                            title: '安装位置',
+                            field: '安装位置',  
+                            title: langs1[347][lang],   //安装位置
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -245,7 +255,7 @@
                                     }), // 以二进制流方式读取得到整份excel表格对象
                                     persons = []; // 存储获取到的数据
                         } catch (e) {
-                            alert('文件类型不正确');
+                            alert(langs1[348][lang]);  //文件类型不正确
                             return;
                         }
                         // 表格的表格范围，可用于判断表头是否数量是否正确
@@ -378,43 +388,43 @@
                             valign: 'middle'
                         }, {
                             field: 'pid',
-                            title: '所属项目',
+                            title: langs1[349][lang],  //所属项目
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'model',
-                            title: '型号',
+                            title: langs1[62][lang],  //型号
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'name',
-                            title: '名称',
+                            title: langs1[63][lang],  //名称
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'comaddr',
-                            title: '通信地址',
+                            title: langs1[25][lang],  //网关地址
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'Longitude',
-                            title: '经度',
+                            title: langs1[59][lang],     //经度
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'latitude',
-                            title: '纬度',
+                            title: langs1[60][lang],    //纬度
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'online',
-                            title: '在线状态',
+                            title:langs1[61][lang],  //在线状态
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -467,7 +477,7 @@
                 var selects = $('#warningtable').bootstrapTable('getSelections');
                 var num = selects.length;
                 if (num == 0) {
-                    layerAler("请选择您要保存的数据");
+                    layerAler(langs1[350][lang]);  //请选择您要保存的数据
                     return;
                 }
                 addlogon(u_name, "添加", o_pid, "网关管理", "导入excel文件");
@@ -522,7 +532,8 @@
 
 
                 if (/^[0-9A-F]{8}$/.test($("#comaddr").val().trim()) == false) {
-                    layer.alert('网关地址应为八位有效十六进制字符', {
+                    //网关地址应为八位有效十六进制字符
+                    layer.alert(langs1[351][lang], {
                         icon: 6,
                         offset: 'center'
                     });
@@ -536,7 +547,8 @@
                     success: function (data) {
                         var arrlist = data.rs;
                         if (arrlist.length == 1) {
-                            layer.alert('此网关已存在', {
+                            //此网关已存在
+                            layer.alert(langs1[352][lang], {
                                 icon: 6,
                                 offset: 'center'
                             });
@@ -582,21 +594,23 @@
 
         <div class="btn-group zuheanniu" id="zuheanniu" style="float:left;position:relative;z-index:100;margin:12px 0 0 10px;">
             <button class="btn btn-success ctrol" onclick="showDialog()" data-toggle="modal" data-target="#pjj33" id="add">
-                <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;添加
+                <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;<span name="xxx" id="65">添加</span>
             </button>
             <button class="btn btn-primary ctrol" onclick="modifyModal()" id="xiugai1">
-                <span class="glyphicon glyphicon-pencil"></span>&nbsp;编辑
+                <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span name="xxx" id="66">编辑</span>
             </button>
             <button class="btn btn-danger ctrol" onclick="deleteGateway()" id="shanchu">
-                <span class="glyphicon glyphicon-trash"></span>&nbsp;删除
+                <span class="glyphicon glyphicon-trash"></span>&nbsp;<span name="xxx" id="67">删除</span>
             </button>
             <button class="btn btn-success ctrol" onclick="excel()" id="addexcel" >
-                <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;导入Excel
+                <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;<span name="xxx" id="353">导入Excel</span>
             </button>
-<!--            <button class="btn btn-success ctrol" onClick ="$('#tb_departments').tableExport({type: 'excel', escape: 'false'})" id="outexcel" >
-                <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;导出Excel
-            </button>-->
-            <button type="button" id="download" id="btn_download" class="btn btn-primary" onClick ="$('#gravidaTable').tableExport({type: 'excel', escape: 'false'})">导出Excel</button>
+            <!--            <button class="btn btn-success ctrol" onClick ="$('#tb_departments').tableExport({type: 'excel', escape: 'false'})" id="outexcel" >
+                            <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;导出Excel
+                        </button>-->
+            <button type="button" id="download" id="btn_download" class="btn btn-primary" onClick ="$('#gravidaTable').tableExport({type: 'excel', escape: 'false'})">
+               <span name="xxx" id="110">导出Excel</span>
+            </button>
 
 
         </div>
@@ -614,7 +628,7 @@
                     <tbody>
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">项目列表&nbsp;</span>
+                                <span style="margin-left:20px;" name="xxx" id="354">项目列表</span>&nbsp;
                                 <input id="pid" class="easyui-combobox" name="pid" style="width:150px; height: 30px" data-options="editable:false,valueField:'id', textField:'text' " />
                             </td>
                             <td>
@@ -625,12 +639,12 @@
                         </tr>
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">网关名称</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="314">网关名称</span>&nbsp;
                                 <input id="name" class="form-control" name="name" style="width:150px;display: inline;" placeholder="请输入网关名称" type="text">
                             </td>
                             <td></td>
                             <td>
-                                <span style="margin-left:10px;">网关型号&nbsp;</span>
+                                <span style="margin-left:10px;" name="xxx" id="355">网关型号</span>&nbsp;
 
 
                                 <span class="menuBox">
@@ -644,19 +658,19 @@
                         </tr>
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">安装位置</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="356">安装位置</span>&nbsp;
                                 <input id="setupaddr" class="form-control" name="setupaddr" style="width:150px;display: inline;" placeholder="请输入网关位置" type="text">
                             </td>
 
                             <td></td>
                             <td>
-                                <span style="margin-left:10px;">网关地址&nbsp;</span>
+                                <span style="margin-left:10px;" name="xxx" id="25">网关地址</span>&nbsp;
                                 <input id="comaddr" class="form-control" name="comaddr" style="width:150px;display: inline;" placeholder="请输入网关地址" type="text">
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">通信方式</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="357">通信方式</span>&nbsp;
 
 
                                 <span class="menuBox">
@@ -673,19 +687,19 @@
 
                             <td></td>
                             <td>
-                                <span style="margin-left:10px;">倍&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;率&nbsp;</span>
+                                <span style="margin-left:35px;" nane="xxx" id="346">倍率</span>&nbsp;
                                 <input id="multpower" class="form-control" name="multpower" style="width:150px;display: inline;" placeholder="请输入倍率" type="text">
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">区域经度</span>&nbsp;
+                                <span style="margin-left:20px;"name="xxx" id="59">经度</span>&nbsp;
                                 <input id="longitudem26d" class="form-control" name="longitudem26d" style="width:51px;display: inline;" type="text">&nbsp;°
                                 <input id="longitudem26m" class="form-control" name="longitudem26m" style="width:45px;display: inline;" type="text">&nbsp;'
                                 <input id="longitudem26s" class="form-control" name="longitudem26s" style="width:45px;display: inline;" type="text">&nbsp;"</td>
                             <td></td>
                             <td>
-                                <span style="margin-left:10px;">区域纬度&nbsp;</span>
+                                <span style="margin-left:10px;" name="xxx" id="60">纬度</span>&nbsp;
                                 <input id="latitudem26d" class="form-control" name="latitudem26d" style="width:51px;display: inline;" type="text">&nbsp;°
                                 <input id="latitudem26m" class="form-control" name="latitudem26m" style="width:45px;display: inline;" type="text">&nbsp;'
                                 <input id="latitudem26s" class="form-control" name="latitudem26s" style="width:45px;display: inline;" type="text">&nbsp;"
@@ -704,7 +718,7 @@
 
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">网关名称</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="314">网关名称</span>&nbsp;
                                 <input id="name_" class="form-control" name="name" style="width:150px;display: inline;" placeholder="请输入网关名称" type="text">
                                 <input id="id_" name="id" type="hidden">
                             </td>
@@ -712,7 +726,7 @@
 
                             </td>
                             <td>
-                                <span style="margin-left:10px;">网关型号&nbsp;</span>
+                                <span style="margin-left:10px;" name="xxx" id="355">网关型号</span>&nbsp;
 
 
                                 <span class="menuBox">
@@ -726,18 +740,18 @@
                         </tr>
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">安装位置</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="356">安装位置</span>&nbsp;
                                 <input id="setupaddr_" class="form-control" name="setupaddr" style="width:150px;display: inline;" placeholder="请输入网关位置" type="text">
                             </td>
 
                             <td></td>
                             <td>
-                                <span style="margin-left:10px;">网关地址&nbsp;</span>
+                                <span style="margin-left:10px;" name="xxx" id="25">网关地址</span>&nbsp;
                                 <input id="comaddr_" readonly="true"  class="form-control" name="comaddr" style="width:150px;display: inline;" placeholder="请输入网关地址" type="text"></td>
                         </tr>
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">通信方式</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="357">通信方式</span>&nbsp;
 
 
                                 <span class="menuBox">
@@ -752,18 +766,18 @@
 
                             <td></td>
                             <td>
-                                <span style="margin-left:10px;">倍&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;率&nbsp;</span>
+                                <span style="margin-left:35px;" nane="xxx" id="346">倍率</span>&nbsp;
                                 <input id="multpower_" class="form-control" name="multpower" style="width:150px;display: inline;" placeholder="请输入倍率" type="text"></td>
                         </tr>
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">区域经度</span>&nbsp;
+                                <span style="margin-left:20px;"name="xxx" id="59">经度</span>&nbsp;
                                 <input id="longitudem26d_" class="form-control" name="longitudem26d" style="width:51px;display: inline;" type="text">&nbsp;°
                                 <input id="longitudem26m_" class="form-control" name="longitudem26m" style="width:45px;display: inline;" type="text">&nbsp;'
                                 <input id="longitudem26s_" class="form-control" name="longitudem26s" style="width:45px;display: inline;" type="text">&nbsp;"</td>
                             <td></td>
                             <td>
-                                <span style="margin-left:10px;">区域纬度&nbsp;</span>
+                                <span style="margin-left:10px;" name="xxx" id="60">纬度</span>&nbsp;
                                 <input id="latitudem26d_" class="form-control" name="latitudem26d" style="width:51px;display: inline;" type="text">&nbsp;°
                                 <input id="latitudem26m_" class="form-control" name="latitudem26m" style="width:45px;display: inline;" type="text">&nbsp;'
                                 <input id="latitudem26s_" class="form-control" name="latitudem26s" style="width:45px;display: inline;" type="text">&nbsp;"</td>

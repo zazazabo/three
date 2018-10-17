@@ -354,9 +354,36 @@
 
                 dealsend2("A4", data, 110, "resetGroupeCB", comaddr, o.type, oldlgroupe, o.l_groupe2);
             }
+            
+            //搜索
+            function  search() {
+                var l_comaddr = $("#l_comaddr2").val();  //网关地址
+                var l_deplayment = $("#busu").val();  //部署情况
+                var obj = {};
+                obj.type = "ALL";
+                if (l_comaddr != "") {
+                    //obj.l_name = encodeURI(lampname);
+                    obj.l_comaddr = l_comaddr;
+                }
+                obj.l_deplayment = l_deplayment;
+                obj.pid = o_pid;
+                var opt = {
+                    url: "lamp.lampform.getlampList.action",
+                    silent: true,
+                    query: obj
+                };
+                $("#gravidaTable").bootstrapTable('refresh', opt);
+            }
 
 
             $(function () {
+                $("#l_comaddr2").combobox({
+                    url: "login.map.getallcomaddr.action?pid=" + o_pid,
+                    onLoadSuccess: function (data) {
+//                        $(this).combobox("select", data[0].id);
+//                        $(this).val(data[0].text);
+                    }
+                });
                 $('#warningtable').bootstrapTable({
                     columns: [
                         {
@@ -845,6 +872,45 @@
                 <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;导入Excel
             </button>
             <button type="button" id="btn_download" class="btn btn-primary" onClick ="$('#gravidaTable').tableExport({type: 'excel', escape: 'false'})">导出Excel</button>
+        </div>
+        <div class="row" >
+            <div class="col-xs-12">
+                <table style="border-collapse:separate;  border-spacing:0px 10px;border: 1px solid #16645629; margin-left: 10px; margin-top: 10px; align-content:  center">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <span style="margin-left:10px;">
+                                    <span id="25" name="xxx">网关地址</span>
+                                    &nbsp;</span>
+                            </td>
+                            <td>
+
+                                <span class="menuBox">
+                                    <input id="l_comaddr2" class="easyui-combobox"  style="width:150px; height: 30px" 
+                                           data-options="editable:true,valueField:'id', textField:'text' " />
+                                </span>  
+                            </td>
+                            <td>
+                                <span style="margin-left:10px;">
+                                    <span id="217" name="xxx">部署情况</span>
+                                    &nbsp;</span>
+                            </td>
+                            <td>
+                                <select class="easyui-combobox" id="busu" style="width:150px; height: 30px">
+                                    <option value="0">未部署</option>
+                                    <option value="1">已部署</option>           
+                                </select>
+                            </td>
+                            <td>
+                                <button  type="button" style="margin-left:20px;" onclick="search()" class="btn btn-success btn-xm">
+                                    <!-- 搜索-->
+                                    <span id="34" name="xxx">搜索</span>
+                                </button>&nbsp;
+                            </td>
+                        </tr>
+                    </tbody>
+                </table> 
+            </div>
         </div>
 
 

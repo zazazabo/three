@@ -32,7 +32,6 @@
                 for (var i = 0; i < aaa.length; i++) {
                     var d = aaa[i];
                     var e = $(d).attr("id");
-                    console.log(e);
                     $(d).html(langs1[e][lang]);
                 }
                 $("#sel_menu2").select2();
