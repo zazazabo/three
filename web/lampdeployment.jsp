@@ -16,6 +16,55 @@
         <script>
             var u_name = parent.parent.getusername();
             var o_pid = parent.parent.getpojectId();
+
+            var ErrInfo = {
+                "0": {
+                    "zh-CN": "正确",
+                    "en_US": "ok",
+                    "e_BY": "e_ok"
+                },
+                "1": {
+                    "zh-CN": "数据内容出错",
+                    "en_US": "ok",
+                    "e_BY": "e_ok"
+                },
+                "2": {
+                    "zh-CN": "重复设备序号",
+                    "en_US": "ok",
+                    "e_BY": "e_ok"
+                },
+                "3": {
+                    "zh-CN": "重复防盗序号",
+                    "en_US": "ok",
+                    "e_BY": "e_ok"
+                },
+                "4": {
+                    "zh-CN": "重复装置序号",
+                    "en_US": "ok",
+                    "e_BY": "e_ok"
+                },
+                "5": {
+                    "zh-CN": "透传超时",
+                    "en_US": "ok",
+                    "e_BY": "e_ok"
+                },
+                "6": {
+                    "zh-CN": "末查询到此设备或信息",
+                    "en_US": "ok",
+                    "e_BY": "e_ok"
+                },
+                "7": {
+                    "zh-CN": "组号超范围或灯号异常",
+                    "en_US": "ok",
+                    "e_BY": "e_ok"
+                },
+                "8": {
+                    "zh-CN": "集中器忙",
+                    "en_US": "ok",
+                    "e_BY": "e_ok"
+                }
+            }
+
             function layerAler(str) {
                 layer.alert(str, {
                     icon: 6,
@@ -31,33 +80,34 @@
 
                         v = v + sprintf("%02x", data[i]) + " ";
                     }
-                    console.log("读取的数据:", v);
-                    var set1 = data[21] * 256 + data[20];
-                    var set2 = data[23] * 256 + data[22];
 
-                    var l_factory = "";
-                    for (var i = 29; i > 23; i--) {
-                        l_factory = l_factory + sprintf("%02x", data[i]) + "";
+                    if (data[0xe] == 0 && data[0xf] == 0 && data[0x10] == 0x80 && data[0x11] == 0x3) {
+                        console.log("读取的数据:", v);
+                        var set1 = data[21] * 256 + data[20];
+                        var set2 = data[23] * 256 + data[22];
+
+                        var l_factory = "";
+                        for (var i = 29; i > 23; i--) {
+                            l_factory = l_factory + sprintf("%02x", data[i]) + "";
+                        }
+                        var worktype = data[30];
+                        var l_groupe = data[31];
+                        var o = ["时间", "经纬度", "场景"];
+                        var str = "装置号：" + set1.toString() + "<br>测量点号:" + set1.toString() + "<br>通信地址:" + l_factory + "<br>工作方式:" + o[worktype] + "<br>组号:" + l_groupe.toString();
+
+                        layerAler(str);
+
                     }
-                    var worktype = data[30];
-                    var l_groupe = data[31];
-                    var o = ["时间", "经纬度", "场景"];
-                    var str = "装置号：" + set1.toString() + "<br>测量点号:" + set1.toString() + "<br>通信地址:" + l_factory + "<br>工作方式:" + o[worktype] + "<br>组号:" + l_groupe.toString();
 
- 
-                    layerAler(str);
+                    if (data[0xe] == 0 && data[0xf] == 0 && data[0x10] == 04 && data[0x11] == 0) {
+                        var set1 = data[19] * 256 + data[18];
+                        var err = data[20];
+                        var lang="zh-CN";
+                        var str =  ErrInfo[err][lang];
+                        layerAler(str);
 
-//                    if (obj.fn == 320) {
-//                        var m = sprintf("%02x", data[21]);
-//                        var h = sprintf("%02x", data[22]);
-//                        var m1 = sprintf("%02x", data[23]);
-//                        var h1 = sprintf("%02x", data[24]);
-//                        var intime1 = sprintf("%s:%s", h, m);
-//                        var outtime1 = sprintf("%s:%s", h1, m1);
-//
-//                        $('#intime').timespinner('setValue', intime1);
-//                        $('#outtime').timespinner('setValue', outtime1);
-//                    }
+
+                    }
 
                 }
 
@@ -101,47 +151,57 @@
             }
 
             function deploylampCB(obj) {
-                var param = obj.param;
-                if (obj.status == "fail") {
-                    if (obj.type == 0) {
-                        layerAler("移除失败");
-                    } else if (obj.type == "1") {
-                        layerAler("部署失败")
-                    }
-
-                    if (obj.errcode == 2) {
-                        layerAler("重复设备序号");
-                        var o = {id: param.id, l_deplayment: obj.val};
-                        console.log(o);
-                        $.ajax({async: false, url: "lamp.lampform.modifyDepayment.action", type: "get", datatype: "JSON", data: o,
-                            success: function (data) {
-                                $("#gravidaTable").bootstrapTable('refresh');
-                            },
-                            error: function () {
-                                alert("提交失败！");
-                            }
-                        });
-                    } else if (obj.errcode == 6) {
-                        layerAler("未查询到此设备或信息");
-                    }
 
 
-                } else if (obj.status == "success") {
-                    if (obj.type == 0) {
-                        layerAler("移除成功");
-                    } else if (obj.type == 1) {
-                        layerAler("部署成功");
+
+                if (obj.status == "success") {
+                    var data = Str2BytesH(obj.data);
+                    var v = "";
+                    for (var i = 0; i < data.length; i++) {
+
+                        v = v + sprintf("%02x", data[i]) + " ";
                     }
-                    var o = {id: param.id, l_deplayment: obj.val};
-                    $.ajax({async: false, url: "lamp.lampform.modifyDepayment.action", type: "get", datatype: "JSON", data: o,
-                        success: function (data) {
-                            $("#gravidaTable").bootstrapTable('refresh');
-                        },
-                        error: function () {
-                            alert("提交失败！");
+                    console.log(v);
+                    if (data[0xe] == 0 && data[0xf] == 0 && data[0x10] == 0x1 && data[0x11] == 0x0) {
+                        console.log(obj.param);
+                        var param = obj.param;
+                        for (var i = 0; i < param.length; i++) {
+                            var o = {id: param[i].id, l_deplayment: obj.val};
+                            $.ajax({async: false, url: "lamp.lampform.modifyDepayment.action", type: "get", datatype: "JSON", data: o,
+                                success: function (data) {
+                                },
+                                error: function () {
+                                    alert("提交失败！");
+                                }
+                            });
                         }
-                    });
+
+                        $("#gravidaTable").bootstrapTable('refresh');
+
+                    } else if (data[0xe] == 0 && data[0xf] == 0 && data[0x10] == 0x4 && data[0x11] == 0x0) {
+                        var err = data[20];
+                        if (err == 2) {
+                            var set1 = data[19] * 256 + data[18];
+                            var o = {l_code: set1, l_comaddr: obj.comaddr};
+                            $.ajax({async: false, url: "lamp.lampform.modifyDepaymentByset.action", type: "get", datatype: "JSON", data: o,
+                                success: function (data) {
+                                },
+                                error: function () {
+                                    alert("提交失败！");
+                                }});
+
+                            var lang="zh-CN";
+                            var str =  ErrInfo[err][lang] + "<br>" + "装置号:" +set1.toString();
+                            layerAler(str);
+                            //layerAler("装置号:" + set1.toString() + "重复");
+                        }
+
+
+
+                    }
+
                 }
+
             }
 
 
@@ -155,39 +215,49 @@
                     return;
                 }
                 addlogon(u_name, "部署", o_pid, "灯具部署", "部署灯具");
+
                 var len = selects.length;
                 var h = len >> 8 & 0x00FF;
                 var l = len & 0x00ff;
                 vv.push(l);
                 vv.push(h);
-                var ele = selects[0];
-                if (ele.l_comaddr != o.l_comaddr) {
-                    layerAler("列表的网关要和下拉的网关不一致");
-                    return;
+                var param = [];
+                for (var i = 0; i < selects.length; i++) {
+
+                    var ele = selects[i];
+
+                    if (ele.l_comaddr != o.l_comaddr) {
+                        layerAler("列表的网关要和下拉的网关不一致");
+                        return;
+                    }
+                    var setcode = ele.l_code;
+                    var l_code = parseInt(setcode);
+                    var a = l_code >> 8 & 0x00FF;
+                    var b = l_code & 0x00ff;
+                    vv.push(b);//装置序号  2字节            
+                    vv.push(a);//装置序号  2字节     
+                    vv.push(b);//测量点号  2字节            
+                    vv.push(a);//测量点号  2字节  
+                    var factorycode = ele.l_factorycode;
+                    var factor = Str2BytesH(factorycode);
+                    vv.push(factor[5]); //通信地址
+                    vv.push(factor[4]); //通信地址
+                    vv.push(factor[3]); //通信地址
+                    vv.push(factor[2]); //通信地址
+                    vv.push(factor[1]); //通信地址
+                    vv.push(factor[0]); //通信地址
+
+                    var iworktype = parseInt(ele.l_worktype);
+                    vv.push(iworktype); //工作方式
+
+                    var igroupe = parseInt(ele.l_groupe); //组号
+                    vv.push(igroupe); //组号
+                    var ooo = {row: ele.index, id: ele.id};
+                    param.push(ooo);
                 }
-                var setcode = ele.l_code;
-                var l_code = parseInt(setcode);
-                var a = l_code >> 8 & 0x00FF;
-                var b = l_code & 0x00ff;
-                vv.push(b);//装置序号  2字节            
-                vv.push(a);//装置序号  2字节     
-                vv.push(b);//测量点号  2字节            
-                vv.push(a);//测量点号  2字节  
-                var factorycode = ele.l_factorycode;
-                var factor = Str2BytesH(factorycode);
-                vv.push(factor[5]); //通信地址
-                vv.push(factor[4]); //通信地址
-                vv.push(factor[3]); //通信地址
-                vv.push(factor[2]); //通信地址
-                vv.push(factor[1]); //通信地址
-                vv.push(factor[0]); //通信地址
+                console.log(param);
 
-                var iworktype = parseInt(ele.l_worktype);
-                vv.push(iworktype); //工作方式
-
-                var igroupe = parseInt(ele.l_groupe); //组号
-                vv.push(igroupe); //组号
-                var param = {row: ele.index, id: ele.id};
+                // var param = {row: ele.index, id: ele.id};
                 var comaddr = o.l_comaddr;
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(o.l_comaddr, 0x04, 0xA4, num, 0, 102, vv);
@@ -208,47 +278,45 @@
                 var l = len & 0x00ff;
                 vv.push(l);
                 vv.push(h);
-                var ele = selects[0];
-                if (ele.l_comaddr != o.l_comaddr) {
-                    layerAler("列表的网关要和下拉的网关不一致");
-                    return;
-                }
-                var setcode = ele.l_code;
-                var l_code = parseInt(setcode);
-                var a = l_code >> 8 & 0x00FF;
-                var b = l_code & 0x00ff;
-                vv.push(b);//装置序号  2字节            
-                vv.push(a);//装置序号  2字节     
-                vv.push(0);//测量点号  2字节            
-                vv.push(0);//测量点号  2字节  
-                var factorycode = ele.l_factorycode;
-                var factor = Str2BytesH(factorycode);
-                if (factor.length != 6) {
-                    layerAler("灯具通信地址应该是六位字节");
-                    return;
-                }
-                vv.push(factor[5]); //通信地址
-                vv.push(factor[4]); //通信地址
-                vv.push(factor[3]); //通信地址
-                vv.push(factor[2]); //通信地址
-                vv.push(factor[1]); //通信地址
-                vv.push(factor[0]); //通信地址
+                var param = [];
+                for (var i = 0; i < selects.length; i++) {
 
-                var iworktype = parseInt(ele.l_worktype);
-                vv.push(iworktype); //工作方式
+                    var ele = selects[i];
 
-                var igroupe = parseInt(ele.l_groupe); //组号
-                vv.push(igroupe); //组号
-                var param = {row: ele.index, id: ele.id};
+                    if (ele.l_comaddr != o.l_comaddr) {
+                        layerAler("列表的网关要和下拉的网关不一致");
+                        return;
+                    }
+                    var setcode = ele.l_code;
+                    var l_code = parseInt(setcode);
+                    var a = l_code >> 8 & 0x00FF;
+                    var b = l_code & 0x00ff;
+                    vv.push(b);//装置序号  2字节            
+                    vv.push(a);//装置序号  2字节     
+                    vv.push(0);//测量点号  2字节            
+                    vv.push(0);//测量点号  2字节  
+                    var factorycode = ele.l_factorycode;
+                    var factor = Str2BytesH(factorycode);
+                    vv.push(factor[5]); //通信地址
+                    vv.push(factor[4]); //通信地址
+                    vv.push(factor[3]); //通信地址
+                    vv.push(factor[2]); //通信地址
+                    vv.push(factor[1]); //通信地址
+                    vv.push(factor[0]); //通信地址
+
+                    var iworktype = parseInt(ele.l_worktype);
+                    vv.push(iworktype); //工作方式
+
+                    var igroupe = parseInt(ele.l_groupe); //组号
+                    vv.push(igroupe); //组号
+                    var ooo = {row: ele.index, id: ele.id};
+                    param.push(ooo);
+                }
+                console.log(param);
 
                 var comaddr = o.l_comaddr;
-
-                var num = randnum(0, 9) + 0x70;
-                console.log("aaa");
                 var data = buicode(o.l_comaddr, 0x04, 0xA4, num, 0, 102, vv);
-                console.log("bbb");
                 var num = randnum(0, 9) + 0x70; //随机帧序列号
-
                 dealsend2("A4", data, 102, "deploylampCB", comaddr, 0, param, 0);
             }
 
@@ -266,7 +334,6 @@
                         row.id = row.id;
                         row.text = v;
                         var opts = $(this).combobox('options');
-                        console.log(row[opts.textField]);
                         return row[opts.textField];
                     },
                     onLoadSuccess: function (data) {
@@ -311,7 +378,12 @@
                             title: '通信地址',
                             width: 25,
                             align: 'center',
-                            valign: 'middle'
+                            valign: 'middle',
+                            formatter: function (value, row, index, field) {
+                                value = value.replace(/\b(0+)/gi, "");
+                                return value.toString();
+                            }
+
                         }, {
                             field: 'l_name',
                             title: '名称',
@@ -376,11 +448,11 @@
                     pagination: true,
                     sidePagination: 'server',
                     pageNumber: 1,
-                    pageSize: 5,
+                    pageSize: 50,
                     showRefresh: true,
                     showToggle: true,
                     // 设置默认分页为 50
-                    pageList: [5, 10, 15, 20, 25],
+                    pageList: [50, 100, 150, 200, 250],
                     //服务器url
                     queryParams: function (params)  {   //配置参数     
                         var temp  =   {    //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的 

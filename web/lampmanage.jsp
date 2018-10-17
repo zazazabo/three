@@ -15,7 +15,7 @@
         <script type="text/javascript" src="js/getdate.js"></script>
         <script>
             var u_name = parent.parent.getusername();
-            var o_pid =  parent.parent.getpojectId();
+            var o_pid = parent.parent.getpojectId();
             function excel() {
                 $('#dialog-excel').dialog('open');
                 return false;
@@ -70,7 +70,7 @@
                                                     if (arrlist.length == 1) {
                                                         var ids = [];//定义一个数组
                                                         var xh = selects[i].序号;
-                                                        console.log("xh:"+xh);
+                                                        console.log("xh:" + xh);
                                                         ids.push(xh);//将要删除的id存入数组
                                                         $("#warningtable").bootstrapTable('remove', {field: '序号', values: ids});
                                                     }
@@ -566,7 +566,6 @@
                         row.id = row.id;
                         row.text = v;
                         var opts = $(this).combobox('options');
-                        console.log(row[opts.textField]);
                         return row[opts.textField];
                     },
                     onLoadSuccess: function (data) {
@@ -601,6 +600,70 @@
                 $("#l_groupe2").combobox({data: d, onLoadSuccess: function (data) {
                         $(this).combobox("select", data[0].id);
                     }, });
+
+
+                $('#gravidaTable').on('click-cell.bs.table', function (field, value, row, element)
+                {
+                    if (value == "l_plan") {
+                        if (element.l_deplayment == "1") {
+                            if (element.l_worktype == "0") {
+                                var o = {p_code: element.l_plantime};
+                                $.ajax({async: false, url: "lamp.planForm.getLampPlanData.action", type: "get", datatype: "JSON", data: o,
+                                    success: function (data) {
+                                        var arrlist = data.rs;
+                                        if (arrlist.length == 1) {
+                                            var str = "";
+                                            var oo = arrlist[0];
+                                            for (var i = 0; i < 6; i++) {
+                                                var aa = "p_time" + (i + 1).toString();
+
+
+                                                var obj = eval('(' + oo[aa] + ')');
+                                                if (typeof obj == 'object') {
+                                                    str = str + "时间" + (i + 1).toString() + ":" + obj.time + "&nbsp;&nbsp;调光值:" + obj.value.toString() + "<br>";
+                                                }
+
+
+                                            }
+                                            layerAler(str);
+                                        }
+                                    },
+                                    error: function () {
+                                        alert("提交失败！");
+                                    }
+                                });
+
+                            } else if (element.l_worktype == 2) {
+                                var o = {p_code: element.l_planscene};
+                                $.ajax({async: false, url: "lamp.planForm.getLampPlanData.action", type: "get", datatype: "JSON", data: o,
+                                    success: function (data) {
+                                        var arrlist = data.rs;
+                                        if (arrlist.length == 1) {
+                                            var str = "";
+                                            var oo = arrlist[0];
+                                            for (var i = 0; i < 8; i++) {
+                                                var aa = "p_scene" + (i + 1).toString();
+
+                                                var obj = eval('(' + oo[aa] + ')');
+                                                if (typeof obj == 'object') {
+                                                    str = str + "场景号" + obj.num + ":" + "&nbsp;&nbsp;调光值:" + obj.value.toString() + "<br>";
+                                                }
+                                            }
+                                            layerAler(str);
+                                        }
+                                    },
+                                    error: function () {
+                                        alert("提交失败！");
+                                    }
+                                });
+                            }
+                        }
+                    }
+
+
+                });
+
+
 
 
                 $('#gravidaTable').bootstrapTable({
@@ -639,7 +702,14 @@
                             title: '灯具编号',
                             width: 25,
                             align: 'center',
-                            valign: 'middle'
+                            valign: 'middle',
+                            formatter: function (value, row, index, field) {
+                                if (value != null) {
+                                    value = value.replace(/\b(0+)/gi, "");
+                                    return value.toString();
+                                }
+
+                            }
                         }, {
                             field: 'l_groupe',
                             title: '组号',
@@ -667,20 +737,32 @@
                             formatter: function (value, row, index, field) {
                                 if (value != null) {
                                     if (value == 0) {
-                                        value = "0(时间)";
+                                        value = "(走时间)";
                                         return value;
                                     } else if (value == 1) {
-                                        value = "1(经纬度)";
+                                        value = "(走经纬度)";
                                         return value;
                                     } else if (value == 2) {
-                                        value = "1(场景)";
+                                        value = "(走场景)";
                                         return value;
                                     }
 
                                 }
-
-//                                console.log(value);
-
+                            }
+                        }, {
+                            field: 'l_plan',
+                            title: '控制方案',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle',
+                            formatter: function (value, row, index, field) {
+                                if (row.l_deplayment == 1) {
+                                    if (row.l_worktype == "0") {
+                                        return row.l_plantime;
+                                    } else if (row.l_worktype == "2") {
+                                        return row.l_planscene;
+                                    }
+                                }
                             }
                         }, {
                             field: 'l_deployment',
@@ -707,11 +789,11 @@
                     pagination: true,
                     sidePagination: 'server',
                     pageNumber: 1,
-                    pageSize: 5,
+                    pageSize: 50,
                     showRefresh: true,
                     showToggle: true,
                     // 设置默认分页为 50
-                    pageList: [5, 10, 15, 20, 25],
+                    pageList: [50, 100, 200, 300, 400],
                     onLoadSuccess: function () {  //加载成功时执行  表格加载完成时 获取集中器在线状态
 //                        console.info("加载成功");
                     },
@@ -854,8 +936,8 @@
             <form action="" method="POST" id="form2" onsubmit="return editlamp()">  
                 <input type="hidden" id="hide_id" name="id" />
                 <input type="hidden" id="l_deployment" name="l_deployment" />
-                 <input type="hidden" id="type" value="3" name="type" />
-                  <input type="hidden" id="l_code"  name="l_code" />
+                <input type="hidden" id="type" value="3" name="type" />
+                <input type="hidden" id="l_code"  name="l_code" />
                 <table>
                     <tbody>
                         <tr>

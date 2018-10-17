@@ -67,37 +67,7 @@
                 var param = {};
                 param.l_groupe = l_groupe;
                 var data = buicode(comaddr, 0x04, 0xA5, num, 0, 302, vv); //01 03 F24     
-                dealsend2("A5", data, 302, "lightCB", comaddr, 3, 0, 100);
-                // var selects = $('#gravidaTable').bootstrapTable('getSelections');
-
-                // if (selects.length == 0) {
-                //     layerAler("请勾选灯具数据");
-                //     return;
-                // }
-                // addlogon(u_name, "灯具调光", o_pid, "灯具调光", "开灯");
-                // for (var i = 0; i < selects.length; i++) {
-                //     console.log("cs:" + i);
-                //     var vv = new Array();
-                //     //var l_comaddr = $("#l_comaddr").combobox('getValue');
-                //     var select = selects[i];
-                //     var l_comaddr = select.l_comaddr;
-                //     var lampval = 100;
-                //     var setcode = select.l_code;
-                //     var dd = get2byte(setcode);
-                //     var set1 = Str2BytesH(dd);
-                //     vv.push(set1[1]);
-                //     vv.push(set1[0]); //装置序号  2字节
-                //     vv.push(parseInt(lampval));
-                //     var num = randnum(0, 9) + 0x70;
-                //     var param = {};
-                //     param.id = select.id;
-                //     param.row = i;
-                //     var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 301, vv); //01 03
-                //     //dealsend(sss, o1);
-                //     dealsend2("A5", data, 301, "onoff", l_comaddr, 0, param, lampval);
-
-                // }
-
+                dealsend2("A5", data, 302, "lightCB", comaddr, 3, 0, 100);       
             }
             //关灯
             function offlamp() {
@@ -131,40 +101,6 @@
                 param.l_groupe = l_groupe;
                 var data = buicode(comaddr, 0x04, 0xA5, num, 0, 302, vv); //01 03 F24     
                 dealsend2("A5", data, 302, "lightCB", comaddr, 3, param, 0);
-
-
-
-
-
-
-                // var selects = $('#gravidaTable').bootstrapTable('getSelections');
-
-                // if (selects.length == 0) {
-                //     layerAler("请勾选灯具数据");
-                //     return;
-                // }
-                // addlogon(u_name, "灯具调光", o_pid, "灯具调光", "关灯");
-                // for (var i = 0; i < selects.length; i++) {
-                //     var vv = new Array();
-                //     //var l_comaddr = $("#l_comaddr").combobox('getValue');
-                //     var select = selects[i];
-                //     var l_comaddr = select.l_comaddr;
-                //     var lampval = 0;
-                //     var setcode = select.l_code;
-                //     var dd = get2byte(setcode);
-                //     var set1 = Str2BytesH(dd);
-                //     vv.push(set1[1]);
-                //     vv.push(set1[0]); //装置序号  2字节
-                //     vv.push(parseInt(lampval));
-                //     var num = randnum(0, 9) + 0x70;
-                //     var param = {};
-                //     param.id = select.id;
-                //     param.row = i;
-                //     var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 301, vv); //01 03
-                //     //dealsend(sss, o1);
-                //     dealsend2("A5", data, 301, "onoff", l_comaddr, 0, param, lampval);
-
-                // }
 
             }
 
@@ -548,11 +484,11 @@
                     pagination: true,
                     sidePagination: 'server',
                     pageNumber: 1,
-                    pageSize: 5,
+                    pageSize: 100,
 //                    showRefresh: true,
                     showToggle: true,
                     // 设置默认分页为 50
-                    pageList: [5, 10, 15, 20, 25],
+                    pageList: [100, 200,300,400],
                     onLoadSuccess: function () {  //加载成功时执行  表格加载完成时 获取集中器在线状态
 //                        console.info("加载成功");
                     },
@@ -706,6 +642,7 @@
                                     <select class="easyui-combobox" id="groupetype" name="groupetype" style="width:150px; height: 30px">
                                         <option value="0" name="xxx" id="29">单灯调光</option>
                                         <option value="1" name="xxx" id="30">组号调光</option>           
+         
                                     </select>
 
 <!--                                    <select class="easyui-combobox" id="groupetype" name="groupetype"  style="width:150px; height: 30px">
@@ -809,6 +746,12 @@
                                     <!-- 按组立即调光-->
                                     <span id="44" name="xxx">按组立即调光</span>
                                 </button>
+
+                                <button  type="button" name="btnall"  style="display: none"  onclick="lightgroupe()" class="btn btn-success btn-sm">
+                                    <!-- 按组立即调光-->
+                                    <span id="44" name="xxx"></span>
+                                </button>
+
                             </td>
                         </tr>
                     </table>
