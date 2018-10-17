@@ -16,6 +16,8 @@
         </style>
         <script type="text/javascript"  src="js/getdate.js"></script>
         <script>
+            var lang = '${param.lang}';//'zh_CN';
+            var langs1 = parent.parent.getLnas();
             var u_name = parent.parent.getusername();
             var o_pid = parent.parent.getpojectId();
             function layerAler(str) {
@@ -42,13 +44,12 @@
                 var groupearr = $("#l_groupe").combobox("getData");
                 console.log(groupearr);
                 if (groupearr.length==0) {
-                    layerAler("网关没部署灯具");
+                    layerAler(langs1[305][lang]);  //此网关下没部署灯具
                     return;
                 }
 
                 if (o.l_comaddr=="") {
-
-                     layerAler("网关不能空");
+                     layerAler(langs1[172][lang]);  //网关不能空
                     return;
                 }
                 addlogon(u_name, "灯具调光", o_pid, "灯具调光", "开灯");
@@ -105,13 +106,13 @@
                 var groupearr = $("#l_groupe").combobox("getData");
                 console.log(groupearr);
                 if (groupearr.length==0) {
-                    layerAler("网关没部署灯具");
+                    layerAler(langs1[305][lang]);  //此网关下没部署灯具
                     return;
                 }
 
                 if (o.l_comaddr=="") {
 
-                     layerAler("网关不能空");
+                     layerAler(langs1[172][lang]);  //网关不能空
                     return;
                 }
                addlogon(u_name, "灯具调光", o_pid, "灯具调光", "关灯");
@@ -172,9 +173,9 @@
                 console.log(obj);
                 if (obj.status == "success") {
                     if (obj.fn == 304) {
-                        layerAler("单灯场景调光成功");
+                        layerAler(langs1[306][lang]);  //单灯场景调光成功
                     } else if (obj.fn == 308) {
-                        layerAler("按组场景调光成功");
+                        layerAler(langs1[307][lang]);  //按组场景调光成功
                     }
                 }
             }
@@ -182,7 +183,7 @@
             function restoreCB(obj) {
                 console.log(obj);
                 if (obj.status == "success") {
-                    layerAler("恢复成功");
+                    layerAler(langs1[308][lang]);  //恢复成功
                 }
             }
 
@@ -191,7 +192,7 @@
                 var o = $("#formsearch").serializeObject();
                 if (o.type == "3") {
                     if (o.l_comaddr == "") {
-                        layerAler("请选择网关");
+                        layerAler(langs1[219][lang]);  //请选择网关
                         return;
                     }
                     var vv = new Array();
@@ -203,10 +204,9 @@
                 } else if (o.type == 2) {
 
                     if (o.l_comaddr == "" || o.l_groupe == "") {
-                        layerAler("请选择网关或组号");
+                        layerAler(langs1[309][lang]);  //请选择网关或组号
                         return;
                     }
-                    addlogon(u_name, "灯具调光", o_pid, "灯具调光", "恢复自动运行");
                     var vv = new Array();
                     var l_comaddr = o.l_comaddr;
                     vv.push(1);
@@ -220,9 +220,10 @@
                     var selects = $('#gravidaTable').bootstrapTable('getSelections');
 
                     if (selects.length == 0) {
-                        layerAler("请勾选灯具数据");
+                        layerAler(langs1[310][lang]);  //请勾选灯具数据
                         return;
                     }
+                    addlogon(u_name, "灯具调光", o_pid, "灯具调光", "恢复自动运行");
                     var select = selects[0];
 
                     var vv = new Array();
@@ -241,12 +242,12 @@
             function scenegroupe() {
                 var obj = $("#formsearch").serializeObject();
                 if (isNumber(obj.scennum) == false) {
-                    layerAler("场景号必须数字")
+                    layerAler(langs1[311][lang]);  //场景号必须数字
                     return;
                 }
 
                 if (isNumber(obj.l_comaddr) == false || isNumber(obj.l_groupe) == false) {
-                    layerAler("网关或组号不是数字");
+                    layerAler(langs1[312][lang]);   //网关或组号不是数字
                     return
                 }
                 console.log(obj);
@@ -269,13 +270,13 @@
             function scenesingle() {
                 var obj = $("#formsearch").serializeObject();
                 if (isNumber(obj.scennum) == false) {
-                    layerAler("场景号必须数字")
+                    layerAler(langs1[311][lang]);   //场景号必须数字
                     return;
                 }
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
                 var select = selects[0];
                 if (selects.length == 0) {
-                    layerAler("请勾选灯具数据");
+                    layerAler(langs1[310][lang]);  //请勾选灯具数据
                     return;
                 }
                 addlogon(u_name, "灯具调光", o_pid, "灯具调光", "按组立即调光");
@@ -301,7 +302,7 @@
 
                 if (obj.status == "success") {
                     if (obj.fn == 301) {
-                        layerAler("单灯调光成功");
+                        layerAler(langs1[313][lang]);  //单灯调光成功
                         var param = obj.param;
                         var o = {};
                         o.l_value = obj.val;
@@ -363,7 +364,7 @@
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
 
                 if (selects.length == 0) {
-                    layerAler("请勾选灯具数据");
+                    layerAler(langs1[310][lang]);  //请勾选灯具数据
                     return;
                 }
                 addlogon(u_name, "灯具调光", o_pid, "灯具调光", "单灯立即调光");
@@ -399,7 +400,7 @@
             function lightgroupe() {
                 var obj = $("#formsearch").serializeObject();
                 if (isNumber(obj.l_comaddr) == false || isNumber(obj.l_groupe) == false) {
-                    layerAler("网关或组号不是数字");
+                    layerAler(langs1[312][lang]);  //网关或组号不是数字
                     return
                 }
                 addlogon(u_name, "灯具调光", o_pid, "灯具调光", "按组立即调光");
@@ -421,12 +422,19 @@
 
 
             $(function () {
-                var lang = '${param.lang}';
-                var langs1 = parent.parent.getLnas();
+
                 var aaa = $("span[name=xxx]");
                 for (var i = 0; i < aaa.length; i++) {
                     var d = aaa[i];
                     var e = $(d).attr("id");
+                    $(d).html(langs1[e][lang]);
+                }
+                
+                var option = $("option[name=xxx]");
+                for (var i = 0; i < option.length; i++) {
+                    var d = option[i];
+                    var e = $(d).attr("id");
+                    console.log(e);
                     $(d).html(langs1[e][lang]);
                 }
 
@@ -446,37 +454,37 @@
                             valign: 'middle'
                         }, {
                             field: 'name',
-                            title: '网关名称',  //网关名称
+                            title: langs1[314][lang],  //网关名称
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_comaddr',
-                            title: '网关地址',  //网关地址
+                            title: langs1[25][lang],  //网关地址
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_name',
-                            title: '灯具名称',  //灯具名称
+                            title: langs1[54][lang],  //灯具名称
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_factorycode',
-                            title: '灯具编号',  //灯具编号
+                            title: langs1[292][lang],  //灯具编号
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_code',
-                            title: '装置序号',  //装置序号
+                            title: langs1[315][lang],  //装置序号
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_worktype',
-                            title: '控制方式',  //控制方式
+                            title: langs1[316][lang],  //控制方式
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -496,7 +504,7 @@
                         },
                         {
                             field: 'l_groupe',
-                            title: '组号',   //组号
+                            title: langs1[26][lang],   //灯具组号
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -505,7 +513,7 @@
                             }
                         }, {
                             field: 'l_value',
-                            title: '调光值',  //调光值
+                            title: langs1[42][lang],  //调光值
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -518,16 +526,16 @@
                             }
                         }, {
                             field: 'l_deployment',
-                            title: '部署情况',  //部署情况
+                            title: langs1[317][lang],  //部署情况
                             width: 25,
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
                                 if (row.l_deplayment == "0") {
-                                    var str = "<span class='label label-warning'>末部署</span>"
+                                    var str = "<span class='label label-warning'>"+langs1[318][lang]+"</span>";  //末部署
                                     return  str;
                                 } else if (row.l_deplayment == "1") {
-                                    var str = "<span class='label label-success'>已部署</span>"
+                                    var str = "<span class='label label-success'>"+langs1[319][lang]+"</span>";  //已部署
                                     return  str;
                                 }
                             }
@@ -665,7 +673,7 @@
                                 <td>
                                     <span style="margin-left:10px;">
                                         <!--网关地址-->
-                                        <span id="25" name="xxx"></span>
+                                        <span id="25" name="xxx">网关地址</span>
                                         &nbsp;</span>
                                 </td>
                                 <td>
@@ -678,7 +686,7 @@
                                 <td>
                                     <span style="margin-left:10px;">
                                         <!--灯具组号-->
-                                        <span id="26" name="xxx"></span>
+                                        <span id="26" name="xxx">灯具组号</span>
                                         &nbsp;</span>
                                 </td>
                                 <td>
@@ -691,13 +699,13 @@
                                 <td>
                                     <span style="margin-left:10px;">
                                         <!-- 分组方式-->
-                                        <span id="28" name="xxx"></span>
+                                        <span id="28" name="xxx">分组方式</span>
                                         &nbsp;</span>
                                 </td>
                                 <td>
-                                            <select class="easyui-combobox" id="groupetype" name="groupetype" style="width:150px; height: 30px">
-                                        <option value="0"> 单灯调光</option>
-                                        <option value="1">组号调光</option>           
+                                    <select class="easyui-combobox" id="groupetype" name="groupetype" style="width:150px; height: 30px">
+                                        <option value="0" name="xxx" id="29">单灯调光</option>
+                                        <option value="1" name="xxx" id="30">组号调光</option>           
                                     </select>
 
 <!--                                    <select class="easyui-combobox" id="groupetype" name="groupetype"  style="width:150px; height: 30px">
@@ -720,8 +728,8 @@
                                 </td>
                                 <td>
                                     <select class="easyui-combobox" id="scenetype" name="scenetype" style="width:150px; height: 30px">
-                                        <option value="0">立即调光</option>
-                                        <option value="1">场景调光</option>           
+                                        <option value="0" name="xxx" id="32">立即调光</option>
+                                        <option value="1" name="xxx" id="33">场景调光</option>           
                                     </select>
                                 </td>
 
@@ -730,7 +738,7 @@
                                 <td>
                                     <button  type="button" style="margin-left:20px;" onclick="search()" class="btn btn-success btn-xm">
                                         <!-- 搜索-->
-                                        <span id="34" name="xxx"></span>
+                                        <span id="34" name="xxx">搜索</span>
                                     </button>&nbsp;
                                 </td>
                                 <td>
@@ -742,7 +750,7 @@
                                 <td>
                                     <button  type="button" style="margin-left:20px;" onclick="offlamp()" class="btn btn-success btn-xm">
                                         <!--关灯-->
-                                        <span id="36" name="xxx"></span>
+                                        <span id="36" name="xxx">关灯</span>
                                     </button>&nbsp;
                                 </td>
 
@@ -765,13 +773,13 @@
                                     <span id="37" name="xxx"></span>
                                     &nbsp;</span>
                                 <select class="easyui-combobox" id="type" name="type" style="width:150px; height: 30px">
-                                    <option value="1">单灯恢复</option>
-                                    <option value="2">按组恢复</option>    
-                                    <option value="3">全部恢复</option>  
+                                    <option value="1" name="xxx" id="38">单灯恢复</option>
+                                    <option value="2" name="xxx" id="39">按组恢复</option>    
+                                    <option value="3" name="xxx" id="40">全部恢复</option>  
                                 </select>
                                 <button  type="button" style="margin-left:20px;" onclick="restore()" class="btn btn-success btn-sm">
                                     <!--恢复自动运行-->
-                                    <span id="41" name="xxx"></span>
+                                    <span id="41" name="xxx">恢复自动运行</span>
                                 </button>
                             </td>
                         </tr>
@@ -783,7 +791,7 @@
                             <td>
                                 <span style="margin-left:10px;">
                                     <!--调光值-->
-                                    <span id="42" name="xxx"></span>
+                                    <span id="42" name="xxx">调光值</span>
                                     &nbsp;</span>
                                 <input id="val" value="0" class="form-control" readonly="true" name="val" style="width:50px;display: inline; height: 30px; " placeholder="调光值" type="text">
 
@@ -795,11 +803,11 @@
                             <td>
                                 <button  type="button"  name="btnsingle"  onclick="lightsingle()" class="btn btn-success btn-sm">
                                     <!--单灯立即调光-->
-                                    <span id="43" name="xxx"></span>
+                                    <span id="43" name="xxx">单灯立即调光</span>
                                 </button>
                                 <button  type="button" name="btngroupe"  style="display: none"  onclick="lightgroupe()" class="btn btn-success btn-sm">
                                     <!-- 按组立即调光-->
-                                    <span id="44" name="xxx"></span>
+                                    <span id="44" name="xxx">按组立即调光</span>
                                 </button>
                             </td>
                         </tr>
@@ -815,26 +823,26 @@
 
                                     <span style="margin-left:10px;">
                                         <!--场景号-->
-                                        <span id="47" name="xxx"></span>
+                                        <span id="47" name="xxx">场景号</span>
                                         &nbsp;</span>
                                     <!--<input id="scennum" class="form-control" name="scennum" style="width:50px;display: inline;" placeholder="场景号" type="text">&nbsp;-->
                                     <select class="easyui-combobox" id="scennum" name="scennum" style="width:150px; height: 30px">
-                                        <option value="1">场景1</option>
-                                        <option value="2">场景2</option>    
-                                        <option value="3">场景3</option> 
-                                        <option value="4">场景4</option> 
-                                        <option value="5">场景5</option> 
-                                        <option value="6">场景6</option> 
-                                        <option value="7">场景7</option> 
-                                        <option value="8">场景8</option> 
+                                        <option value="1" name="xxx" id="320">场景1</option>
+                                        <option value="2" name="xxx" id="321">场景2</option>    
+                                        <option value="3" name="xxx" id="322">场景3</option> 
+                                        <option value="4" name="xxx" id="323">场景4</option> 
+                                        <option value="5" name="xxx" id="324">场景5</option> 
+                                        <option value="6" name="xxx" id="325">场景6</option> 
+                                        <option value="7" name="xxx" id="326">场景7</option> 
+                                        <option value="8" name="xxx" id="327">场景8</option> 
                                     </select>
                                     <button  type="button"  name="btnsingle" style="margin-left:20px;" onclick="scenesingle()" class="btn btn-success btn-sm">
                                         <!--单灯场景调光-->
-                                        <span id="45" name="xxx"></span>
+                                        <span id="45" name="xxx">单灯场景调光</span>
                                     </button>
                                     <button  type="button" name="btngroupe" style="margin-left:20px; display: none" onclick="scenegroupe()" class="btn btn-success btn-sm">
                                         <!--按组场景调光-->
-                                        <span id="46" name="xxx"></span>
+                                        <span id="46" name="xxx">按组场景调光</span>
                                     </button>
                                 </td>
 

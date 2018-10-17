@@ -156,7 +156,7 @@
                     </xfltpara>
                 </xflt>      
             </xsql> 
-            <xsql id="a3" list="true" page="true" tpe="SQL" tpl=" select f_lampset from t_fault where f_Ishandle = 1" var="rs2">
+            <xsql id="a3" list="true" page="true" tpe="SQL" tpl=" select f_comaddr,f_setcode from t_fault where f_type ='ERC44' " var="rs2">
                      
             </xsql>               
         </xhandle>

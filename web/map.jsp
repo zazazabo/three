@@ -55,29 +55,40 @@
         <div id="up-map-div" style=" display: none">
             <table style=" margin-left: 10%; width: 80%;">
                 <tr style=" border-bottom:1px solid green">
-                    <th >状态</th>
+                    <th><span id="12" name="xxx">状态</span></th>
                     <th></th>
-                    <th>标识</th>
+                    <th><spn name="xxx" id="283">标识</spn></th>
                 </tr>
+               
                 <tr>
-                    <td>在线:</td>
+                    <td><span name="xxx" id="298">灯具在线</span>:</td>
                     <td style=" color: green;">-----------------</td>
-                    <td><img src="img/green2.png"></td>
+                    <td><img src="img/yl.png"></td>
                 </tr>
                 <tr>
-                    <td>离线:</td>
-                    <td style=" color: blue;">-----------------</td>
-                    <td><img src="img/blue.png"></td>
+                    <td><span name="xxx" id="299">灯具离线</span>:</td>
+                    <td style=" color:yellow;">-----------------</td>
+                    <td><img src="img/lyello.png"></td>
                 </tr>
                 <tr>
-                    <td>异常:</td>
+                    <td><span name="xxx" id="300">灯具异常</span>:</td>
+                    <td style=" color: red;">-----------------</td>
+                    <td><img src="img/lred.png"></td>
+                </tr>
+                <tr>
+                    <td><span name="xxx" id="296">网关在线</span>:</td>
+                    <td style=" color: green;">-----------------</td>
+                    <td><img src="img/wgreen.png"></td>
+                </tr>
+                <tr>
+                    <td><span name="xxx" id="297">网关离线</span>:</td>
                     <td style=" color: yellow;">-----------------</td>
-                    <td><img src="img/yellow.png"></td>
+                    <td><img src="img/wh.png"></td>
                 </tr>
             </table>
         </div>
         <!-- 添加 网关-->
-        <div  id="addwanguang" class="bodycenter"  style=" display: none" title="添加网关">
+        <div  id="addwanguang" class="bodycenter"  style=" display: none" >
             <div class="">
                 <div class="">
                     <table>
@@ -85,15 +96,14 @@
                             <tr>
                                 <td>
                                     <span style="margin-left:50px;" id="64" name="xxx">
-                                     <!-- 所属区域-->
+                                        所属区域
                                     </span>&nbsp;
                                     <input type="text" id ="area" style="width:150px; height: 30px;">
                                 </td>
                                 <td></td>
                                 <td>
-                                    <span style="margin-left:70px;">
-                                        <!-- 网关地址-->
-                                        <span id="25" name="xxx"></span>
+                                    <span style="margin-left:70px;">                                     
+                                        <span id="25" name="xxx">网关地址</span>
                                         &nbsp;</span>
                                     <input id="comaddrlist" data-options='editable:false,valueField:"id", textField:"text"' class="easyui-combobox"/>
                                 </td>
@@ -110,7 +120,7 @@
             </div>
         </div>
         <!--添加灯具-->
-        <div  id="addlamp" class="bodycenter"  style=" display: none" title="添加灯具">
+        <div  id="addlamp" class="bodycenter"  style=" display: none" >
             <div class="">
                 <div  style="min-width:700px;">   
                     <div class="">
@@ -119,19 +129,18 @@
                                 <tr>
                                     <td>
                                         <span style="margin-left:30px;" id="54" name="xxx">
-                                            <!--  灯具名称-->
+                                            灯具名称
                                         </span>&nbsp;
                                         <input type='text' id='lampname'>
                                     <td>
                                         <span style="margin-left:50px;">
-                                            <!--所属网关-->
-                                            <span id="55" name="xxx"></span>
+                                            <span id="55" name="xxx">所属网关</span>
                                             &nbsp;</span>
                                         <input id="lampcomaddrlist" data-options='editable:false,valueField:"id", textField:"text"' class="easyui-combobox"/>
                                     </td>
                                     <td>
                                         <!-- <input type="button" class="btn btn-sm btn-success" onclick="selectlamp()" value="搜索" style="margin-left:10px;">-->
-                                        <button class="btn btn-sm btn-success" onclick="selectlamp()" style="margin-left:10px;"><span id="34" name="xxx"></span></button>
+                                        <button class="btn btn-sm btn-success" onclick="selectlamp()" style="margin-left:10px;"><span id="34" name="xxx">搜索</span></button>
                                     </td>
                                 </tr>                                   
                             </tbody>
@@ -148,16 +157,23 @@
         </div>
 
         <script type="text/javascript">
-            //创建离线图标
-            var huiicon = new BMap.Icon('./img/blue.png', new BMap.Size(27, 28), {//20，30是图片大小
-                // anchor: new BMap.Size(0, 0)      //这个是信息窗口位置（可以改改看看效果）
-            });
-            //创建在线图标
-            var greenicon = new BMap.Icon('./img/green2.png', new BMap.Size(27, 28), {//20，30是图片大小
+            //创建网关在线图标
+            var wggreenicon = new BMap.Icon('./img/wgreen.png', new BMap.Size(27, 32), {//20，30是图片大小
                 //anchor: new BMap.Size(0, 0)      //这个是信息窗口位置（可以改改看看效果）
             });
-            //异常
-            var yellow = new BMap.Icon('./img/yellow.png', new BMap.Size(27, 28), {//20，30是图片大小
+            var wghuiicon = new BMap.Icon('./img/wh.png', new BMap.Size(27, 32), {//20，30是图片大小
+                //anchor: new BMap.Size(0, 0)      //这个是信息窗口位置（可以改改看看效果）
+            });
+            //创建灯具离线图标
+            var huiicon = new BMap.Icon('./img/lyello.png', new BMap.Size(27, 32), {//20，30是图片大小
+                // anchor: new BMap.Size(0, 0)      //这个是信息窗口位置（可以改改看看效果）
+            });
+            //创建灯具在线图标
+            var greenicon = new BMap.Icon('./img/yl.png', new BMap.Size(27, 32), {//20，30是图片大小
+                //anchor: new BMap.Size(0, 0)      //这个是信息窗口位置（可以改改看看效果）
+            });
+            //创建灯具异常图标
+            var yellow = new BMap.Icon('./img/lred.png', new BMap.Size(27, 28), {//20，30是图片大小
                 //anchor: new BMap.Size(0, 0)      //这个是信息窗口位置（可以改改看看效果）
             });
             //调用父页面的方法获取用户名
@@ -489,20 +505,20 @@
                                 var Longitude = obj.Longitude;
                                 var latitude = obj.latitude;
                                 var comaddr = obj.comaddr;
-                                var Iszx = "离线";
-                                if (obj.presence == 1) {
-                                    Iszx = "在线";
-                                }
+                                var Iszx = o[285][lang];   //离线                              
                                 if (Longitude != "" && latitude != "") {
+                                    if (obj.online == 1) {
+                                        Iszx =  o[284][lang];  //在线
+                                    }
                                     var point = new BMap.Point(Longitude, latitude);
                                     var marker1;
-                                    if (obj.presence == 1) {
+                                    if (obj.online == 1) {
                                         marker1 = new BMap.Marker(point, {
-                                            icon: greenicon
+                                            icon: wggreenicon
                                         });
                                     } else {
                                         marker1 = new BMap.Marker(point, {
-                                            icon: huiicon
+                                            icon: wghuiicon
                                         });
                                     }
                                     marker1.setTitle(comaddr + "," + Iszx);   //这里设置maker的title (鼠标放到marker点上,会出现它的title,所以我这里把name,放到title里)
@@ -544,21 +560,21 @@
                                     var obj = arrlist[i];
                                     var Longitude = obj.Longitude;
                                     var latitude = obj.latitude;
-                                    var Iszx = "离线";
-                                    if (obj.presence == 1) {
-                                        Iszx = "在线";
+                                    var Iszx = o[285][lang];   //离线    
+                                    if (obj.online == 1) {
+                                        Iszx = o[284][lang];   //在线    
                                     }
                                     if (Longitude != "" && latitude != "") {
                                         var point = new BMap.Point(Longitude, latitude);
                                         var marker1;
                                         var marker1;
-                                        if (obj.presence == 1) {
+                                        if (obj.online == 1) {
                                             marker1 = new BMap.Marker(point, {
-                                                icon: greenicon
+                                                icon: wggreenicon
                                             });
                                         } else {
                                             marker1 = new BMap.Marker(point, {
-                                                icon: huiicon
+                                                icon: wghuiicon
                                             });
                                         }
                                         marker1.setTitle(obj.comaddr + "," + Iszx);   //这里设置maker的title (鼠标放到marker点上,会出现它的title,所以我这里把name,放到title里)
@@ -567,7 +583,7 @@
                                     }
                                 }
                             } else {
-                                alert("不存在该网关");
+                                alert(o[301][lang]);  //不存在该网关
                             }
                         },
                         error: function () {
@@ -600,46 +616,49 @@
                                     var Longitude = obj.Longitude;
                                     var latitude = obj.latitude;
                                     //var s = obj.l_name;
-                                    var Iszx = "离线";    //是否离线
-                                    var Isfault = "正常"; //是否有故障
+                                    var Iszx = lans[285][lang];    //是否离线,离线
+                                    var Isfault = lans[13][lang]; //是否有故障,默认正常
+                                    var isfault2 = 0;
                                     for (var j = 0; j < flist.length; j++) {
-                                        if (arrlist[i].l_code == flist[j].f_lampset) {
-                                            Isfault = "异常";
+                                        if (arrlist[i].l_code == flist[j].f_setcode && arrlist[i].l_comaddr == flist[j].f_comaddr) {
+                                            Isfault = lans[14][lang]; //异常
+                                            isfault2 = 1;
                                             break;
                                         }
                                     }
                                     if (obj.presence == 1) {
                                         Iszx = "在线";
                                     }
+                                    //lans[][]代表的文字依次是：亮度、名称、灯具编号、网关地址、在线情况、状态
                                     var textvalue = "<div style='line-height:1.8em;font-size:12px;'>\n\
                                    \n\
                                     <table style='text-align:center'>\n\
                                         <tr>\n\
-                                            <td>亮度:</td>\n\
+                                            <td>" + lans[290][lang] + ":</td>\n\
                                             <td>" + arrlist[i].l_value + "</td>\n\
                                             <td></td>\n\
-                                            <td>名称:</td>\n\
+                                            <td>" + lans[63][lang] + ":</td>\n\
                                             <td>" + arrlist[i].l_name + "</td>\n\
                                         </tr>\n\
                                         <tr>\n\
-                                            <td>控制器地址:</td>\n\
+                                            <td>" + lans[292][lang] + ":</td>\n\
                                             <td>" + arrlist[i].l_factorycode + "</td>\n\
                                              <td>&nbsp&nbsp</td>\n\
-                                            <td>网关地址:</td>\n\
+                                            <td>" + lans[25][lang] + ":</td>\n\
                                             <td>" + arrlist[i].l_comaddr + "</td>\n\
                                         </tr>\n\ \n\
                                         <tr>\n\
-                                            <td>在线情况:</td>\n\
+                                            <td>" + lans[294][lang] + ":</td>\n\
                                             <td>" + Iszx + "</td>\n\
                                              <td>&nbsp&nbsp</td>\n\
-                                            <td>状态:</td>\n\
+                                            <td>" + lans[12][lang] + ":</td>\n\
                                             <td>" + Isfault + "</td>\n\
                                         </tr>\n\ \n\
                                     </table></div>";
                                     if ((Longitude != "" && latitude != "") && (Longitude != null && latitude != null)) {
                                         var point = new BMap.Point(Longitude, latitude);
                                         var marker1;
-                                        if (Isfault == "异常") {
+                                        if (isfault2 == 1) {
                                             marker1 = new BMap.Marker(point, {
                                                 icon: yellow
                                             });
@@ -773,7 +792,7 @@
                     $("#lamptable").bootstrapTable('refresh');
                     $('#addlamp').dialog("close");
                 } else {
-                    alert("请选择您要配置经纬度的设备!并且至少两个!");
+                    alert(lans[287][lang]);  //请选择您要配置经纬度的设备!并且至少两个!
                 }
             }
             //根据条件查询灯具
@@ -796,13 +815,11 @@
                 $("#lamptable").bootstrapTable('refresh', opt);
             }
             $(function () {
-                var lang = '${param.lang}';
-                var langs1 = parent.parent.getLnas();
                 var aaa = $("span[name=xxx]");
                 for (var i = 0; i < aaa.length; i++) {
                     var d = aaa[i];
                     var e = $(d).attr("id");
-                    $(d).html(langs1[e][lang]);
+                    $(d).html(lans[e][lang]);
                 }
                 var porjectId = parent.getpojectId();
                 //加载所有网关信息
@@ -823,6 +840,7 @@
                         }
                     }
                 });
+               
                 $("#addlamp").dialog({
                     autoOpen: false,
                     modal: false,
@@ -902,7 +920,7 @@
                                 marker.addEventListener("dragend", function (e) {
                                     var x = e.point.lng; //经度
                                     var y = e.point.lat; //纬度
-                                    if (confirm("该设备已有经纬度了，您确定更改么?")) {
+                                    if (confirm(lans[288][lang])) {  //该设备已有经纬度了，您确定更改吗?
                                         var obj2 = {};
                                         obj2.Longitude = x;
                                         obj2.latitude = y;
@@ -923,7 +941,7 @@
                                                     $("#wgtable").bootstrapTable('refresh', opt);
 
                                                 } else {
-                                                    alert("修改失败");
+                                                    alert(lans[281][lang]);  //修改失败
                                                 }
                                             },
                                             error: function () {
@@ -934,7 +952,7 @@
 
                                 });
                             } else {
-                                alert("修改失败");
+                                alert(lans[281][lang]);  //修改失败
                             }
                         },
                         error: function () {
@@ -1002,7 +1020,7 @@
                                 marker.addEventListener("dragend", function (e) {
                                     var x = e.point.lng; //经度
                                     var y = e.point.lat; //纬度
-                                    if (confirm("该设备已有经纬度了，您确定更改么?")) {
+                                    if (confirm(lans[288][lang])) {  //该设备已有经纬度了，您确定更改吗?
                                         var obj2 = {};
                                         obj2.Longitude = x;
                                         obj2.latitude = y;
@@ -1021,7 +1039,7 @@
                                                     };
                                                     $("#lamptable").bootstrapTable('refresh', opt);
                                                 } else {
-                                                    alert("修改失败");
+                                                    alert(lans[281][lang]);  //修改失败
                                                 }
                                             },
                                             error: function () {
@@ -1032,7 +1050,7 @@
 
                                 });
                             } else {
-                                alert("修改失败");
+                                alert(lans[281][lang]);  //修改失败
                             }
                         },
                         error: function () {
@@ -1059,7 +1077,7 @@
                     });
                     if (isboole) {
                         if (lng != null && lat != null) {
-                            if (confirm("该设备已有经纬度了，您确定更改么?")) {
+                            if (confirm(lans[288][lang])) {  //该设备已有经纬度了，您确定更改吗?
                                 updatelnglat(e.point.lng, e.point.lat, comaddr);
                                 var allOver = map.getOverlays(); //获取全部标注
                                 for (var j = 0; j < allOver.length; j++) {
@@ -1082,7 +1100,7 @@
                     if (String(lampchecck) == "[object Object]") {
                         if (lampchecck.length == 1) {
                             if (lampchecck[0].Longitude != null && lampchecck[0].latitude != null) {
-                                if (confirm("该设备已有经纬度了，您确定更改么?")) {
+                                if (confirm(lans[288][lang])) {  //该设备已有经纬度了，您确定更改吗?
                                     updateLamplnglat(e.point.lng, e.point.lat, lampchecck[0].id);
                                     var allOver = map.getOverlays(); //获取全部标注
                                     for (var j = 0; j < allOver.length; j++) {
@@ -1118,15 +1136,15 @@
                                 strokeOpacity: 0.5});//透明度
                             map.addOverlay(polyline);
 
-                            if (confirm("你还要继续选点吗？")) {
+                            if (confirm(lans[289][lang])) {  //你还要继续选点吗？
 
                             } else {
-
+                                console.log(array);
                                 for (var i = 0; i < idlist.length; i++) {
                                     //alert("id:" + idlist[i] + "lng:" + array[i].x + "lat:" + array[i].y);
                                     updateMayLamplnglat(array[i].x, array[i].y, idlist[i]);
                                 }
-                                alert("配置经纬度成功！");
+                                alert(lans[295][lang]); //配置经纬度成功
                                 var nobj = {};
                                 nobj.name = u_name;
                                 var day = getNowFormatDate2();

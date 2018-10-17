@@ -263,9 +263,10 @@
         <script>
             var myChart, myChart2, myChart3, myChart4, myChart5;
             var echarts;
+            var lang = '${param.lang}';
+            var langs1 = parent.parent.getLnas();
             $(function () {
-                var lang = '${param.lang}';
-                var langs1 = parent.parent.getLnas();
+                
                 var aaa = $("span[name=xxx]");
                 for (var i = 0; i < aaa.length; i++) {
                     var d = aaa[i];
@@ -304,7 +305,7 @@
                 diffpower = isNaN(diffpower) == true ? 0 : diffpower;
 
                 $("#differenceConsumption").html(diffpower.toFixed(2));
-                var status = diffpower < 0 ? "异常" : "正常";
+                var status = diffpower < 0 ? langs1[286][lang] : langs1[13][lang];    //异常、正常
                 $("#status").html(status);
 
                 var jnl = 1 - fatualpower / fplanpower
@@ -320,10 +321,8 @@
                 obj.status = status;
                 aa.push(obj);
                 var data = aa;
-                var jhnh = $("#9").html();  //计划能耗
-                var sjnh = $("#10").html(); //实际能耗
-                var pieData = [{value: data[0].plan_value, name: jhnh}, {value: data[0].num, name: sjnh}];
-                pieChart("echarts2", "", pieData, "用能计划");
+                var pieData = [{value: data[0].plan_value, name: langs1[9][lang]}, {value: data[0].num, name:  langs1[10][lang]}];  //计划能耗、实际能耗
+                pieChart("echarts2", "", pieData, langs1[27][lang]);  //用能计划
             })
 
 
@@ -389,8 +388,8 @@
                 var data = a4;
                 var echarts4DataX = [data[0].date1, data[0].date2, data[0].date3];
                 var echarts4DataY = [data[0].thisYear1, data[0].thisYear2, data[0].thisYear3];
-                var sjqs = $("#16").html();
-                ech4('echarts4',sjqs, '能耗', echarts4DataX, echarts4DataY, 'bar', 'kW·h', "#337dd7");
+                //var sjqs = $("#16").html();
+                ech4('echarts4',langs1[16][lang], langs1[302][lang], echarts4DataX, echarts4DataY, 'bar', 'kW·h', "#337dd7"); //数据趋势、能耗
 
 
                 var date = new Date();
@@ -511,13 +510,13 @@
                             mark: {show: true},
                             dataView: {show: true, readOnly: false},
                             restore: {show: true},
-                            saveAsImage: {show: true, title: '保存为图片'}
+                            saveAsImage: {show: true, title: '保存为图片'}  
                         }
                     },
                     calculable: true,
                     series: [
                         {
-                            name: '访问来源',
+                            name: langs1[303][lang],  //访问来源
                             type: 'pie',
                             radius: ['40%', '70%'], //圈圈的边框粗细
                             itemStyle: {

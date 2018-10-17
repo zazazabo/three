@@ -19,7 +19,8 @@
 
             var u_name = parent.parent.getusername();
             var o_pid = parent.parent.getpojectId();
-
+            var lang = '${param.lang}';//'zh_CN';
+            var langs1 = parent.parent.getLnas();
 
             function switchloopCB(obj) {
                 console.log(obj);
@@ -31,7 +32,7 @@
                     $.ajax({async: false, url: "loop.loopForm.modifySwitch.action", type: "get", datatype: "JSON", data: o,
                         success: function (data) {
                             $("#gravidaTable").bootstrapTable('updateCell', {index: param.row, field: "l_switch", value: obj.val});
-                            layerAler("回路控制成功")
+                            layerAler(langs1[328][lang]);  //回路控制成功
                             //$("#gravidaTable").bootstrapTable('refresh');
                         },
                         error: function () {
@@ -45,17 +46,17 @@
 
                 var o1 = $("#form1").serializeObject();
                 if (o1.l_comaddr == "") {
-                    layerAler("网关地址不能为空");
+                    layerAler(langs1[329][lang]);  //网关地址不能为空
                     return;
                 }
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
                 if (selects.length == 0) {
-                    layerAler("请勾选表格数据");
+                    layerAler(langs1[73][lang]);  //请勾选表格数据
                     return;
                 }
                 var select = selects[0];
                 if (select.l_deplayment == "0") {
-                    layerAler("请部署后再操作");
+                    layerAler(langs1[330][lang]); //请部署后再操作
                     return;
                 }
                 addlogon(u_name, "合闸开关", o_pid, "回路断合闸", "回路断合闸");
@@ -83,21 +84,21 @@
             function restoreloopCB(obj) {
                 console.log(obj);
                 if (obj.status == "success") {
-                    layerAler("恢复成功");
+                    layerAler(langs1[308][lang]); //恢复成功
                 }
 
             }
             function restoreloop() {
                 var o1 = $("#form1").serializeObject();
                 if (o1.l_comaddr == "") {
-                    layerAler("网关地址不能为空");
+                    layerAler(langs1[329][lang]);//网关地址不能为空
                     return;
                 }
                 addlogon(u_name, "恢复自动运行", o_pid, "回路断合闸", "恢复回路自动运行");
                 if (o1.type == "0") {
                     var selects = $('#gravidaTable').bootstrapTable('getSelections');
                     if (selects.length == 0) {
-                        layerAler("请勾选表格数据");
+                        layerAler(langs1[73][lang]);  //请勾选表格数据
                         return;
                     }
                     var select = selects[0];
@@ -129,8 +130,7 @@
             }
 
             $(function () {
-                var lang = '${param.lang}';//'zh_CN';
-                var langs1 = parent.parent.getLnas();
+                
                 var aaa = $("span[name=xxx]");
                 for (var i = 0; i < aaa.length; i++) {
                     var d = aaa[i];
@@ -157,25 +157,25 @@
                             valign: 'middle'
                         }, {
                             field: 'l_comaddr',
-                            title: '网关地址',
+                            title: langs1[25][lang],  //网关地址
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_name',
-                            title: '回路名称',
+                            title: langs1[331][lang],  //回路名称
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_code',
-                            title: '装置序号',
+                            title: langs1[315][lang], //装置序号
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_groupe',
-                            title: '组号',
+                            title: langs1[332][lang],  //组号
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -185,15 +185,15 @@
                             }
                         }, {
                             field: 'l_switch',
-                            title: '合闸参数',
+                            title: langs1[333][lang],  //合闸参数
                             width: 25,
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
                                 if (value == 170) {
-                                    return "断开"
+                                    return langs1[334][lang];  //断开
                                 } else if (value == 85) {
-                                    return "闭合";
+                                    return langs[335][lang];  //闭合
                                 }
 
 //                                var groupe = value.toString();
@@ -201,17 +201,17 @@
                             }
                         }, {
                             field: 'l_deployment',
-                            title: '部署情况',
+                            title: langs1[317][lang],  //部署情况
                             width: 25,
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
                                 if (row.l_deplayment == "0") {
-                                    var str = "<span class='label label-warning'>末部署</span>"
+                                    var str = "<span class='label label-warning'>"+langs1[318][lang]+"</span>";  //未部署
                                     return  str;
                                 } else if (row.l_deplayment == "1") {
                                     var obj1 = {index: index, data: row};
-                                    var str = "<span class='label label-success'>已部署</span>"
+                                    var str = "<span class='label label-success'>"+langs1[319][lang]+"</span>";  //已部署
                                     return  str;
                                 }
                             }
@@ -294,7 +294,7 @@
                         <td>
                             <span style="margin-left:10px;">
                                 <!-- 网关地址-->
-                                <span id="25" name="xxx"></span>
+                                <span id="25" name="xxx">网关地址</span>
                                 &nbsp;</span>
                             <span class="menuBox">
 
@@ -305,7 +305,7 @@
                         <td>
                             <span style="margin-left:10px;">
                                 <!-- 合闸开关-->
-                                <span id="77" name="xxx"></span>
+                                <span id="77" name="xxx">合闸开关</span>
                                 &nbsp;</span>
 
                             <select class="easyui-combobox" id="switch" name="switch" style="width:100px; height: 30px">
@@ -333,7 +333,7 @@
 
                             <button type="button" id="btnswitch" onclick="restoreloop()" class="btn btn-success btn-sm">
                                 <!--恢复自动运行-->
-                                <span id="41" name="xxx"></span>
+                                <span id="41" name="xxx">恢复自动运行</span>
                             </button>
 
                         </td>

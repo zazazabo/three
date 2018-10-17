@@ -443,7 +443,7 @@
             <span class="menuBox">
 
                 <select class="easyui-combobox" data-options="editable:false" id="p_type_query" name="p_type_query" style="width:150px; height: 30px">
-                    <option value="0">时间</option>
+                    <option value="0"> 时间</option>
                     <!--<option value="1">经纬度</option>-->           
                 </select>
 
