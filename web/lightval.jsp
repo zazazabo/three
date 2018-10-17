@@ -39,17 +39,18 @@
 
             }
             //开灯
-            function onlamp() {
+            function onlamp(val) {
+                val = parseInt(val);
                 var o = $("#formsearch").serializeObject();
                 var groupearr = $("#l_groupe").combobox("getData");
                 console.log(groupearr);
-                if (groupearr.length==0) {
+                if (groupearr.length == 0) {
                     layerAler(langs1[305][lang]);  //此网关下没部署灯具
                     return;
                 }
 
-                if (o.l_comaddr=="") {
-                     layerAler(langs1[172][lang]);  //网关不能空
+                if (o.l_comaddr == "") {
+                    layerAler(langs1[172][lang]);  //网关不能空
                     return;
                 }
                 addlogon(u_name, "灯具调光", o_pid, "灯具调光", "开灯");
@@ -57,9 +58,9 @@
                 vv.push(groupearr.length);
                 var comaddr = o.l_comaddr;
 
-                for(var i=0;i<groupearr.length;i++){
+                for (var i = 0; i < groupearr.length; i++) {
                     vv.push(parseInt(groupearr[i].id));
-                    vv.push(100);
+                    vv.push(val);
                 }
 
                 var num = randnum(0, 9) + 0x70;
@@ -67,32 +68,32 @@
                 var param = {};
                 param.l_groupe = l_groupe;
                 var data = buicode(comaddr, 0x04, 0xA5, num, 0, 302, vv); //01 03 F24     
-                dealsend2("A5", data, 302, "lightCB", comaddr, 3, 0, 100);       
+                dealsend2("A5", data, 302, "lightCB", comaddr, 3, 0, 100);
             }
             //关灯
-            function offlamp() {
-
-            var o = $("#formsearch").serializeObject();
+            function offlamp(val) {
+                val = parseInt(val);
+                var o = $("#formsearch").serializeObject();
                 var groupearr = $("#l_groupe").combobox("getData");
                 console.log(groupearr);
-                if (groupearr.length==0) {
+                if (groupearr.length == 0) {
                     layerAler(langs1[305][lang]);  //此网关下没部署灯具
                     return;
                 }
 
-                if (o.l_comaddr=="") {
+                if (o.l_comaddr == "") {
 
-                     layerAler(langs1[172][lang]);  //网关不能空
+                    layerAler(langs1[172][lang]);  //网关不能空
                     return;
                 }
-               addlogon(u_name, "灯具调光", o_pid, "灯具调光", "关灯");
+                addlogon(u_name, "灯具调光", o_pid, "灯具调光", "关灯");
                 var vv = new Array();
                 vv.push(groupearr.length);
                 var comaddr = o.l_comaddr;
 
-                for(var i=0;i<groupearr.length;i++){
+                for (var i = 0; i < groupearr.length; i++) {
                     vv.push(parseInt(groupearr[i].id));
-                    vv.push(0);
+                    vv.push(val);
                 }
 
                 var num = randnum(0, 9) + 0x70;
@@ -174,6 +175,40 @@
                     dealsend2("A5", data, 180, "restoreCB", l_comaddr, o.type, 0, select.l_code);
                 }
 
+            }
+
+
+            function sceneAllCB(obj){
+                console.log(obj);
+            }
+
+            function sceneAll() {
+                var o = $("#formsearch").serializeObject();
+                console.log(o);
+                var groupearr = $("#l_groupe").combobox("getData");
+                console.log(groupearr);
+                if (groupearr.length == 0) {
+                    layerAler(langs1[305][lang]);  //此网关下没部署灯具
+                    return;
+                }
+                if (o.l_comaddr == "") {
+                    layerAler(langs1[172][lang]);  //网关不能空
+                    return;
+                }
+                //addlogon(u_name, "灯具调光", o_pid, "灯具调光", "开灯");
+                var vv = new Array();
+                vv.push(groupearr.length);
+                var comaddr = o.l_comaddr;
+
+                for (var i = 0; i < groupearr.length; i++) {
+                    vv.push(parseInt(groupearr[i].id));
+                     var scenenum = o.scennum;
+                    vv.push(parseInt(o.scennum));
+                    
+                }
+                var num = randnum(0, 9) + 0x70;
+                var data = buicode(comaddr, 0x04, 0xA5, num, 0, 308, vv); //01 03
+                dealsend2("A5", data, 308, "sceneAllCB", comaddr, 0, 0, 0);
             }
             function scenegroupe() {
                 var obj = $("#formsearch").serializeObject();
@@ -260,33 +295,29 @@
                         o.l_value = obj.val;
                         o.l_comaddr = obj.comaddr;
                         o.l_groupe = param.l_groupe;
-                        if (obj.type==3) {
+                        if (obj.type == 3) {
                             $.ajax({async: false, url: "lamp.lampform.modifygroupevalAll.action", type: "get", datatype: "JSON", data: o,
-                                    success: function (data) {
-                                                if (data!=null) {
-                                                    $('#gravidaTable').bootstrapTable('refresh');
-                                                }
-
-                                            
-                                        
-                                    },
-                                    error: function () {
-                                        alert("提交失败！");
+                                success: function (data) {
+                                    if (data != null) {
+                                        $('#gravidaTable').bootstrapTable('refresh');
                                     }
-                                });    
-                        }else{
-                                $.ajax({async: false, url: "lamp.lampform.modifygroupeval.action", type: "get", datatype: "JSON", data: o,
-                                    success: function (data) {
-                                        var arrlist = data.rs;
-                                        if (arrlist.length >= 1) {
-
-                                            $('#gravidaTable').bootstrapTable('refresh');
-                                        }
-                                    },
-                                    error: function () {
-                                        alert("提交失败！");
+                                },
+                                error: function () {
+                                    alert("提交失败！");
+                                }
+                            });
+                        } else {
+                            $.ajax({async: false, url: "lamp.lampform.modifygroupeval.action", type: "get", datatype: "JSON", data: o,
+                                success: function (data) {
+                                    var arrlist = data.rs;
+                                    if (arrlist.length >= 1) {
+                                        $('#gravidaTable').bootstrapTable('refresh');
                                     }
-                                });    
+                                },
+                                error: function () {
+                                    alert("提交失败！");
+                                }
+                            });
                         }
 
                     }
@@ -365,7 +396,7 @@
                     var e = $(d).attr("id");
                     $(d).html(langs1[e][lang]);
                 }
-                
+
                 var option = $("option[name=xxx]");
                 for (var i = 0; i < option.length; i++) {
                     var d = option[i];
@@ -390,37 +421,37 @@
                             valign: 'middle'
                         }, {
                             field: 'name',
-                            title: langs1[314][lang],  //网关名称
+                            title: langs1[314][lang], //网关名称
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_comaddr',
-                            title: langs1[25][lang],  //网关地址
+                            title: langs1[25][lang], //网关地址
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_name',
-                            title: langs1[54][lang],  //灯具名称
+                            title: langs1[54][lang], //灯具名称
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_factorycode',
-                            title: langs1[292][lang],  //灯具编号
+                            title: langs1[292][lang], //灯具编号
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_code',
-                            title: langs1[315][lang],  //装置序号
+                            title: langs1[315][lang], //装置序号
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_worktype',
-                            title: langs1[316][lang],  //控制方式
+                            title: langs1[316][lang], //控制方式
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -440,7 +471,7 @@
                         },
                         {
                             field: 'l_groupe',
-                            title: langs1[26][lang],   //灯具组号
+                            title: langs1[26][lang], //灯具组号
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -449,7 +480,7 @@
                             }
                         }, {
                             field: 'l_value',
-                            title: langs1[42][lang],  //调光值
+                            title: langs1[42][lang], //调光值
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -462,16 +493,16 @@
                             }
                         }, {
                             field: 'l_deployment',
-                            title: langs1[317][lang],  //部署情况
+                            title: langs1[317][lang], //部署情况
                             width: 25,
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
                                 if (row.l_deplayment == "0") {
-                                    var str = "<span class='label label-warning'>"+langs1[318][lang]+"</span>";  //末部署
+                                    var str = "<span class='label label-warning'>" + langs1[318][lang] + "</span>";  //末部署
                                     return  str;
                                 } else if (row.l_deplayment == "1") {
-                                    var str = "<span class='label label-success'>"+langs1[319][lang]+"</span>";  //已部署
+                                    var str = "<span class='label label-success'>" + langs1[319][lang] + "</span>";  //已部署
                                     return  str;
                                 }
                             }
@@ -488,7 +519,7 @@
 //                    showRefresh: true,
                     showToggle: true,
                     // 设置默认分页为 50
-                    pageList: [100, 200,300,400],
+                    pageList: [100, 200, 300, 400],
                     onLoadSuccess: function () {  //加载成功时执行  表格加载完成时 获取集中器在线状态
 //                        console.info("加载成功");
                     },
@@ -520,21 +551,33 @@
                         if (record.value == 0) {
                             var valinput1 = $("button[name='btnsingle']");
                             var valinput2 = $("button[name='btngroupe']");
+                            var valinput3 = $("button[name='btnall']");
                             $(valinput1[0]).show();
                             $(valinput1[1]).show();
                             $(valinput2[0]).hide();
                             $(valinput2[1]).hide();
+                            $(valinput3[0]).hide();
+                            $(valinput3[1]).hide();
                         } else if (record.value == 1) {
                             var valinput1 = $("button[name='btnsingle']");
                             var valinput2 = $("button[name='btngroupe']");
+                            var valinput3 = $("button[name='btnall']");
                             $(valinput1[0]).hide();
                             $(valinput1[1]).hide();
                             $(valinput2[0]).show();
                             $(valinput2[1]).show();
-
-                            var o = $("#formsearch").serializeObject();
-                            console.log(o);
-
+                            $(valinput3[0]).hide();
+                            $(valinput3[1]).hide();
+                        } else if (record.value == 2) {
+                            var valinput1 = $("button[name='btnsingle']");
+                            var valinput2 = $("button[name='btngroupe']");
+                            var valinput3 = $("button[name='btnall']");
+                            $(valinput1[0]).hide();
+                            $(valinput1[1]).hide();
+                            $(valinput2[0]).hide();
+                            $(valinput2[1]).hide();
+                            $(valinput3[0]).show();
+                            $(valinput3[1]).show();
                         }
                     }
                 })
@@ -642,18 +685,8 @@
                                     <select class="easyui-combobox" id="groupetype" name="groupetype" style="width:150px; height: 30px">
                                         <option value="0" name="xxx" id="29">单灯调光</option>
                                         <option value="1" name="xxx" id="30">组号调光</option>           
-         
+                                        <option value="2" name="xxx" id="336">全部调光</option>           
                                     </select>
-
-<!--                                    <select class="easyui-combobox" id="groupetype" name="groupetype"  style="width:150px; height: 30px">
-                                        <option value="0">
-                                            单灯调光
-                                        </option>
-                                        <option value="1">
-                                            组号调光
-                                        </option>           
-                                    </select>   -->
-
 
                                 </td>
 
@@ -674,18 +707,16 @@
 
                                 <td>
                                     <button  type="button" style="margin-left:20px;" onclick="search()" class="btn btn-success btn-xm">
-                                        <!-- 搜索-->
                                         <span id="34" name="xxx">搜索</span>
                                     </button>&nbsp;
                                 </td>
                                 <td>
-                                    <button  type="button" style="margin-left:20px;" onclick="onlamp()" class="btn btn-success btn-xm">
-                                        <!--开灯-->
-                                        <span id="35" name="xxx"></span>
+                                    <button  type="button" style="margin-left:20px;" onclick="onlamp(100)" class="btn btn-success btn-xm">
+                                        <span id="35" name="xxx">开灯</span>
                                     </button>&nbsp;                                    
                                 </td>            
                                 <td>
-                                    <button  type="button" style="margin-left:20px;" onclick="offlamp()" class="btn btn-success btn-xm">
+                                    <button  type="button" style="margin-left:20px;" onclick="offlamp(0)" class="btn btn-success btn-xm">
                                         <!--关灯-->
                                         <span id="36" name="xxx">关灯</span>
                                     </button>&nbsp;
@@ -739,17 +770,14 @@
                             </td>
                             <td>
                                 <button  type="button"  name="btnsingle"  onclick="lightsingle()" class="btn btn-success btn-sm">
-                                    <!--单灯立即调光-->
                                     <span id="43" name="xxx">单灯立即调光</span>
                                 </button>
                                 <button  type="button" name="btngroupe"  style="display: none"  onclick="lightgroupe()" class="btn btn-success btn-sm">
-                                    <!-- 按组立即调光-->
                                     <span id="44" name="xxx">按组立即调光</span>
                                 </button>
 
-                                <button  type="button" name="btnall"  style="display: none"  onclick="lightgroupe()" class="btn btn-success btn-sm">
-                                    <!-- 按组立即调光-->
-                                    <span id="44" name="xxx"></span>
+                                <button  type="button" name="btnall"  style="display: none"  onclick='onlamp($("#val").val())' class="btn btn-success btn-sm">
+                                    <span id="336" name="xxx">全网调光</span>
                                 </button>
 
                             </td>
@@ -787,6 +815,12 @@
                                         <!--按组场景调光-->
                                         <span id="46" name="xxx">按组场景调光</span>
                                     </button>
+
+                                    <button  type="button" name="btnall" style="margin-left:20px; display: none" onclick="sceneAll()" class="btn btn-success btn-sm">
+                                        <!--全网场景调光-->
+                                        <span id="337" name="xxx">全网场景调光</span>
+                                    </button>
+
                                 </td>
 
                             </tr>

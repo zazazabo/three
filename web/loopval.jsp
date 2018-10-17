@@ -130,7 +130,7 @@
             }
 
             $(function () {
-                
+
                 var aaa = $("span[name=xxx]");
                 for (var i = 0; i < aaa.length; i++) {
                     var d = aaa[i];
@@ -157,13 +157,13 @@
                             valign: 'middle'
                         }, {
                             field: 'l_comaddr',
-                            title: langs1[25][lang],  //网关地址
+                            title: langs1[25][lang], //网关地址
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_name',
-                            title: langs1[331][lang],  //回路名称
+                            title: langs1[331][lang], //回路名称
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -175,7 +175,7 @@
                             valign: 'middle'
                         }, {
                             field: 'l_groupe',
-                            title: langs1[332][lang],  //组号
+                            title: langs1[332][lang], //组号
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -185,15 +185,15 @@
                             }
                         }, {
                             field: 'l_switch',
-                            title: langs1[333][lang],  //合闸参数
+                            title: langs1[333][lang], //合闸参数
                             width: 25,
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
                                 if (value == 170) {
-                                    return langs1[334][lang];  //断开
+                                    return langs1[340][lang];  //断开
                                 } else if (value == 85) {
-                                    return langs[335][lang];  //闭合
+                                    return langs1[339][lang];  //闭合
                                 }
 
 //                                var groupe = value.toString();
@@ -201,17 +201,17 @@
                             }
                         }, {
                             field: 'l_deployment',
-                            title: langs1[317][lang],  //部署情况
+                            title: langs1[317][lang], //部署情况
                             width: 25,
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
                                 if (row.l_deplayment == "0") {
-                                    var str = "<span class='label label-warning'>"+langs1[318][lang]+"</span>";  //未部署
+                                    var str = "<span class='label label-warning'>" + langs1[318][lang] + "</span>";  //未部署
                                     return  str;
                                 } else if (row.l_deplayment == "1") {
                                     var obj1 = {index: index, data: row};
-                                    var str = "<span class='label label-success'>"+langs1[319][lang]+"</span>";  //已部署
+                                    var str = "<span class='label label-success'>" + langs1[319][lang] + "</span>";  //已部署
                                     return  str;
                                 }
                             }
@@ -269,7 +269,7 @@
                     onSelect: function (record) {
                         var obj = {};
                         obj.l_comaddr = record.id;
-               
+
                         obj.pid = "${param.pid}";
                         console.log(obj);
                         var opt = {
@@ -317,8 +317,8 @@
                                 <!--合闸开关-->
                                 <span id="49" name="xxx"></span>
                             </button>
-                            
-                            
+
+
                             <span style="margin-left:10px;" id="48" name="xxx">
                                 <!--回路-->
                             </span>
