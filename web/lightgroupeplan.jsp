@@ -191,10 +191,9 @@
                             var o1 = {"num": a[num], "value": a[val]};
                             o[f] = JSON.stringify(o1);
                         }
-
-
+                        o.p_code=obj.param;
                         var ret = false;
-                        $.ajax({async: false, url: "lamp.planForm.editlampscene.action", type: "get", datatype: "JSON", data: o,
+                        $.ajax({async: false, url: "lamp.planForm.editlampscenebycode.action", type: "get", datatype: "JSON", data: o,
                             success: function (data) {
                                 var arrlist = data.rs;
                                 if (arrlist.length == 1) {

@@ -95,6 +95,17 @@
                 </xflt>
             </xsql>
         </xhandle>
+                <xhandle desc="修改灯具部署状态按装置号" id="modifyDepaymentByset" rtnype="JSON">
+            <xsql id="a1" para="l_deplayment" tpe="DDL" tpl="update t_lamp set l_deplayment=:l_deplayment where @CONDITION " var="rs">
+                <xflt id="CONDITION" tpl="@l_code AND @l_comaddr ">
+                    <xfltpara id="l_code" nrp="1=2" para="l_code" sql="l_code=:l_code">
+                    </xfltpara>
+
+                      <xfltpara id="l_comaddr" nrp="1=2" para="l_comaddr" sql="l_comaddr=':l_comaddr'">
+                    </xfltpara>
+                </xflt>
+            </xsql>
+        </xhandle>
         <xhandle desc="修改所有灯具部署状态" id="modifyAllDepayment" rtnype="JSON">
             <xsql id="a1" para="l_deplayment" tpe="DDL" tpl="update t_lamp set l_deplayment=:l_deplayment where l_deplayment=1 AND @CONDITION " var="rs">
                 <xflt id="CONDITION" tpl="@l_comaddr ">
@@ -186,6 +197,15 @@
            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT * FROM t_plan tp where  @CONDITION  " var="rs">
                 <xflt id="CONDITION" nrp="" tpl="@p_code">
                     <xfltpara id="p_code" nrp="1=2" para="p_code" sql="p_code = ':p_code'">
+                    </xfltpara>
+                </xflt>
+            </xsql>
+        </xhandle>
+
+                        <xhandle desc="修改灯具方案场景2" id="editlampscenebycode" rtn="rs" rtnype="JSON">
+            <xsql id="a1" para="p_name,p_scene1,p_scene2,p_scene3,p_scene4,p_scene5,p_scene6,p_scene7,p_scene8" tpe="DDL" tpl="update t_plan set p_name=':p_name',p_scene1=':p_scene1',p_scene2=':p_scene2',p_scene3=':p_scene3',p_scene4=':p_scene4',p_scene5=':p_scene5',p_scene6=':p_scene6',p_scene7=':p_scene7',p_scene8=':p_scene8' where @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@p_code ">
+                    <xfltpara id="p_code" nrp="1=2" para="p_code" sql="p_code=':p_code'">
                     </xfltpara>
                 </xflt>
             </xsql>
