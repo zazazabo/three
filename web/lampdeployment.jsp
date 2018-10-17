@@ -150,29 +150,7 @@
                 dealsend2("AA", data, 380, "readlampCB", comaddr, 0, 0, 0);
             }
 
-            function readlampsceneCB(obj){
-                console.log(obj);
-            }
-            function readlampscene(){
-                var selects = $('#gravidaTable').bootstrapTable('getSelections');
-                var vv = new Array();
-                if (selects.length == 0) {
-                    layerAler("请勾选表格数据");
-                    return;
-                }
-                var ele=selects[0];
-                var setcode = ele.l_code;
-                var l_code = parseInt(setcode);
-                var a = l_code >> 8 & 0x00FF;
-                var b = l_code & 0x00ff;
-                vv.push(b);//装置序号  2字节            
-                vv.push(a);//装置序号  2字节     
-
-                var comaddr = ele.l_comaddr;
-                var num = randnum(0, 9) + 0x70;
-                var data = buicode(comaddr, 0x04, 0xAA, num, 0, 404, vv);
-                dealsend2("AA", data, 404, "readlampsceneCB", comaddr, 0, 0, 0);
-            }
+           
             function deploylampCB(obj) {
 
 
@@ -527,9 +505,7 @@
                                 <td>
                                     <button style="margin-left:10px;"  type="button" onclick="readlamp()" class="btn btn-success btn-sm">读取灯具信息</button>
                                 </td>
-                                    <td>
-                                    <button style="margin-left:10px;"  type="button" onclick="readlampscene()" class="btn btn-success btn-sm">读取灯具场景配置</button>
-                                </td>
+      
                             </tr>
                         </tbody>
                     </table>

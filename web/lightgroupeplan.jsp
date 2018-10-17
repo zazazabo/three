@@ -340,7 +340,33 @@
 
             }
 
+              function  setlampAllPlanCB(obj){
 
+
+              }
+
+               function setlampAllPlan(){
+                 var obj = $("#form1").serializeObject();
+                console.log(obj);
+                if (obj.l_comaddr == "") {
+                    layerAler("网关不能为空");
+                    return;
+                }
+                    var vv = [];
+                    vv.push(0);
+                    for (var i = 0; i < 8; i++) {
+                        var a = "__num" + (i + 1).toString();
+                        var b = "__val" + (i + 1).toString();
+                        var num = parseInt(obj[a]);
+                        var val = parseInt(obj[b]);
+                        vv.push(num);
+                        vv.push(val);
+                    }
+                    var comaddr = obj.l_comaddr;
+                    var num = randnum(0, 9) + 0x70;
+                    var data = buicode(comaddr, 0x04, 0xA4, num, 0, 501, vv); //01 03 F24    
+                    dealsend2("A4", data, 501, "setlampAllPlanCB", comaddr, 0, obj.p_code, 0);
+               } 
             $(function () {
 
                 $('#type').combobox({
@@ -594,9 +620,12 @@
                                            data-options="editable:false,valueField:'id', textField:'text'" />
                             </td>
                             <td>
-                                <button onclick="setLampPlan()" type="button" class="btn btn-success btn-sm">部署灯具方案</button>
+                                <button onclick="setLampPlan()" type="button" class="btn btn-success btn-sm">部署分组灯具方案</button>
+
+                                <button  onclick="setlampAllPlan()" type="button" class="btn btn-success btn-sm">部署全网灯具场景方案</button>
                                 <button  onclick="readLampPlan()" type="button" class="btn btn-success btn-sm">读取分组灯具方案</button>
 
+                                
                                 <button  onclick="setNowTime()" type="button" class="btn btn-success btn-sm">设置当前时间</button>
 
                                 </form> 

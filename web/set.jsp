@@ -999,20 +999,15 @@
                                                         <option value="2">场景</option>           
                                                     </select>
                                                 </span> 
-                                                <span  onclick="setWowktype()" style=" margin-left: 2px;" class="label label-success"  name="xxx" id="207">更换</span>
-                                                &nbsp;
-                                                <!-- <button  type="button" onclick="setLampWowktype()" class="btn btn-success btn-sm">更换所有灯工作方式</button>&nbsp; -->
-
+                                                <span  onclick="setWowktype()" style=" margin-left: 2px;" class="label label-success label-sm"  name="xxx" id="207">更换</span>
+                                          
+                                            <button  type="button" onclick="delAllLamp()" class="btn btn-success btn-sm"><span id="209" name="xxx">删除全部灯具信息</span></button>
+                                            <button  style="float:right; margin-right: 5px;" type="button" onclick="delAllplan()" class="btn btn-success btn-sm"><span name="xxx" id="210">删除全部灯时间表</span></button>
                                             </td>
                                         </tr>
-                                        <tr><td></td></tr>
-                                        <tr>
-                                            <td>
-                                                <button  type="button" onclick="delAllLamp()" class="btn btn-success btn-sm"><span id="209" name="xxx">删除全部灯具信息</span></button>&nbsp;
-                                                <button  style="float:right; margin-right: 5px;" type="button" onclick="delAllplan()" class="btn btn-success btn-sm"><span name="xxx" id="210">删除全部灯时间表</span></button>&nbsp;
-                                                &nbsp;
-                                            </td>
-                                        </tr>
+                                  
+                          
+                                     
                                     </tbody>
                                 </table>
                             </div>
