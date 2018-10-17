@@ -399,7 +399,6 @@
                         row.id = row.id;
                         row.text = v;
                         var opts = $(this).combobox('options');
-                        console.log(row[opts.textField]);
                         return row[opts.textField];
                     },
                     onLoadSuccess: function (data) {
@@ -530,10 +529,10 @@
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
                                 if (value == 0) {
-                                    value = "0(时间)";
+                                    value = "(走时间)";
                                     return value;
                                 } else if (value == 1) {
-                                    value = "1(经纬度)";
+                                    value = "(走经纬度)";
                                     return value;
                                 }
                             }

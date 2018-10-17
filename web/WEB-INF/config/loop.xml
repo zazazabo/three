@@ -44,6 +44,17 @@
                 </xflt>
             </xsql>
         </xhandle>
+        <xhandle desc="修改回路部署状态" id="modifyDepaymentByCode" rtnype="JSON">
+            <xsql id="a1" para="l_deplayment" tpe="DDL" tpl="update t_loop set l_deplayment=:l_deplayment where @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@l_code AND @l_comaddr ">
+                    <xfltpara id="l_code" nrp="1=2" para="l_code" sql="l_code=:l_code">
+                    </xfltpara>
+                        <xfltpara id="l_comaddr" nrp="1=2" para="l_comaddr" sql="l_comaddr=':l_comaddr'">
+                    </xfltpara>
+                </xflt>
+            </xsql>
+        </xhandle>
+
              <xhandle desc="修改所有回路部署状态" id="modifyAllDepayment" rtnype="JSON">
             <xsql id="a1" para="l_deplayment" tpe="DDL" tpl="update t_loop set l_deplayment=:l_deplayment where l_deplayment=1 AND @CONDITION " var="rs">
                 <xflt id="CONDITION" nrp="" tpl="@l_comaddr ">

@@ -407,7 +407,6 @@
                 $('#p_plan').combobox({
                     url: "lamp.GroupeForm.getPlanlist.action?attr=1&pid=${param.pid}",
                     formatter: function (row) {
-                        console.log(row);
                         var v1 = row.p_type == 0 ? "(时间)" : "(场景)";
                         var v =  row.p_name + v1;
                         row.id = row.id;
@@ -434,7 +433,6 @@
                         }
                     },
                     onSelect: function (record) {
-                        console.log(record);
                         $('#type' + record.p_type).show();
                         var v = 1 - parseInt(record.p_type);
                         $('#type' + v.toString()).hide();
@@ -518,36 +516,14 @@
                                 <span style="margin-left:20px;">功能选择</span>&nbsp;
                                 <span class="menuBox">
                                     <select class="easyui-combobox"  id="type" name="type" data-options="editable:false,valueField:'id', textField:'text'" style="width:200px; height: 30px">
+                                        <option value="3">部署分组方案</option>   
                                         <option value="1" selected="true" >更换分组</option>
                                         <option value="2">按组更换工作方式 </option>
-                                        <option value="3">部署分组方案</option>           
+                                                
                                     </select>
                                 </span> 
                             </td>
-                            <!--                            
-                                                        <td>
-                                                            <span style="margin-left:10px;">新组号</span>
-                                                            <span class="menuBox">
-                                                                <input id="l_groupe1" class="easyui-combobox" name="l_groupe1" style="width:100px; height: 30px" 
-                                                                       data-options="editable:true,valueField:'id', textField:'text' " />
-                                                            </span> 
-                            
-                                                            <button  onclick="resetGroupe()" class="btn btn-success btn-sm">更换分组</button>
-                                                            <span  onclick="resetGroupe()" style=" margin-left: 2px;" class="label label-success" >更换分组</span>
-                                                        </td>
-                                                        <td>
-                            
-                                                            <span style="margin-left:20px;">新控制方式</span>&nbsp;
-                                                            <span class="menuBox">
-                                                                <select class="easyui-combobox"  id="l_worktype" name="l_worktype" data-options='editable:false' style="width:100px; height: 30px">
-                                                                    <option value="0" >时间</option>
-                                                                    <option value="1">经纬度</option>
-                                                                    <option value="2">场景</option>           
-                                                                </select>
-                                                            </span>  
-                                                            <button  onclick="resetWowktype()" class="btn btn-success btn-sm">更换工作方式</button>
-                                                            <span  onclick="resetWowktype()" style=" margin-left: 2px;" class="label label-success" >更换工作方式</span>
-                                                        </td>-->
+                           
 
                         </tr>
                     </table>

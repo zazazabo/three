@@ -566,7 +566,6 @@
                         row.id = row.id;
                         row.text = v;
                         var opts = $(this).combobox('options');
-                        console.log(row[opts.textField]);
                         return row[opts.textField];
                     },
                     onLoadSuccess: function (data) {
@@ -608,8 +607,6 @@
                     if (value == "l_plan") {
                         if (element.l_deplayment == "1") {
                             if (element.l_worktype == "0") {
-
-                                console.log(element.l_plantime);
                                 var o = {p_code: element.l_plantime};
                                 $.ajax({async: false, url: "lamp.planForm.getLampPlanData.action", type: "get", datatype: "JSON", data: o,
                                     success: function (data) {
@@ -792,11 +789,11 @@
                     pagination: true,
                     sidePagination: 'server',
                     pageNumber: 1,
-                    pageSize: 5,
+                    pageSize: 50,
                     showRefresh: true,
                     showToggle: true,
                     // 设置默认分页为 50
-                    pageList: [5, 10, 15, 20, 25],
+                    pageList: [50, 100, 200, 300, 400],
                     onLoadSuccess: function () {  //加载成功时执行  表格加载完成时 获取集中器在线状态
 //                        console.info("加载成功");
                     },
