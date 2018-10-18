@@ -28,13 +28,13 @@
                 var reg = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/
                 return reg.test(ip);
             }
-            
-            function refleshgayway(obj){
+
+            function refleshgayway(obj) {
                 var vv = [];
                 var l_comaddr = "17020101";
                 var num = randnum(0, 9) + 0x70;
-                var data ="0"
-                dealsend2("ALL", data, 1, "ALL", l_comaddr, 0, 0, 0);               
+                var data = "0"
+                dealsend2("ALL", data, 1, "ALL", l_comaddr, 0, 0, 0);
             }
 
             function readTrueTimeCB(obj) {
@@ -177,9 +177,70 @@
 
                     } else if (obj.msg == "A4" && obj.fn == 402) {
                         layerAler(langs1[171][lang]);  //删除全部回路时间表成功
+                    } else if (obj.msg == "FE" && obj.fn == 10) {
+                        var data = Str2BytesH(obj.data);
+                        var i = 18;
+                        var wfw = data[i] & 0xf;
+                        var qfw = data[i] >> 4 & 0xf;
+                        var bfw = data[i + 1] & 0xf;
+                        var sfw = data[i + 1] >> 4 & 0xf;
+                        var gw = data[i + 2] & 0xf;
+                        var sw = data[i + 2] >> 4 & 0xf;
+                        var bw = data[i + 3] & 0xf;
+                        var qw = data[i + 3] >> 4 & 0xf;
+                        var jd = sprintf("%d%d%d%d.%d%d%d%d", qw, bw, sw, gw, sfw, bfw, qfw, wfw);
+                        console.log(jd);
+                        i = i + 4;
+                        wfw = data[i] & 0xf;
+                        qfw = data[i] >> 4 & 0xf;
+                        bfw = data[i + 1] & 0xf;
+                        sfw = data[i + 1] >> 4 & 0xf;
+                        gw = data[i + 2] & 0xf;
+                        sw = data[i + 2] >> 4 & 0xf;
+                        bw = data[i + 3] & 0xf;
+                        qw = data[i + 3] >> 4 & 0xf;
+                        var wd = sprintf("%d%d%d%d.%d%d%d%d", qw, bw, sw, gw, sfw, bfw, qfw, wfw);
+                        console.log(wd);
+                        i = i + 4;
+                        var outoffset = data[i];
+                        var inoffset = data[i + 1];
+                        i = i + 2;
+                        var timezone1 = data[i];
+                        var timezone2 = data[i + 1];
+                        var str1 = sprintf("%02d", timezone2);
+                        $("#Longitude").val(jd);
+                        $("#latitude").val(wd);
+                        $("#outoffset").val(inoffset);
+                        $("#inoffset").val(inoffset);
+                        $("#timezone").val(str1);
+                        var str = timezone1 >> 4 & 0xf;
+                        $("#areazone").combobox("select", str);
                     }
 
                 }
+            }
+
+            function readjwd() {
+                var o = $("#form1").serializeObject();
+                var obj = $("#form2").serializeObject();
+
+                var vv = [];
+                vv.push(1);
+                vv.push(parseInt(obj.l_groupe)); //新组号  1字节            
+                var comaddr = o.l_comaddr;
+                var num = randnum(0, 9) + 0x70;
+                var data = buicode(comaddr, 0x04, 0xFE, num, 0, 10, vv); //01 03 F24   
+                dealsend2("FE", data, 10, "allCallBack", comaddr, 0, 0, obj.l_groupe);
+            }
+            function setjwd() {
+                var o = $("#form1").serializeObject();
+                console.log(o);
+//                var longrg = /^(\-|\+)?(((\d|[1-9]\d|1[0-7]\d|0{1,3})\.\d{0,6})|(\d|[1-9]\d|1[0-7]\d|0{1,3})|180\.0{0,6}|180)$/;
+//
+//                if (!longrg.test(o.Longitude)) {
+//                    layerAler('经度整数部分为0-180,小数部分为0到6位!');
+//                }
+
             }
 
             function setGroupe() {
@@ -406,7 +467,7 @@
 
                 console.log(obj);
                 if (obj.status == "success") {
-                    layer.confirm(langs1[173][lang], {  //确定修改网关指向的域名？
+                    layer.confirm(langs1[173][lang], {//确定修改网关指向的域名？
                         btn: [langs1[146][lang], langs1[147][lang]], //确定、取消按钮
                         icon: 3,
                         offset: 'center',
@@ -801,6 +862,7 @@
                                                         <option value="5">网关行政区划码</option> 
                                                         <option value="6">设置灯具</option> 
                                                         <option value="7">设置回路</option> 
+                                                        <option value="8">读取经纬度</option> 
                                                     </select>
                                                 </span>  
                                             </td>
@@ -1000,14 +1062,14 @@
                                                     </select>
                                                 </span> 
                                                 <span  onclick="setWowktype()" style=" margin-left: 2px;" class="label label-success label-sm"  name="xxx" id="207">更换</span>
-                                          
-                                            <button  type="button" onclick="delAllLamp()" class="btn btn-success btn-sm"><span id="209" name="xxx">删除全部灯具信息</span></button>
-                                            <button  style="float:right; margin-right: 5px;" type="button" onclick="delAllplan()" class="btn btn-success btn-sm"><span name="xxx" id="210">删除全部灯时间表</span></button>
+
+                                                <button  type="button" onclick="delAllLamp()" class="btn btn-success btn-sm"><span id="209" name="xxx">删除全部灯具信息</span></button>
+                                                <button  style="float:right; margin-right: 5px;" type="button" onclick="delAllplan()" class="btn btn-success btn-sm"><span name="xxx" id="210">删除全部灯时间表</span></button>
                                             </td>
                                         </tr>
-                                  
-                          
-                                     
+
+
+
                                     </tbody>
                                 </table>
                             </div>
@@ -1021,6 +1083,84 @@
                                             <td>       
                                                 <button  type="button" onclick="delAllLoop()" class="btn btn-success btn-sm"><span id="211" name="xxx">删除全部回路开关信息</span></button>&nbsp;
                                                 <button  type="button" onclick="delAllLoopPlan()" class="btn btn-success btn-sm"><span id="212">删除全部回路时间表</span></button>&nbsp;
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="row" id="row8"  style=" display: none">
+                            <div class="col-xs-12">
+                                <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629;">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <span style=" float: right; " name="xxxx" id="199">经度&nbsp;</span>&nbsp;
+                                            </td>
+                                            <td>
+                                                <input id="Longitude"  value="" style="width:100px;" placeholder="经度" type="text">
+                                            </td>
+                                            <td>
+                                                <span style="float: right; " name="xxxx" id="199">纬度&nbsp;</span>
+                                            </td>
+                                            <td>
+                                                <input id="latitude"  value="" style="width:100px;" placeholder="纬度" type="text">
+                                            </td>
+
+
+                                            <td>
+                                                <span style="float: right; " name="xxxx" id="199">&nbsp;时区范围:</span>
+
+
+                                            </td>
+                                            <td>
+                                                <select class="easyui-combobox" id="areazone" name="areazone" data-options="editable:false,valueField:'id', textField:'text'" style="width:100px; height: 30px">
+                                                    <option value="0" >东经</option>
+                                                    <option value="1">西经</option>
+                                                </select>
+
+                                            </td>
+
+
+
+
+                                            <td>
+                                                <span style="float: right; " name="xxxx" id="199">&nbsp;时区</span>
+                                            </td>
+
+
+
+                                            <td>
+                                                <input id="timezone" name="timezone" value="" style="width:100px;" placeholder="时区" type="text">
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span style="margin-left:10px; " name="xxxx" id="199">日出偏移</span>&nbsp;
+                                            </td>
+                                            <td>
+                                                <input id="outoffset" class="form-control" name="outoffset" value="" style="width:100px;" placeholder="日出偏移" type="text">
+                                            </td>
+                                            <td>
+                                                <span style="margin-left:10px; " name="xxxx" id="199">日落偏移</span>&nbsp;
+                                            </td>
+                                            <td>
+                                                <input id="inoffset"  name="inoffset" value="" style="width:100px;" placeholder="日落偏移" type="text">
+                                            </td> 
+
+
+                                        </tr>
+
+                                        <tr>
+                                            <td >
+                                                <button  type="button" onclick="readjwd()" class="btn btn-success btn-sm"><span id="205" name="xxx">读取</span> </button>
+                                            </td>
+                                            <td>     <button type="button"  onclick="setjwd()" class="btn  btn-success btn-sm" style="margin-left: 10px;"><span id="49" name="xxx">设置</span></button></td>
+                                            <td>
+
+                                                &nbsp;
                                             </td>
                                         </tr>
                                     </tbody>
