@@ -207,7 +207,7 @@
                         i = i + 2;
                         var timezone1 = data[i];
                         var timezone2 = data[i + 1];
-                        var str1 = sprintf("%02d", timezone2);
+                        var str1 = sprintf("%02d%02d", timezone2);
                         $("#Longitude").val(jd);
                         $("#latitude").val(wd);
                         $("#outoffset").val(inoffset);
