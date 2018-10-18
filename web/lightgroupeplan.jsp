@@ -18,6 +18,8 @@
         <script>
             var u_name = parent.parent.getusername();
             var o_pid = parent.parent.getpojectId();
+            var lang = '${param.lang}';//'zh_CN';
+            var langs1 = parent.parent.getLnas();
             var websocket = null;
             function layerAler(str) {
                 layer.alert(str, {
@@ -44,7 +46,7 @@
                         success: function (data) {
                             var arrlist = data.rs;
                             if (arrlist.length == 1) {
-                                layerAler("更换工作方式成功")
+                                layerAler(langs1[391][lang]);   //更换工作方式成功
                             }
                         },
                         error: function () {
@@ -56,7 +58,7 @@
             function resetWowktype() {
                 var o = $("#form1").serializeObject();
                 if (o.l_comaddr == "" || o.l_groupe == "") {
-                    layerAler("网关或组号不能为空");
+                    layerAler(langs1[392][lang]);  //网关或组号不能为空
                     return;
                 }
                 var oldlgroupe = ""
@@ -93,7 +95,7 @@
                         }
                     });
 
-                    layerAler("修改灯具组号成功");
+                    layerAler(langs1[393][lang]);   //修改灯具组号成功
 
                 }
             }
@@ -101,7 +103,7 @@
 
                 var o = $("#form1").serializeObject();
                 if (o.l_comaddr == "" || o.l_groupe == "") {
-                    layerAler("网关或组号不能为空");
+                   layerAler(langs1[392][lang]);  //网关或组号不能为空
                     return;
                 }
                 o.type = 2;
@@ -154,7 +156,7 @@
                                 var arrlist = data.rs;
                                 if (arrlist.length == 1) {
                                    // $('#p_plan').combobox('reload');
-                                    layerAler("部署灯具时间方案成功");
+                                    layerAler(langs1[394][lang]);  //部署灯具时间方案成功
                                     // $('#p_plan').combobox('setValue', a.p_code);
                                 }
                             },
@@ -341,7 +343,13 @@
             }
 
 
-            $(function () {
+            $(function () {               
+                var aaa = $("span[name=xxx]");
+                for (var i = 0; i < aaa.length; i++) {
+                    var d = aaa[i];
+                    var e = $(d).attr("id");
+                    $(d).html(langs1[e][lang]);
+                }
 
                 $('#type').combobox({
                     onLoadSuccess: function (data) {

@@ -271,7 +271,7 @@
                         var headStr = '序号,名称,网关地址,经度,纬度,倍率,安装位置';
                         for (var i = 0; i < persons.length; i++) {
                             if (Object.keys(persons[i]).join(',') !== headStr) {
-                                alert("导入文件格式不正确");
+                                alert(langs1[366][lang]); //导入文件格式不正确
                                 persons = [];
                             }
                         }
