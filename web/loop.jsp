@@ -731,28 +731,7 @@
 
         <!--        <a data-toggle="modal" href="lamp.jsp" data-target="#modal">Click me</a>-->
 
-
-        <!-- 页面中的弹层代码 -->
-        <div class="btn-group zuheanniu" id="zuheanniu" style="float:left;position:relative;z-index:100;margin:12px 0 0 10px;">
-            <button class="btn btn-success ctrol" onclick="showDialog();" data-toggle="modal" data-target="#pjj5" id="add" >  
-                <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;<span name="xxx" id="65">添加</span>
-            </button>
-
-            <button class="btn btn-primary ctrol"  onclick="modifyModal();" id="update" >
-                <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span name="xxx" id="66">编辑</span>
-            </button>
-            <button class="btn btn-danger ctrol" id="shanchu">
-                <span class="glyphicon glyphicon-trash"></span>&nbsp;<span name="xxx" id="67">删除</span>
-            </button>
-            <button class="btn btn-success ctrol" onclick="excel()" id="addexcel" >
-                <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;
-                <span name="xxx" id="353">导入Excel</span>
-            </button>
-            <button type="button" id="btn_download" class="btn btn-primary" onClick ="$('#gravidaTable').tableExport({type: 'excel', escape: 'false'})">
-               <span name="xxx" id="110">导出Excel</span>
-            </button>
-        </div>
-        <div class="row" >
+           <div class="row" >
             <div class="col-xs-12">
                 <table style="border-collapse:separate;  border-spacing:0px 10px;border: 1px solid #16645629; margin-left: 10px; margin-top: 10px; align-content:  center">
                     <tbody>
@@ -790,6 +769,26 @@
                     </tbody>
                 </table> 
             </div>
+        </div>
+        <!-- 页面中的弹层代码 -->
+        <div class="btn-group zuheanniu" id="zuheanniu" style="float:left;position:relative;z-index:100;margin:12px 0 0 10px;">
+            <button class="btn btn-success ctrol" onclick="showDialog();" data-toggle="modal" data-target="#pjj5" id="add" >  
+                <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;<span name="xxx" id="65">添加</span>
+            </button>
+
+            <button class="btn btn-primary ctrol"  onclick="modifyModal();" id="update" >
+                <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span name="xxx" id="66">编辑</span>
+            </button>
+            <button class="btn btn-danger ctrol" id="shanchu">
+                <span class="glyphicon glyphicon-trash"></span>&nbsp;<span name="xxx" id="67">删除</span>
+            </button>
+            <button class="btn btn-success ctrol" onclick="excel()" id="addexcel" >
+                <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;
+                <span name="xxx" id="353">导入Excel</span>
+            </button>
+            <button type="button" id="btn_download" class="btn btn-primary" onClick ="$('#gravidaTable').tableExport({type: 'excel', escape: 'false'})">
+               <span name="xxx" id="110">导出Excel</span>
+            </button>
         </div>
 
         <div style="width:100%;">

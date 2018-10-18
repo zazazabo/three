@@ -59,7 +59,7 @@
                     <th></th>
                     <th><spn name="xxx" id="283">标识</spn></th>
                 </tr>
-               
+
                 <tr>
                     <td><span name="xxx" id="298">灯具在线</span>:</td>
                     <td style=" color: green;">-----------------</td>
@@ -95,17 +95,20 @@
                         <tbody class="search">
                             <tr>
                                 <td>
-                                    <span style="margin-left:50px;" id="64" name="xxx">
+                                    <span style="margin-left:0px;" id="64" name="xxx">
                                         所属区域
                                     </span>&nbsp;
                                     <input type="text" id ="area" style="width:150px; height: 30px;">
                                 </td>
-                                <td></td>
                                 <td>
-                                    <span style="margin-left:70px;">                                     
+                                    <span style="margin-left:30px;">                                     
                                         <span id="25" name="xxx">网关地址</span>
                                         &nbsp;</span>
                                     <input id="comaddrlist" data-options='editable:false,valueField:"id", textField:"text"' class="easyui-combobox"/>
+                                </td>
+                                <td>
+                                    <!-- <input type="button" class="btn btn-sm btn-success" onclick="selectlamp()" value="搜索" style="margin-left:10px;">-->
+                                    <button class="btn btn-sm btn-success" onclick="getInfoByComaddr()" style="margin-left:10px;"><span id="34" name="xxx">搜索</span></button>
                                 </td>
                             </tr>
                         </tbody>
@@ -334,7 +337,7 @@
 
                             }
                         }],
-                    singleSelect: true,
+                    singleSelect: false,
                     sortName: 'id',
                     locale: 'zh-CN', //中文支持,
                     // minimumCountColumns: 7, //最少显示多少列
@@ -508,7 +511,7 @@
                                 var Iszx = o[285][lang];   //离线                              
                                 if (Longitude != "" && latitude != "") {
                                     if (obj.online == 1) {
-                                        Iszx =  o[284][lang];  //在线
+                                        Iszx = o[284][lang];  //在线
                                     }
                                     var point = new BMap.Point(Longitude, latitude);
                                     var marker1;
@@ -553,7 +556,6 @@
                     obj.pid = pid;
                     $.ajax({async: false, url: "login.map.lnglat.action", type: "get", datatype: "JSON", data: obj,
                         success: function (data) {
-                            console.log(data);
                             var arrlist = data.rs;
                             if (arrlist.length > 0) {
                                 for (var i = 0; i < arrlist.length; i++) {
@@ -734,8 +736,13 @@
                         $("#lamptable").bootstrapTable('refresh', opt);
                         var id = "#lampcomaddrlist";
                         combobox(id, porjectId);
+                        //清空标记
                         draw = false;
                         idlist = [];
+                        onedraw = false;
+                        wgdraw =false;
+                        wgonedraw = false;
+                        wgidlist = [];  
                         $("#addlamp").dialog("open");
 
 
@@ -770,12 +777,21 @@
                         //加载所属网关
                         var id = "#comaddrlist";
                         combobox(id, porjectId);
+                        //清空标记
+                        wgdraw =false;
+                        wgonedraw = false;
+                        wgidlist = [];  
+                        draw = false;
+                        idlist = [];
+                        onedraw = false;
                         $('#addwanguang').dialog('open');
                     }
                 }
             ];
-            //选点绘线
-            var draw = false;   //标记是否绘线
+            //灯具选点绘线
+            var draw = false;   //标记是否多点绘线
+            var onedraw = false;  //勾选单个灯具
+            var lampchecck;   //勾选单个灯具对象
             var idlist = new Array();  //标记选中的id
             function  Drawing() {
                 var lampchecck2 = $("#lamptable").bootstrapTable('getSelections');
@@ -791,8 +807,51 @@
                     });
                     $("#lamptable").bootstrapTable('refresh');
                     $('#addlamp').dialog("close");
+                } else if (lampchecck2.length == 1) {
+                    onedraw = true;
+                    lampchecck = lampchecck2[0];
+                    $("#lamptable input:checkbox").each(function () {
+                        if ($(this).is(":checked")) {
+                            $(this).prop("checked", false);
+                        }
+                    });
+                    $("#lamptable").bootstrapTable('refresh');
+                    $('#addlamp').dialog("close");
                 } else {
-                    alert(lans[287][lang]);  //请选择您要配置经纬度的设备!并且至少两个!
+                    alert(lans[73][lang]);  //请勾选表格数据
+                }
+            }
+            //网关选点绘线
+            var wgdraw = false;   //标记网关是否多点绘线
+            var wgonedraw = false;  //勾选单个网关
+            var wgchecck;   //勾选单个网关对象
+            var wgidlist = new Array();  //标记选中网关的id
+            function  wgDrawing() {
+                var wgcheck2 = $("#wgtable").bootstrapTable('getSelections');
+                if (wgcheck2.length > 1) {
+                    wgdraw = true;
+                    for (var i = 0; i < wgcheck2.length; i++) {
+                        wgidlist.push(wgcheck2[i].comaddr);
+                    }
+                    $("#wgtable input:checkbox").each(function () {
+                        if ($(this).is(":checked")) {
+                            $(this).prop("checked", false);
+                        }
+                    });
+                    $("#wgtable").bootstrapTable('refresh');
+                    $('#addwanguang').dialog("close");
+                } else if (wgcheck2.length == 1) {
+                    wgonedraw = true;
+                    wgchecck = wgcheck2[0];
+                    $("#wgtable input:checkbox").each(function () {
+                        if ($(this).is(":checked")) {
+                            $(this).prop("checked", false);
+                        }
+                    });
+                    $("#wgtable").bootstrapTable('refresh');
+                    $('#addwanguang').dialog("close");
+                } else {
+                    alert(lans[73][lang]);  //请勾选表格数据
                 }
             }
             //根据条件查询灯具
@@ -829,18 +888,18 @@
                 $("#addwanguang").dialog({
                     autoOpen: false,
                     modal: false,
-                    width: 600,
+                    width: 650,
                     height: 550,
                     position: ["top", "top"],
                     buttons: {
-                        搜索: function () {
-                            getInfoByComaddr();
+                        选点绘线: function () {
+                           wgDrawing();
                         }, 关闭: function () {
                             $(this).dialog("close");
                         }
                     }
                 });
-               
+
                 $("#addlamp").dialog({
                     autoOpen: false,
                     modal: false,
@@ -1029,15 +1088,16 @@
                                             success: function (data) {
                                                 var arrlist = data.rs;
                                                 if (arrlist.length == 1) {
-                                                    var obj = {};
-                                                    obj.pid = porjectId;
-                                                    var opt = {
-                                                        //method: "post",
-                                                        url: "login.map.lamp.action",
-                                                        silent: true,
-                                                        query: obj
-                                                    };
-                                                    $("#lamptable").bootstrapTable('refresh', opt);
+//                                                    var obj = {};
+//                                                    obj.pid = porjectId;
+//                                                    var opt = {
+//                                                        //method: "post",
+//                                                        url: "login.map.lamp.action",
+//                                                        silent: true,
+//                                                        query: obj
+//                                                    };
+//                                                    $("#lamptable").bootstrapTable('refresh', opt);
+                                                    alert(langs[143][lang]);  //修改成功
                                                 } else {
                                                     alert(lans[281][lang]);  //修改失败
                                                 }
@@ -1060,25 +1120,28 @@
                 }
                 //给地图添加点击事件
                 var array = [];   //存储排练标注的经纬度数组
+                var wgarray = []; //存储排练标注网关的经纬度数组
                 map.addEventListener("click", function (e) {
                     var isboole = false; //判断弹出框是否选中数据
                     var comaddr; //存储选中数据的通信地址
                     var lng; //经度
                     var lat; //纬度
-                    //网关的修改
-                    $("#wgtable input:checkbox").each(function () {
-                        if ($(this).is(":checked")) {
-                            var select = $("#wgtable").bootstrapTable('getSelections');
-                            comaddr = select[0].comaddr;
-                            lng = select[0].Longitude;
-                            lat = select[0].latitude;
-                            isboole = true;
-                        }
-                    });
-                    if (isboole) {
-                        if (lng != null && lat != null) {
+//                    //网关的修改
+//                    $("#wgtable input:checkbox").each(function () {
+//                        if ($(this).is(":checked")) {
+//                            var select = $("#wgtable").bootstrapTable('getSelections');
+//                            comaddr = select[0].comaddr;
+//                            lng = select[0].Longitude;
+//                            lat = select[0].latitude;
+//                            isboole = true;
+//                        }
+//                    });
+                    
+                    //修改单个网关
+                    if (wgonedraw) {
+                        if (wgchecck.Longitude != null && wgchecck.latitude != null) {
                             if (confirm(lans[288][lang])) {  //该设备已有经纬度了，您确定更改吗?
-                                updatelnglat(e.point.lng, e.point.lat, comaddr);
+                                updatelnglat(e.point.lng, e.point.lat, wgchecck.comaddr);
                                 var allOver = map.getOverlays(); //获取全部标注
                                 for (var j = 0; j < allOver.length; j++) {
                                     if (allOver[j].toString() == "[object Marker]") {
@@ -1089,34 +1152,81 @@
                                 }
                             }
                         } else {
-                            updatelnglat(e.point.lng, e.point.lat, comaddr);
+                            updatelnglat(e.point.lng, e.point.lat,  wgchecck.comaddr);
+                        }
+                        wgonedraw = false;
+                        wgchecck = [];
+                    }
+                    
+                    //修改多个网关
+                     if (wgdraw) {
+                        var obj3 = {};
+                        obj3.x = e.point.lng;
+                        obj3.y = e.point.lat;
+                        wgarray.push(obj3);
+                        var now_point = new BMap.Point(e.point.lng, e.point.lat);
+                        var marker2 = new BMap.Marker(now_point); //addMarker(now_point, myIcon, comaddr);
+                        map.addOverlay(marker2); // 添加标注
+
+                        if (wgarray.length > 1) {
+                            var polyline = new BMap.Polyline([
+                                new BMap.Point(wgarray[wgarray.length - 2].x, wgarray[wgarray.length - 2].y), //起始点的经纬度
+                                new BMap.Point(wgarray[wgarray.length - 1].x, wgarray[wgarray.length - 1].y)//终止点的经纬度
+                            ], {strokeColor: "red", //设置颜色
+                                strokeWeight: 3, //宽度
+                                strokeOpacity: 0.5});//透明度
+                            map.addOverlay(polyline);
+
+                            if (confirm(lans[289][lang])) {  //你还要继续选点吗？
+
+                            } else {
+                                for (var i = 0; i < wgidlist.length; i++) {
+                                    updatelnglat(wgarray[i].x, wgarray[i].y, wgidlist[i]);
+                                }
+                                alert(lans[295][lang]); //配置经纬度成功
+                                var nobj = {};
+                                nobj.name = u_name;
+                                var day = getNowFormatDate2();
+                                nobj.time = day;
+                                nobj.type = "修改";
+                                nobj.pid = porjectId;
+                                nobj.comment = "批量修改网关的经纬度";
+                                nobj.page = "地图导航";
+                                $.ajax({async: false, url: "login.oplog.addoplog.action", type: "get", datatype: "JSON", data: nobj,
+                                    success: function (data) {
+                                        var arrlist = data.rs;
+                                        if (arrlist.length > 0) {
+
+                                        }
+                                    }
+                                });
+                                //刷新，重置
+                                wgarray = [];
+                                wgdraw = false;
+                                wgidlist = [];
+                            }
                         }
                     }
-                    //灯具tabl
-                    var lampchecck;  //灯具选中对象
-                    $("#lamptable input:checkbox").each(function () {
-                        lampchecck = $("#lamptable").bootstrapTable('getSelections');
-                    });
-                    if (String(lampchecck) == "[object Object]") {
-                        if (lampchecck.length == 1) {
-                            if (lampchecck[0].Longitude != null && lampchecck[0].latitude != null) {
-                                if (confirm(lans[288][lang])) {  //该设备已有经纬度了，您确定更改吗?
-                                    updateLamplnglat(e.point.lng, e.point.lat, lampchecck[0].id);
-                                    var allOver = map.getOverlays(); //获取全部标注
-                                    for (var j = 0; j < allOver.length; j++) {
-                                        if (allOver[j].toString() == "[object Marker]") {
-                                            if (allOver[j].getPosition().lng == lampchecck[0].Longitude && allOver[j].getPosition().lat == lampchecck[0].latitude) {
-                                                map.removeOverlay(allOver[j]);
-                                            }
+                    
+                    //单灯修改经纬度
+                    if (onedraw) {
+                        if (lampchecck.Longitude != null && lampchecck.latitude != null) {
+                            if (confirm(lans[288][lang])) {  //该设备已有经纬度了，您确定更改吗?
+                                updateLamplnglat(e.point.lng, e.point.lat, lampchecck.id);
+                                var allOver = map.getOverlays(); //获取全部标注
+                                for (var j = 0; j < allOver.length; j++) {
+                                    if (allOver[j].toString() == "[object Marker]") {
+                                        if (allOver[j].getPosition().lng == lampchecck.Longitude && allOver[j].getPosition().lat == lampchecck.latitude) {
+                                            map.removeOverlay(allOver[j]);
                                         }
                                     }
                                 }
-                            } else {
-                                updateLamplnglat(e.point.lng, e.point.lat, lampchecck[0].id);
                             }
-                        } else if (lampchecck.length > 1) {
-                            //alert(">1");
+                        } else {
+                            updateLamplnglat(e.point.lng, e.point.lat, lampchecck.id);
                         }
+                        lampchecck = [];
+                        onedraw = false;
                     }
                     if (draw) {
                         var obj3 = {};
@@ -1139,7 +1249,6 @@
                             if (confirm(lans[289][lang])) {  //你还要继续选点吗？
 
                             } else {
-                                console.log(array);
                                 for (var i = 0; i < idlist.length; i++) {
                                     //alert("id:" + idlist[i] + "lng:" + array[i].x + "lat:" + array[i].y);
                                     updateMayLamplnglat(array[i].x, array[i].y, idlist[i]);

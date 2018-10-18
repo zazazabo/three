@@ -154,7 +154,7 @@
 
             var lang = '${param.lang}';//'zh_CN';
             var langs1 = parent.parent.getLnas();
-
+            var pid = parent.parent.getpojectId();
 
             $(function () {
                 $.ajax({
@@ -177,7 +177,7 @@
                     $(d).html(langs1[e][lang]);
                 }
                 $('#reordtabel').bootstrapTable({
-                    url: 'login.policereord.reordInfo.action',
+                    url: 'login.policereord.reordInfo.action?pid='+pid,
                     columns: [{
                             title: '单选',
                             field: 'select',
