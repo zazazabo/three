@@ -407,7 +407,7 @@
                 $('#gravidaTable').bootstrapTable({
                     showExport: true, //是否显示导出
                     exportDataType: "basic", //basic', 'a
-                    url: 'lamp.lampform.getlampList.action',
+                    //url: 'lamp.lampform.getlampList.action',
                     clickToSelect: true,
                     columns: [
                         {
@@ -612,12 +612,28 @@
 
                             $(this).combobox('select', data[0].id);
 
+
+                            // var o={l_comaddr:data[0].id,pid:"${param.pid}"};
+                            // var opt = {
+                            //     url: "lamp.lampform.getlampList.action",
+                            //     query: o
+
+                            // };
+                            // $('#gravidaTable').bootstrapTable('refresh', opt);
+
                         }
                     },
                     onSelect: function (record) {
                         var url = "lamp.GroupeForm.getGroupe.action?l_comaddr=" + record.id + "&l_deplayment=1";
                         $("#l_groupe").combobox("clear");
                         $("#l_groupe").combobox("reload", url);
+                          var o={l_comaddr:record.id,pid:"${param.pid}"};
+                            var opt = {
+                                url: "lamp.lampform.getlampList.action",
+                                query: o
+
+                            };
+                            $('#gravidaTable').bootstrapTable('refresh', opt);                       
                     }
                 })
 
