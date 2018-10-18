@@ -14,6 +14,8 @@
         <script type="text/javascript" src="js/genel.js"></script>
         <script type="text/javascript" src="js/getdate.js"></script>
         <script>
+            var lang = '${param.lang}';//'zh_CN';
+            var langs1 = parent.parent.getLnas();
             var u_name = parent.parent.getusername();
             var o_pid = parent.parent.getpojectId();
             function excel() {
@@ -26,7 +28,7 @@
                 var selects = $('#warningtable').bootstrapTable('getSelections');
                 var num = selects.length;
                 if (num == 0) {
-                    layerAler("请选择您要保存的数据");
+                    layerAler(langs1[350][lang]);  //请选择您要保存的数据
                     return;
                 }
                 addlogon(u_name, "添加", o_pid, "灯具管理", "导入Excel");
@@ -111,16 +113,16 @@
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
                 var num = selects.length;
                 if (num == 0) {
-                    layerAler("请选择您要删除的记录");
+                    layerAler(langs1[263][lang]);  //请勾选您要删除的数据
                     return;
                 }
                 var select = selects[0];
                 if (select.l_deplayment == "1") {
-                    layerAler("已部署的不能删除");
+                    layerAler(langs1[368][lang]);  //已部署的不能删除
                     return;
                 }
-                layer.confirm('确认要删除吗？', {
-                    btn: ['确定', '取消']//按钮
+                layer.confirm(langs1[145][lang], {//确认要删除吗？
+                    btn: [langs1[146][lang], langs1[147][lang]] //确定、取消按钮
                 }, function (index) {
                     addlogon(u_name, "删除", o_pid, "灯具管理", "删除灯具");
                     $.ajax({url: "lamp.lampform.deleteLamp.action", type: "POST", datatype: "JSON", data: {id: select.id},
@@ -128,7 +130,7 @@
                             var arrlist = data.rs;
                             if (arrlist.length == 1) {
                                 $("#gravidaTable").bootstrapTable('refresh');
-                                layerAler("删除成功");
+                                layerAler(langs1[342][lang]);   //删除成功
                                 layer.close(index);
                             }
                         },
@@ -160,7 +162,7 @@
             function editlampInfo() {
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
                 if (selects.length <= 0) {
-                    layerAler("请选择数据编辑");
+                    layerAler(langs1[363][lang]);  //请勾选您要编辑的数据
                     return;
                 }
                 var s = selects[0];
@@ -203,12 +205,12 @@
 
                 console.log(o);
                 if (o.l_factorycode == "" || o.l_comaddr == "") {
-                    layerAler("灯具编号不能为空,或网关地址不能为空");
+                    layerAler(langs1[370][lang]);  //灯具编号不能为空,或网关地址不能为空
                     return  false;
                 }
                 var uPattern = /^[a-fA-F0-9]{12}$/;
                 if (uPattern.test(o.l_factorycode) == false) {
-                    layerAler("灯具编号是12位的十进制");
+                    layerAler(langs1[371][lang]);   //灯具编号是12位的十进制
                     return false;
                 }
                 addlogon(u_name, "添加", o_pid, "灯具管理", "添加灯具");
@@ -216,9 +218,8 @@
                 $.ajax({url: "lamp.lampform.existlamp.action", async: false, type: "get", datatype: "JSON", data: o,
                     success: function (data) {
                         if (data.total > 0) {
-                            layerAler("灯具编号已存在");
+                            layerAler(langs1[372][lang]);  //灯具编号已存在
                         } else if (data.total == 0) {
-                            console.log("adddd");
                             $.ajax({url: "lamp.lampform.addlamp.action", async: false, type: "get", datatype: "JSON", data: o,
                                 success: function (data) {
                                     var arrlist = data.rs;
@@ -266,14 +267,14 @@
                         }
                     });
 
-                    layerAler("修改灯具动作模式成功");
+                    layerAler(langs1[143][lang]);   //修改成功
 
                 }
             }
             function resetWowktype() {
                 var o = $("#form2").serializeObject();
                 console.log(o);
-                var oldlgroupe = ""
+                var oldlgroupe = "";
                 var vv = [];
                 vv.push(parseInt(o.type));  //灯控器组号  1 所有灯控器  2 按组   3 个个灯控器
 
@@ -320,7 +321,7 @@
                         }
                     });
 
-                    layerAler("修改灯具组号成功");
+                    layerAler(langs1[143][lang]);   //修改成功
 
                 }
             }
@@ -354,7 +355,7 @@
 
                 dealsend2("A4", data, 110, "resetGroupeCB", comaddr, o.type, oldlgroupe, o.l_groupe2);
             }
-            
+
             //搜索
             function  search() {
                 var l_comaddr = $("#l_comaddr2").val();  //网关地址
@@ -377,6 +378,12 @@
 
 
             $(function () {
+                var aaa = $("span[name=xxx]");
+                for (var i = 0; i < aaa.length; i++) {
+                    var d = aaa[i];
+                    var e = $(d).attr("id");
+                    $(d).html(langs1[e][lang]);
+                }
                 $("#l_comaddr2").combobox({
                     url: "login.map.getallcomaddr.action?pid=" + o_pid,
                     onLoadSuccess: function (data) {
@@ -395,56 +402,56 @@
                             align: 'center',
                             valign: 'middle'
                         }, {
-                            title: '序号',
+                            title: langs1[345][lang], //序号
                             field: '序号',
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: '网关名称',
-                            title: '网关名称',
+                            title: langs1[314][lang], //网关名称
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: '网关地址',
-                            title: '网关地址',
+                            title: langs1[25][lang], //网关地址
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: '灯具名称',
-                            title: '灯具名称',
+                            title: langs1[54][lang], //灯具名称
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: '灯具编号',
-                            title: '灯具编号',
+                            title: langs1[292][lang], //灯具编号
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: '组号',
-                            title: '组号',
+                            title: langs1[332][lang], //组号
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: '控制方式',
-                            title: '控制方式',
+                            title: langs1[316][lang], //控制方式
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: '经度',
-                            title: '经度',
+                            title: langs1[59][lang], //经度
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: '纬度',
-                            title: '纬度',
+                            title: langs1[60][lang], //纬度
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -470,7 +477,7 @@
                                     }), // 以二进制流方式读取得到整份excel表格对象
                                     persons = []; // 存储获取到的数据
                         } catch (e) {
-                            alert('文件类型不正确');
+                            alert(langs1[384][lang]);  //文件类型不正确
                             return;
                         }
                         // 表格的表格范围，可用于判断表头是否数量是否正确
@@ -487,7 +494,7 @@
                         var headStr = '序号,网关名称,网关地址,灯具名称,灯具编号,组号,控制方式,经度,纬度';
                         for (var i = 0; i < persons.length; i++) {
                             if (Object.keys(persons[i]).join(',') !== headStr) {
-                                alert("导入文件格式不正确");
+                                alert(langs1[366][lang]);  //导入文件格式不正确
                                 persons = [];
                             }
                         }
@@ -708,25 +715,25 @@
                             valign: 'middle'
                         }, {
                             field: 'name',
-                            title: '网关名称',
+                            title: langs1[314][lang], //网关名称
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_comaddr',
-                            title: '网关地址',
+                            title: langs1[25][lang], //网关地址
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_name',
-                            title: '灯具名称',
+                            title: langs1[54][lang], //灯具名称
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_factorycode',
-                            title: '灯具编号',
+                            title: langs1[292][lang], //灯具编号
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -739,7 +746,7 @@
                             }
                         }, {
                             field: 'l_groupe',
-                            title: '组号',
+                            title: langs1[332][lang], //组号
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -751,13 +758,13 @@
                             }
                         }, {
                             field: 'l_code',
-                            title: '装置序号',
+                            title: langs1[315][lang], //装置序号
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_worktype',
-                            title: '控制方式',
+                            title: langs1[316][lang], //控制方式
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -778,7 +785,7 @@
                             }
                         }, {
                             field: 'l_plan',
-                            title: '控制方案',
+                            title: langs1[373][lang], //控制方案
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -793,16 +800,16 @@
                             }
                         }, {
                             field: 'l_deployment',
-                            title: '部署情况',
+                            title: langs1[317][lang], //部署情况
                             width: 25,
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
                                 if (row.l_deplayment == "0") {
-                                    var str = "<span class='label label-warning'>末部署</span>"
+                                    var str = "<span class='label label-warning'>" + langs1[318][lang] + "</span>";  //未部署
                                     return  str;
                                 } else if (row.l_deplayment == "1") {
-                                    var str = "<span class='label label-success'>已部署</span>"
+                                    var str = "<span class='label label-success'>" + langs1[319][lang] + "</span>";  //已部署
                                     return  str;
                                 }
                             }
@@ -860,18 +867,21 @@
 
         <div class="btn-group zuheanniu" id="zuheanniu" style="float:left;position:relative;z-index:100;margin:12px 0 0 10px;">
             <button class="btn btn-success ctrol"  onclick="showDialog();" data-toggle="modal" data-target="#pjj33" id="add">
-                <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;添加
+                <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;<span name="xxx" id="65">添加</span>
             </button>
             <button class="btn btn-primary ctrol" onclick="editlampInfo()"   id="xiugai1">
-                <span class="glyphicon glyphicon-pencil"></span>&nbsp;编辑
+                <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span name="xxx" id="66">编辑</span>
             </button>
             <button class="btn btn-danger ctrol" onclick="deleteLamp();" id="shanchu">
-                <span class="glyphicon glyphicon-trash"></span>&nbsp;删除
+                <span class="glyphicon glyphicon-trash"></span>&nbsp;<span name="xxx" id="67">删除</span>
             </button>
             <button class="btn btn-success ctrol" onclick="excel()" id="addexcel" >
-                <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;导入Excel
+                <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;
+                <span name="xxx" id="353">导入Excel</span>
             </button>
-            <button type="button" id="btn_download" class="btn btn-primary" onClick ="$('#gravidaTable').tableExport({type: 'excel', escape: 'false'})">导出Excel</button>
+            <button type="button" id="btn_download" class="btn btn-primary" onClick ="$('#gravidaTable').tableExport({type: 'excel', escape: 'false'})">
+                <span name="xxx" id="110">导出Excel</span>
+            </button>
         </div>
         <div class="row" >
             <div class="col-xs-12">
@@ -892,7 +902,7 @@
                             </td>
                             <td>
                                 <span style="margin-left:10px;">
-                                    <span id="217" name="xxx">部署情况</span>
+                                    <span id="317" name="xxx">部署情况</span>
                                     &nbsp;</span>
                             </td>
                             <td>
@@ -933,7 +943,7 @@
                     <tbody>
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">网关地址&nbsp;</span>
+                                <span style="margin-left:20px;" name="xxx" id="25">网关地址</span>&nbsp;
                                 <span class="menuBox">
 
                                     <input id="l_comaddr"  class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 
@@ -945,7 +955,7 @@
                                                                             <input id="txt_gayway_name" readonly="true"  class="form-control"  name="txt_gayway_name" style="width:150px;display: inline;" placeholder="请输入网关名称" type="text"></td>-->
                             <td></td>
                             <td>
-                                <span style="margin-left:10px;">网关名称</span>&nbsp;
+                                <span style="margin-left:10px;" name="xxx" id="314">网关名称</span>&nbsp;
                                 <input id="comaddrname" readonly="true"   class="form-control"  name="comaddrname" style="width:150px;display: inline;" placeholder="请输入网关名称" type="text">
 
                             </td>
@@ -953,7 +963,7 @@
 
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">灯具编号&nbsp;</span>
+                                <span style="margin-left:20px;" name="xxx" id="292">灯具编号</span>&nbsp;
                                 <input id="l_factorycode" class="form-control" name="l_factorycode" style="width:150px;display: inline;" placeholder="请输入灯具装置编号" type="text">
 
 
@@ -961,7 +971,7 @@
                             </td>
                             <td></td>
                             <td>
-                                <span style="margin-left:10px;">灯具名称</span>&nbsp;
+                                <span style="margin-left:10px;" name="xxx" id="54">灯具名称</span>&nbsp;
                                 <input id="l_name" class="form-control"  name="l_name" style="width:150px;display: inline;" placeholder="请输入灯具名称" type="text">
 
                             </td>
@@ -971,7 +981,7 @@
                         <tr>
                             <td>
 
-                                <span style="margin-left:20px;">灯具组号</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="26">灯具组号</span>&nbsp;
                                 <span class="menuBox">
                                     <select class="easyui-combobox" id="l_groupe" name="l_groupe"  data-options='editable:false,valueField:"id", textField:"text"' style="width:150px; height: 30px">          
                                     </select>
@@ -981,7 +991,7 @@
                             </td>
                             <td></td>
                             <td>
-                                <span style="margin-left:10px;">控制方式</span>&nbsp;
+                                <span style="margin-left:10px;" name="xxx" id="316">控制方式</span>&nbsp;
                                 <span class="menuBox">
                                     <select class="easyui-combobox" id="l_worktype" name="l_worktype" data-options='editable:false' style="width:150px; height: 30px">
                                         <option value="0" >时间</option>
@@ -1008,7 +1018,7 @@
                     <tbody>
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">网关地址&nbsp;</span>
+                                <span style="margin-left:20px;" name="xxx" id="25">网关地址</span>&nbsp;
                                 <span class="menuBox">
                                     <input  readonly="true"  id="l_comaddr1" readonly="true"  class="form-control"  name="l_comaddr" style="width:150px;display: inline;" placeholder="网关地址" type="text"></td>     
                                 </span>    
@@ -1016,7 +1026,7 @@
 
                             <td></td>
                             <td>
-                                <span style="margin-left:20px;">网关名称</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="314">网关名称</span>&nbsp;
                                 <input  id="name" readonly="true"  class="form-control"  name="nam" style="width:150px;display: inline;" placeholder="网关名称" type="text"></td>
 
                             </td>
@@ -1024,14 +1034,14 @@
 
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">灯具编号&nbsp;</span>
+                                <span style="margin-left:20px;" name="xxx" id="292">灯具编号</span>&nbsp;
                                 <input id="l_factorycode1" readonly="true" class="form-control" name="l_factorycode" style="width:150px;display: inline;" placeholder="灯具编号" type="text"></td>
 
 
 
                             <td></td>
                             <td>
-                                <span style="margin-left:20px;">灯具名称</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="54">灯具名称</span>&nbsp;
                                 <input id="l_name1"  class="form-control"  name="l_name" style="width:150px;display: inline;" placeholder="灯具名称" type="text"></td>
 
                             </td>
@@ -1040,7 +1050,7 @@
 
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">灯具组号</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="26">灯具组号</span>&nbsp;
                                 <span class="menuBox">
                                     <select class="easyui-combobox" id="l_groupe1"  readonly="true" name="l_groupe"  data-options='editable:false,valueField:"id", textField:"text"' style="width:150px; height: 30px">          
                                     </select>
@@ -1048,7 +1058,7 @@
                             </td>
                             <td></td>
                             <td>
-                                <span style="margin-left:20px;">控制方式</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="316">控制方式</span>&nbsp;
                                 <span class="menuBox">
                                     <select class="easyui-combobox" readonly="true" id="l_worktype1" name="l_worktype" data-options='editable:false' style="width:150px; height: 30px">
                                         <option value="0" >时间</option>
@@ -1064,17 +1074,17 @@
 
                         <tr id="trlamp">
                             <td>
-                                <span style="margin-left:8px;">灯具新组号</span>&nbsp;
+                                <span style="margin-left:8px;" name="xxx" id="374">灯具新组号</span>&nbsp;
                                 <span class="menuBox">
                                     <select class="easyui-combobox" id="l_groupe2" name="l_groupe2"  data-options='editable:false,valueField:"id", textField:"text"' style="width:150px; height: 30px">          
                                     </select>
                                 </span>     
                             </td>
                             <td>
-                                <span id="span_worktype" style=" margin-left: 2px;"  onclick="resetGroupe()" class="label label-success" >在线修改</span>
+                                <span id="span_worktype" style=" margin-left: 2px;"  onclick="resetGroupe()" class="label label-success" ><span name="xxx" id="375">在线修改</span></span>
                             </td>
                             <td>
-                                <span style="margin-left:20px;">控制方式</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="316">控制方式</span>&nbsp;
                                 <span class="menuBox">
                                     <select class="easyui-combobox" id="l_worktype1" name="l_worktype1" data-options='editable:false' style="width:150px; height: 30px">
                                         <option value="0" >时间</option>
@@ -1084,7 +1094,7 @@
                                 </span>   
                             </td>
                             <td>
-                                <span  onclick="resetWowktype()" style=" margin-left: 2px;" class="label label-success" >在线修改</span>
+                                <span  onclick="resetWowktype()" style=" margin-left: 2px;" class="label label-success"><span name="xxx" id="375">在线修改</span></span>
                             </td>
                         </tr> 
                         <tr id="trlamp1">

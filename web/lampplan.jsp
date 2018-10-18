@@ -813,7 +813,7 @@
                             },
                             {
                                 field: 'p_scene',
-                                title: langs[83][lang],  //场景一
+                                title: langs1[83][lang],  //场景一
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -823,7 +823,7 @@
                             },
                             {
                                 field: 'p_scene',
-                                title: langs[84][lang],   //场景二
+                                title: langs1[84][lang],   //场景二
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -833,7 +833,7 @@
                             },
                             {
                                 field: 'p_scene',
-                                title: langs[85][lang],  //场景三
+                                title: langs1[85][lang],  //场景三
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',

@@ -17,7 +17,9 @@
 
         </style>
         <script>
- var ErrInfo = {
+            var lang = '${param.lang}';//'zh_CN';
+            var langs1 = parent.parent.getLnas();
+            var ErrInfo = {
                 "0": {
                     "zh-CN": "正确",
                     "en_US": "ok",
@@ -68,64 +70,66 @@
             var o_pid = parent.parent.getpojectId();
 
             function deployloopCB(obj) {
-                    if (obj.status == "success") {
-                                var data = Str2BytesH(obj.data);
-                                var v = "";
-                                for (var i = 0; i < data.length; i++) {
-                                    v = v + sprintf("%02x", data[i]) + " ";
+                if (obj.status == "success") {
+                    var data = Str2BytesH(obj.data);
+                    var v = "";
+                    for (var i = 0; i < data.length; i++) {
+                        v = v + sprintf("%02x", data[i]) + " ";
+                    }
+                    console.log(v);
+                    console.log(obj);
+                    if (data[0xe] == 0 && data[0xf] == 0 && data[0x10] == 0x1 && data[0x11] == 0x0) {
+                        var param = obj.param;
+                        for (var i = 0; i < param.length; i++) {
+                            var o = {l_deplayment: obj.val, id: param[i].id};
+                            $.ajax({async: false, url: "loop.loopForm.modifyDepayment.action", type: "get", datatype: "JSON", data: o,
+                                success: function (data) {},
+                                error: function () {
+                                    alert("提交失败！");
                                 }
-                                console.log(v);
-                                console.log(obj);
-                                if (data[0xe] == 0 && data[0xf] == 0 && data[0x10] == 0x1 && data[0x11] == 0x0) {
-                                     var param = obj.param;
-                                    for (var i = 0; i < param.length; i++) {
-                                        var o = {l_deplayment: obj.val, id: param[i].id};
-                                         $.ajax({async: false, url: "loop.loopForm.modifyDepayment.action", type: "get", datatype: "JSON", data: o,
-                                                success: function (data) {},
-                                                error: function () {alert("提交失败！");}
-                                            });
-                                    }
-                                    $("#gravidaTable").bootstrapTable('refresh');
-                                } else if (data[0xe] == 0 && data[0xf] == 0 && data[0x10] == 0x4 && data[0x11] == 0x0) {
+                            });
+                        }
+                        $("#gravidaTable").bootstrapTable('refresh');
+                    } else if (data[0xe] == 0 && data[0xf] == 0 && data[0x10] == 0x4 && data[0x11] == 0x0) {
 
-                                    var err = data[20];
-                                      var err = data[20];
-                                        if (err == 2) {
-                                            var set1 = data[19] * 256 + data[18];
-                                            var o = {l_code: set1, l_comaddr: obj.comaddr};
-                                            $.ajax({async: false, url: "loop.loopForm.modifyDepaymentByCode.action", type: "get", datatype: "JSON", data: o,
-                                                success: function (data) {
-                                                },
-                                                error: function () {
-                                                    alert("提交失败！");
-                                                }});
-                                            //layerAler("装置号:" + set1.toString() + "重复");
-                                        }
-                                        var lang="zh-CN";
-                                        var str =  ErrInfo[err][lang] + "<br>" + "装置号:" +set1.toString();
-                                        layerAler(str);
-                                }
+                        var err = data[20];
+                        var err = data[20];
+                        if (err == 2) {
+                            var set1 = data[19] * 256 + data[18];
+                            var o = {l_code: set1, l_comaddr: obj.comaddr};
+                            $.ajax({async: false, url: "loop.loopForm.modifyDepaymentByCode.action", type: "get", datatype: "JSON", data: o,
+                                success: function (data) {
+                                },
+                                error: function () {
+                                    alert("提交失败！");
+                                }});
+                            //layerAler("装置号:" + set1.toString() + "重复");
+                        }
+                        var lang = "zh-CN";
+                        var str = ErrInfo[err][lang] + "<br>" + "装置号:" + set1.toString();
+                        layerAler(str);
+                    }
 
-                            }
+                }
             }
             function deployloop() {
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
                 if (selects.length == 0) {
-                    layerAler("请勾选表格数据");
+                    layerAler(langs1[73][lang]); //请勾选表格数据
                     return;
                 }
 
-                var o1=$("#form1").serializeObject();
+                var o1 = $("#form1").serializeObject();
                 console.log(o1);
                 addlogon(u_name, "部署", o_pid, "回路部署", "部署回路");
                 var vv = [];
-                var param=[];
+                var param = [];
                 for (var i = 0; i < selects.length; i++) {
 
                     var ele = selects[i];
                     var comaddr = ele.l_comaddr;
-                    if (o1.l_comaddr!=comaddr) {
-                        layerAler("只能在同一网关下操作");
+                    if (o1.l_comaddr != comaddr) {
+                        layerAler(langs1[376][lang]);  //只能在同一网关下操作
                         return;
                     }
                     var setcode = ele.l_code;
@@ -144,9 +148,9 @@
                     var igroupe = parseInt(ele.l_groupe); //组号
                     vv.push(igroupe); //组号
                     var ooo = {row: ele.index, id: ele.id};
-                    param.push(ooo);    
+                    param.push(ooo);
                 }
-                               
+
                 var num = randnum(0, 9) + 0x70; //随机帧序列号
                 var data = buicode(comaddr, 0x04, 0xA4, num, 0, 320, vv); //0320    
                 dealsend2("A4", data, 320, "deployloopCB", comaddr, 1, param, 1);
@@ -156,19 +160,19 @@
 
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
                 if (selects.length == 0) {
-                    layerAler("请勾选表格数据");
+                   layerAler(langs1[73][lang]); //请勾选表格数据
                     return;
                 }
-                 var o1=$("#form1").serializeObject();
+                var o1 = $("#form1").serializeObject();
                 addlogon(u_name, "移除", o_pid, "回路部署", "移除回路");
                 var vv = [];
-                var param=[];
+                var param = [];
                 for (var i = 0; i < selects.length; i++) {
                     var ele = selects[i];
                     var comaddr = ele.l_comaddr;
-                    if (o1.l_comaddr!=comaddr) {
-                            layerAler("只能在同一网关下操作");
-                            return;
+                    if (o1.l_comaddr != comaddr) {
+                        layerAler(langs1[376][lang]);  //只能在同一网关下操作
+                        return;
                     }
                     var setcode = ele.l_code;
                     var l_factorycode = ele.l_factorycode;
@@ -186,7 +190,7 @@
                     var igroupe = parseInt(ele.l_groupe); //组号
                     vv.push(igroupe); //组号 
                     var ooo = {row: ele.index, id: ele.id};
-                    param.push(ooo);                      
+                    param.push(ooo);
                 }
                 var num = randnum(0, 9) + 0x70; //随机帧序列号
                 var data = buicode(comaddr, 0x04, 0xA4, num, 0, 320, vv); //0320    
@@ -197,10 +201,10 @@
                 var param = obj.param;
                 console.log(param);
                 if (obj.status == "success") {
-                    layerAler("设置成功");
+                    layerAler(langs1[377][lang]);  //设置成功
                     $.ajax({async: false, url: "loop.planForm.editlooptimeA.action", type: "get", datatype: "JSON", data: param,
                         success: function (data) {
-                            console.log(data);
+                            //console.log(data);
                             var arrlist = data.rs;
                             if (arrlist.length == 1) {
                                 var url = "loop.planForm.getPlanlist.action?attr=0&pid=${param.pid}";
@@ -219,7 +223,7 @@
             function setLoopPlan() {
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
                 if (selects.length == 0) {
-                    layerAler("请勾选列表读取");
+                    layerAler(langs1[73][lang]); //请勾选表格数据
                     return;
                 }
                 addlogon(u_name, "部署", o_pid, "回路部署", "部署回路方案");
@@ -229,14 +233,14 @@
                 var v = obj.p_type;
 
                 if (v == "") {
-                    layerAler("请选择策略方案");
+                    layerAler(langs1[378][lang]);  //请选择策略方案
                     return;
                 }
 
 
                 var s = selects[0];
                 if (s.l_deplayment == 0) {
-                    layerAler("部署后的回路才能设置回路运行方案");
+                    layerAler(langs1[379][lang]);  //部署后的回路才能设置回路运行方案
                     return;
                 }
                 if (v == "0") {
@@ -298,7 +302,7 @@
 
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
                 if (selects.length == 0) {
-                    layerAler("请勾选列表读取");
+                    layerAler(langs1[73][lang]); //请勾选表格数据
                     return;
                 }
 
@@ -306,17 +310,16 @@
                 console.log(obj);
                 var v = obj.p_type;
                 if (v == "") {
-                    layerAler("请选择策略方案");
+                    layerAler(langs1[378][lang]);  //请选择策略方案
                     return;
                 }
                 var s = selects[0];
                 if (s.l_deplayment == 0) {
-                    layerAler("部署后的回路才能设置回路运行方案");
+                    layerAler(langs1[379][lang]);  //部署后的回路才能设置回路运行方案
                     return;
                 }
 
                 if (v == "0") {
-                    console.log('读取时间表');
                     var vv = [];
                     vv.push(1);
                     var c = parseInt(s.l_code);
@@ -342,6 +345,12 @@
             }
 
             $(function () {
+                var aaa = $("span[name=xxx]");
+                for (var i = 0; i < aaa.length; i++) {
+                    var d = aaa[i];
+                    var e = $(d).attr("id");
+                    $(d).html(langs1[e][lang]);
+                }
 
                 $('#gravidaTable').bootstrapTable({
                     columns: [
@@ -355,31 +364,31 @@
                             valign: 'middle'
                         }, {
                             field: 'l_comaddr',
-                            title: '网关地址',
+                            title: langs1[25][lang],   //网关地址
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_name',
-                            title: '回路名称',
+                            title: langs1[331][lang],  //回路名称
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_code',
-                            title: '装置序号',
+                            title: langs1[315][lang],  //装置序号
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_factorycode',
-                            title: '回路编号',
+                            title: langs1[364][lang],   //回路编号
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_worktype',
-                            title: '控制方式',
+                            title: langs1[316][lang],   //控制方式
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -394,7 +403,7 @@
                             }
                         }, {
                             field: 'l_groupe',
-                            title: '组号',
+                            title: langs1[332][lang],  //组号
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -404,13 +413,13 @@
                             }
                         }, {
                             field: 'l_deployment',
-                            title: '部署情况',
+                            title: langs1[317][lang],   //部署情况
                             width: 25,
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
                                 if (row.l_deplayment == "0") {
-                                    var str = "<span class='label label-warning'>末部署</span>"
+                                    var str = "<span class='label label-warning'>"+langs1[318][lang]+"</span>";  //未部署
                                     return  str;
 //                                    var obj1 = {index: index, data: row};
 //                                    var ele = '<span class=\"label label-success\"  onclick="gz(\'' + JSON.stringify(obj1).replace(/"/g, '&quot;') + '\');">挂载</span>';
@@ -418,7 +427,7 @@
                                 } else if (row.l_deplayment == "1") {
                                     var obj1 = {index: index, data: row};
 //                                    var ele = '<span class=\"label label-warning\"  onclick="gz(\'' + JSON.stringify(obj1).replace(/"/g, '&quot;') + '\');">移除</span>';
-                                    var str = "<span class='label label-success'>已部署</span>"
+                                    var str = "<span class='label label-success'>"+langs1[319][lang]+"</span>";  //已部署
                                     return  str;
                                 }
                             }
@@ -466,7 +475,7 @@
                         row.text = v;
                         var opts = $(this).combobox('options');
                         return row[opts.textField];
-                    },onLoadSuccess: function (data) {
+                    }, onLoadSuccess: function (data) {
                         if (Array.isArray(data) && data.length > 0) {
                             for (var i = 0; i < data.length; i++) {
                                 data[i].text = data[i].id;
@@ -548,16 +557,16 @@
                     <table style="border-collapse:separate;  border-spacing:0px 10px;border: 1px solid #16645629;">
                         <tbody>
                             <tr>
-                                <td> <span style="margin-left:40px;">网关地址&nbsp;</span></td>
+                                <td> <span style="margin-left:40px;" name="xxx" id="25">网关地址</span>&nbsp;</td>
                                 <td>        <input id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 
                                                    data-options='editable:false,valueField:"id", textField:"text" ' /></td>
                                 <td>
-                                    <button id="btndeploy" type="button" onclick="deployloop()" class="btn btn-success btn-sm">部署回路</button>
+                                    <button id="btndeploy" type="button" onclick="deployloop()" class="btn btn-success btn-sm"><span name="xxx" id="380">部署回路</span></button>
                                 </td>
 
 
                                 <td>
-                                    <button id="btnremove" type="button" onclick="removeloop()" class="btn btn-success btn-sm">移除回路</button>
+                                    <button id="btnremove" type="button" onclick="removeloop()" class="btn btn-success btn-sm"><span name="xxx" id="381">移除回路</span></button>
                                     &nbsp;
                                 </td>
 
@@ -577,23 +586,23 @@
                     <tbody>
                         <tr>
 
-                            <td> <span style="margin-left:40px;">方案列表&nbsp;</span></td>
+                            <td> <span style="margin-left:40px;" name="xxx" id="382">方案列表</span>&nbsp;</td>
                             <td>       
                                 <input id="p_plan" class="easyui-combobox" name="p_plan" style="width:150px; height: 30px; " 
                                        data-options="editable:false,valueField:'id', textField:'text' " />
                             </td>
                             <td>
                                 <div id="type2">
-                                    <span  style=" padding-left: 20px;"  >闭合时间</span>&nbsp;
+                                    <span  style=" padding-left: 20px;" name="xxx" id="71">闭合时间</span>&nbsp;
                                     <input id="intime" name="intime" style=" height: 30px; width: 100px;  "  class="easyui-timespinner">
 
-                                    <span  style=" margin-left: 10px;" >断开时间</span>
+                                    <span  style=" margin-left: 10px;" name="xxx" id="72" >断开时间</span>
                                     <input id="outtime" name="outtime" style=" height: 30px; width: 100px;  "  class="easyui-timespinner">
-                                    <button  onclick="setLoopPlan()" type="button" class="btn btn-success btn-sm">部署回路方案</button>
-                                    <button  onclick="readLoopPlan()" type="button" class="btn btn-success btn-sm">读取回路时间表</button>
+                                    <button  onclick="setLoopPlan()" type="button" class="btn btn-success btn-sm"><span name="xxx" id="383">部署回路方案</span></button>
+                                    <button  onclick="readLoopPlan()" type="button" class="btn btn-success btn-sm"><span name="xxx" id="384">读取回路时间表</span></button>
                                     &nbsp;
                                 </div>
-                                
+
                             </td>
                         </tr>
                     </tbody>

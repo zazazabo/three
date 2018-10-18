@@ -14,6 +14,8 @@
         <script type="text/javascript" src="js/genel.js"></script>
         <script type="text/javascript" src="js/getdate.js"></script>
         <script>
+            var lang = '${param.lang}';//'zh_CN';
+            var langs1 = parent.parent.getLnas();
             var u_name = parent.parent.getusername();
             var o_pid = parent.parent.getpojectId();
             function layerAler(str) {
@@ -33,7 +35,7 @@
                 var selects = $('#warningtable').bootstrapTable('getSelections');
                 var num = selects.length;
                 if (num == 0) {
-                    layerAler("请选择您要保存的数据");
+                    layerAler(langs1[350][lang]); //请选择您要保存的数据
                     return;
                 }
                 addlogon(u_name, "添加", o_pid, "回路管理", "导入Excel文件");
@@ -104,15 +106,15 @@
             function checkLoopAdd() {
                 var o = $("#formadd").serializeObject();
                 if (o.l_comaddr == "") {
-                    layerAler("网关不能为空");
+                    layerAler(langs1[172][lang]);  //网关不能为空
                     return  false;
                 }
                 if (isNumber(o.l_factorycode) == false) {
-                    layerAler("回路编号必须数字");
+                    layerAler(langs1[358][lang]);  //回路编号必须数字
                     return false;
                 }
                 if (parseInt(o.l_factorycode) > 54 && parseInt(o.l_factorycode) >= 1) {
-                    layerAler("回路编号1字节必须在1-54");
+                    layerAler(langs1[359][lang]);  //回路编号1字节必须在1-54
                     return false;
                 }
                 console.log(o);
@@ -125,7 +127,7 @@
                 $.ajax({async: false, cache: false, url: "loop.loopForm.getLoopList.action", type: "GET", data: o,
                     success: function (data) {
                         if (data.total > 0) {
-                            layerAler("此回路已存在");
+                            layerAler(langs1[360][lang]); //此回路已存在
                             return false;
                         }
                         if (data.total == 0) {
@@ -158,14 +160,14 @@
             function switchWorkTypeCB(obj) {
                 console.log(obj);
                 if (obj.status == "success") {
-                    layerAler("切换成功");
+                    layerAler(langs1[361][lang]);  //切换成功
                 }
 
             }
             function switchWorkType() {
                 var o = $("#form2").serializeObject();
                 if (o.l_deployment == "0") {
-                    layerAler("部署后能能切换");
+                    layerAler(langs1[362][lang]);   //部署后能能切换
                     return;
                 }
                 console.log(o);
@@ -194,7 +196,8 @@
                     success: function (data) {
                         var arrlist = data.rs;
                         if (arrlist.length == 1) {
-                            layer.open({content: '修改成功', icon: 1,
+                            //修改成功
+                            layer.open({content: langs1[143][lang], icon: 1,
                                 yes: function (index, layero) {
                                     $("#gravidaTable").bootstrapTable('refresh');
                                     layer.close(index);
@@ -214,7 +217,8 @@
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
 
                 if (selects.length == 0) {
-                    layer.alert('请选择您要编辑的记录', {
+                    //请勾选您要编辑的数据
+                    layer.alert(langs1[363][lang], {
                         icon: 6,
                         offset: 'center'
                     });
@@ -317,6 +321,12 @@
             }
 
             $(function () {
+                var aaa = $("span[name=xxx]");
+                for (var i = 0; i < aaa.length; i++) {
+                    var d = aaa[i];
+                    var e = $(d).attr("id");
+                    $(d).html(langs1[e][lang]);
+                }
                 $("#l_comaddr").combobox({
                     url: "login.map.getallcomaddr.action?pid=" + o_pid,
                     onLoadSuccess: function (data) {
@@ -336,38 +346,38 @@
                             align: 'center',
                             valign: 'middle'
                         }, {
-                            title: '序号',
+                            title: langs1[345][lang],  //序号
                             field: '序号',
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
-                            title: '网关名称',
+                            title: langs1[314][lang],   //网关名称
                             field: '网关名称',
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
-                            field: '网关地址',
-                            title: '网关地址',
+                            field: '网关地址',  
+                            title: langs1[25][lang], //网关地址
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: '回路名称',
-                            title: '回路名称',
+                            title: langs1[331][lang],   //回路名称
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: '回路编号',
-                            title: '回路编号',
+                            title: langs1[364][lang],   //回路编号
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: '回路组号',
-                            title: '回路组号',
+                            title: langs1[365][lang],  //回路组号
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -393,7 +403,7 @@
                                     }), // 以二进制流方式读取得到整份excel表格对象
                                     persons = []; // 存储获取到的数据
                         } catch (e) {
-                            alert('文件类型不正确');
+                            alert(langs1[348][lang]);  //文件类型不正确
                             return;
                         }
                         // 表格的表格范围，可用于判断表头是否数量是否正确
@@ -410,8 +420,8 @@
                         var headStr = '序号,网关名称,网关地址,回路名称,回路编号,回路组号';
                         for (var i = 0; i < persons.length; i++) {
                             if (Object.keys(persons[i]).join(',') !== headStr) {
-                                alert("导入文件格式不正确");
-                                persons = [];
+                                alert(langs1[366][lang]);   //导入文件格式不正确
+                                persons = []; 
                             }
                         }
                         console.log("p2:" + persons.length);
@@ -537,37 +547,37 @@
                             valign: 'middle'
                         }, {
                             field: 'name',
-                            title: '网关名称',
+                            title: langs1[314][lang],   //网关名称
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_comaddr',
-                            title: '网关地址',
+                            title: langs1[25][lang],   //网关地址
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_name',
-                            title: '回路名称',
+                            title: langs1[331][lang],   //回路名称
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_code',
-                            title: '回路装置号',
+                            title: langs1[367][lang],  //回路装置号
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_factorycode',
-                            title: '回路编号',
+                            title: langs1[364][lang], //回路编号
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_groupe',
-                            title: '回路组号',
+                            title: langs1[365][lang],  //回路组号
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -578,7 +588,7 @@
                             }
                         }, {
                             field: 'l_worktype',
-                            title: '控制方式',
+                            title: langs1[316][lang],   //控制方式
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -593,16 +603,16 @@
                             }
                         }, {
                             field: 'l_deployment',
-                            title: '部署情况',
+                            title: langs1[317][lang],   //部署情况
                             width: 25,
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
                                 if (row.l_deplayment == "0") {
-                                    var str = "<span class='label label-warning'>末部署</span>"
+                                    var str = "<span class='label label-warning'>"+langs1[318][lang]+"</span>";  //未部署
                                     return  str;
                                 } else if (row.l_deplayment == "1") {
-                                    var str = "<span class='label label-success'>已部署</span>"
+                                    var str = "<span class='label label-success'>"+langs1[319][lang]+"</span>";  //已部署
                                     return  str;
                                 }
                             }
@@ -642,21 +652,21 @@
                 $("#shanchu").click(function () {
                     var selects = $('#gravidaTable').bootstrapTable('getSelections');
                     if (selects.length == 0) {
-                        layerAler("请选择要删除的数据");
+                        layerAler(langs1[263][lang]);   //请勾选您要删除的数据
                         return;
                     }
-                    layer.confirm('您确定要删除吗？', {
-                        btn: ['确定', '取消'], //按钮
+                    layer.confirm(langs1[145][lang], {   //确定要删除吗？
+                        btn: [langs1[146][lang], langs1[147][lang]], //确定、取消按钮
                         icon: 3,
                         offset: 'center',
-                        title: '提示'
+                        title: langs1[174][lang]  //提示
                     }, function (index) {
                         addlogon(u_name, "删除", o_pid, "回路管理", "删除回路");
                         for (var i = 0; i < selects.length; i++) {
                             var select = selects[i];
                             var l_deployment = select.l_deplayment;
                             if (l_deployment == 1) {
-                                layerAler("已部署不能删除");
+                                layerAler(langs1[368][lang]);  //已部署不能删除
                                 continue;
                             } else {
                                 $.ajax({url: "loop.loopForm.deleteLoop.action", type: "POST", datatype: "JSON", data: {id: select.id},
@@ -664,7 +674,7 @@
                                         var arrlist = data.rs;
                                         if (arrlist.length == 1) {
                                             layer.open({
-                                                content: '删除成功',
+                                                content: langs1[342][lang],  //删除成功
                                                 icon: 1,
                                                 yes: function (index, layero) {
                                                     $("#gravidaTable").bootstrapTable('refresh');
@@ -725,19 +735,22 @@
         <!-- 页面中的弹层代码 -->
         <div class="btn-group zuheanniu" id="zuheanniu" style="float:left;position:relative;z-index:100;margin:12px 0 0 10px;">
             <button class="btn btn-success ctrol" onclick="showDialog();" data-toggle="modal" data-target="#pjj5" id="add" >  
-                <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;添加
+                <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;<span name="xxx" id="65">添加</span>
             </button>
 
             <button class="btn btn-primary ctrol"  onclick="modifyModal();" id="update" >
-                <span class="glyphicon glyphicon-pencil"></span>&nbsp;编辑
+                <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span name="xxx" id="66">编辑</span>
             </button>
             <button class="btn btn-danger ctrol" id="shanchu">
-                <span class="glyphicon glyphicon-trash"></span>&nbsp;删除
+                <span class="glyphicon glyphicon-trash"></span>&nbsp;<span name="xxx" id="67">删除</span>
             </button>
             <button class="btn btn-success ctrol" onclick="excel()" id="addexcel" >
-                <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;导入Excel
+                <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;
+                <span name="xxx" id="353">导入Excel</span>
             </button>
-            <button type="button" id="btn_download" class="btn btn-primary" onClick ="$('#gravidaTable').tableExport({type: 'excel', escape: 'false'})">导出Excel</button>
+            <button type="button" id="btn_download" class="btn btn-primary" onClick ="$('#gravidaTable').tableExport({type: 'excel', escape: 'false'})">
+               <span name="xxx" id="110">导出Excel</span>
+            </button>
         </div>
         <div class="row" >
             <div class="col-xs-12">
@@ -758,7 +771,7 @@
                             </td>
                             <td>
                                 <span style="margin-left:10px;">
-                                    <span id="217" name="xxx">部署情况</span>
+                                    <span id="317" name="xxx">部署情况</span>
                                     &nbsp;</span>
                             </td>
                             <td>
@@ -799,7 +812,7 @@
                     <tbody>
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">网关地址&nbsp;</span>
+                                <span style="margin-left:20px;" name="xxx" id="25">网关地址</span>&nbsp;
                                 <span class="menuBox">
 
                                     <input id="comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 
@@ -809,7 +822,7 @@
 
                             <td></td>
                             <td>
-                                <span style="margin-left:10px;">网关名称</span>&nbsp;
+                                <span style="margin-left:10px;" name="xxx" id="314">网关名称</span>&nbsp;
                                 <input id="comaddrname" readonly="true"   class="form-control"  name="comaddrname" style="width:150px;display: inline;" placeholder="请输入网关名称" type="text"></td>
 
                             </td>
@@ -817,12 +830,12 @@
 
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">回路编号&nbsp;</span>
+                                <span style="margin-left:20px;" name="xxx" id="364">回路编号</span>&nbsp;
                                 <input id="l_factorycode" class="form-control" name="l_factorycode" style="width:150px;display: inline;" placeholder="请输入回路编号" type="text">
 
                             <td></td>
                             <td>
-                                <span style="margin-left:10px;">回路名称</span>&nbsp;
+                                <span style="margin-left:10px;" name="xxx" id="331">回路名称</span>&nbsp;
                                 <input id="l_name" class="form-control"  name="l_name" style="width:150px;display: inline;" placeholder="请输入回路名称" type="text"></td>
                             </td>
                             </td>
@@ -830,7 +843,7 @@
                         <tr>
                             <td>
 
-                                <span style="margin-left:20px;">控制方式</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="316">控制方式</span>&nbsp;
                                 <span class="menuBox">
                                     <select class="easyui-combobox" id="switch" name="l_worktype" data-options='editable:false' style="width:150px; height: 30px">
                                         <option value="0" selected="true">走时间</option>
@@ -843,7 +856,7 @@
                             </td>
                             <td></td>
                             <td>
-                                <span style="margin-left:10px;">所属组号</span>&nbsp;
+                                <span style="margin-left:10px;" name="xxx" id="369">所属组号</span>&nbsp;
                                 <span class="menuBox">
                                     <select class="easyui-combobox" id="l_groupe" name="l_groupe"  data-options='editable:false,valueField:"id", textField:"text"' style="width:150px; height: 30px">          
                                     </select>
@@ -867,7 +880,7 @@
                         <tr>
                             <td>
 
-                                <span style="margin-left:20px;">网关地址&nbsp;</span>
+                                <span style="margin-left:20px;" name="xxx" id="25">网关地址</span>&nbsp;
                                 <span class="menuBox">
 
                                     <input id="l_comaddr1" readonly="true" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 
@@ -878,7 +891,7 @@
                             </td>
                             <td></td>
                             <td>
-                                <span style="margin-left:10px;">网关名称</span>&nbsp;
+                                <span style="margin-left:10px;" name="xxx" id="314">网关名称</span>&nbsp;
                                 <input id="comaddrname1" readonly="true"   class="form-control"  name="comaddrname" style="width:150px;display: inline;" placeholder="请输入网关名称" type="text">
 
                             </td>
@@ -886,12 +899,12 @@
 
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">回路编号&nbsp;</span>
+                                <span style="margin-left:20px;" name="xxx" id="364">回路编号</span>&nbsp;
                                 <input id="l_factorycode1" readonly="true"  class="form-control" name="l_factorycode"  style="width:150px;display: inline;" placeholder="回路编号" type="text">
 
                             <td></td>
                             <td>
-                                <span style="margin-left:10px;">回路名称</span>&nbsp;
+                                <span style="margin-left:10px;" name="xxx" id="331">回路名称</span>&nbsp;
                                 <input id="l_name1" class="form-control"   name="l_name" style="width:150px;display: inline;" placeholder="请输入回路名称" type="text"></td>
                             </td>
                             </td>
@@ -899,7 +912,7 @@
                         <tr>
                             <td>
 
-                                <span style="margin-left:20px;">控制方式</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="316">控制方式</span>&nbsp;
                                 <span class="menuBox">
                                     <select class="easyui-combobox" readonly="true" id="l_worktype1" name="l_worktype" data-options='editable:false' style="width:150px; height: 30px">
                                         <option value="0" selected="true">走时间</option>
@@ -914,7 +927,7 @@
                             <td>
 
 
-                                <span style="margin-left:10px;">所属组号</span>&nbsp;
+                                <span style="margin-left:10px;" name="xxx" id="369">所属组号</span>&nbsp;
                                 <span class="menuBox">
                                     <select class="easyui-combobox" readonly="true" id="l_groupe1" name="l_groupe"  data-options='editable:false,valueField:"id", textField:"text"' style="width:150px; height: 30px">          
                                     </select>
