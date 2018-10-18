@@ -16,8 +16,6 @@
         <script>
             var u_name = parent.parent.getusername();
             var o_pid = parent.parent.getpojectId();
-            var lang = '${param.lang}';//'zh_CN';
-            var langs1 = parent.parent.getLnas();
             var ErrInfo = {
                 "0": {
                     "zh-CN": "正确",
@@ -65,7 +63,6 @@
                     "e_BY": "e_ok"
                 }
             }
-
             function layerAler(str) {
                 layer.alert(str, {
                     icon: 6,
@@ -73,20 +70,16 @@
                 });
             }
             function  readlampCB(obj) {
-
                 if (obj.status == "success") {
                     var data = Str2BytesH(obj.data);
                     var v = "";
                     for (var i = 0; i < data.length; i++) {
-
                         v = v + sprintf("%02x", data[i]) + " ";
                     }
-
                     if (data[0xe] == 0 && data[0xf] == 0 && data[0x10] == 0x80 && data[0x11] == 0x3) {
                         console.log("读取的数据:", v);
                         var set1 = data[21] * 256 + data[20];
                         var set2 = data[23] * 256 + data[22];
-
                         var l_factory = "";
                         for (var i = 29; i > 23; i--) {
                             l_factory = l_factory + sprintf("%02x", data[i]) + "";
@@ -95,28 +88,16 @@
                         var l_groupe = data[31];
                         var o = ["时间", "经纬度", "场景"];
                         var str = "装置号：" + set1.toString() + "<br>测量点号:" + set1.toString() + "<br>通信地址:" + l_factory + "<br>工作方式:" + o[worktype] + "<br>组号:" + l_groupe.toString();
-
                         layerAler(str);
-
                     }
-
                     if (data[0xe] == 0 && data[0xf] == 0 && data[0x10] == 04 && data[0x11] == 0) {
                         var set1 = data[19] * 256 + data[18];
                         var err = data[20];
-                        var lang = "zh-CN";
-                        var str = ErrInfo[err][lang];
+                        var lang="zh-CN";
+                        var str =  ErrInfo[err][lang];
                         layerAler(str);
-
-
                     }
-
                 }
-
-
-
-
-
-
                 console.log(obj);
             }
             function readlamp() {
@@ -124,7 +105,7 @@
                 var o = $("#form1").serializeObject();
                 var vv = new Array();
                 if (selects.length == 0) {
-                    layerAler(langs1[73][lang]);   //请勾选表格数据
+                    layerAler("请勾选表格数据");
                     return;
                 }
                 addlogon(u_name, "读取", o_pid, "回路部署", "读取灯具信息");
@@ -135,7 +116,7 @@
                 vv.push(h);
                 var ele = selects[0];
                 if (ele.l_comaddr != o.l_comaddr) {
-                    layerAler(langs1[385][lang]);  //勾选列表的网关要和下拉的网关一致
+                    layerAler("列表的网关要和下拉的网关不一致");
                     return;
                 }
                 var setcode = ele.l_code;
@@ -144,49 +125,17 @@
                 var b = l_code & 0x00ff;
                 vv.push(b);//装置序号  2字节            
                 vv.push(a);//装置序号  2字节     
-
                 var comaddr = o.l_comaddr;
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(o.l_comaddr, 0x04, 0xAA, num, 0, 380, vv);
                 dealsend2("AA", data, 380, "readlampCB", comaddr, 0, 0, 0);
             }
-
-<<<<<<< HEAD
-            function readlampsceneCB(obj) {
-                console.log(obj);
-            }
-            function readlampscene() {
-                var selects = $('#gravidaTable').bootstrapTable('getSelections');
-                var vv = new Array();
-                if (selects.length == 0) {
-                    layerAler(langs1[73][lang]);   //请勾选表格数据
-                    return;
-                }
-                var ele = selects[0];
-                var setcode = ele.l_code;
-                var l_code = parseInt(setcode);
-                var a = l_code >> 8 & 0x00FF;
-                var b = l_code & 0x00ff;
-                vv.push(b);//装置序号  2字节            
-                vv.push(a);//装置序号  2字节     
-
-                var comaddr = ele.l_comaddr;
-                var num = randnum(0, 9) + 0x70;
-                var data = buicode(comaddr, 0x04, 0xAA, num, 0, 404, vv);
-                dealsend2("AA", data, 404, "readlampsceneCB", comaddr, 0, 0, 0);
-            }
-=======
            
->>>>>>> 1decc2b35e173e264a61f6570ede68a0bff7c141
             function deploylampCB(obj) {
-
-
-
                 if (obj.status == "success") {
                     var data = Str2BytesH(obj.data);
                     var v = "";
                     for (var i = 0; i < data.length; i++) {
-
                         v = v + sprintf("%02x", data[i]) + " ";
                     }
                     console.log(v);
@@ -203,9 +152,7 @@
                                 }
                             });
                         }
-
                         $("#gravidaTable").bootstrapTable('refresh');
-
                     } else if (data[0xe] == 0 && data[0xf] == 0 && data[0x10] == 0x4 && data[0x11] == 0x0) {
                         var err = data[20];
                         if (err == 2) {
@@ -217,33 +164,23 @@
                                 error: function () {
                                     alert("提交失败！");
                                 }});
-
-                            var lang = "zh-CN";
-                            var str = ErrInfo[err][lang] + "<br>" + "装置号:" + set1.toString();
+                            var lang="zh-CN";
+                            var str =  ErrInfo[err][lang] + "<br>" + "装置号:" +set1.toString();
                             layerAler(str);
                             //layerAler("装置号:" + set1.toString() + "重复");
                         }
-
-
-
                     }
-
                 }
-
             }
-
-
             function deploylamp() {
-
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
                 var o = $("#form1").serializeObject();
                 var vv = new Array();
                 if (selects.length == 0) {
-                    layerAler(langs1[73][lang]);   //请勾选表格数据
+                    layerAler("请勾选表格数据");
                     return;
                 }
                 addlogon(u_name, "部署", o_pid, "灯具部署", "部署灯具");
-
                 var len = selects.length;
                 var h = len >> 8 & 0x00FF;
                 var l = len & 0x00ff;
@@ -251,11 +188,9 @@
                 vv.push(h);
                 var param = [];
                 for (var i = 0; i < selects.length; i++) {
-
                     var ele = selects[i];
-
                     if (ele.l_comaddr != o.l_comaddr) {
-                        layerAler(langs1[385][lang]);  //勾选列表的网关要和下拉的网关一致
+                        layerAler("列表的网关要和下拉的网关不一致");
                         return;
                     }
                     var setcode = ele.l_code;
@@ -274,30 +209,26 @@
                     vv.push(factor[2]); //通信地址
                     vv.push(factor[1]); //通信地址
                     vv.push(factor[0]); //通信地址
-
                     var iworktype = parseInt(ele.l_worktype);
                     vv.push(iworktype); //工作方式
-
                     var igroupe = parseInt(ele.l_groupe); //组号
                     vv.push(igroupe); //组号
                     var ooo = {row: ele.index, id: ele.id};
                     param.push(ooo);
                 }
                 console.log(param);
-
                 // var param = {row: ele.index, id: ele.id};
                 var comaddr = o.l_comaddr;
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(o.l_comaddr, 0x04, 0xA4, num, 0, 102, vv);
                 dealsend2("A4", data, 102, "deploylampCB", comaddr, 1, param, 1);
             }
-
             function removelamp() {
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
                 var o = $("#form1").serializeObject();
                 var vv = new Array();
                 if (selects.length == 0) {
-                    layerAler(langs1[73][lang]);   //请勾选表格数据
+                    layerAler("请勾选表格数据");
                     return;
                 }
                 addlogon(u_name, "移除", o_pid, "灯具部署", "移除灯具");
@@ -308,11 +239,9 @@
                 vv.push(h);
                 var param = [];
                 for (var i = 0; i < selects.length; i++) {
-
                     var ele = selects[i];
-
                     if (ele.l_comaddr != o.l_comaddr) {
-                        layerAler(langs1[385][lang]);  //勾选列表的网关要和下拉的网关一致
+                        layerAler("列表的网关要和下拉的网关不一致");
                         return;
                     }
                     var setcode = ele.l_code;
@@ -331,34 +260,21 @@
                     vv.push(factor[2]); //通信地址
                     vv.push(factor[1]); //通信地址
                     vv.push(factor[0]); //通信地址
-
                     var iworktype = parseInt(ele.l_worktype);
                     vv.push(iworktype); //工作方式
-
                     var igroupe = parseInt(ele.l_groupe); //组号
                     vv.push(igroupe); //组号
                     var ooo = {row: ele.index, id: ele.id};
                     param.push(ooo);
                 }
                 console.log(param);
-
                 var comaddr = o.l_comaddr;
                 var data = buicode(o.l_comaddr, 0x04, 0xA4, num, 0, 102, vv);
                 var num = randnum(0, 9) + 0x70; //随机帧序列号
                 dealsend2("A4", data, 102, "deploylampCB", comaddr, 0, param, 0);
             }
-
-
-
             //  var websocket = null;
-
             $(function () {
-                var aaa = $("span[name=xxx]");
-                for (var i = 0; i < aaa.length; i++) {
-                    var d = aaa[i];
-                    var e = $(d).attr("id");
-                    $(d).html(langs1[e][lang]);
-                }
                 $('#l_comaddr').combobox({
                     url: "gayway.GaywayForm.getComaddr.action?pid=${param.pid}",
                     formatter: function (row) {
@@ -375,7 +291,6 @@
                                 data[i].text = data[i].id;
                             }
                             $(this).combobox('select', data[0].id);
-
                         }
                     },
                     onSelect: function (record) {
@@ -402,13 +317,13 @@
                             valign: 'middle'
                         }, {
                             field: 'l_comaddr',
-                            title: langs1[55][lang],   //所属网关
+                            title: '所属网关',
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_factorycode',
-                            title: langs1[386][lang],  //通信地址
+                            title: '通信地址',
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -416,22 +331,21 @@
                                 value = value.replace(/\b(0+)/gi, "");
                                 return value.toString();
                             }
-
                         }, {
                             field: 'l_name',
-                            title:  langs1[63][lang],  //名称
+                            title: '名称',
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_code',
-                            title: langs1[315][lang],   //装置序号
+                            title: '装置序号',
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_worktype',
-                            title: langs1[316][lang],   //控制方式
+                            title: '控制方式',
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -449,26 +363,25 @@
                             }
                         }, {
                             field: 'l_groupe',
-                            title:langs1[332][lang],  //组号
+                            title: '组号',
                             width: 25,
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
                                 return  row.l_groupe;
-
                             }
                         }, {
                             field: 'l_deployment',
-                            title: langs1[317][lang],  //部署情况
+                            title: '部署情况',
                             width: 25,
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
                                 if (row.l_deplayment == "0") {
-                                    var str = "<span class='label label-warning'>"+langs1[318][lang]+"</span>";  //未部署
+                                    var str = "<span class='label label-warning'>末部署</span>"
                                     return  str;
                                 } else if (row.l_deplayment == "1") {
-                                    var str = "<span class='label label-success'>"+langs1[319][lang]+"</span>";   //已部署
+                                    var str = "<span class='label label-success'>已部署</span>"
                                     return  str;
                                 }
                             }
@@ -487,28 +400,22 @@
                     // 设置默认分页为 50
                     pageList: [50, 100, 150, 200, 250],
                     //服务器url
-                    queryParams: function (params)  {   //配置参数     
-                        var temp  =   {    //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的 
+                    queryParams: function (params)  {   //配置参数     
+                        var temp  =   {    //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的 
                             search: params.search,
                             skip: params.offset,
                             limit: params.limit,
                             type_id: 1,
                             pid: "${param.pid}",
                             l_comaddr: $("#l_comaddr").combobox('getValue')
-                        };      
-                        return temp;  
+                        };      
+                        return temp;  
                     },
                 });
-
-
                 $('#gravidaTable').on("check.bs.table", function (field, value, row, element) {
                     var index = row.data('index');
                     value.index = index;
                 });
-
-
-
-
             })
         </script>
     </head>
@@ -522,28 +429,22 @@
                         <tbody>
                             <tr>
                                 <td >
-                                    <span style="margin-left:10px;" name="xxx" id="25">网关地址</span>&nbsp;</td>
+                                <span style="margin-left:10px;">网关地址&nbsp;</span></td>
                                 <td>
 
                                     <input  style="margin-left:10px;" id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:100px; height: 30px" 
                                             data-options="editable:false,valueField:'id', textField:'text' " />
                                 </td>
                                 <td>
-                                    <button style="margin-left:10px;" id="btndeploylamp" onclick="deploylamp()" type="button" class="btn btn-success btn-sm"><span name="xxx" id="387">部署灯具</span></button>
+                                    <button style="margin-left:10px;" id="btndeploylamp" onclick="deploylamp()" type="button" class="btn btn-success btn-sm">部署灯具</button>
                                 </td>
                                 <td>
-                                    <button style="margin-left:10px;" id="btnremovelamp" type="button" onclick="removelamp()" class="btn btn-success btn-sm"><span name="xxx" id="388">移除灯具</span></button>
+                                    <button style="margin-left:10px;" id="btnremovelamp" type="button" onclick="removelamp()" class="btn btn-success btn-sm">移除灯具</button>
                                 </td>
                                 <td>
-                                    <button style="margin-left:10px;"  type="button" onclick="readlamp()" class="btn btn-success btn-sm"><span name="xxx" id="389">读取灯具信息</span></button>
+                                    <button style="margin-left:10px;"  type="button" onclick="readlamp()" class="btn btn-success btn-sm">读取灯具信息</button>
                                 </td>
-<<<<<<< HEAD
-                                <td>
-                                    <button style="margin-left:10px;"  type="button" onclick="readlampscene()" class="btn btn-success btn-sm"><span name="xxx" id="390">读取灯具场景配置</span></button>
-                                </td>
-=======
       
->>>>>>> 1decc2b35e173e264a61f6570ede68a0bff7c141
                             </tr>
                         </tbody>
                     </table>
