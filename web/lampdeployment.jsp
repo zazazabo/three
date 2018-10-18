@@ -16,6 +16,8 @@
         <script>
             var u_name = parent.parent.getusername();
             var o_pid = parent.parent.getpojectId();
+            var lang = '${param.lang}';//'zh_CN';
+            var langs1 = parent.parent.getLnas();
             var ErrInfo = {
                 "0": {
                     "zh-CN": "正确",
@@ -93,8 +95,8 @@
                     if (data[0xe] == 0 && data[0xf] == 0 && data[0x10] == 04 && data[0x11] == 0) {
                         var set1 = data[19] * 256 + data[18];
                         var err = data[20];
-                        var lang="zh-CN";
-                        var str =  ErrInfo[err][lang];
+                        var lang = "zh-CN";
+                        var str = ErrInfo[err][lang];
                         layerAler(str);
                     }
                 }
@@ -105,7 +107,7 @@
                 var o = $("#form1").serializeObject();
                 var vv = new Array();
                 if (selects.length == 0) {
-                    layerAler("请勾选表格数据");
+                    layerAler(langs1[73][lang]);   //请勾选表格数据
                     return;
                 }
                 addlogon(u_name, "读取", o_pid, "回路部署", "读取灯具信息");
@@ -116,7 +118,7 @@
                 vv.push(h);
                 var ele = selects[0];
                 if (ele.l_comaddr != o.l_comaddr) {
-                    layerAler("列表的网关要和下拉的网关不一致");
+                    layerAler(langs1[385][lang]);  //勾选列表的网关要和下拉的网关一致
                     return;
                 }
                 var setcode = ele.l_code;
@@ -130,8 +132,8 @@
                 var data = buicode(o.l_comaddr, 0x04, 0xAA, num, 0, 380, vv);
                 dealsend2("AA", data, 380, "readlampCB", comaddr, 0, 0, 0);
             }
-           
-            function deploylampCB(obj) {
+
+           function deploylampCB(obj) {
                 if (obj.status == "success") {
                     var data = Str2BytesH(obj.data);
                     var v = "";
@@ -164,8 +166,8 @@
                                 error: function () {
                                     alert("提交失败！");
                                 }});
-                            var lang="zh-CN";
-                            var str =  ErrInfo[err][lang] + "<br>" + "装置号:" +set1.toString();
+                            var lang = "zh-CN";
+                            var str = ErrInfo[err][lang] + "<br>" + "装置号:" + set1.toString();
                             layerAler(str);
                             //layerAler("装置号:" + set1.toString() + "重复");
                         }
@@ -177,7 +179,7 @@
                 var o = $("#form1").serializeObject();
                 var vv = new Array();
                 if (selects.length == 0) {
-                    layerAler("请勾选表格数据");
+                    layerAler(langs1[73][lang]);   //请勾选表格数据
                     return;
                 }
                 addlogon(u_name, "部署", o_pid, "灯具部署", "部署灯具");
@@ -190,7 +192,7 @@
                 for (var i = 0; i < selects.length; i++) {
                     var ele = selects[i];
                     if (ele.l_comaddr != o.l_comaddr) {
-                        layerAler("列表的网关要和下拉的网关不一致");
+                        layerAler(langs1[385][lang]);  //勾选列表的网关要和下拉的网关一致
                         return;
                     }
                     var setcode = ele.l_code;
@@ -228,7 +230,7 @@
                 var o = $("#form1").serializeObject();
                 var vv = new Array();
                 if (selects.length == 0) {
-                    layerAler("请勾选表格数据");
+                    layerAler(langs1[73][lang]);   //请勾选表格数据
                     return;
                 }
                 addlogon(u_name, "移除", o_pid, "灯具部署", "移除灯具");
@@ -241,7 +243,7 @@
                 for (var i = 0; i < selects.length; i++) {
                     var ele = selects[i];
                     if (ele.l_comaddr != o.l_comaddr) {
-                        layerAler("列表的网关要和下拉的网关不一致");
+                        layerAler(langs1[385][lang]);  //勾选列表的网关要和下拉的网关一致
                         return;
                     }
                     var setcode = ele.l_code;
@@ -275,6 +277,12 @@
             }
             //  var websocket = null;
             $(function () {
+                var aaa = $("span[name=xxx]");
+                for (var i = 0; i < aaa.length; i++) {
+                    var d = aaa[i];
+                    var e = $(d).attr("id");
+                    $(d).html(langs1[e][lang]);
+                }
                 $('#l_comaddr').combobox({
                     url: "gayway.GaywayForm.getComaddr.action?pid=${param.pid}",
                     formatter: function (row) {
@@ -317,13 +325,13 @@
                             valign: 'middle'
                         }, {
                             field: 'l_comaddr',
-                            title: '所属网关',
+                            title: langs1[55][lang],   //所属网关
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_factorycode',
-                            title: '通信地址',
+                            title: langs1[386][lang],  //通信地址
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -333,19 +341,19 @@
                             }
                         }, {
                             field: 'l_name',
-                            title: '名称',
+                            title:  langs1[63][lang],  //名称
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_code',
-                            title: '装置序号',
+                            title: langs1[315][lang],   //装置序号
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_worktype',
-                            title: '控制方式',
+                            title: langs1[316][lang],   //控制方式
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -363,7 +371,7 @@
                             }
                         }, {
                             field: 'l_groupe',
-                            title: '组号',
+                            title:langs1[332][lang],  //组号
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -372,16 +380,16 @@
                             }
                         }, {
                             field: 'l_deployment',
-                            title: '部署情况',
+                            title: langs1[317][lang],  //部署情况
                             width: 25,
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
                                 if (row.l_deplayment == "0") {
-                                    var str = "<span class='label label-warning'>末部署</span>"
+                                    var str = "<span class='label label-warning'>"+langs1[318][lang]+"</span>";  //未部署
                                     return  str;
                                 } else if (row.l_deplayment == "1") {
-                                    var str = "<span class='label label-success'>已部署</span>"
+                                    var str = "<span class='label label-success'>"+langs1[319][lang]+"</span>";   //已部署
                                     return  str;
                                 }
                             }
@@ -429,22 +437,21 @@
                         <tbody>
                             <tr>
                                 <td >
-                                <span style="margin-left:10px;">网关地址&nbsp;</span></td>
+                                    <span style="margin-left:10px;" name="xxx" id="25">网关地址</span>&nbsp;</td>
                                 <td>
 
                                     <input  style="margin-left:10px;" id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:100px; height: 30px" 
                                             data-options="editable:false,valueField:'id', textField:'text' " />
                                 </td>
                                 <td>
-                                    <button style="margin-left:10px;" id="btndeploylamp" onclick="deploylamp()" type="button" class="btn btn-success btn-sm">部署灯具</button>
+                                    <button style="margin-left:10px;" id="btndeploylamp" onclick="deploylamp()" type="button" class="btn btn-success btn-sm"><span name="xxx" id="387">部署灯具</span></button>
                                 </td>
                                 <td>
-                                    <button style="margin-left:10px;" id="btnremovelamp" type="button" onclick="removelamp()" class="btn btn-success btn-sm">移除灯具</button>
+                                    <button style="margin-left:10px;" id="btnremovelamp" type="button" onclick="removelamp()" class="btn btn-success btn-sm"><span name="xxx" id="388">移除灯具</span></button>
                                 </td>
                                 <td>
-                                    <button style="margin-left:10px;"  type="button" onclick="readlamp()" class="btn btn-success btn-sm">读取灯具信息</button>
+                                    <button style="margin-left:10px;"  type="button" onclick="readlamp()" class="btn btn-success btn-sm"><span name="xxx" id="389">读取灯具信息</span></button>
                                 </td>
-      
                             </tr>
                         </tbody>
                     </table>
