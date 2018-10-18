@@ -1,7 +1,7 @@
 $.fn.serializeObject = function () {
     var o = {};
     var a = this.serializeArray();
-//    console.log(a);
+    //    console.log(a);
     $.each(a, function () {
         if (o[this.name]) {
             if (!o[this.name].push) {
@@ -14,16 +14,14 @@ $.fn.serializeObject = function () {
     });
     return o;
 }
-function setCookie(name, value)
-{
+function setCookie(name, value) {
     var Days = 30;
     var exp = new Date();
     exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
     document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString();
 }
 
-function getCookie(name)
-{
+function getCookie(name) {
     var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
     if (arr = document.cookie.match(reg))
         return unescape(arr[2]);
@@ -67,10 +65,10 @@ function sprintf() {
             o.push('%');
         } else if (m = /^\x25(?:(\d+)\$)?(\+)?(0|'[^$])?(-)?(\d+)?(?:\.(\d+))?([b-fosuxX])/.exec(f)) {
             if (((a = arguments[m[1] || i++]) == null) || (a == undefined)) {
-                throw('Too few arguments.');
+                throw ('Too few arguments.');
             }
             if (/[^s]/.test(m[7]) && (typeof (a) != 'number')) {
-                throw('Expecting number but found ' + typeof (a));
+                throw ('Expecting number but found ' + typeof (a));
             }
             switch (m[7]) {
                 case 'b':
@@ -110,7 +108,7 @@ function sprintf() {
             p = m[5] ? str_repeat(c, x) : '';
             o.push(s + (m[4] ? a + p : p + a));
         } else {
-            throw('Huh ?!');
+            throw ('Huh ?!');
         }
         f = f.substring(m[0].length);
     }
@@ -141,14 +139,12 @@ function isJSON(str) {
 function Str2Bytes(str) {
     var pos = 0;
     var len = str.length;
-    if (len % 2 != 0)
-    {
+    if (len % 2 != 0) {
         return null;
     }
     len /= 2;
     var hexA = new Array();
-    for (var i = 0; i < len; i++)
-    {
+    for (var i = 0; i < len; i++) {
         var s = str.substr(pos, 2);
         var v = parseInt(s);
         hexA.push(v);
@@ -160,14 +156,12 @@ function Str2Bytes(str) {
 function Str2BytesH(str) {
     var pos = 0;
     var len = str.length;
-    if (len % 2 != 0)
-    {
+    if (len % 2 != 0) {
         return null;
     }
     len /= 2;
     var hexA = new Array();
-    for (var i = 0; i < len; i++)
-    {
+    for (var i = 0; i < len; i++) {
         var s = str.substr(pos, 2);
         var v = parseInt(s, 16);
         hexA.push(v);
@@ -180,8 +174,7 @@ function Str2BytesH(str) {
 
 
 
-function checkModify()
-{
+function checkModify() {
 
 
     if (/^[0-9A-F]{8}$/.test($("#comaddr_").val().trim()) == false) {
@@ -198,8 +191,8 @@ function checkModify()
     var model = $('#model_').combobox('getValue');
     var namesss = false;
     var jsondata = $("#modifyTypeForm").serializeObject();
-//    console.log(jsondata);
-//    return  false;
+    //    console.log(jsondata);
+    //    return  false;
     var latitudemstr = jsondata.latitudem26d_ + "." + jsondata.latitudem26m_ + "." + jsondata.latitudem26s_;
     jsondata.latitude = latitudemstr;
     var longitudemstr = jsondata.longitudem26d_ + "." + jsondata.longitudem26m_ + "." + jsondata.longitudem26s_;
@@ -266,7 +259,7 @@ function randnum(n, m) {
 
 
 //地址域 字符串  控制域:整数   AFN:功能码 整数   SEQ:帧序列 整数 0x72    DA 整数  DT 整数  参数数组:
-function  buicode(comaddr, C, AFN, SEQ, DA, DT, paraArr) {
+function buicode(comaddr, C, AFN, SEQ, DA, DT, paraArr) {
 
 
     var addrArea = Str2BytesH(comaddr);
@@ -317,7 +310,7 @@ function  buicode(comaddr, C, AFN, SEQ, DA, DT, paraArr) {
         //console.log(parseInt(hexData[i]));
         v1 = v1 + hexData[i];
     }
-//    console.log(v1);
+    //    console.log(v1);
     hexData.push(v1 % 256);
     hexData.push(0x16);
 
@@ -439,6 +432,28 @@ function dealsend2(msg, data, fn, func, comaddr, type, param, val) {
     var user = new Object();
     user.begin = '6A';
     user.res = 1;
+    user.status = "";
+    user.comaddr = comaddr;
+    user.fn = fn;
+    user.function = func;
+    user.param = param;
+    user.page = 2;
+    user.frame = -1;
+    user.msg = msg;
+    user.val = val;
+    user.type = type;
+    user.data = data;
+    user.len = data.length;
+    user.end = '6A';
+    console.log(user);
+    parent.parent.sendData(user);
+}
+
+
+function dealsend(msg, data, fn, func, comaddr, type, param, val) {
+    var user = new Object();
+    user.begin = '6A';
+    user.res = 0;
     user.status = "";
     user.comaddr = comaddr;
     user.fn = fn;

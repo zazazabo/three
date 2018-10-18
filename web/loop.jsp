@@ -246,60 +246,8 @@
                 $('#dialog-edit').dialog('open');
 
             }
-            $('#l_comaddr').combobox({
-                url: "gayway.GaywayForm.getComaddr.action?pid=${param.pid}",
-                formatter: function (row) {
-                    var v1 = row.online == 1 ? "&nbsp;<img src='img/online1.png'>" : "&nbsp;<img src='img/off.png'>";
-                    var v = row.text + v1;
-                    row.id = row.id;
-                    row.text = v;
-                    var opts = $(this).combobox('options');
-                    console.log(row[opts.textField]);
-                    return row[opts.textField];
-                },
-                onLoadSuccess: function (data) {
-                    if (Array.isArray(data) && data.length > 0) {
-                        for (var i = 0; i < data.length; i++) {
-                            data[i].text = data[i].id;
-                        }
 
-                        $(this).combobox('select', data[0].id);
 
-                    }
-                },
-                onSelect: function (record) {
-                    var url = "lamp.GroupeForm.getGroupe.action?l_comaddr=" + record.id + "&l_deplayment=1";
-                    $("#l_groupe").combobox("clear");
-                    $("#l_groupe").combobox("reload", url);
-                }
-            });
-            $('#l_comaddr').combobox({
-                url: "gayway.GaywayForm.getComaddr.action?pid=${param.pid}",
-                formatter: function (row) {
-                    var v1 = row.online == 1 ? "&nbsp;<img src='img/online1.png'>" : "&nbsp;<img src='img/off.png'>";
-                    var v = row.text + v1;
-                    row.id = row.id;
-                    row.text = v;
-                    var opts = $(this).combobox('options');
-                    console.log(row[opts.textField]);
-                    return row[opts.textField];
-                },
-                onLoadSuccess: function (data) {
-                    if (Array.isArray(data) && data.length > 0) {
-                        for (var i = 0; i < data.length; i++) {
-                            data[i].text = data[i].id;
-                        }
-
-                        $(this).combobox('select', data[0].id);
-
-                    }
-                },
-                onSelect: function (record) {
-                    var url = "lamp.GroupeForm.getGroupe.action?l_comaddr=" + record.id + "&l_deplayment=1";
-                    $("#l_groupe").combobox("clear");
-                    $("#l_groupe").combobox("reload", url);
-                }
-            });
             //搜索
             function  search() {
                 var l_comaddr = $("#l_comaddr").val();  //网关地址
@@ -327,13 +275,38 @@
                     var e = $(d).attr("id");
                     $(d).html(langs1[e][lang]);
                 }
+
+
+                $('#comaddr').combobox({
+                    url: "gayway.GaywayForm.getComaddr.action?pid=${param.pid}",
+                    formatter: function (row) {
+                        var v1 = row.online == 1 ? "&nbsp;<img src='img/online1.png'>" : "&nbsp;<img src='img/off.png'>";
+                        var v = row.text + v1;
+                        row.id = row.id;
+                        row.text = v;
+                        var opts = $(this).combobox('options');
+                        console.log(row[opts.textField]);
+                        return row[opts.textField];
+                    },
+                    onLoadSuccess: function (data) {
+                        if (Array.isArray(data) && data.length > 0) {
+                            for (var i = 0; i < data.length; i++) {
+                                data[i].text = data[i].id;
+                            }
+
+                            $(this).combobox('select', data[0].id);
+                        }
+                    }, onSelect: function (record) {
+                        $("#comaddrname").val(record.name);
+                    }
+                });
+
                 $("#l_comaddr").combobox({
                     url: "login.map.getallcomaddr.action?pid=" + o_pid,
                     onLoadSuccess: function (data) {
-//                        $(this).combobox("select", data[0].id);
-//                        $(this).val(data[0].text);
                     }
                 });
+
 
                 $('#warningtable').bootstrapTable({
                     columns: [
@@ -346,38 +319,38 @@
                             align: 'center',
                             valign: 'middle'
                         }, {
-                            title: langs1[345][lang],  //序号
+                            title: langs1[345][lang], //序号
                             field: '序号',
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
-                            title: langs1[314][lang],   //网关名称
+                            title: langs1[314][lang], //网关名称
                             field: '网关名称',
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
-                            field: '网关地址',  
+                            field: '网关地址',
                             title: langs1[25][lang], //网关地址
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: '回路名称',
-                            title: langs1[331][lang],   //回路名称
+                            title: langs1[331][lang], //回路名称
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: '回路编号',
-                            title: langs1[364][lang],   //回路编号
+                            title: langs1[364][lang], //回路编号
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: '回路组号',
-                            title: langs1[365][lang],  //回路组号
+                            title: langs1[365][lang], //回路组号
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -421,7 +394,7 @@
                         for (var i = 0; i < persons.length; i++) {
                             if (Object.keys(persons[i]).join(',') !== headStr) {
                                 alert(langs1[366][lang]);   //导入文件格式不正确
-                                persons = []; 
+                                persons = [];
                             }
                         }
                         console.log("p2:" + persons.length);
@@ -547,25 +520,25 @@
                             valign: 'middle'
                         }, {
                             field: 'name',
-                            title: langs1[314][lang],   //网关名称
+                            title: langs1[314][lang], //网关名称
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_comaddr',
-                            title: langs1[25][lang],   //网关地址
+                            title: langs1[25][lang], //网关地址
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_name',
-                            title: langs1[331][lang],   //回路名称
+                            title: langs1[331][lang], //回路名称
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_code',
-                            title: langs1[367][lang],  //回路装置号
+                            title: langs1[367][lang], //回路装置号
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -577,7 +550,7 @@
                             valign: 'middle'
                         }, {
                             field: 'l_groupe',
-                            title: langs1[365][lang],  //回路组号
+                            title: langs1[365][lang], //回路组号
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -588,7 +561,7 @@
                             }
                         }, {
                             field: 'l_worktype',
-                            title: langs1[316][lang],   //控制方式
+                            title: langs1[316][lang], //控制方式
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -603,16 +576,16 @@
                             }
                         }, {
                             field: 'l_deployment',
-                            title: langs1[317][lang],   //部署情况
+                            title: langs1[317][lang], //部署情况
                             width: 25,
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
                                 if (row.l_deplayment == "0") {
-                                    var str = "<span class='label label-warning'>"+langs1[318][lang]+"</span>";  //未部署
+                                    var str = "<span class='label label-warning'>" + langs1[318][lang] + "</span>";  //未部署
                                     return  str;
                                 } else if (row.l_deplayment == "1") {
-                                    var str = "<span class='label label-success'>"+langs1[319][lang]+"</span>";  //已部署
+                                    var str = "<span class='label label-success'>" + langs1[319][lang] + "</span>";  //已部署
                                     return  str;
                                 }
                             }
@@ -655,7 +628,7 @@
                         layerAler(langs1[263][lang]);   //请勾选您要删除的数据
                         return;
                     }
-                    layer.confirm(langs1[145][lang], {   //确定要删除吗？
+                    layer.confirm(langs1[145][lang], {//确定要删除吗？
                         btn: [langs1[146][lang], langs1[147][lang]], //确定、取消按钮
                         icon: 3,
                         offset: 'center',
@@ -674,7 +647,7 @@
                                         var arrlist = data.rs;
                                         if (arrlist.length == 1) {
                                             layer.open({
-                                                content: langs1[342][lang],  //删除成功
+                                                content: langs1[342][lang], //删除成功
                                                 icon: 1,
                                                 yes: function (index, layero) {
                                                     $("#gravidaTable").bootstrapTable('refresh');
@@ -749,7 +722,7 @@
                 <span name="xxx" id="353">导入Excel</span>
             </button>
             <button type="button" id="btn_download" class="btn btn-primary" onClick ="$('#gravidaTable').tableExport({type: 'excel', escape: 'false'})">
-               <span name="xxx" id="110">导出Excel</span>
+                <span name="xxx" id="110">导出Excel</span>
             </button>
         </div>
         <div class="row" >
@@ -798,11 +771,6 @@
         </div>
 
 
-        <!-- 添加 -->
-
-        <!--        <div id="dialog_simple" title="Dialog Simple Title">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                </div>-->
 
         <div id="dialog-add"  class="bodycenter"  style=" display: none" title="回路添加">
 
