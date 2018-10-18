@@ -423,22 +423,22 @@
             <button class="btn btn-success ctrol" onclick="showDialog()" data-toggle="modal" data-target="#modal_add22" id="add" >
                 <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;
                 <!--添加-->
-                <span id="65" name="xxx"></span>
+                <span id="65" name="xxx">添加</span>
             </button>
             <button class="btn btn-primary ctrol" type="button"   onclick="editloopplan();" id="update" >
                 <span class="glyphicon glyphicon-pencil"></span>&nbsp;
                 <!--编辑-->
-                <span id="66" name="xxx"></span>
+                <span id="66" name="xxx">编辑</span>
             </button>
             <button class="btn btn-danger ctrol" onclick="deleteloopplan();" id="del">
                 <span class="glyphicon glyphicon-trash"></span>&nbsp;
                 <!--删除-->
-                <span id="67" name="xxx"></span>
+                <span id="67" name="xxx">删除</span>
             </button>
 
             <span style="margin-left:20px;">
                 <!--方案类型-->
-                <span id="68" name="xxx"></span>
+                <span id="68" name="xxx">方案类型</span>
                 &nbsp;</span>
             <span class="menuBox">
 
@@ -483,7 +483,7 @@
                             <td>
                                 <span style="margin-left:20px;">
                                     <!--方案类型-->
-                                    <span id="68" name="xxx"></span>
+                                    <span id="68" name="xxx">方案类型</span>
                                     &nbsp;</span>
                                 <span class="menuBox">
                                     <select class="easyui-combobox" data-options="editable:false" id="p_type" name="p_type" style="width:150px; height: 30px">
@@ -495,7 +495,7 @@
                             <td></td>
                             <td>
                                 <!--方案名称-->
-                                <span style="margin-left:20px;" id="69" name="xxx"></span>&nbsp;
+                                <span style="margin-left:20px;" id="69" name="xxx">方案名称</span>&nbsp;
                                 <input id="p_name" class="form-control"  name="p_name" style="width:150px;display: inline;" placeholder="请输入方案名" type="text"></td>
 
                             </td>
@@ -504,14 +504,14 @@
                         <tr id="tr_time_hide_add">
                             <td>
                                 <!--闭合时间-->
-                                <span style="margin-left:20px;" id="71" name="xxx"></span>&nbsp;
+                                <span style="margin-left:20px;" id="71" name="xxx">闭合时间</span>&nbsp;
                                 <!--<input id="intime" class="form-control"  name="intime" style="width:150px;display: inline;" placeholder="请输入闭合时间" type="text">-->
                                 <input id="intime" name="p_intime" style=" height: 34px; width: 150px;  "  class="easyui-timespinner">
                             </td>
                             <td></td>
                             <td>
                                 <!--断开时间-->
-                                <span style="margin-left:20px;" id="72" name="xxx"></span>&nbsp;
+                                <span style="margin-left:20px;" id="72" name="xxx">断开时间</span>&nbsp;
                                 <input id="outtime" name="p_outtime" style=" height: 34px; width: 150px;  "  class="easyui-timespinner">
                             </td>
                             </td>
@@ -550,7 +550,7 @@
                             <td>
                                 <span style="margin-left:20px;">
                                     <!--方案类型-->
-                                    <span id="68" name="xxx"></span>
+                                    <span id="68" name="xxx">方案类型</span>
                                     &nbsp;</span>
                                 <span class="menuBox">
 
@@ -565,7 +565,7 @@
                             <td></td>
                             <td>
                                 <!--方案名称-->
-                                <span style="margin-left:20px;" id="69" name="xxx"></span>&nbsp;
+                                <span style="margin-left:20px;" id="69" name="xxx">方案名称</span>&nbsp;
                                 <input id="p_name_" class="form-control"  name="p_name" style="width:150px;display: inline;" placeholder="请输入方案名" type="text"></td>
 
                             </td>

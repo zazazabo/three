@@ -200,10 +200,10 @@
                 }
                 var selects = $(b).bootstrapTable('getSelections');
                 if (selects.length == 0) {
-                    layerAler("请选择表格数据");
+                    layerAler(langs1[73][lang]);  //请选择表格数据
                     return false;
                 } else if (selects.length > 1) {
-                    layerAler("只能编辑单行数据");
+                    layerAler(langs1[74][lang]);  //只能编辑单行数据
                     return false;
                 }
                 var select = selects[0];
@@ -219,7 +219,7 @@
                 if (select.p_type == "0") {
                     $('#scen1').hide();
                     $('#time_').show();
-                    console.log('时间方式')
+                    console.log('时间方式');
                     var obj1 = eval('(' + select.p_time1 + ')');
                     var obj2 = eval('(' + select.p_time2 + ')');
                     var obj3 = eval('(' + select.p_time3 + ')');
@@ -284,11 +284,11 @@
                 }
                 var selects = $(b).bootstrapTable('getSelections');
 
-                layer.confirm('您确定要删除吗？', {
-                    btn: ['确定', '取消'], //按钮
+                layer.confirm(langs1[145][lang], {   //您确定要删除吗？
+                    btn: [langs1[146][lang],langs1[147][lang]], //确定、取消按钮
                     icon: 3,
                     offset: 'center',
-                    title: '提示'
+                    title:langs1[174][lang]   //提示
                 }, function (index) {
                     addlogon(u_name, "删除", o_pid, "灯具策略", "删除灯具方案");
                     for (var i = 0; i < selects.length; i++) {
