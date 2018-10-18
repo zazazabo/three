@@ -441,13 +441,21 @@
                             title: langs1[292][lang], //灯具编号
                             width: 25,
                             align: 'center',
-                            valign: 'middle'
+                            valign: 'middle',
+                            formatter: function (value, row, index, field) {
+                                if (value != null) {
+                                    value = value.replace(/\b(0+)/gi, "");
+                                    return value.toString();
+                                }
+
+                            }
                         }, {
                             field: 'l_code',
                             title: langs1[315][lang], //装置序号
                             width: 25,
                             align: 'center',
                             valign: 'middle'
+
                         }, {
                             field: 'l_worktype',
                             title: langs1[316][lang], //控制方式

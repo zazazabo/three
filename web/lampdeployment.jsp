@@ -151,6 +151,7 @@
                 dealsend2("AA", data, 380, "readlampCB", comaddr, 0, 0, 0);
             }
 
+<<<<<<< HEAD
             function readlampsceneCB(obj) {
                 console.log(obj);
             }
@@ -174,6 +175,9 @@
                 var data = buicode(comaddr, 0x04, 0xAA, num, 0, 404, vv);
                 dealsend2("AA", data, 404, "readlampsceneCB", comaddr, 0, 0, 0);
             }
+=======
+           
+>>>>>>> 1decc2b35e173e264a61f6570ede68a0bff7c141
             function deploylampCB(obj) {
 
 
@@ -533,9 +537,13 @@
                                 <td>
                                     <button style="margin-left:10px;"  type="button" onclick="readlamp()" class="btn btn-success btn-sm"><span name="xxx" id="389">读取灯具信息</span></button>
                                 </td>
+<<<<<<< HEAD
                                 <td>
                                     <button style="margin-left:10px;"  type="button" onclick="readlampscene()" class="btn btn-success btn-sm"><span name="xxx" id="390">读取灯具场景配置</span></button>
                                 </td>
+=======
+      
+>>>>>>> 1decc2b35e173e264a61f6570ede68a0bff7c141
                             </tr>
                         </tbody>
                     </table>
