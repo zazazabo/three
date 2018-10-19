@@ -234,7 +234,9 @@
             }
             function setjwd() {
                 var o = $("#form1").serializeObject();
-                console.log(o);
+                var obj = $("#form2").serializeObject();
+                console.log(obj);
+                //obj.split(obj.)
 //                var longrg = /^(\-|\+)?(((\d|[1-9]\d|1[0-7]\d|0{1,3})\.\d{0,6})|(\d|[1-9]\d|1[0-7]\d|0{1,3})|180\.0{0,6}|180)$/;
 //
 //                if (!longrg.test(o.Longitude)) {
@@ -1099,13 +1101,13 @@
                                                 <span style=" float: right; " name="xxxx" id="199">经度&nbsp;</span>&nbsp;
                                             </td>
                                             <td>
-                                                <input id="Longitude"  value="" style="width:100px;" placeholder="经度" type="text">
+                                                <input id="Longitude" name="Longitude"  value="" style="width:100px;" placeholder="经度" type="text">
                                             </td>
                                             <td>
                                                 <span style="float: right; " name="xxxx" id="199">纬度&nbsp;</span>
                                             </td>
                                             <td>
-                                                <input id="latitude"  value="" style="width:100px;" placeholder="纬度" type="text">
+                                                <input id="latitude" name="latitude"  value="" style="width:100px;" placeholder="纬度" type="text">
                                             </td>
 
 
