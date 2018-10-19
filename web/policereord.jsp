@@ -165,11 +165,6 @@
                     }
                 });
 
-
-
-
-
-
                 var aaa = $("span[name=xxx]");
                 for (var i = 0; i < aaa.length; i++) {
                     var d = aaa[i];
@@ -218,20 +213,7 @@
                             align: 'center',
                             valign: 'middle',
                         }, 
-                        //{
-                        //     field: 'f_status1',
-                        //     title: langs1[237][lang], //状态字1
-                        //     width: 25,
-                        //     align: 'center',
-                        //     valign: 'middle',
-                        // }, {
-                        //     field: 'f_status2',
-                        //     title: langs1[238][lang], //状态字2
-                        //     width: 25,
-                        //     align: 'center',
-                        //     valign: 'middle',
-                        // },
-                         {
+                        {
                             field: '',
                             title: '详情', //状态字2
                             width: 25,
@@ -247,7 +229,6 @@
                                     for(var i=0;i<8;i++){
                                         var temp= Math.pow(2,i);
                                         if ((row.f_status1 &temp)==temp) {
-                                            console.log(s1[i]);
                                             if (s1[i]!="") {
                                                 str=str + s1[i] + "|";
                                             }

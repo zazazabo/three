@@ -38,7 +38,6 @@
             var o_pid = parent.parent.getpojectId();
             //添加角色
             function addrole() {
-                addlogon(u_name, "添加", o_pid, "角色权限管理", "添加角色");
                 var name = $("#rolename").val();
                 if (name == "") {
                     layerAler(langs1[249][lang]);  //角色名不能为空
@@ -72,6 +71,7 @@
 
                             }
                             alert(langs1[144][lang]); //添加成功
+                            addlogon(u_name, "添加", o_pid, "角色权限管理", "添加角色");
                         }
                     },
                     error: function () {
@@ -145,7 +145,6 @@
                                     layerAler(langs1[252][lang]);  //请选择要取消权限的角色
                                     return;
                                 }
-                                addlogon(u_name, "取消权限", o_pid, "角色权限管理", "取消角色权限");
                                 var iscodeobj = {};
                                 iscodeobj.code = id;
                                 iscodeobj.roletype = role;
@@ -174,6 +173,7 @@
                                             success: function (data) {
                                                 if (data.rs.length > 0) {
                                                     layerAler(langs1[254][lang]);   //取消成功
+                                                    addlogon(u_name, "取消权限", o_pid, "角色权限管理", "取消角色权限");
                                                 } else {
                                                     layerAler(langs1[255][lang]);  //取消失败
                                                 }
@@ -191,6 +191,7 @@
                                             success: function (data) {
                                                 if (data.rs.length > 0) {
                                                     layerAler(langs1[254][lang]);   //取消成功
+                                                    addlogon(u_name, "取消权限", o_pid, "角色权限管理", "取消角色权限");
                                                 } else {
                                                    layerAler(langs1[255][lang]);  //取消失败
                                                 }

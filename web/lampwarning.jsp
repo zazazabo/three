@@ -149,8 +149,10 @@
 
                 if (obj.msg == "A4" && obj.fn == 602) {
                     layerAler(langs1[217][lang]);  //预警参数设置成功
+                    addlogon(u_name, "设置", o_pid, "路灯预报警", "设置灯具预警参数");
                 } else if (obj.msg == "A4" && obj.fn == 604) {
                     layerAler(langs1[218][lang]);  //报警参数设置成功
+                    addlogon(u_name, "设置", o_pid, "路灯预报警", "设置灯具报警参数");
                 }
 
             }
@@ -162,7 +164,6 @@
                 layerAler(langs1[219][lang]);  //请选择网关
                 return;
             }
-            addlogon(u_name, "设置", o_pid, "路灯预报警", "设置灯具预警参数");
             var arr = $("#prewarningtable").bootstrapTable('getData');
             var vv = [];
             var u = 0x00;
@@ -197,7 +198,6 @@
                 layerAler(langs1[219][lang]);  //请选择网关
                 return;
             }
-            addlogon(u_name, "设置", o_pid, "路灯预报警", "设置灯具报警参数");
             var arr = $("#warningtable").bootstrapTable('getData');
             var vv = [];
             var u = 0x00;

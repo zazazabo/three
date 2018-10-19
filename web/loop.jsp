@@ -117,8 +117,6 @@
                     layerAler(langs1[359][lang]);  //回路编号1字节必须在1-54
                     return false;
                 }
-                console.log(o);
-
                 o.name = o.comaddrname;
 
                 var namesss = false;

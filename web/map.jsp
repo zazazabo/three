@@ -59,31 +59,35 @@
                     <th></th>
                     <th><spn name="xxx" id="283">标识</spn></th>
                 </tr>
-
+                <tr>
+                    <td><span name="xxx" id="401">灯具亮灯</span>:</td>
+                    <td style=" color: yellow;">-----------------</td>
+                    <td><img src="img/lyello.png" style=" margin-left:-7px;"></td>
+                </tr>
                 <tr>
                     <td><span name="xxx" id="298">灯具在线</span>:</td>
                     <td style=" color: green;">-----------------</td>
-                    <td><img src="img/yl.png"></td>
+                    <td><img src="img/yl.png" style=" margin-left:-7px;"></td>
                 </tr>
                 <tr>
                     <td><span name="xxx" id="299">灯具离线</span>:</td>
-                    <td style=" color:yellow;">-----------------</td>
-                    <td><img src="img/lyello.png"></td>
+                    <td style=" color: #93a1a1;">-----------------</td>
+                    <td><img src="img/lhui.png"></td>
                 </tr>
                 <tr>
                     <td><span name="xxx" id="300">灯具异常</span>:</td>
                     <td style=" color: red;">-----------------</td>
-                    <td><img src="img/lred.png"></td>
+                    <td><img src="img/lred3.png"></td>
                 </tr>
                 <tr>
                     <td><span name="xxx" id="296">网关在线</span>:</td>
                     <td style=" color: green;">-----------------</td>
-                    <td><img src="img/wgreen.png"></td>
+                    <td><img src="img/wzx.png"></td>
                 </tr>
                 <tr>
                     <td><span name="xxx" id="297">网关离线</span>:</td>
-                    <td style=" color: yellow;">-----------------</td>
-                    <td><img src="img/wh.png"></td>
+                    <td style=" color: #93a1a1;">-----------------</td>
+                    <td><img src="img/wlx.png"></td>
                 </tr>
             </table>
         </div>
@@ -164,19 +168,20 @@
             var wggreenicon = new BMap.Icon('./img/wgreen.png', new BMap.Size(27, 32), {//20，30是图片大小
                 //anchor: new BMap.Size(0, 0)      //这个是信息窗口位置（可以改改看看效果）
             });
-            var wghuiicon = new BMap.Icon('./img/wh.png', new BMap.Size(27, 32), {//20，30是图片大小
+            //创建网关离线图标
+            var wghuiicon = new BMap.Icon('./img/wlx.png', new BMap.Size(27, 32), {//20，30是图片大小
                 //anchor: new BMap.Size(0, 0)      //这个是信息窗口位置（可以改改看看效果）
             });
             //创建灯具离线图标
-            var huiicon = new BMap.Icon('./img/lyello.png', new BMap.Size(27, 32), {//20，30是图片大小
+            var lhui = new BMap.Icon('./img/lhui.png', new BMap.Size(27, 32), {//20，30是图片大小
                 // anchor: new BMap.Size(0, 0)      //这个是信息窗口位置（可以改改看看效果）
             });
             //创建灯具在线图标
-            var greenicon = new BMap.Icon('./img/yl.png', new BMap.Size(27, 32), {//20，30是图片大小
+            var lgreen = new BMap.Icon('./img/yl.png', new BMap.Size(27, 32), {//20，30是图片大小
                 //anchor: new BMap.Size(0, 0)      //这个是信息窗口位置（可以改改看看效果）
             });
             //创建灯具异常图标
-            var yellow = new BMap.Icon('./img/lred.png', new BMap.Size(27, 28), {//20，30是图片大小
+            var lred = new BMap.Icon('./img/lred3.png', new BMap.Size(27, 32), {//20，30是图片大小
                 //anchor: new BMap.Size(0, 0)      //这个是信息窗口位置（可以改改看看效果）
             });
             //调用父页面的方法获取用户名
@@ -662,15 +667,15 @@
                                         var marker1;
                                         if (isfault2 == 1) {
                                             marker1 = new BMap.Marker(point, {
-                                                icon: yellow
+                                                icon: lred
                                             });
                                         } else if (obj.presence == 1) {
                                             marker1 = new BMap.Marker(point, {
-                                                icon: greenicon
+                                                icon: lgreen
                                             });
                                         } else {
                                             marker1 = new BMap.Marker(point, {
-                                                icon: huiicon
+                                                icon: lhui
                                             });
                                         }
                                         var opts = {title: '<span style="font-size:14px;color:#0A8021">信息说明</span>', width: 300, height: 120, };//设置信息框

@@ -168,7 +168,6 @@
                         return;
                     }
 
-                    addlogon(u_name, "修改", o_pid, "报警设置", "修改报警管理人员");
                     var obj = {};
                     obj.u_name = uname;
                     obj.u_phone = uphone;
@@ -182,6 +181,7 @@
                                 alert(langs1[143][lang]);  //修改成功
                                 $("#gravidaTable").bootstrapTable('refresh');
                                 $("#updatetable").modal('hide');  //手动关闭
+                                addlogon(u_name, "修改", o_pid, "报警设置", "修改报警管理人员");
                             }
                         },
                         error: function () {
@@ -231,7 +231,6 @@
                     return;
                 }
 
-                addlogon(u_name, "添加", o_pid, "报警设置", "添加报警管理人员");
                 var obj = {};
                 obj.u_phone = phone;
                 obj.u_name = name;
@@ -245,7 +244,8 @@
                         if (arrlist.length == 1) {
                             alert(langs1[144][lang]);//添加成功
                             $("#gravidaTable").bootstrapTable('refresh');
-                            $("#addtable").modal('hide');  //手动关闭
+                            $("#addtable").modal('hide');  //自动关闭
+                            addlogon(u_name, "添加", o_pid, "报警设置", "添加报警管理人员");
                         }
                     },
                     error: function () {

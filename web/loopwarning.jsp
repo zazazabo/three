@@ -103,6 +103,7 @@
 
                 if (obj.msg == "A4" && obj.fn == 610) {
                     layerAler(langs1[218][lang]);  //报警参数设置成功
+                    addlogon(u_name, "设置", o_pid, "回路预报警", "设置回路预报警参数");
                 }
             }
         }
@@ -114,7 +115,6 @@
                 layerAler(langs1[219][lang]);  //请选择网关
                 return;
             }
-            addlogon(u_name, "设置", o_pid, "回路预报警", "设置回路预报警参数");
             var arr = $("#warningtable").bootstrapTable('getData');
             var vv = [];
             var u = 0x00;

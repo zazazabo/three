@@ -195,7 +195,6 @@
                 });
                 //添加用户
                 $("#tianjia1").click(function () {
-                    addlogon(u_name, "添加", o_pid, "用户管理", "添加用户");
                     var userid = parent.parent.getuserId();  //调用首页的getuserId方法
                     //alert( $("#userid").val());
                     var obj = $("#Form_User").serializeObject();
@@ -240,6 +239,7 @@
                                     layerAler(langs1[144][lang]); //添加成功
                                     $("#gravidaTable").bootstrapTable('refresh');
                                     $("#pjj").modal('hide'); //手动关闭
+                                    addlogon(u_name, "添加", o_pid, "用户管理", "添加用户");
                                 }
                             },
                             error: function () {
@@ -289,7 +289,7 @@
             }
             //修改
             function editaction() {
-                addlogon(u_name, "修改", o_pid, "用户管理", "修改用户信息");
+              
                 var pid = $("#sel_menu1").val(); //项目
                 var pids = "";
                 for (var i = 0; i < pid.length; i++) {
@@ -315,6 +315,7 @@
                             layerAler(langs1[143][lang]); //修改成功
                             $("#gravidaTable").bootstrapTable('refresh');
                             $("#pjj2").modal('hide'); //手动关闭
+                            addlogon(u_name, "修改", o_pid, "用户管理", "修改用户信息");
                         }
                     },
                     error: function () {
@@ -333,7 +334,6 @@
                 layer.confirm(langs1[145][lang], {  //确定要删除吗？
                     btn: [langs1[146][lang], langs1[147][lang]]//确定、取消按钮
                 }, function (index) {
-                    addlogon(u_name, "删除", o_pid, "用户管理", "删除用户");
                     var select = selects[0];
                     $.ajax({async: false, url: "login.usermanage.loopsunuser.action", type: "POST", datatype: "JSON", data: {id: select.id},
                         success: function (data) {
@@ -346,6 +346,7 @@
                                         var arrlist = data.rs;
                                         if (arrlist.length == 1) {
                                             $("#gravidaTable").bootstrapTable('refresh');
+                                            addlogon(u_name, "删除", o_pid, "用户管理", "删除用户");
                                         }
                                     },
                                     error: function () {
@@ -364,7 +365,6 @@
             }
             //重置密码
             function  chongzhimima() {
-                addlogon(u_name, "重置密码", o_pid, "用户管理>编辑", "重置用户密码");
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
                 var select = selects[0];
                 var id = select.id;
@@ -377,6 +377,7 @@
                         var arrlist = data.rs;
                         if (arrlist.length == 1) {
                             layerAler(langs1[230][lang]);  //重置成功
+                            addlogon(u_name, "重置密码", o_pid, "用户管理>编辑", "重置用户密码");
                         } else {
                             layerAler(langs1[231][lang]);  //重置失败
                         }

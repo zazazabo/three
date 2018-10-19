@@ -291,7 +291,6 @@
                 layer.confirm(langs1[145][lang], {  //确认要删除吗？
                     btn: [langs1[146][lang],langs1[147][lang]]//确定、取消按钮
                 }, function (index) {
-                    addlogon(u_name, "删除", o_pid, "项目管理", "删除项目");
                     $.ajax({async: false, url: "login.project.getbase.action", type: "POST", datatype: "JSON", data: {pid: selects[0].code},
                         success: function (data) {
                             var arrlist = data.rs;
@@ -304,6 +303,7 @@
                                         if (arrlist.length > 1) {
                                             layerAler(langs1[265][lang]);   //该项目下拥有管理人员，不可删除
                                         } else {
+                                            addlogon(u_name, "删除", o_pid, "项目管理", "删除项目");
                                             $.ajax({async: false, url: "login.project.delete.action", type: "POST", datatype: "JSON", data: {id: selects[0].id},
                                                 success: function (data) {
                                                     var arrlist = data.rs;
