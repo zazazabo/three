@@ -38,6 +38,10 @@
                 border:1px solid blue;
                 background-color:#FFFFFF;
             }
+            #ta tr td{
+                margin-top: 20px;
+                
+            }
         </style>
         <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=Uppxai1CT7jTHF9bjKFx0WGTs7nCyHMr"></script>
         <script type="text/javascript" src="js/genel.js"></script>
@@ -184,61 +188,96 @@
             var lred = new BMap.Icon('./img/lred3.png', new BMap.Size(27, 32), {//20，30是图片大小
                 //anchor: new BMap.Size(0, 0)      //这个是信息窗口位置（可以改改看看效果）
             });
+            //创建灯具亮灯图标
+            var lyello = new BMap.Icon('./img/lyello.png', new BMap.Size(27, 32), {//20，30是图片大小
+                //anchor: new BMap.Size(0, 0)      //这个是信息窗口位置（可以改改看看效果）
+            });
+            function layerAler(str) {
+                layer.alert(str, {
+                    icon: 6,
+                    offset: 'center'
+                });
+            }
 
-           
             function lightCB1(obj) {
-                console.log("ojbk");
                 if (obj.status == "success") {
-                   
-                    if (obj.fn == 301) {
-                        //layerAler(langs1[313][lang]);  //单灯调光成功
-                       
-                        var param = obj.param;
-                        var o = {};
-                        o.l_value = obj.val;
-                        o.id = param.id;
-//                        $.ajax({async: false, url: "test1.lamp.modifyvalue.action", type: "get", datatype: "JSON", data: o,
-//                            success: function (data) {
-//                                var arrlist = data.rs;
-//                                if (arrlist.length == 1) {
-//                                    $("#gravidaTable").bootstrapTable('updateCell', {index: param.row, field: "l_value", value: obj.val});
-//                                }
-//                            },
-//                            error: function () {
-//                                alert("提交失败！");
-//                            }
-//                        });
-                    } else if (obj.fn == 302) {
-                        var param = obj.param;
-                        var o = {};
-                        o.l_value = obj.val;
-                        o.l_comaddr = obj.comaddr;
-                        o.l_groupe = param.l_groupe;
-                        if (obj.type == 3) {
-//                            $.ajax({async: false, url: "lamp.lampform.modifygroupevalAll.action", type: "get", datatype: "JSON", data: o,
-//                                success: function (data) {
-//                                    if (data != null) {
-//                                        $('#gravidaTable').bootstrapTable('refresh');
-//                                    }
-//                                },
-//                                error: function () {
-//                                    alert("提交失败！");
-//                                }
-//                            });
-                        } else {
-//                            $.ajax({async: false, url: "lamp.lampform.modifygroupeval.action", type: "get", datatype: "JSON", data: o,
-//                                success: function (data) {
-//                                    var arrlist = data.rs;
-//                                    if (arrlist.length >= 1) {
-//                                        $('#gravidaTable').bootstrapTable('refresh');
-//                                    }
-//                                },
-//                                error: function () {
-//                                    alert("提交失败！");
-//                                }
-//                            });
-                        }
 
+                    if (obj.fn == 301) {
+                        layerAler(lans[410][lang]);   //开灯成功
+                        var comaddr = obj.comaddr;
+                        var l_code = obj.param;
+                        var val = obj.val;
+                        var o = {};
+                        o.comaddr = comaddr;
+                        o.l_code = l_code;
+                        o.l_value = val;
+                        $.ajax({async: false, url: "login.map.lampval.action", type: "get", datatype: "JSON", data: o,
+                            success: function (data) {
+                                var arrlist = data.rs;
+                                if (arrlist.length == 1) {
+                                    $("#dj").click();
+                                }
+                            },
+                            error: function () {
+                                alert("提交失败！");
+                            }
+                        });
+                    }
+                }
+
+            }
+
+            function lightCB2(obj) {
+                if (obj.status == "success") {
+
+                    if (obj.fn == 301) {
+                        layerAler(lans[411][lang]);  //关灯成功
+                        var comaddr = obj.comaddr;
+                        var l_code = obj.param;
+                        var val = obj.val;
+                        var o = {};
+                        o.comaddr = comaddr;
+                        o.l_code = l_code;
+                        o.l_value = val;
+                        $.ajax({async: false, url: "login.map.lampval.action", type: "get", datatype: "JSON", data: o,
+                            success: function (data) {
+                                var arrlist = data.rs;
+                                if (arrlist.length == 1) {
+                                    $("#dj").click();
+                                }
+                            },
+                            error: function () {
+                                alert("提交失败！");
+                            }
+                        });
+                    }
+                }
+
+            }
+            //调光
+            function lightCB3(obj) {
+                if (obj.status == "success") {
+
+                    if (obj.fn == 301) {
+                        layerAler(lans[412][lang]);  //调光成功
+                        var comaddr = obj.comaddr;
+                        var l_code = obj.param;
+                        var val = obj.val;
+                        var o = {};
+                        o.comaddr = comaddr;
+                        o.l_code = l_code;
+                        o.l_value = val;
+                        $.ajax({async: false, url: "login.map.lampval.action", type: "get", datatype: "JSON", data: o,
+                            success: function (data) {
+                                var arrlist = data.rs;
+                                if (arrlist.length == 1) {
+                                    $("#dj").click();
+                                }
+                            },
+                            error: function () {
+                                alert("提交失败！");
+                            }
+                        });
                     }
                 }
 
@@ -731,6 +770,10 @@
                                             marker1 = new BMap.Marker(point, {
                                                 icon: lred
                                             });
+                                        } else if (obj.presence == 1 && obj.l_value > 0) {
+                                            marker1 = new BMap.Marker(point, {
+                                                icon: lyello
+                                            });
                                         } else if (obj.presence == 1) {
                                             marker1 = new BMap.Marker(point, {
                                                 icon: lgreen
@@ -747,53 +790,89 @@
                                         });
                                         //标注点点击事件
                                         marker1.addEventListener("click", function () {
-                                            var textvalue2 = "<button id='kd'>开灯</button><button id='gd'>关灯</button>";
-                                            var opts2 = {title: '<span style="font-size:14px;color:#0A8021">' + lans[404][lang] + '</span>', width: 300, height: 120, };//设置信息框、信息说明
-                                            var infoWindow2 = new BMap.InfoWindow(textvalue2, opts2); // 创建信息窗口对象，引号里可以书写任意的html语句。
-                                            this.openInfoWindow(infoWindow2);
-                                            $("#kd").click(function () {
-                                                var vv = new Array();
-                                                var l_comaddr = obj.l_comaddr;
-                                                var lampval = 100;
+                                            if (obj.presence != 1) {
+                                                layerAler(lans[406][lang]);  //此灯具不在线
+                                            } else {
+                                                //开灯、关灯、调光值、请输入调光值、调光
+                                                var textvalue2 = "<table style='text-valign:center'><tr style='height: 48px;'>\n\
+                                                <td><button id='kd' class='btn btn-success btn-sm'>"+lans[35][lang]+"</button>&nbsp;&nbsp;<button id='gd' class='btn btn-success btn-sm'>"+lans[36][lang]+"</button></td>\n\
+                                                <td></td>\n\
+                                                </tr>\n\
+                                                <tr>\n\
+                                                    <td><span>"+lans[42][lang]+"</span>：<input id='val' class='form-control' name='val' style='width:100px;display: inline; height: 28px;' type='text' placeholder='请输入调光值'>\n\
+                                                    &nbsp;<button id='tg' class='btn btn-success btn-sm'>"+lans[407][lang]+"</button><td>\n\
+                                                </tr>\n\
+                                                </table>";
+                                                var opts2 = {title: '<span style="font-size:14px;color:#0A8021">' + lans[405][lang] + '</span>', width: 300, height: 120};//设置信息框、功能操作
+                                                var infoWindow2 = new BMap.InfoWindow(textvalue2, opts2); // 创建信息窗口对象，引号里可以书写任意的html语句。
+                                                this.openInfoWindow(infoWindow2);
+                                                $("#kd").click(function () {
+                                                    var vv = new Array();
+                                                    var l_comaddr = obj.l_comaddr;
+                                                    var lampval = 100;   //亮度
+                                                    var l_code = obj.l_code;  //装置序号
 
 
-                                                var c = parseInt(obj.l_code);
-                                                var h = c >> 8 & 0x00ff;
-                                                var l = c & 0x00ff;
-                                                vv.push(l);
-                                                vv.push(h); //装置序号  2字节
+                                                    var c = parseInt(obj.l_code);
+                                                    var h = c >> 8 & 0x00ff;
+                                                    var l = c & 0x00ff;
+                                                    vv.push(l);
+                                                    vv.push(h); //装置序号  2字节
 
-                                                vv.push(parseInt(lampval));
-                                                var num = randnum(0, 9) + 0x70;
-                                                var param = {};
-//                                                param.id = select.id;
-//                                                param.row = select.index;
-                                                var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 301, vv); //01 03
-                                                //dealsend(sss, o1);
-                                                dealsend3("A5", data, 301, "lightCB1", l_comaddr, 0, 0, lampval);
-                                                
-                                            });
-                                            $("#gd").click(function () {
-                                                var vv = new Array();
-                                                var l_comaddr = obj.l_comaddr;
-                                                var lampval = 0;
+                                                    vv.push(parseInt(lampval));
+                                                    var num = randnum(0, 9) + 0x70;
+                                                    var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 301, vv); //01 03
+                                                    //dealsend(sss, o1);
+                                                    dealsend3("A5", data, 301, "lightCB1", l_comaddr, 0, l_code, lampval);
+
+                                                });
+                                                $("#gd").click(function () {
+                                                    var vv = new Array();
+                                                    var l_comaddr = obj.l_comaddr;  //网关地址
+                                                    var lampval = 0;   //亮度
+                                                    var l_code = obj.l_code;  //装置序号
 
 
-                                                var c = parseInt(obj.l_code);
-                                                var h = c >> 8 & 0x00ff;
-                                                var l = c & 0x00ff;
-                                                vv.push(l);
-                                                vv.push(h); //装置序号  2字节
+                                                    var c = parseInt(obj.l_code);
+                                                    var h = c >> 8 & 0x00ff;
+                                                    var l = c & 0x00ff;
+                                                    vv.push(l);
+                                                    vv.push(h); //装置序号  2字节
 
-                                                vv.push(parseInt(lampval));
-                                                var num = randnum(0, 9) + 0x70;
-                                                var param = {};
-//                                                param.id = select.id;
-//                                                param.row = select.index;
-                                                var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 301, vv); //01 03
-                                                //dealsend(sss, o1);
-                                                dealsend2("A5", data, 301, "lightCB1", l_comaddr, 0, 0, lampval);
-                                            });
+                                                    vv.push(parseInt(lampval));
+                                                    var num = randnum(0, 9) + 0x70;
+                                                    var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 301, vv); //01 03
+                                                    //dealsend(sss, o1);
+                                                    dealsend3("A5", data, 301, "lightCB2", l_comaddr, 0, l_code, lampval);
+                                                });
+
+                                                $("#tg").click(function () {
+                                                    var val = $("#val").val();
+                                                    if (val == "") {
+                                                        layerAler(lans[408][lang]);    //请输入调光值
+                                                    } else if (!(/(^[1-9]\d*$)/.test(val))) {
+                                                        layerAler(lans[409][lang]);  //调光值必须为正整数
+                                                    } else {
+                                                        var vv = new Array();
+                                                        var l_comaddr = obj.l_comaddr;  //网关地址
+                                                        var lampval = parseInt(val);   //亮度
+                                                        var l_code = obj.l_code;  //装置序号
+
+
+                                                        var c = parseInt(obj.l_code);
+                                                        var h = c >> 8 & 0x00ff;
+                                                        var l = c & 0x00ff;
+                                                        vv.push(l);
+                                                        vv.push(h); //装置序号  2字节
+
+                                                        vv.push(parseInt(lampval));
+                                                        var num = randnum(0, 9) + 0x70;
+                                                        var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 301, vv); //01 03
+                                                        //dealsend(sss, o1);
+                                                        dealsend3("A5", data, 301, "lightCB3", l_comaddr, 0, l_code, lampval);
+                                                    }
+                                                });
+                                            }
                                         });
                                         map.addOverlay(marker1);
                                         map.panTo(point);
@@ -991,6 +1070,11 @@
                 $("#lamptable").bootstrapTable('refresh', opt);
             }
             $(function () {
+                $('#slide_lamp_val').slider({
+                    onChange: function (v1, v2) {
+                        $("#val").val(v1);
+                    }
+                });
                 var aaa = $("span[name=xxx]");
                 for (var i = 0; i < aaa.length; i++) {
                     var d = aaa[i];

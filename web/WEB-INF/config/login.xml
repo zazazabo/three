@@ -180,6 +180,16 @@
                
             </xsql>
         </xhandle> 
+        <xhandle desc="开关灯、调光" id="lampval" rtn="rs" rtnype="JSON">
+            <xsql id="a1" para="l_value"  tpe="DDL" tpl="update t_lamp set l_value=':l_value' where @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@l_comaddr AND @l_code">
+                    <xfltpara id="l_comaddr" nrp="1=1" para="comaddr" sql="l_comaddr=:comaddr">
+                    </xfltpara>
+                    <xfltpara id="l_code" nrp="1=1" para="l_code" sql="l_code=:l_code">
+                    </xfltpara>
+                </xflt>
+            </xsql>
+        </xhandle> 
     </xform>
     
     
