@@ -184,6 +184,65 @@
             var lred = new BMap.Icon('./img/lred3.png', new BMap.Size(27, 32), {//20，30是图片大小
                 //anchor: new BMap.Size(0, 0)      //这个是信息窗口位置（可以改改看看效果）
             });
+
+           
+            function lightCB1(obj) {
+                console.log("ojbk");
+                if (obj.status == "success") {
+                   
+                    if (obj.fn == 301) {
+                        //layerAler(langs1[313][lang]);  //单灯调光成功
+                       
+                        var param = obj.param;
+                        var o = {};
+                        o.l_value = obj.val;
+                        o.id = param.id;
+//                        $.ajax({async: false, url: "test1.lamp.modifyvalue.action", type: "get", datatype: "JSON", data: o,
+//                            success: function (data) {
+//                                var arrlist = data.rs;
+//                                if (arrlist.length == 1) {
+//                                    $("#gravidaTable").bootstrapTable('updateCell', {index: param.row, field: "l_value", value: obj.val});
+//                                }
+//                            },
+//                            error: function () {
+//                                alert("提交失败！");
+//                            }
+//                        });
+                    } else if (obj.fn == 302) {
+                        var param = obj.param;
+                        var o = {};
+                        o.l_value = obj.val;
+                        o.l_comaddr = obj.comaddr;
+                        o.l_groupe = param.l_groupe;
+                        if (obj.type == 3) {
+//                            $.ajax({async: false, url: "lamp.lampform.modifygroupevalAll.action", type: "get", datatype: "JSON", data: o,
+//                                success: function (data) {
+//                                    if (data != null) {
+//                                        $('#gravidaTable').bootstrapTable('refresh');
+//                                    }
+//                                },
+//                                error: function () {
+//                                    alert("提交失败！");
+//                                }
+//                            });
+                        } else {
+//                            $.ajax({async: false, url: "lamp.lampform.modifygroupeval.action", type: "get", datatype: "JSON", data: o,
+//                                success: function (data) {
+//                                    var arrlist = data.rs;
+//                                    if (arrlist.length >= 1) {
+//                                        $('#gravidaTable').bootstrapTable('refresh');
+//                                    }
+//                                },
+//                                error: function () {
+//                                    alert("提交失败！");
+//                                }
+//                            });
+                        }
+
+                    }
+                }
+
+            }
             //调用父页面的方法获取用户名
             var u_name = parent.getusername();
 
@@ -445,8 +504,6 @@
             // 自定义控件必须实现自己的initialize方法,并且将控件的DOM元素返回
             // 在本方法中创建个div元素作为控件的容器,并将其添加到地图容器中
             ZoomControl.prototype.initialize = function (map) {
-                //搜索
-
                 var o = parent.parent.getLnas();
                 var lang = "${param.lang}";
                 // 创建一个DOM元素
@@ -612,7 +669,12 @@
                         }
                     }
                     var pid = parent.getpojectId();
-                    $.ajax({async: false, url: "login.map.queryLamp.action", type: "get", datatype: "JSON", data: {pid: pid},
+                    var d = new Date();
+                    var day = d.toLocaleDateString();
+                    var lobj = {};
+                    lobj.pid = pid;
+                    lobj.f_day = day;
+                    $.ajax({async: false, url: "login.map.queryLamp.action", type: "get", datatype: "JSON", data: lobj,
                         success: function (data) {
 
                             var arrlist = data.rs;
@@ -634,7 +696,7 @@
                                         }
                                     }
                                     if (obj.presence == 1) {
-                                        Iszx = "在线";
+                                        Iszx = lans[284][lang];  //在线
                                     }
                                     //lans[][]代表的文字依次是：亮度、名称、灯具编号、网关地址、在线情况、状态
                                     var textvalue = "<div style='line-height:1.8em;font-size:12px;'>\n\
@@ -678,10 +740,60 @@
                                                 icon: lhui
                                             });
                                         }
-                                        var opts = {title: '<span style="font-size:14px;color:#0A8021">信息说明</span>', width: 300, height: 120, };//设置信息框
+                                        var opts = {title: '<span style="font-size:14px;color:#0A8021">' + lans[404][lang] + '</span>', width: 300, height: 120, };//设置信息框、信息说明
                                         var infoWindow = new BMap.InfoWindow(textvalue, opts); // 创建信息窗口对象，引号里可以书写任意的html语句。
                                         marker1.addEventListener("mouseover", function () {
                                             this.openInfoWindow(infoWindow);
+                                        });
+                                        //标注点点击事件
+                                        marker1.addEventListener("click", function () {
+                                            var textvalue2 = "<button id='kd'>开灯</button><button id='gd'>关灯</button>";
+                                            var opts2 = {title: '<span style="font-size:14px;color:#0A8021">' + lans[404][lang] + '</span>', width: 300, height: 120, };//设置信息框、信息说明
+                                            var infoWindow2 = new BMap.InfoWindow(textvalue2, opts2); // 创建信息窗口对象，引号里可以书写任意的html语句。
+                                            this.openInfoWindow(infoWindow2);
+                                            $("#kd").click(function () {
+                                                var vv = new Array();
+                                                var l_comaddr = obj.l_comaddr;
+                                                var lampval = 100;
+
+
+                                                var c = parseInt(obj.l_code);
+                                                var h = c >> 8 & 0x00ff;
+                                                var l = c & 0x00ff;
+                                                vv.push(l);
+                                                vv.push(h); //装置序号  2字节
+
+                                                vv.push(parseInt(lampval));
+                                                var num = randnum(0, 9) + 0x70;
+                                                var param = {};
+//                                                param.id = select.id;
+//                                                param.row = select.index;
+                                                var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 301, vv); //01 03
+                                                //dealsend(sss, o1);
+                                                dealsend3("A5", data, 301, "lightCB1", l_comaddr, 0, 0, lampval);
+                                                
+                                            });
+                                            $("#gd").click(function () {
+                                                var vv = new Array();
+                                                var l_comaddr = obj.l_comaddr;
+                                                var lampval = 0;
+
+
+                                                var c = parseInt(obj.l_code);
+                                                var h = c >> 8 & 0x00ff;
+                                                var l = c & 0x00ff;
+                                                vv.push(l);
+                                                vv.push(h); //装置序号  2字节
+
+                                                vv.push(parseInt(lampval));
+                                                var num = randnum(0, 9) + 0x70;
+                                                var param = {};
+//                                                param.id = select.id;
+//                                                param.row = select.index;
+                                                var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 301, vv); //01 03
+                                                //dealsend(sss, o1);
+                                                dealsend2("A5", data, 301, "lightCB1", l_comaddr, 0, 0, lampval);
+                                            });
                                         });
                                         map.addOverlay(marker1);
                                         map.panTo(point);
@@ -745,9 +857,9 @@
                         draw = false;
                         idlist = [];
                         onedraw = false;
-                        wgdraw =false;
+                        wgdraw = false;
                         wgonedraw = false;
-                        wgidlist = [];  
+                        wgidlist = [];
                         $("#addlamp").dialog("open");
 
 
@@ -783,9 +895,9 @@
                         var id = "#comaddrlist";
                         combobox(id, porjectId);
                         //清空标记
-                        wgdraw =false;
+                        wgdraw = false;
                         wgonedraw = false;
-                        wgidlist = [];  
+                        wgidlist = [];
                         draw = false;
                         idlist = [];
                         onedraw = false;
@@ -898,7 +1010,7 @@
                     position: ["top", "top"],
                     buttons: {
                         选点绘线: function () {
-                           wgDrawing();
+                            wgDrawing();
                         }, 关闭: function () {
                             $(this).dialog("close");
                         }
@@ -1141,7 +1253,7 @@
 //                            isboole = true;
 //                        }
 //                    });
-                    
+
                     //修改单个网关
                     if (wgonedraw) {
                         if (wgchecck.Longitude != null && wgchecck.latitude != null) {
@@ -1157,14 +1269,14 @@
                                 }
                             }
                         } else {
-                            updatelnglat(e.point.lng, e.point.lat,  wgchecck.comaddr);
+                            updatelnglat(e.point.lng, e.point.lat, wgchecck.comaddr);
                         }
                         wgonedraw = false;
                         wgchecck = [];
                     }
-                    
+
                     //修改多个网关
-                     if (wgdraw) {
+                    if (wgdraw) {
                         var obj3 = {};
                         obj3.x = e.point.lng;
                         obj3.y = e.point.lat;
@@ -1212,7 +1324,7 @@
                             }
                         }
                     }
-                    
+
                     //单灯修改经纬度
                     if (onedraw) {
                         if (lampchecck.Longitude != null && lampchecck.latitude != null) {

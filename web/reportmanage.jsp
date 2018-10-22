@@ -214,7 +214,7 @@
                                 rowspan: 2
                             }, {
                                 field: 'voltage',
-                                title: langs1[95][lang],  //电压
+                                title: langs1[95][lang]+'(V)',  //电压
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -222,7 +222,7 @@
                                 rowspan: 1
                             }, {
                                 field: 'electric',
-                                title: langs1[96][lang],  //电流
+                                title: langs1[96][lang]+'(A)',  //电流
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -230,7 +230,7 @@
                                 rowspan: 1
                             }, {
                                 field: 'activepower',
-                                title: langs1[97][lang], //有功功率
+                                title: langs1[97][lang]+'(KW)', //有功功率
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -246,7 +246,7 @@
                                 rowspan: 1
                             }, {
                                 field: 'power',
-                                title: langs1[99][lang], //正向有功电能量
+                                title: langs1[99][lang]+'(KW)', //正向有功电能量
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
