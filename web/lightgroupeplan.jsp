@@ -127,8 +127,9 @@
 
                 if (obj.status == "success") {
                     if (obj.fn == 140) { //时间
-
-                        var ooo = {l_comaddr: obj.comaddr, l_groupe: obj.val, l_plantime: obj.param};
+                        var oo = {p_code: obj.param, p_name: obj.type};
+                        var p_code = JSON.stringify(oo);
+                        var ooo = {l_comaddr: obj.comaddr, l_groupe: obj.val, l_plantime: p_code};
                         $.ajax({
                             async: false, url: "lamp.planForm.modifylampplantime.action", type: "get", datatype: "JSON", data: ooo,
                             success: function (data) {
@@ -173,8 +174,9 @@
                         });
                     } else if (obj.fn == 480) {  //场景
 
-
-                        var ooo = {l_comaddr: obj.comaddr, l_groupe: obj.val, l_planscene: obj.param};
+                        var oo = {p_code: obj.param, p_name: obj.type};
+                        var p_code = JSON.stringify(oo);
+                        var ooo = {l_comaddr: obj.comaddr, l_groupe: obj.val, l_planscene: p_code};
                         $.ajax({
                             async: false, url: "lamp.planForm.modifylampplanscene.action", type: "get", datatype: "JSON", data: ooo,
                             success: function (data) {
@@ -267,7 +269,7 @@
                 }
                 var v = obj.p_type;
                 if (v == "0") {
-                   
+
                     var vv = [];
                     vv.push(1);
                     vv.push(parseInt(obj.l_groupe));
@@ -320,7 +322,7 @@
                     var comaddr = obj.l_comaddr;
                     var num = randnum(0, 9) + 0x70;
                     var data = buicode(comaddr, 0x04, 0xA4, num, 0, 140, vv); //01 03 F24    
-                    dealsend2("A4", data, 140, "setLampPlanCB", comaddr, obj.p_type, obj.p_code, obj.l_groupe);
+                    dealsend2("A4", data, 140, "setLampPlanCB", comaddr, obj.p_name, obj.p_code, obj.l_groupe);
                 }
 
                 if (v == "1") {
@@ -339,7 +341,7 @@
                     var comaddr = obj.l_comaddr;
                     var num = randnum(0, 9) + 0x70;
                     var data = buicode(comaddr, 0x04, 0xA4, num, 0, 480, vv); //01 03 F24    
-                    dealsend2("A4", data, 480, "setLampPlanCB", comaddr, obj.p_type, obj.p_code, obj.l_groupe);
+                    dealsend2("A4", data, 480, "setLampPlanCB", comaddr, obj.p_name, obj.p_code, obj.l_groupe);
                 }
 
             }
@@ -399,15 +401,6 @@
 
                     }
                 });
-
-
-
-
-
-
-
-
-
 
 
                 $('#l_comaddr').combobox({

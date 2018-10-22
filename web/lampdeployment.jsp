@@ -537,7 +537,7 @@
                                     value = "(经纬度)";
                                     return value;
                                 } else if (value == 2) {
-                                    value = "场景";
+                                    value = "(场景)";
                                     return value;
                                 }
                             }

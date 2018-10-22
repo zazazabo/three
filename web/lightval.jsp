@@ -482,13 +482,34 @@
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
-                                if (row.l_deplayment == 1) {
+                             
+                             
+                            if (row.l_deplayment == 1) {
+
                                     if (row.l_worktype == "0") {
-                                        return row.l_plantime;
+                                        if (isJSON(row.l_plantime)) {
+                                            var obj = eval('(' + row.l_plantime + ')');
+                                            return obj.p_name;
+                                        } else {
+                                            return  row.l_plantime;
+                                        }
+
+
                                     } else if (row.l_worktype == "2") {
-                                        return row.l_planscene;
+                                        if (isJSON(row.l_planscene)) {
+                                            var obj = eval('(' + row.l_plantime + ')');
+                                            return obj.p_name;
+                                        } else {
+                                            return  row.l_planscene;
+                                        }
+
                                     }
-                                }
+                                }                         
+                             
+                             
+                             
+                             
+                             
                             }
                         },
                         {
@@ -571,7 +592,15 @@
                     if (value == "l_plan") {
                         if (element.l_deplayment == "1") {
                             if (element.l_worktype == "0") {
-                                var o = {p_code: element.l_plantime};
+                                var plan = "";
+                                if (isJSON(element.l_plantime)) {
+                                    var obj = eval('(' + element.l_plantime + ')');
+                                    plan = obj.p_code;
+                                } else {
+                                    plan = element.l_plantime;
+                                }
+
+                                var o = {p_code: plan};
                                 $.ajax({async: false, url: "lamp.planForm.getLampPlanData.action", type: "get", datatype: "JSON", data: o,
                                     success: function (data) {
                                         var arrlist = data.rs;
@@ -598,7 +627,14 @@
                                 });
 
                             } else if (element.l_worktype == 2) {
-                                var o = {p_code: element.l_planscene};
+                                 var plan = "";
+                                if (isJSON(element.l_planscene)) {
+                                    var obj = eval('(' + element.l_planscene + ')');
+                                    plan = obj.p_code;
+                                } else {
+                                    plan = element.l_planscene;
+                                }
+                                var o = {p_code: plan};
                                 $.ajax({async: false, url: "lamp.planForm.getLampPlanData.action", type: "get", datatype: "JSON", data: o,
                                     success: function (data) {
                                         var arrlist = data.rs;
