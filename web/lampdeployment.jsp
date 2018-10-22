@@ -138,7 +138,7 @@
                         console.log(l_value);
                         //温度
                         z = z + 2;
-                        var temperature = v[z + 1] * 256 + v[z];
+                        var temperature = v[z+1]==1?-v[z]:v[z];
                         console.log(temperature);
                         var o = {};
                         o.l_comaddr = obj.comaddr;
@@ -165,7 +165,11 @@
             }
             function tourlamp() {
 
-
+//                var vv = [];
+//                var l_comaddr = "17020101";
+//                var num = randnum(0, 9) + 0x70;
+//                var data = "0";
+//                dealsend2("CheckLamp", data, 1, "CheckLamp", l_comaddr, 0, 0, "${param.pid}");
 
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
                 var o = $("#form1").serializeObject();
@@ -403,46 +407,45 @@
             //  var websocket = null;
             $(function () {
 
-                $.ajax({async: false, url: "lamp.lampform.getAllLamp.action", type: "get", datatype: "JSON", data: {l_deplayment: 1, pid: "${param.pid}"},
-                    success: function (data) {
-                        var list = data.rs;
-                        var vv = {};
-                        for (var i = 0; i < list.length; i++) {
-                            var comaddr = list[i].l_comaddr;
-                            var l_code = list[i].l_code;
-                            if (typeof vv[comaddr] == "undefined") {
-                                vv[comaddr] = [];
-
-                            }
-                            vv[comaddr].push(l_code);
-
-                        }
-
-                        for (var ele in vv) {
-                            var l_codeArr = vv[ele];
-                            var vv = [];
-                            for (var j = 0; j < l_codeArr.length; j++) {
-                                var v1 = j % 50;
-                                var setcode = l_codeArr[j];
-                                var l_code = parseInt(setcode);
-                                var a = l_code >> 8 & 0x00FF;
-                                var b = l_code & 0x00ff;
-                                vv.push(b);//装置序号  2字节
-                                vv.push(a);//装置序号  2字节
-                                if (v1 == 0) {
-                                    //console.log(l_codeArr[j]);
-
-                                }
-                            }
-
-                        }
-
-                        console.log(vv);
-                    },
-                    error: function () {
-                        alert("提交失败！");
-                    }
-                });
+//                $.ajax({async: false, url: "lamp.lampform.getAllLamp.action", type: "get", datatype: "JSON", data: {l_deplayment: 1, pid: "${param.pid}"},
+//                    success: function (data) {
+//                        var list = data.rs;
+//                        var vv = {};
+//                        for (var i = 0; i < list.length; i++) {
+//                            var comaddr = list[i].l_comaddr;
+//                            var l_code = list[i].l_code;
+//                            if (typeof vv[comaddr] == "undefined") {
+//                                vv[comaddr] = [];
+//
+//                            }
+//                            vv[comaddr].push(l_code);
+//                        }
+//
+//                        for (var ele in vv) {
+//                            var l_codeArr = vv[ele];
+//                            var vv = [];
+//                            for (var j = 0; j < l_codeArr.length; j++) {
+//                                var v1 = j % 50;
+//                                var setcode = l_codeArr[j];
+//                                var l_code = parseInt(setcode);
+//                                var a = l_code >> 8 & 0x00FF;
+//                                var b = l_code & 0x00ff;
+//                                vv.push(b);//装置序号  2字节
+//                                vv.push(a);//装置序号  2字节
+//                                if (v1 == 0) {
+//                                    //console.log(l_codeArr[j]);
+//
+//                                }
+//                            }
+//
+//                        }
+//
+//                        console.log(vv);
+//                    },
+//                    error: function () {
+//                        alert("提交失败！");
+//                    }
+//                });
 
 
 

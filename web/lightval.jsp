@@ -465,14 +465,29 @@
                             formatter: function (value, row, index, field) {
                                 console.log(value);
                                 if (value == 0) {
-                                    value = "0(时间)";
+                                    value = "(时间)";
                                     return value;
                                 } else if (value == 1) {
-                                    value = "1(经纬度)";
+                                    value = "(经纬度)";
                                     return value;
                                 } else if (value == 2) {
-                                    value = "1(场景)";
+                                    value = "(场景)";
                                     return value;
+                                }
+                            }
+                        }, {
+                            field: 'l_plan',
+                            title: langs1[373][lang], //控制方案
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle',
+                            formatter: function (value, row, index, field) {
+                                if (row.l_deplayment == 1) {
+                                    if (row.l_worktype == "0") {
+                                        return row.l_plantime;
+                                    } else if (row.l_worktype == "2") {
+                                        return row.l_planscene;
+                                    }
                                 }
                             }
                         },
@@ -549,6 +564,76 @@
                     value.index = index;
                     console.log(value);
                 });
+
+
+              $('#gravidaTable').on('click-cell.bs.table', function (field, value, row, element)
+                {
+                    if (value == "l_plan") {
+                        if (element.l_deplayment == "1") {
+                            if (element.l_worktype == "0") {
+                                var o = {p_code: element.l_plantime};
+                                $.ajax({async: false, url: "lamp.planForm.getLampPlanData.action", type: "get", datatype: "JSON", data: o,
+                                    success: function (data) {
+                                        var arrlist = data.rs;
+                                        if (arrlist.length == 1) {
+                                            var str = "";
+                                            var oo = arrlist[0];
+                                            for (var i = 0; i < 6; i++) {
+                                                var aa = "p_time" + (i + 1).toString();
+
+
+                                                var obj = eval('(' + oo[aa] + ')');
+                                                if (typeof obj == 'object') {
+                                                    str = str + "时间" + (i + 1).toString() + ":" + obj.time + "&nbsp;&nbsp;调光值:" + obj.value.toString() + "<br>";
+                                                }
+
+
+                                            }
+                                            layerAler(str);
+                                        }
+                                    },
+                                    error: function () {
+                                        alert("提交失败！");
+                                    }
+                                });
+
+                            } else if (element.l_worktype == 2) {
+                                var o = {p_code: element.l_planscene};
+                                $.ajax({async: false, url: "lamp.planForm.getLampPlanData.action", type: "get", datatype: "JSON", data: o,
+                                    success: function (data) {
+                                        var arrlist = data.rs;
+                                        if (arrlist.length == 1) {
+                                            var str = "";
+                                            var oo = arrlist[0];
+                                            for (var i = 0; i < 8; i++) {
+                                                var aa = "p_scene" + (i + 1).toString();
+
+                                                var obj = eval('(' + oo[aa] + ')');
+                                                if (typeof obj == 'object') {
+                                                    str = str + "场景号" + obj.num + ":" + "&nbsp;&nbsp;调光值:" + obj.value.toString() + "<br>";
+                                                }
+                                            }
+                                            layerAler(str);
+                                        }
+                                    },
+                                    error: function () {
+                                        alert("提交失败！");
+                                    }
+                                });
+                            }
+                        }
+                    }
+
+
+                });
+
+
+
+
+
+
+
+
 
 
 // 组号方式

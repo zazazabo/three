@@ -813,7 +813,7 @@
                                 <span class="menuBox">
                                     <select class="easyui-combobox" id="switch" name="l_worktype" data-options='editable:false' style="width:150px; height: 30px">
                                         <option value="0" selected="true">走时间</option>
-                                        <!--<option value="1">走经纬度</option>-->           
+                                        <option value="1">走经纬度</option>           
                                     </select>
                                 </span>
 
