@@ -26,14 +26,36 @@
             }
         </style>
         <script>
-
+            var o = {};
+            var lang = getCookie("lang");
             var websocket = null;
+            var conectstr = "ws://103.46.128.43:56130/";
             var timestamp = 0;
             function sendData(obj) {
 
                 console.log("通信状态:", websocket.readyState);
                 if (websocket.readyState == 3) {
-                    layerAler("通迅已断开");
+
+                    layer.confirm("通迅已断开,重连吗?", {//确认要删除吗？
+                        btn: [o[146][lang], o[147][lang]] //确定、取消按钮
+                    }, function (index) {
+                        websocket = new WebSocket(conectstr);
+                        // 连接成功建立的回调方法
+
+                        // 连接成功建立的回调方法
+                        websocket.onopen = onopen;
+                        //接收到消息的回调方法
+                        websocket.onmessage = onmessage;
+                        //连接关闭的回调方法
+                        websocket.onclose = onclose;
+                        //连接发生错误的回调方法
+                        websocket.onerror = onerror;
+                        //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+                        window.onbeforeunload = onbeforeunload;
+
+                        layer.close(index);
+                        //此处请求后台程序，下方是成功后的前台处理……
+                    });
                 }
                 if (websocket != null && websocket.readyState == 1) {
 
@@ -83,10 +105,10 @@
 
             //退出
             function getout() {
-                   layer.confirm(o[282][lang], {  //确认要删除吗？
-                    btn: [o[146][lang],o[147][lang]]//确定、取消按钮
+                layer.confirm(o[282][lang], {//确认要删除吗？
+                    btn: [o[146][lang], o[147][lang]]//确定、取消按钮
                 }, function (index) {
-                     window.location = "${pageContext.request.contextPath }/login.jsp";
+                    window.location = "${pageContext.request.contextPath }/login.jsp";
                     var nobj = {};
                     var name = $("#u_name").text();
                     nobj.name = name;
@@ -103,12 +125,12 @@
                             }
                         }
                     });
-            
+
                     layer.close(index);
 
                 });
-                
-                
+
+
             }
 
             //修改密码
@@ -273,21 +295,41 @@
 
             //获取语言
             function getLnas() {
-//                var lans;
-//                $.ajax({async: false, url: "login.main.lan.action", type: "get", datatype: "JSON", data: {},
-//                    success: function (data) {
-//                        lans = data.lans;
-//
-//                    }
-//                });
-//                var ooo = {};
-//                for (var i = 0; i < lans.length; i++) {
-//                    ooo[lans[i].id]=lans[i];
-//                }
                 return o;
             }
-            var o = {};
-            var lang = getCookie("lang");
+
+            function onopen(e) {
+            }
+            function onmessage(e) {
+                var info = eval('(' + e.data + ')');
+                console.log("main onmessage");
+                console.log(info);
+
+                if (info.hasOwnProperty("page")) {
+                    console.log(info.page);
+                    var obj = $("iframe").eq(0);
+                    var win = obj[0].contentWindow;
+                    if (info.page == 1) {
+                        var func = info.function;
+                        console.log(func);
+                        win[func](info);
+                    } else if (info.page == 2) {
+                        win.callchild(info);
+                    }
+                }
+            }
+
+            function onclose(e) {
+                console.log(e);
+                console.log("websocket close");
+                websocket.close();
+            }
+            function  onerror(e) {
+                console.log("Webscoket连接发生错误");
+            }
+            function onbeforeunload(e) {
+                websocket.close();
+            }
             $(function () {
 
             <c:forEach items="${lans}" var="t" varStatus="i">
@@ -320,52 +362,21 @@
             </c:if>
 
                 if ('WebSocket' in window) {
-                    websocket = new WebSocket("ws://zhizhichun.eicp.net:18414/");
+                    websocket = new WebSocket(conectstr);
 //                    websocket = new WebSocket("ws://localhost:5050/");
                 } else {
                     alert('当前浏览器不支持websocket');
                 }
-//                // 连接成功建立的回调方法
-                websocket.onopen = function (e) {
-
-                }
-
+                // 连接成功建立的回调方法
+                websocket.onopen = onopen;
                 //接收到消息的回调方法
-                websocket.onmessage = function (e) {
-//                    var info = JSON.parse(e.data);
-                    var info = eval('(' + e.data + ')');
-                    console.log("main onmessage");
-                    console.log(info);
-
-                    if (info.hasOwnProperty("page")) {
-                        console.log(info.page);
-                        var obj = $("iframe").eq(0);
-                        var win = obj[0].contentWindow;
-                        if (info.page == 1) {
-                            var func = info.function;
-                            console.log(func);
-                            win[func](info);
-                        } else if (info.page == 2) {
-                            win.callchild(info);
-                        }
-                    }
-                }
+                websocket.onmessage = onmessage;
                 //连接关闭的回调方法
-                websocket.onclose = function () {
-                    console.log("websocket close");
-                    websocket.close();
-                }
-
+                websocket.onclose = onclose;
                 //连接发生错误的回调方法
-                websocket.onerror = function () {
-                    console.log("Webscoket连接发生错误");
-                }
-
+                websocket.onerror = onerror;
                 //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
-                window.onbeforeunload = function () {
-                    websocket.close();
-                };
-
+                window.onbeforeunload = onbeforeunload;
                 //查看警异常信息总数
                 fualtCount();
             });

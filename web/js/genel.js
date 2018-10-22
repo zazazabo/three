@@ -38,9 +38,6 @@ Array.prototype.distinct = function () {
     }, []);
 }
 
-
-
-
 String.prototype.trim = function () {
     return this.replace(/(^\s*)|(\s*$)/g, "");
 
@@ -169,63 +166,6 @@ function Str2BytesH(str) {
     }
     return hexA;
 }
-
-
-
-
-
-function checkModify() {
-
-
-    if (/^[0-9A-F]{8}$/.test($("#comaddr_").val().trim()) == false) {
-        layer.alert('网关地址应为八位有效十六进制字符', {
-            icon: 6,
-            offset: 'center'
-        });
-        return false;
-    }
-
-    var name = $("#name_").val();
-    var addr = $("#comaddr_").val();
-
-    var model = $('#model_').combobox('getValue');
-    var namesss = false;
-    var jsondata = $("#modifyTypeForm").serializeObject();
-    //    console.log(jsondata);
-    //    return  false;
-    var latitudemstr = jsondata.latitudem26d_ + "." + jsondata.latitudem26m_ + "." + jsondata.latitudem26s_;
-    jsondata.latitude = latitudemstr;
-    var longitudemstr = jsondata.longitudem26d_ + "." + jsondata.longitudem26m_ + "." + jsondata.longitudem26s_;
-    jsondata.longitude = longitudemstr;
-    console.log(jsondata);
-    $.ajax({
-        async: false,
-        cache: false,
-        url: "test1.gayway.modifyGateway.action",
-        type: "GET",
-        data: jsondata,
-        success: function (data) {
-            $("#gravidaTable").bootstrapTable('refresh');
-            namesss = true;
-        },
-        error: function () {
-            layer.alert('系统错误，刷新后重试', {
-                icon: 6,
-                offset: 'center'
-            });
-        }
-    })
-    return namesss;
-
-}
-
-
-function getComAddr(comaddr) {
-    var addrArea = Str2Bytes(comaddr);
-    var straddr = sprintf("%02d", addrArea[1]) + sprintf("%02d", addrArea[0]) + sprintf("%02d", addrArea[3]) + sprintf("%02d", addrArea[2]);
-    return straddr;
-}
-
 
 
 function get2byte(num) {

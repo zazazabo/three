@@ -164,6 +164,9 @@
                 }
             }
             function tourlamp() {
+
+
+
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
                 var o = $("#form1").serializeObject();
                 var vv = new Array();
@@ -399,6 +402,50 @@
             }
             //  var websocket = null;
             $(function () {
+
+                $.ajax({async: false, url: "lamp.lampform.getAllLamp.action", type: "get", datatype: "JSON", data: {l_deplayment: 1, pid: "${param.pid}"},
+                    success: function (data) {
+                        var list = data.rs;
+                        var vv = {};
+                        for (var i = 0; i < list.length; i++) {
+                            var comaddr = list[i].l_comaddr;
+                            var l_code = list[i].l_code;
+                            if (typeof vv[comaddr] == "undefined") {
+                                vv[comaddr] = [];
+
+                            }
+                            vv[comaddr].push(l_code);
+
+                        }
+
+                        for (var ele in vv) {
+                            var l_codeArr = vv[ele];
+                            var vv = [];
+                            for (var j = 0; j < l_codeArr.length; j++) {
+                                var v1 = j % 50;
+                                var setcode = l_codeArr[j];
+                                var l_code = parseInt(setcode);
+                                var a = l_code >> 8 & 0x00FF;
+                                var b = l_code & 0x00ff;
+                                vv.push(b);//装置序号  2字节
+                                vv.push(a);//装置序号  2字节
+                                if (v1 == 0) {
+                                    //console.log(l_codeArr[j]);
+
+                                }
+                            }
+
+                        }
+
+                        console.log(vv);
+                    },
+                    error: function () {
+                        alert("提交失败！");
+                    }
+                });
+
+
+
                 var aaa = $("span[name=xxx]");
                 for (var i = 0; i < aaa.length; i++) {
                     var d = aaa[i];
@@ -575,7 +622,7 @@
                                     <button style="margin-left:10px;"  type="button" onclick="readlamp()" class="btn btn-success btn-sm"><span name="xxx" id="389">读取灯具信息</span></button>
                                 </td>
                                 <td>
-                                    <button style="margin-left:10px;"  type="button" onclick="tourlamp()" class="btn btn-success btn-sm"><span name="xxx" id="403">巡测灯具状态</span></button>
+                                    <button style="margin-left:10px;"  type="button" onclick="tourlamp()" class="btn btn-success btn-sm"><span name="xxxx" id="403">巡测灯具状态</span></button>
                                 </td>
                             </tr>
                         </tbody>
