@@ -266,13 +266,20 @@
             var lang = '${param.lang}';
             var langs1 = parent.parent.getLnas();
             $(function () {
-                
+
+                var vv = [];
+                var l_comaddr = "17020101";
+                var num = randnum(0, 9) + 0x70;
+                var data = "0";
+                dealsend3("CheckLamp", data, 1, "CheckLamp", l_comaddr, 0, 0, "${param.pid}");
+
+
                 var aaa = $("span[name=xxx]");
                 for (var i = 0; i < aaa.length; i++) {
                     var d = aaa[i];
                     var e = $(d).attr("id");
                     $(d).html(langs1[e][lang]);
-                    
+
                 }
                 var truevalmap = "";
                 var status1 = "";
@@ -321,7 +328,7 @@
                 obj.status = status;
                 aa.push(obj);
                 var data = aa;
-                var pieData = [{value: data[0].plan_value, name: langs1[9][lang]}, {value: data[0].num, name:  langs1[10][lang]}];  //计划能耗、实际能耗
+                var pieData = [{value: data[0].plan_value, name: langs1[9][lang]}, {value: data[0].num, name: langs1[10][lang]}];  //计划能耗、实际能耗
                 pieChart("echarts2", "", pieData, langs1[27][lang]);  //用能计划
             })
 
@@ -389,7 +396,7 @@
                 var echarts4DataX = [data[0].date1, data[0].date2, data[0].date3];
                 var echarts4DataY = [data[0].thisYear1, data[0].thisYear2, data[0].thisYear3];
                 //var sjqs = $("#16").html();
-                ech4('echarts4',langs1[16][lang], langs1[302][lang], echarts4DataX, echarts4DataY, 'bar', 'kW·h', "#337dd7"); //数据趋势、能耗
+                ech4('echarts4', langs1[16][lang], langs1[302][lang], echarts4DataX, echarts4DataY, 'bar', 'kW·h', "#337dd7"); //数据趋势、能耗
 
 
                 var date = new Date();
@@ -510,13 +517,13 @@
                             mark: {show: true},
                             dataView: {show: true, readOnly: false},
                             restore: {show: true},
-                            saveAsImage: {show: true, title: '保存为图片'}  
+                            saveAsImage: {show: true, title: '保存为图片'}
                         }
                     },
                     calculable: true,
                     series: [
                         {
-                            name: langs1[303][lang],  //访问来源
+                            name: langs1[303][lang], //访问来源
                             type: 'pie',
                             radius: ['40%', '70%'], //圈圈的边框粗细
                             itemStyle: {
@@ -805,7 +812,7 @@
                 <!--用能计划-->
                 <span id="27" name="xxx">
                 </span>
-               
+
                 <br><br>
                 <span style="color:#777;font-size:18px;font-weight:500;">
                     <!--单位-->
@@ -883,13 +890,13 @@
                 <div class="topCenter2Mess">	
                     <div class="nenghao">
                         <span class="subPara">
-                                <!--本月耗能-->
+                            <!--本月耗能-->
                             <span name="xxx" id="18"></span>
                             :</span><br>
                         <span id="benyue" class="paraValue"></span>kW·h</div>
                     <div class="nenghao1">
                         <span class="subPara">
-                                <!--上月耗能-->
+                            <!--上月耗能-->
                             <span id="19" name="xxx"></span>
                             :</span><br>
                         <span id="shangyue" class="paraValue"></span>kW·h<br>
@@ -898,7 +905,7 @@
                         kW·h
                     </div>
                     <div class="nenghao1">
-                        
+
                         <span class="subPara">
                             <!--去年同期-->
                             <span id="21" name="xxx"></span>

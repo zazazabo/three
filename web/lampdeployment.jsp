@@ -624,9 +624,9 @@
                                 <td>
                                     <button style="margin-left:10px;"  type="button" onclick="readlamp()" class="btn btn-success btn-sm"><span name="xxx" id="389">读取灯具信息</span></button>
                                 </td>
-                                <td>
+<!--                                <td>
                                     <button style="margin-left:10px;"  type="button" onclick="tourlamp()" class="btn btn-success btn-sm"><span name="xxxx" id="403">巡测灯具状态</span></button>
-                                </td>
+                                </td>-->
                             </tr>
                         </tbody>
                     </table>
