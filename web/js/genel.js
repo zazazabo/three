@@ -123,7 +123,7 @@ function isJSON(str) {
             }
 
         } catch (e) {
-            console.log('error：' + str + '!!!' + e);
+//            console.log('error：' + str + '!!!' + e);
             return false;
         }
     }
