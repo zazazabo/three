@@ -908,7 +908,7 @@
                                 <input id="val" value="0" class="form-control" readonly="true" name="val" style="width:50px;display: inline; height: 30px; " placeholder="调光值" type="text">
 
                             </td>
-                            <td >
+                            <td>
                                 <div  id="slide_lamp_val"  class="easyui-slider"     data-options="showTip:true,min:0,max:100,step:1" style="width:100px;    "></div>
 
                             </td>
