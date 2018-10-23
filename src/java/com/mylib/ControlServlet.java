@@ -11,8 +11,10 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -74,6 +76,24 @@ public class ControlServlet extends HttpServlet {
                 Logger.getLogger(ControlServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
 
+        } else if (info1.rtnype.equals("SUNOUTDOWN")) {
+            String lng = request.getParameter("jd");
+            String lat = request.getParameter("wd");
+            String str1 = SunRiseSet.getSunrise(new BigDecimal(lng), new BigDecimal(lat), new Date());
+            String str2 = SunRiseSet.getSunset(new BigDecimal(lng), new BigDecimal(lat), new Date());
+            
+            Map<String, List> list3 = new HashMap<String, List>();
+            Map map = new HashMap();
+            map.put("rc", str1);
+            map.put("rl", str2);
+            List li2 = new ArrayList();
+            li2.add(map);
+            list3.put("cl", li2);
+            String jsonstr = JSONObject.fromObject(list3).toString();
+            response.setContentType("text/json; charset=UTF-8");
+            response.getOutputStream().write(jsonstr.getBytes("UTF-8"));
+
+            //xxxxxxxxxx
         } else if (info1.rtnype.equals("DOWNLOAD")) {
             dealDownLoad(request, response, info1);
         } else if (info1.rtnype.equals("EMAIL")) {
@@ -108,6 +128,7 @@ public class ControlServlet extends HttpServlet {
             }
         } else if (info1.rtnype.equals("JSON")) {
             Map<String, List> list3 = dealJson(request, response, info1);
+          
             String jsonstr = null;
             if ((info1.var != null) && (!info1.var.equals("") && list3.containsKey(info1.var))) {
                 if (info1.var.equals("bootstrap")) {

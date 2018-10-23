@@ -657,4 +657,14 @@
         </xhandle>    
     </xform>
     
+    <xform desc="回路管理" id="rc">
+        
+      
+        <xhandle desc="查看回路编码是否唯一" id="r"  rtnype="SUNOUTDOWN">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select 20  " var="rs">
+            </xsql> 
+        </xhandle>    
+          
+    </xform>
+    
 </xforms>
