@@ -531,13 +531,13 @@
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
                                 if (value == 0) {
-                                    value = "(时间)";
+                                    value = "时间表";
                                     return value;
                                 } else if (value == 1) {
-                                    value = "(经纬度)";
+                                    value = "经纬度";
                                     return value;
                                 } else if (value == 2) {
-                                    value = "(场景)";
+                                    value = "场景";
                                     return value;
                                 }
                             }
@@ -624,9 +624,9 @@
                                 <td>
                                     <button style="margin-left:10px;"  type="button" onclick="readlamp()" class="btn btn-success btn-sm"><span name="xxx" id="389">读取灯具信息</span></button>
                                 </td>
-                                <td>
+<!--                                <td>
                                     <button style="margin-left:10px;"  type="button" onclick="tourlamp()" class="btn btn-success btn-sm"><span name="xxxx" id="403">巡测灯具状态</span></button>
-                                </td>
+                                </td>-->
                             </tr>
                         </tbody>
                     </table>

@@ -158,7 +158,40 @@
             function switchWorkTypeCB(obj) {
                 console.log(obj);
                 if (obj.status == "success") {
-                    layerAler(langs1[361][lang]);  //切换成功
+                  
+                    var oo={};
+                    oo.id=obj.param;
+                    oo.l_worktype=obj.val;
+                  //  addlogon(u_name, "修改", o_pid, "回路管理", "修改回路");
+                    
+                    $.ajax({async: false, url: "loop.loopForm.modifyWorkType.action", type: "get", datatype: "JSON", data: oo,
+                        success: function (data) {
+                            var arrlist = data.rs;
+                            if (arrlist.length == 1) {
+                                //修改成功
+                                  layerAler(langs1[361][lang]);  //切换成功
+                           
+                                   $('#gravidaTable').bootstrapTable('refresh');
+//                                layer.open({content: langs1[143][lang], icon: 1,
+//                                    yes: function (index, layero) {
+//                                        $("#gravidaTable").bootstrapTable('refresh');
+//                                        layer.close(index);
+//                                    }
+//                                });
+                            }
+                        },
+                        error: function () {
+                            alert("提交失败！");
+                        }
+                    });
+
+
+
+
+
+
+
+
                 }
 
             }
@@ -170,19 +203,17 @@
                 }
                 console.log(o);
                 var vv = [];
-
                 var l_code = parseInt(o.l_code);
-                console.log(l_code);
 
                 var a = l_code >> 8 & 0x00FF;
                 var b = l_code & 0x00ff;
                 vv.push(b);
                 vv.push(a);
-                vv.push(parseInt(o.l_worktype));
+                vv.push(parseInt(o.l_worktype2));
                 var comaddr = o.l_comaddr;
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA4, num, 0, 380, vv); //01 03 F24    
-                dealsend2("A4", data, 380, "switchWorkTypeCB", comaddr, o.l_worktype, 0, 0);
+                dealsend2("A4", data, 380, "switchWorkTypeCB", comaddr, o.l_code, o.id, o.l_worktype2);
             }
 
 
@@ -230,15 +261,18 @@
                 $("#l_deployment").val(select.l_deplayment);
                 $("#comaddrname1").val(select.name);
                 $("#l_name1").val(select.l_name);
-
+                $("#l_code").val(select.l_code);
                 $("#hide_id").val(select.id);
                 $('#l_worktype1').combobox('setValue', select.l_worktype);
                 $("#l_groupe1").combobox('setValue', select.l_groupe);
                 if (select.l_deplayment == "1") {
-
-                    $("#l_groupe1").combobox('readonly', true);
+                    $("#trworktype").show();
+                    $('#l_worktype1').combobox('readonly', true);
+                    // $("#l_groupe1").combobox('readonly', true);
                 } else if (select.l_deplayment == "0") {
-                    $("#l_groupe1").combobox('readonly', false);
+                    $("#trworktype").hide();
+                    $('#l_worktype1').combobox('readonly', false);
+                    //$("#l_groupe1").combobox('readonly', false);
                 }
 
                 $('#dialog-edit').dialog('open');
@@ -364,7 +398,7 @@
                 });
 
                 $('#excel-file').change(function (e) {
-                    var files = e.target.files;  
+                    var files = e.target.files;
                     var fileReader = new FileReader();
                     fileReader.onload = function (ev) {
                         try {
@@ -565,10 +599,10 @@
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
                                 if (value == 0) {
-                                    value = "(走时间)";
+                                    value = "时间表";
                                     return value;
                                 } else if (value == 1) {
-                                    value = "(走经纬度)";
+                                    value = "经纬度";
                                     return value;
                                 }
                             }
@@ -805,7 +839,8 @@
                                 <input id="l_name" class="form-control"  name="l_name" style="width:150px;display: inline;" placeholder="请输入回路名称" type="text"></td>
                             </td>
                             </td>
-                        </tr>                                   
+                        </tr> 
+                        
                         <tr>
                             <td>
 
@@ -838,8 +873,9 @@
 
         <div id="dialog-edit"  class="bodycenter" style=" display: none"  title="回路修改">
             <form action="" method="POST" id="form2" onsubmit="return modifyLoopName()">  
-                <input type="hidden" id="hide_id" name="hide_id" />
+                <input type="hidden" id="hide_id" name="id" />
                 <input type="hidden" name="pid" value="${param.pid}"/>
+                <input type="hidden" name="l_code" id="l_code" value=""/>
                 <input type="hidden" id="l_deployment" name="l_deployment" />
                 <table >
                     <tbody>
@@ -852,8 +888,6 @@
                                     <input id="l_comaddr1" readonly="true" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 
                                            data-options='editable:false,valueField:"id", textField:"text"' />
                                 </span>  
-
-
                             </td>
                             <td></td>
                             <td>
@@ -880,15 +914,15 @@
 
                                 <span style="margin-left:20px;" name="xxx" id="316">控制方式</span>&nbsp;
                                 <span class="menuBox">
-                                    <select class="easyui-combobox" readonly="true" id="l_worktype1" name="l_worktype" data-options='editable:false' style="width:150px; height: 30px">
+                                    <select class="easyui-combobox" readonly="true" id="l_worktype1" name="l_worktype" data-options='editable:false,valueField:"id", textField:"text"' style="width:150px; height: 30px">
                                         <option value="0" selected="true">走时间</option>
-                                        <!--<option value="1">走经纬度</option>-->           
+                                        <option value="1">走经纬度</option>           
                                     </select>
                                 </span>
 
                             </td>
                             <td>
-                                <!--<span style=" margin-left: 10px;" class="label label-success" onclick="switchWorkType()" >切换控制方式</span>-->
+
                             </td>
                             <td>
 
@@ -900,7 +934,23 @@
                                 </span>
                             </td>
                         </tr>                 
+<!--                        <tr id="trworktype">
+                            <td>
 
+                                <span style="margin-left:20px;" name="xxx" id="316">控制方式</span>&nbsp;
+                                <span class="menuBox">
+                                    <select class="easyui-combobox"  id="l_worktype2" name="l_worktype2" data-options='editable:false,valueField:"id", textField:"text"' style="width:150px; height: 30px">
+                                        <option value="0" selected="true">走时间</option>
+                                        <option value="1">走经纬度</option>           
+                                    </select>
+                                </span>
+
+                            </td>
+                            <td>
+                                <span name="xxx" id="375" style=" margin-left: 10px;" class="label label-success" onclick="switchWorkType()" >在线修改</span>
+                            </td>
+
+                        </tr> -->
 
                     </tbody>
                 </table>

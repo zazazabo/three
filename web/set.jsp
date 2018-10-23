@@ -215,7 +215,7 @@
                         $("#timezone").val(str1);
                         var str = timezone1 >> 4 & 0xf;
                         $("#areazone").combobox("select", str);
-                    }else if(obj.msg=="FF"){
+                    } else if (obj.msg == "FF") {
                         layerAler("success");
                     }
 
@@ -242,7 +242,7 @@
                 var longarr = long.split(".");
                 var latiarr = lati.split(".");
                 console.log(longarr.length);
-                if (longarr.length != 2 || latiarr.length !=2 ) {
+                if (longarr.length != 2 || latiarr.length != 2) {
                     layerAler("经纬度错误输入格式");
                     return;
                 }
@@ -280,7 +280,7 @@
                 var vv = [];
                 var longh = Str2BytesH(longarr[0]);
                 var longl = Str2BytesH(longarr[1]);
-                
+
                 var latih = Str2BytesH(latiarr[0]);
                 var latil = Str2BytesH(latiarr[1]);
                 vv.push(longl[1]);
@@ -290,7 +290,7 @@
 
                 vv.push(latil[1]);
                 vv.push(latil[0]);
-                vv.push(latih[1]);  
+                vv.push(latih[1]);
                 vv.push(latih[0]);
 
                 vv.push(parseInt(obj.inoffset)); //新组号  1字节      
@@ -846,6 +846,31 @@
                 var data = buicode(comaddr, 0x04, 0xFF, num, 0, 1, vv); //01 03 F24    
                 dealsend2("FF", data, 1, "setAreaCB", comaddr, 0, 0, 0);
             }
+            //检测时间
+            function jcsj() {
+                var obj = {};
+                obj.jd = $("#Longitude").val();
+                obj.wd = $("#latitude").val();
+                if (obj.jd == "" || obj.wd == "") {
+                    layerAler("请读取网关经纬度");
+                    return;
+                }
+                $.ajax({async: false, url: "login.rc.r.action", type: "get", datatype: "JSON", data: obj,
+                    success: function (data) {
+                        var list = data.cl[0];
+                       
+                        $("#sunrise").val(list.rc);  //日出
+                        $("#sunset").val(list.rl);  //日落
+                        $("#sunriseSunset").show();
+                        console.log(data);
+
+                    },
+                    error: function () {
+                        alert("提交失败！");
+                    }
+                });
+
+            }
 
             $(function () {
                 $('#l_comaddr').combobox({
@@ -1214,15 +1239,23 @@
                                                 <button  type="button" onclick="readjwd()" class="btn btn-success btn-sm"><span id="205" name="xxx">读取</span> </button>
                                             </td>
                                             <td>     <button type="button"  onclick="setjwd()" class="btn  btn-success btn-sm" style="margin-left: 10px;"><span id="49" name="xxx">设置</span></button></td>
-                                            <td>
-
-                                                &nbsp;
-                                            </td>
+                                            <td>     <button type="button"  onclick="jcsj()" class="btn  btn-success btn-sm" style="margin-left: 0px;"><span >检测时间</span></button></td>
 
                                         </tr>
 
-                                        <tr>
-
+                                        <tr id="sunriseSunset" style=" display: none">
+                                            <td>
+                                                <span style="margin-left:10px;">日出时间</span>&nbsp;
+                                            </td>
+                                            <td>
+                                                <input id="sunrise" class="form-control" value="" style="width:100px;" placeholder="日出时间" type="text">
+                                            </td>
+                                            <td>
+                                                <span style="margin-left:10px; " name="xxxx" id="199">日落时间</span>&nbsp;
+                                            </td>
+                                            <td>
+                                                <input id="sunset"   value="" style="width:100px;" placeholder="日落偏移" type="text">
+                                            </td> 
                                         </tr>
                                     </tbody>
                                 </table>

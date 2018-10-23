@@ -40,7 +40,7 @@
             }
             #ta tr td{
                 margin-top: 20px;
-                
+
             }
         </style>
         <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=Uppxai1CT7jTHF9bjKFx0WGTs7nCyHMr"></script>
@@ -717,7 +717,7 @@
                         success: function (data) {
 
                             var arrlist = data.rs;
-                            var flist = data.rs2;
+                           // var flist = data.rs2;
                             for (var i = 0; i < arrlist.length; i++) {
                                 (function (x) {
                                     var obj = arrlist[i];
@@ -727,17 +727,21 @@
                                     var Iszx = lans[285][lang];    //是否离线,离线
                                     var Isfault = lans[13][lang]; //是否有故障,默认正常
                                     var isfault2 = 0;
-                                    for (var j = 0; j < flist.length; j++) {
-                                        if (arrlist[i].l_code == flist[j].f_setcode && arrlist[i].l_comaddr == flist[j].f_comaddr) {
-                                            Isfault = lans[14][lang]; //异常
-                                            isfault2 = 1;
-                                            break;
-                                        }
+//                                    for (var j = 0; j < flist.length; j++) {
+//                                        if (arrlist[i].l_code == flist[j].f_setcode && arrlist[i].l_comaddr == flist[j].f_comaddr) {
+//                                            Isfault = lans[14][lang]; //异常
+//                                            isfault2 = 1;
+//                                            break;
+//                                        }
+//                                    }
+                                    if(obj.l_fault==1){
+                                        Isfault = lans[14][lang]; //异常
+                                        isfault2 = 1;
                                     }
                                     if (obj.presence == 1) {
                                         Iszx = lans[284][lang];  //在线
                                     }
-                                    //lans[][]代表的文字依次是：亮度、名称、灯具编号、网关地址、在线情况、状态
+                                    //lans[][]代表的文字依次是：亮度、名称、灯具编号、网关地址、在线情况、状态、电压、电流
                                     var textvalue = "<div style='line-height:1.8em;font-size:12px;'>\n\
                                    \n\
                                     <table style='text-align:center'>\n\
@@ -762,10 +766,25 @@
                                             <td>" + lans[12][lang] + ":</td>\n\
                                             <td>" + Isfault + "</td>\n\
                                         </tr>\n\ \n\
-                                    </table></div>";
+                                        <tr>\n\
+                                            <td>"+lans[95][lang]+":</td>\n\
+                                            <td>"+arrlist[i].voltage+"</td>\n\
+                                            <td>&nbsp;&nbsp;</td>\n\
+                                            <td>"+lans[96][lang]+":</td>\n\
+                                            <td>"+arrlist[i].electric+"</td>\n\
+                                        </tr>\n\
+                                        <tr>\n\
+                                            <td>"+lans[97][lang]+":</td>\n\
+                                            <td>"+arrlist[i].activepower+"</td>\n\
+                                            <td>&nbsp;&nbsp;</td>\n\
+                                            <td>"+lans[413][lang]+":</td>\n\
+                                            <td>"+arrlist[i].temperature+"</td>\n\
+                                        </tr>\n\
+                                    </table></div>";    
                                     if ((Longitude != "" && latitude != "") && (Longitude != null && latitude != null)) {
                                         var point = new BMap.Point(Longitude, latitude);
                                         var marker1;
+                                        console.log(obj.presence);
                                         if (isfault2 == 1) {
                                             marker1 = new BMap.Marker(point, {
                                                 icon: lred
@@ -783,7 +802,7 @@
                                                 icon: lhui
                                             });
                                         }
-                                        var opts = {title: '<span style="font-size:14px;color:#0A8021">' + lans[404][lang] + '</span>', width: 300, height: 120, };//设置信息框、信息说明
+                                        var opts = {title: '<span style="font-size:14px;color:#0A8021">' + lans[404][lang] + '</span>', width: 300, height: 140, };//设置信息框、信息说明
                                         var infoWindow = new BMap.InfoWindow(textvalue, opts); // 创建信息窗口对象，引号里可以书写任意的html语句。
                                         marker1.addEventListener("mouseover", function () {
                                             this.openInfoWindow(infoWindow);
@@ -795,12 +814,12 @@
                                             } else {
                                                 //开灯、关灯、调光值、请输入调光值、调光
                                                 var textvalue2 = "<table style='text-valign:center'><tr style='height: 48px;'>\n\
-                                                <td><button id='kd' class='btn btn-success btn-sm'>"+lans[35][lang]+"</button>&nbsp;&nbsp;<button id='gd' class='btn btn-success btn-sm'>"+lans[36][lang]+"</button></td>\n\
+                                                <td><button id='kd' class='btn btn-success btn-sm'>" + lans[35][lang] + "</button>&nbsp;&nbsp;<button id='gd' class='btn btn-success btn-sm'>" + lans[36][lang] + "</button></td>\n\
                                                 <td></td>\n\
                                                 </tr>\n\
                                                 <tr>\n\
-                                                    <td><span>"+lans[42][lang]+"</span>：<input id='val' class='form-control' name='val' style='width:100px;display: inline; height: 28px;' type='text' placeholder='请输入调光值'>\n\
-                                                    &nbsp;<button id='tg' class='btn btn-success btn-sm'>"+lans[407][lang]+"</button><td>\n\
+                                                    <td><span>" + lans[42][lang] + "</span>：<input id='val' class='form-control' name='val' style='width:100px;display: inline; height: 28px;' type='text' placeholder='请输入调光值'>\n\
+                                                    &nbsp;<button id='tg' class='btn btn-success btn-sm'>" + lans[407][lang] + "</button><td>\n\
                                                 </tr>\n\
                                                 </table>";
                                                 var opts2 = {title: '<span style="font-size:14px;color:#0A8021">' + lans[405][lang] + '</span>', width: 300, height: 120};//设置信息框、功能操作

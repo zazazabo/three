@@ -1,4 +1,4 @@
-package com.rtmc.cloud.commons.utils.calculationSunriseAndSunsetTime;
+package com.mylib;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;

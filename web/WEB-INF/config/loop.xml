@@ -36,6 +36,16 @@
                 </xflt> 
             </xsql>
         </xhandle>
+
+        <xhandle desc="修改回路工作方式" id="modifyWorkType" rtnype="JSON">
+            <xsql id="a1" para="l_worktype" tpe="DDL" tpl="update t_loop set l_worktype=:l_worktype where @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@id ">
+                    <xfltpara id="id" nrp="1=1" para="id" sql="id=:id">
+                    </xfltpara>
+                </xflt> 
+            </xsql>
+        </xhandle>
+
         <xhandle desc="修改回路部署状态" id="modifyDepayment" rtnype="JSON">
             <xsql id="a1" para="l_deplayment" tpe="DDL" tpl="update t_loop set l_deplayment=:l_deplayment where @CONDITION " var="rs">
                 <xflt id="CONDITION" nrp="" tpl="@id ">
