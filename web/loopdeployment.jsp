@@ -93,18 +93,20 @@
                     } else if (data[0xe] == 0 && data[0xf] == 0 && data[0x10] == 0x4 && data[0x11] == 0x0) {
 
                         var err = data[20];
-                        var err = data[20];
-                        if (err == 2) {
-                            var set1 = data[19] * 256 + data[18];
-                            var o = {l_code: set1, l_comaddr: obj.comaddr};
+                        console.log(err);
+                        var set1 = data[19] * 256 + data[18];
+                        if (err == 2 || err == 4) {
+                            var o = {l_code: set1, l_comaddr: obj.comaddr, l_deplayment: obj.val};
                             $.ajax({async: false, url: "loop.loopForm.modifyDepaymentByCode.action", type: "get", datatype: "JSON", data: o,
                                 success: function (data) {
                                 },
                                 error: function () {
                                     alert("提交失败！");
                                 }});
-                            //layerAler("装置号:" + set1.toString() + "重复");
                         }
+
+                        //layerAler("装置号:" + set1.toString() + "重复");
+
                         var lang = "zh-CN";
                         var str = ErrInfo[err][lang] + "<br>" + "装置号:" + set1.toString();
                         layerAler(str);
@@ -160,7 +162,7 @@
 
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
                 if (selects.length == 0) {
-                   layerAler(langs1[73][lang]); //请勾选表格数据
+                    layerAler(langs1[73][lang]); //请勾选表格数据
                     return;
                 }
                 var o1 = $("#form1").serializeObject();
@@ -344,6 +346,42 @@
                 });
             }
 
+            function tourloopCB(obj) {
+                var v = Str2BytesH(obj.data);
+                var s = "";
+                for (var i = 0; i < v.length; i++) {
+
+                    s = s + sprintf("%02x", v[i]) + " ";
+                }
+                var s1 = v[72];
+                var a1 = s1 & 0x1 == 0x1 ? "手动" : "自动";
+                var a2 = s1 & 0x2 == 0x2 ? "时间表" : "经纬度";
+                var a3 = s1 & 0x4 == 0x4 ? "断开" : "闭合";
+                var str = "运行方式:" + a1 + "<br>" + "运行方案:" + a2 + "<br>" + "当前状态:" + a3;
+                layerAler(str);
+            }
+            function tourloop() {
+                var selects = $('#gravidaTable').bootstrapTable('getSelections');
+                if (selects.length == 0) {
+                    layerAler(langs1[73][lang]); //请勾选表格数据
+                    return;
+                }
+
+                var o1 = $("#form1").serializeObject();
+                var ele = selects[0];
+                console.log(ele);
+                var vv = [];
+                var setcode = ele.l_code;
+                var l_code = parseInt(setcode);
+                var a = l_code >> 8 & 0x00FF;
+                var b = l_code & 0x00ff;
+                vv.push(b);//装置序号  2字节            
+                vv.push(a);//装置序号  2字节              
+                var num = randnum(0, 9) + 0x70; //随机帧序列号
+                var comaddr = ele.l_comaddr;
+                var data = buicode(comaddr, 0x04, 0xAC, num, 0, 608, vv); //0320    
+                dealsend2("AC", data, 608, "tourloopCB", comaddr, 0, 0, 0);
+            }
             $(function () {
                 var aaa = $("span[name=xxx]");
                 for (var i = 0; i < aaa.length; i++) {
@@ -364,46 +402,46 @@
                             valign: 'middle'
                         }, {
                             field: 'l_comaddr',
-                            title: langs1[25][lang],   //网关地址
+                            title: langs1[25][lang], //网关地址
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_name',
-                            title: langs1[331][lang],  //回路名称
+                            title: langs1[331][lang], //回路名称
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_code',
-                            title: langs1[315][lang],  //装置序号
+                            title: langs1[315][lang], //装置序号
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_factorycode',
-                            title: langs1[364][lang],   //回路编号
+                            title: langs1[364][lang], //回路编号
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_worktype',
-                            title: langs1[316][lang],   //控制方式
+                            title: langs1[316][lang], //控制方式
                             width: 25,
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
                                 if (value == 0) {
-                                    value = "(走时间)";
+                                    value = "时间表";
                                     return value;
                                 } else if (value == 1) {
-                                    value = "(走经纬度)";
+                                    value = "经纬度";
                                     return value;
                                 }
                             }
                         }, {
                             field: 'l_groupe',
-                            title: langs1[332][lang],  //组号
+                            title: langs1[332][lang], //组号
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -413,13 +451,13 @@
                             }
                         }, {
                             field: 'l_deployment',
-                            title: langs1[317][lang],   //部署情况
+                            title: langs1[317][lang], //部署情况
                             width: 25,
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
                                 if (row.l_deplayment == "0") {
-                                    var str = "<span class='label label-warning'>"+langs1[318][lang]+"</span>";  //未部署
+                                    var str = "<span class='label label-warning'>" + langs1[318][lang] + "</span>";  //未部署
                                     return  str;
 //                                    var obj1 = {index: index, data: row};
 //                                    var ele = '<span class=\"label label-success\"  onclick="gz(\'' + JSON.stringify(obj1).replace(/"/g, '&quot;') + '\');">挂载</span>';
@@ -427,7 +465,7 @@
                                 } else if (row.l_deplayment == "1") {
                                     var obj1 = {index: index, data: row};
 //                                    var ele = '<span class=\"label label-warning\"  onclick="gz(\'' + JSON.stringify(obj1).replace(/"/g, '&quot;') + '\');">移除</span>';
-                                    var str = "<span class='label label-success'>"+langs1[319][lang]+"</span>";  //已部署
+                                    var str = "<span class='label label-success'>" + langs1[319][lang] + "</span>";  //已部署
                                     return  str;
                                 }
                             }
@@ -569,7 +607,10 @@
                                     <button id="btnremove" type="button" onclick="removeloop()" class="btn btn-success btn-sm"><span name="xxx" id="381">移除回路</span></button>
                                     &nbsp;
                                 </td>
-
+                                <td>
+                                    <button id="btnremove" type="button" onclick="tourloop()" class="btn btn-success btn-sm"><span name="xxxx" id="381">读取回路状态</span></button>
+                                    &nbsp;
+                                </td>
                             </tr>
                         </tbody>
                     </table>
