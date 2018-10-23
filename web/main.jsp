@@ -186,7 +186,7 @@
 
                         layer.close(index);
                         //此处请求后台程序，下方是成功后的前台处理……
-                    });    
+                    });
                 }
                 if (websocket != null && websocket.readyState == 1) {
 
@@ -356,7 +356,7 @@
                 var obj2 = {};
                 obj2.pid = pid;
                 obj2.f_day = d.toLocaleDateString();
-                    $('#fauttable').bootstrapTable({
+                $('#fauttable').bootstrapTable({
                     url: 'login.main.faultInfo.action',
                     columns: [
                         {
@@ -389,7 +389,7 @@
                             width: 25,
                             align: 'center',
                             valign: 'middle'
-                        }, 
+                        },
                         {
                             field: '',
                             title: '详情', //状态字2
@@ -398,42 +398,42 @@
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
                                 //console.log(row);
-                                 var str="";
-                                 var info= eventobj[row.f_type];
+                                var str = "";
+                                var info = eventobj[row.f_type];
                                 if (typeof info == "object") {
-                                        var s1=info.status1;
-                                        var s2=info.status2;
-                                    for(var i=0;i<8;i++){
-                                        var temp= Math.pow(2,i);
-                                        if ((row.f_status1 &temp)==temp) {
-                                            if (s1[i]!="") {
-                                                str=str + s1[i] + "|";
+                                    var s1 = info.status1;
+                                    var s2 = info.status2;
+                                    for (var i = 0; i < 8; i++) {
+                                        var temp = Math.pow(2, i);
+                                        if ((row.f_status1 & temp) == temp) {
+                                            if (s1[i] != "") {
+                                                str = str + s1[i] + "|";
                                             }
-                                                
+
                                         }
                                     }
 
-                                     for(var i=0;i<8;i++){
-                                        var temp= Math.pow(2,i);
-                                        if ((row.f_status2 &temp)==temp) {
-                                            if (s1[i]!="") {
-                                                str=str + s1[i] + "|";
+                                    for (var i = 0; i < 8; i++) {
+                                        var temp = Math.pow(2, i);
+                                        if ((row.f_status2 & temp) == temp) {
+                                            if (s1[i] != "") {
+                                                str = str + s1[i] + "|";
                                             }
-                                                
+
                                         }
                                     }
 
                                     return str.substr(0, str.length - 1);
-                                }else if (row.f_type=="ERC49") {
-                                    var d= Str2BytesH(row.f_data);
-                                        var count= d[21]<<8+d[20];
+                                } else if (row.f_type == "ERC49") {
+                                    var d = Str2BytesH(row.f_data);
+                                    var count = d[21] << 8 + d[20];
                                 }
 
 
                                 // console.log(len1);
 
                             }
-                        } ],
+                        }],
                     clickToSelect: true,
                     singleSelect: true,
                     sortName: 'id',
@@ -459,8 +459,8 @@
                             skip: params.offset,
                             limit: params.limit,
                             type_id: "1",
-                            pid : pid ,
-                            f_day : d.toLocaleDateString()
+                            pid: pid,
+                            f_day: d.toLocaleDateString()
                                
                         };      
                         return temp;  
@@ -843,10 +843,18 @@
                         $(this).parent(".eachMenu").siblings(".eachMenu").children(".list").removeClass("active");
                         $(this).parent(".eachMenu").siblings(".eachMenu").children(".secondMenu").children(".secondMenuList").removeClass("active");
                         var iframesrc = $(this).attr("name");
-//                        if (iframesrc.indexOf("?") == -1) {
-//                            iframesrc += "?mmm=2";
-//                        }
-
+                        if (iframesrc.indexOf("map.jsp") != -1) {
+                            var user = new Object();
+                            user.begin = '6A';
+                            user.res = 1;
+                            user.status = "";
+                            user.msg = "CheckLamp";
+                            user.val = getpojectId();
+                            user.data = "aa";
+                            user.end = '6A';
+                            console.log(user);
+                            sendData(user);
+                        }
                         iframesrc = iframesrc + "&pid=" + getpojectId();
                         console.log(iframesrc);
                         $("#iframe").attr("src", iframesrc);

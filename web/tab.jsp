@@ -70,7 +70,7 @@
                         datas.forEach(function (data) {
                             var action = data.m_action;
                             var lang = "${param.lang}";
-                            
+
                             var objlang = eval('(' + data.m_title + ')');
                             var u1 = action + "?m_parent=" + data.m_code + "&role=${param.role}&pid=${param.pid}&lang=${param.lang}";
                             //console.log(u1);
@@ -99,7 +99,7 @@
                 $(".secondMenu li").click(function () {
                     $(this).addClass("layui-this active").siblings("li").removeClass("layui-this active");
                     var html = $(this).attr('name');
-                      console.log(html);
+                    console.log(html);
                     $(".J_iframe").attr('src', html);
                 })
                 function size() {

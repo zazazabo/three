@@ -267,12 +267,6 @@
             var langs1 = parent.parent.getLnas();
             $(function () {
 
-                var vv = [];
-                var l_comaddr = "17020101";
-                var num = randnum(0, 9) + 0x70;
-                var data = "0";
-                dealsend3("CheckLamp", data, 1, "CheckLamp", l_comaddr, 0, 0, "${param.pid}");
-
 
                 var aaa = $("span[name=xxx]");
                 for (var i = 0; i < aaa.length; i++) {
