@@ -531,13 +531,13 @@
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
                                 if (value == 0) {
-                                    value = "(时间)";
+                                    value = "时间表";
                                     return value;
                                 } else if (value == 1) {
-                                    value = "(经纬度)";
+                                    value = "经纬度";
                                     return value;
                                 } else if (value == 2) {
-                                    value = "(场景)";
+                                    value = "场景";
                                     return value;
                                 }
                             }

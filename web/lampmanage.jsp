@@ -787,13 +787,13 @@
                             formatter: function (value, row, index, field) {
                                 if (value != null) {
                                     if (value == 0) {
-                                        value = "(走时间)";
+                                        value = "时间表";
                                         return value;
                                     } else if (value == 1) {
-                                        value = "(走经纬度)";
+                                        value = "经纬度";
                                         return value;
                                     } else if (value == 2) {
-                                        value = "(走场景)";
+                                        value = "场景";
                                         return value;
                                     }
 
@@ -1108,7 +1108,7 @@
                                 </span>     
                             </td>
                             <td>
-                                <span id="span_worktype" style=" margin-left: 2px;"  onclick="resetGroupe()" class="label label-success" ><span name="xxx" id="375">在线修改</span></span>
+                                <button id="span_worktype" style=" margin-left: 2px;"  onclick="resetGroupe()" class="btn btn-success btn-xs" ><span name="xxx" id="375">在线修改</span></button>
                             </td>
                             <td>
                                 <span style="margin-left:20px;" name="xxx" id="316">控制方式</span>&nbsp;
@@ -1121,7 +1121,7 @@
                                 </span>   
                             </td>
                             <td>
-                                <span  onclick="resetWowktype()" style=" margin-left: 2px;" class="label label-success"><span name="xxx" id="375">在线修改</span></span>
+                                <button  onclick="resetWowktype()" style=" margin-left: 2px;" class="btn btn-success btn-xs"><span name="xxx" id="375">在线修改</span></button>
                             </td>
                         </tr> 
                         <tr id="trlamp1">

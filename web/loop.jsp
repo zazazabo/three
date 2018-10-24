@@ -158,21 +158,26 @@
             function switchWorkTypeCB(obj) {
                 console.log(obj);
                 if (obj.status == "success") {
-                    layerAler(langs1[361][lang]);  //切换成功
+                  
                     var oo={};
-                    oo.id=obj.val;
-                    addlogon(u_name, "修改", o_pid, "回路管理", "修改回路");
-                    $.ajax({async: false, url: "loop.loopForm.modifyname.action", type: "get", datatype: "JSON", data: o,
+                    oo.id=obj.param;
+                    oo.l_worktype=obj.val;
+                  //  addlogon(u_name, "修改", o_pid, "回路管理", "修改回路");
+                    
+                    $.ajax({async: false, url: "loop.loopForm.modifyWorkType.action", type: "get", datatype: "JSON", data: oo,
                         success: function (data) {
                             var arrlist = data.rs;
                             if (arrlist.length == 1) {
                                 //修改成功
-                                layer.open({content: langs1[143][lang], icon: 1,
-                                    yes: function (index, layero) {
-                                        $("#gravidaTable").bootstrapTable('refresh');
-                                        layer.close(index);
-                                    }
-                                });
+                                  layerAler(langs1[361][lang]);  //切换成功
+                           
+                                   $('#gravidaTable').bootstrapTable('refresh');
+//                                layer.open({content: langs1[143][lang], icon: 1,
+//                                    yes: function (index, layero) {
+//                                        $("#gravidaTable").bootstrapTable('refresh');
+//                                        layer.close(index);
+//                                    }
+//                                });
                             }
                         },
                         error: function () {
@@ -594,10 +599,10 @@
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
                                 if (value == 0) {
-                                    value = "(走时间)";
+                                    value = "时间表";
                                     return value;
                                 } else if (value == 1) {
-                                    value = "(走经纬度)";
+                                    value = "经纬度";
                                     return value;
                                 }
                             }
@@ -834,7 +839,8 @@
                                 <input id="l_name" class="form-control"  name="l_name" style="width:150px;display: inline;" placeholder="请输入回路名称" type="text"></td>
                             </td>
                             </td>
-                        </tr>                                   
+                        </tr> 
+                        
                         <tr>
                             <td>
 
@@ -928,7 +934,7 @@
                                 </span>
                             </td>
                         </tr>                 
-                        <tr id="trworktype">
+<!--                        <tr id="trworktype">
                             <td>
 
                                 <span style="margin-left:20px;" name="xxx" id="316">控制方式</span>&nbsp;
@@ -944,7 +950,7 @@
                                 <span name="xxx" id="375" style=" margin-left: 10px;" class="label label-success" onclick="switchWorkType()" >在线修改</span>
                             </td>
 
-                        </tr> 
+                        </tr> -->
 
                     </tbody>
                 </table>
