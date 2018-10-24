@@ -29,56 +29,64 @@
         </xhand>
         <xhandle desc="" id="anylize" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT MONTH(DAY) AS m,* FROM t_planpower AS tp where  @CONDITION  ORDER BY day asc " var="now">
-                <xflt id="CONDITION" nrp="" tpl="@day">
+                <xflt id="CONDITION" nrp="" tpl="@day AND @pid">
                     <xfltpara id="day" nrp="1=2" para="day" sql="YEAR(DAY)=:day">
+                    </xfltpara>
+                    <xfltpara id="pid" nrp="1=2" para="pid" sql="pid=':pid'">
                     </xfltpara>
                 </xflt>
             </xsql>
             <xsql id="a2" list="true" page="true" tpe="SQL" tpl="SELECT MONTH(DAY) AS m,* FROM t_planpower AS tp where  @CONDITION  ORDER BY day asc " var="befor">
-                <xflt id="CONDITION" nrp="" tpl="@day">
+                <xflt id="CONDITION" nrp="" tpl="@day AND @pid">
                     <xfltpara id="day" nrp="1=2" para="day" sql="YEAR(DAY)=:day-1">
+                    </xfltpara>
+                    <xfltpara id="pid" nrp="1=2" para="pid" sql="pid=':pid'">
                     </xfltpara>
                 </xflt>
             </xsql>
         </xhandle>
         <xhandle desc="" id="anylize1" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT MONTH(DAY) AS m,* FROM t_planpower AS tp where  @CONDITION  ORDER BY day asc " var="rs">
-                <xflt id="CONDITION" nrp="" tpl="@day AND @m">
+                <xflt id="CONDITION" nrp="" tpl="@day AND @m AND @pid">
                     <xfltpara id="day" nrp="1=2" para="day" sql="YEAR(DAY)=:day">
                     </xfltpara>
                     <xfltpara id="m" nrp="1=2" para="m" sql="month(DAY)=:m">
+                    </xfltpara>
+                    <xfltpara id="pid" nrp="1=2" para="pid" sql="pid=':pid'">
                     </xfltpara>
                 </xflt>
             </xsql>
         </xhandle>
         <xhandle desc="" id="insert" rtnype="JSON">
-            <xsql id="a1" para="day,power" tpe="DDL" tpl="insert into t_planpower(day,power,warnpower) values(':day',':power',':warnpower') " var="rs">
+            <xsql id="a1" para="day,power,warnpower,pid" tpe="DDL" tpl="insert into t_planpower(day,power,warnpower,pid) values(':day',':power',':warnpower',':pid') " var="rs">
             </xsql>
         </xhandle>
         <xhandle desc="" id="update" rtnype="JSON">
             <xsql id="a1" para="power,warnpower" tpe="DDL" tpl="update t_planpower set power=':power',warnpower=':warnpower' where @CONDITION " var="rs">
-                <xflt id="CONDITION" nrp="" tpl="@year AND @month ">
+                <xflt id="CONDITION" nrp="" tpl="@year AND @month AND @pid ">
                     <xfltpara id="year" nrp="1=2" para="year" sql="year(day)=:year">
                     </xfltpara>
                     <xfltpara id="month" nrp="1=2" para="month" sql="month(day)=:month">
+                    </xfltpara>
+                    <xfltpara id="pid" nrp="1=2" para="pid" sql="pid=':pid'">
                     </xfltpara>
                 </xflt>
             </xsql>
         </xhandle>
     </xform>
- <xform desc="报表模块" id="report">
-               <xhandle desc="查询历史数据报表" id="queryRecord" rtnype="JSON">
+    <xform desc="报表模块" id="report">
+        <xhandle desc="查询历史数据报表" id="queryRecord" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select  CONVERT(Nvarchar, day, 23) as dayalis,day,voltage,electric,activepower,powerfactor,powerfactor,power from t_records where @CONDITION group by day,voltage,electric,activepower,powerfactor,power  " var="bootstrap">
                 <xflt id="CONDITION" nrp="" tpl="@day AND @comaddr">
                     <xfltpara id="day" nrp="1=2" para="day" sql="day = ':day'"> 
                     </xfltpara>
-                             <xfltpara id="comaddr" nrp="1=2" para="comaddr" sql="comaddr = ':comaddr'">
+                    <xfltpara id="comaddr" nrp="1=2" para="comaddr" sql="comaddr = ':comaddr'">
                     </xfltpara>
                 </xflt>
             </xsql>
         </xhandle>  
 
- </xform>
+    </xform>
 
 
 </xforms>  
