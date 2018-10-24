@@ -65,7 +65,7 @@
                     layerAler(langs1[392][lang]);   //网关或组号不能为空
                     return;
                 }
-                var oldlgroupe = ""
+                var oldlgroupe = "";
                 var vv = [];
                 o.type = 2;
                 vv.push(o.type);  //灯控器组号  1 所有灯控器  2 按组   3 个个灯控器
@@ -136,7 +136,7 @@
 
                                 var arrlist = data.rs;
                                 if (arrlist.length == 1) {
-
+                                 
                                 }
                             },
                             error: function () {
@@ -165,6 +165,7 @@
                                 if (arrlist.length == 1) {
                                     // $('#p_plan').combobox('reload');
                                     layerAler(langs1[394][lang]);   //部署灯具时间方案成功
+                                    addlogon(u_name, "部署", o_pid, "灯具分组管理", "部署灯具方案");
                                     // $('#p_plan').combobox('setValue', a.p_code);
                                 }
                             },
@@ -292,17 +293,24 @@
             }
 
             function setLampPlan() {
-
+               
                 var obj = $("#form1").serializeObject();
-                console.log(obj);
                 if (obj.l_comaddr == "" || obj.l_groupe == "") {
                     layerAler(langs1[392][lang]);   //网关或组号不能为空
                     return;
                 }
                 var v = obj.p_type;
-                addlogon(u_name, "部署", o_pid, "灯具分组管理", "部署灯具方案");
                 if (v == "0") {
                     //console.log('部署分组时间方案');
+                    for (var i = 0; i < 6; i++) {
+                        var b = "val" + (i + 1).toString();
+                        var val = parseInt(obj[b]);
+                        if (!(/^([0-9][0-9]{0,1}|100)$/.test(val))) {
+                            layerAler(langs1[409][lang]);  //调光值必须为0-100的正整数
+                            return ;
+                        }
+
+                    }
                     var vv = [];
                     vv.push(1);
                     vv.push(parseInt(obj.l_groupe));
@@ -326,7 +334,15 @@
                 }
 
                 if (v == "1") {
-                    //console.log('部署分组场景方案');
+                    for (var i = 0; i < 8; i++) {
+                        var b = "__val" + (i + 1).toString();
+                        var val = obj[b];
+                        if (!(/^([0-9][0-9]{0,1}|100)$/.test(val))) {
+                            layerAler(langs1[409][lang]);  //调光值必须为0-100的正整数
+                            return ;
+                        }
+                       
+                    }
                     var vv = [];
                     vv.push(1);
                     vv.push(parseInt(obj.l_groupe));
