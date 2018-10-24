@@ -869,8 +869,8 @@
                                                     var val = $("#val").val();
                                                     if (val == "") {
                                                         layerAler(lans[408][lang]);    //请输入调光值
-                                                    } else if (!(/(^[1-9]\d*$)/.test(val))) {
-                                                        layerAler(lans[409][lang]);  //调光值必须为正整数
+                                                    } else if (!(/^([1-9][0-9]{0,1}|100)$/.test(val))) {
+                                                        layerAler(lans[409][lang]);  //调光值必须为0-100的正整数
                                                     } else {
                                                         var vv = new Array();
                                                         var l_comaddr = obj.l_comaddr;  //网关地址

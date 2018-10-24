@@ -80,12 +80,14 @@
                         var warnbl = $("#warning_ration").val();
                         var warningval = parseInt(f1[k]) * parseInt(warnbl) / 100;
                         var obj = {"day": vday.day, "m": a};
+                        obj.pid =  '${param.pid}';
                         var oo = {"day": vday.day + "-" + a + "-01", "power": f1[k], "warnpower": warningval, "year": vday.day, "month": a};
-                        console.log(oo);
+                        oo.pid = '${param.pid}';
+                        console.log(obj);
                         $.ajax({async: false, url: "param.power.anylize1.action", type: "get", datatype: "JSON", data: obj,
                             success: function (data) {
                                 var arr = data.rs;
-                                console.log(data);
+                                console.log(arr);
                                 if (arr.length == 0) {
                                     $.ajax({async: false, url: "param.power.insert.action", type: "get", datatype: "JSON", data: oo,
                                         success: function (data) {
@@ -122,14 +124,19 @@
 
                 }
             }
+            //查询
             function querryPower() {
-                var data = $("#formyear").serializeObject();
-                $.ajax({async: false, url: "param.power.anylize.action", type: "get", datatype: "JSON", data: data,
+                var day = $("#day").val();
+                var obj = {};
+                obj.day = day;
+                obj.pid = '${param.pid}';
+                $.ajax({async: false, url: "param.power.anylize.action", type: "get", datatype: "JSON", data: obj,
                     success: function (data) {
                         console.log(data);
                         var arrbefor = data.befor;
                         var arrnow = data.now;
-
+                        var s1 = 0; //总计划值
+                        var s2 = 0; //总预警值
                         for (var i = 0; i < 12; i++) {
                             $("#plan_valueto" + (i + 1).toString()).val("0");
                             $("#warning_valueto" + (i + 1).toString()).val("0");
@@ -138,35 +145,32 @@
                             $("#warning_value" + (i + 1).toString()).val("0");
 
                         }
-
-
-
-                        for (var i = 0; i < arrbefor.length; i++) {
-                            var v1 = arrbefor[i];
-                            console.log(v1);
-                            var id = "#plan_valueto" + v1.m;
-                            $(id).val(v1.power);
-
-                            // $("#warning_valueto" + v1.m).val(v1.warnpower);
+                        if (arrnow.length > 0) {
+                            for (var i = 0; i < arrnow.length; i++) {
+                                var v1 = arrnow[i];
+                                console.log(v1);
+                                var id = "#plan_value" + v1.m;
+                                $(id).val(v1.power);
+                                s1 = s1 + parseInt(v1.power);
+                                console.log("总计划值："+s1);
+                                s2 = s2 + parseInt(v1.warnpower);
+                                $("#warning_value" + v1.m).val(v1.warnpower);
+                            }
                         }
-
-
-                        var s1 = 0;
-                        var s2 = 0;
-                        var arrnow = data.now;
-                        for (var i = 0; i < arrnow.length; i++) {
-                            var v1 = arrnow[i];
-                            console.log(v1);
-                            var id = "#plan_value" + v1.m;
-                            $(id).val(v1.power);
-                            s1 = s1 + parseInt(v1.power);
-                            s2 = s2 + parseInt(v1.warnpower);
-                            $("#warning_value" + v1.m).val(v1.warnpower);
+                        if (arrbefor.length > 0) {
+                            for (var i = 0; i < arrbefor.length; i++) {
+                                var v1 = arrbefor[i];
+                                console.log(v1);
+                                var id = "#plan_valueto" + v1.m;
+                                $(id).val(v1.power);
+                            }
                         }
-                        console.log(s1);
-
                         $("#annual_plan_value").html(s1.toString());
-                        var s3 = s2 / s1 * 100;
+                        var s3 = 0;
+                        if(s2 !=0 && s1!=0){
+                            s3 = s2 / s1 * 100;
+                        }
+                       
                         $("#warning_ration").val(s3.toString());
 
                     },
@@ -254,13 +258,13 @@
                             <td style="width:5%;">
                             </td>
                             <td class="tdfont" width="10%" align="center">
-                               <span name="xxx" id="158">计划值</span>
+                                <span name="xxx" id="158">计划值</span>
                             </td>
                             <td class="tdfont" width="10%" align="center">
                                 <span name="xxx" id="159">去年计划值</span>
                             </td>
                             <td class="tdfont" width="10%" align="center">
-                                 <span name="xxx" id="160">预警值</span>
+                                <span name="xxx" id="160">预警值</span>
                             </td>
                             <td style="width:5%;">
                             </td>

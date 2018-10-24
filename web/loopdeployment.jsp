@@ -354,9 +354,19 @@
                     s = s + sprintf("%02x", v[i]) + " ";
                 }
                 var s1 = v[72];
-                var a1 = s1 & 0x1 == 0x1 ? "手动" : "自动";
-                var a2 = s1 & 0x2 == 0x2 ? "时间表" : "经纬度";
-                var a3 = s1 & 0x4 == 0x4 ? "断开" : "闭合";
+                var a1 = s1 & 1 == 1 ? "手动" : "自动";
+                var a2 = s1 >> 1 & 1 == 1 ? "经纬度" : "时间表";
+                var a3 = s1 >> 2 & 1 == 1 ? "闭合" : "断开"
+//                  var a3 = (s1 & 4 == 4 ? "闭合" : "断开");
+//                  alert(a3);
+//                console.log("aaaaaaaa:",s1);
+//                var a1 = s1 & 1 == 1 ? "手动" : "自动";
+//                  console.log("aaaaaaaa:",s1);
+//                var a2 = s1 & 2 == 2 ? "经纬度" : "时间表";
+//                  console.log("aaaaaaaa:",s1);
+//                var a3 = s1 & 4 == 4 ? "闭合" : "断开";
+//                console.log(s1&4);
+//                  console.log("aaaaaaaa:",s1);
                 var str = "运行方式:" + a1 + "<br>" + "运行方案:" + a2 + "<br>" + "当前状态:" + a3;
                 layerAler(str);
             }

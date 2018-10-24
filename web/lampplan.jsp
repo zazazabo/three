@@ -55,14 +55,38 @@
             function checkPlanLampAdd() {
 
                 var a = $("#formadd").serializeObject();
-                addlogon(u_name, "添加", o_pid, "灯具策略", "添加灯具方案");
+                // addlogon(u_name, "添加", o_pid, "灯具策略", "添加灯具方案");
                 if (a.p_type == "0") {
-                    var obj1 = {"time": a.time1, "value": parseInt(a.val1)};
-                    var obj2 = {"time": a.time2, "value": parseInt(a.val2)};
-                    var obj3 = {"time": a.time3, "value": parseInt(a.val3)};
-                    var obj4 = {"time": a.time4, "value": parseInt(a.val4)};
-                    var obj5 = {"time": a.time5, "value": parseInt(a.val5)};
-                    var obj6 = {"time": a.time6, "value": parseInt(a.val6)};
+                    var val1 = 0;
+                    var val2 = 0;
+                    var val3 = 0;
+                    var val4 = 0;
+                    var val5 = 0;
+                    var val6 = 0;
+                    if ((/^([1-9][0-9]{0,1}|100)$/.test(a.val1))) {
+                        val1 = a.val1;
+                    }
+                    if ((/^([1-9][0-9]{0,1}|100)$/.test(a.val2))) {
+                        val2 = a.val2;
+                    }
+                    if ((/^([1-9][0-9]{0,1}|100)$/.test(a.val3))) {
+                        val3 = a.val3;
+                    }
+                    if ((/^([1-9][0-9]{0,1}|100)$/.test(a.val4))) {
+                        val4 = a.val4;
+                    }
+                    if ((/^([1-9][0-9]{0,1}|100)$/.test(a.val5))) {
+                        val5 = a.val5;
+                    }
+                    if ((/^([1-9][0-9]{0,1}|100)$/.test(a.val6))) {
+                        val6 = a.val6;
+                    }
+                    var obj1 = {"time": a.time1, "value": parseInt(val1)};
+                    var obj2 = {"time": a.time2, "value": parseInt(val2)};
+                    var obj3 = {"time": a.time3, "value": parseInt(val3)};
+                    var obj4 = {"time": a.time4, "value": parseInt(val4)};
+                    var obj5 = {"time": a.time5, "value": parseInt(val5)};
+                    var obj6 = {"time": a.time6, "value": parseInt(val6)};
 
                     a.p_time1 = JSON.stringify(obj1);
                     a.p_time2 = JSON.stringify(obj2);
@@ -93,7 +117,11 @@
                         var f = "p_scene" + (i + 1).toString();
                         var num = "num" + (i + 1).toString();
                         var val = "_val" + (i + 1).toString();
-                        var o1 = {"num": a[num], "value": a[val]};
+                        var val2 = 0;
+                        if ((/^([1-9][0-9]{0,1}|100)$/.test(a[val]))) {
+                            val2 = a[val];
+                        }
+                        var o1 = {"num": a[num], "value": val2 };
                         o[f] = JSON.stringify(o1);
                     }
                     o.p_name = a.p_name;
@@ -127,12 +155,36 @@
                 var a = $("#form2").serializeObject();
                 addlogon(u_name, "修改", o_pid, "灯具策略", "修改灯具方案");
                 if (a.p_type == "0") {
-                    var obj1 = {"time": a.time1, "value": parseInt(a.val1)};
-                    var obj2 = {"time": a.time2, "value": parseInt(a.val2)};
-                    var obj3 = {"time": a.time3, "value": parseInt(a.val3)};
-                    var obj4 = {"time": a.time4, "value": parseInt(a.val4)};
-                    var obj5 = {"time": a.time5, "value": parseInt(a.val5)};
-                    var obj6 = {"time": a.time6, "value": parseInt(a.val6)};
+                    var val1 = 0;
+                    var val2 = 0;
+                    var val3 = 0;
+                    var val4 = 0;
+                    var val5 = 0;
+                    var val6 = 0;
+                    if ((/^([1-9][0-9]{0,1}|100)$/.test(a.val1))) {
+                        val1 = a.val1;
+                    }
+                    if ((/^([1-9][0-9]{0,1}|100)$/.test(a.val2))) {
+                        val2 = a.val2;
+                    }
+                    if ((/^([1-9][0-9]{0,1}|100)$/.test(a.val3))) {
+                        val3 = a.val3;
+                    }
+                    if ((/^([1-9][0-9]{0,1}|100)$/.test(a.val4))) {
+                        val4 = a.val4;
+                    }
+                    if ((/^([1-9][0-9]{0,1}|100)$/.test(a.val5))) {
+                        val5 = a.val5;
+                    }
+                    if ((/^([1-9][0-9]{0,1}|100)$/.test(a.val6))) {
+                        val6 = a.val6;
+                    }
+                    var obj1 = {"time": a.time1, "value": parseInt(val1)};
+                    var obj2 = {"time": a.time2, "value": parseInt(val2)};
+                    var obj3 = {"time": a.time3, "value": parseInt(val3)};
+                    var obj4 = {"time": a.time4, "value": parseInt(val4)};
+                    var obj5 = {"time": a.time5, "value": parseInt(val5)};
+                    var obj6 = {"time": a.time6, "value": parseInt(val6)};
 
                     a.p_time1 = JSON.stringify(obj1);
                     a.p_time2 = JSON.stringify(obj2);
@@ -146,7 +198,7 @@
                         success: function (data) {
                             var arrlist = data.rs;
                             if (arrlist.length == 1) {
-                                ret = true;                            
+                                ret = true;
                                 $("#table_lamp").bootstrapTable('refresh');
                             }
                         },
@@ -162,12 +214,16 @@
                         var f = "p_scene" + (i + 1).toString();
                         var num = "num" + (i + 1).toString();
                         var val = "_val" + (i + 1).toString();
-                        var o1 = {"num": a[num], "value": a[val]};
+                        var val2 = 0;
+                        if ((/^([1-9][0-9]{0,1}|100)$/.test(a[val]))) {
+                            val2 = a[val];
+                        }
+                        var o1 = {"num": a[num], "value": val2};
                         o[f] = JSON.stringify(o1);
                     }
                     o.p_name = a.p_name;
                     o.p_type = a.p_type;
-                    o.id=a.id;
+                    o.id = a.id;
                     var ret = false;
                     $.ajax({async: false, url: "lamp.planForm.editlampscene.action", type: "get", datatype: "JSON", data: o,
                         success: function (data) {
@@ -284,11 +340,11 @@
                 }
                 var selects = $(b).bootstrapTable('getSelections');
 
-                layer.confirm(langs1[145][lang], {   //您确定要删除吗？
-                    btn: [langs1[146][lang],langs1[147][lang]], //确定、取消按钮
+                layer.confirm(langs1[145][lang], {//您确定要删除吗？
+                    btn: [langs1[146][lang], langs1[147][lang]], //确定、取消按钮
                     icon: 3,
                     offset: 'center',
-                    title:langs1[174][lang]   //提示
+                    title: langs1[174][lang]   //提示
                 }, function (index) {
                     addlogon(u_name, "删除", o_pid, "灯具策略", "删除灯具方案");
                     for (var i = 0; i < selects.length; i++) {
@@ -457,7 +513,7 @@
                             },
                             {
                                 field: 'p_name',
-                                title: langs1[69][lang],  //方案名称
+                                title: langs1[69][lang], //方案名称
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -466,7 +522,7 @@
                             },
                             {
                                 field: 'p_code',
-                                title: langs1[70][lang],  //方案编码
+                                title: langs1[70][lang], //方案编码
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -475,7 +531,7 @@
                             },
                             {
                                 field: 'p_time',
-                                title: langs1[75][lang],   //时间一
+                                title: langs1[75][lang], //时间一
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -485,7 +541,7 @@
                             },
                             {
                                 field: 'p_time',
-                                title: langs1[76][lang],  //时间二
+                                title: langs1[76][lang], //时间二
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -495,7 +551,7 @@
                             },
                             {
                                 field: 'p_time',
-                                title: langs1[78][lang],   //时间三
+                                title: langs1[78][lang], //时间三
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -505,7 +561,7 @@
                             },
                             {
                                 field: 'p_time',
-                                title: langs1[79][lang],   //时间四
+                                title: langs1[79][lang], //时间四
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -515,7 +571,7 @@
                             },
                             {
                                 field: 'p_time',
-                                title: langs1[80][lang],  //时间五
+                                title: langs1[80][lang], //时间五
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -552,7 +608,7 @@
                             },
                             {
                                 field: 'p_val1',
-                                title: langs1[42][lang],  //调光值
+                                title: langs1[42][lang], //调光值
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -572,7 +628,7 @@
 
                             }, {
                                 field: 'p_time2',
-                                title: langs1[82][lang],  //时间
+                                title: langs1[82][lang], //时间
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -588,7 +644,7 @@
                             },
                             {
                                 field: 'p_val2',
-                                title: langs1[42][lang],  //调光值
+                                title: langs1[42][lang], //调光值
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -606,7 +662,7 @@
                                 }
                             }, {
                                 field: 'p_time3',
-                                title: langs1[82][lang],  //时间
+                                title: langs1[82][lang], //时间
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -622,7 +678,7 @@
                             },
                             {
                                 field: 'p_val3',
-                                title:langs1[42][lang], //调光值
+                                title: langs1[42][lang], //调光值
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -640,7 +696,7 @@
                                 }
                             }, {
                                 field: 'p_time4',
-                                title: langs1[82][lang],    //时间
+                                title: langs1[82][lang], //时间
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -656,7 +712,7 @@
                             },
                             {
                                 field: 'p_val4',
-                                title: langs1[42][lang],  //调光值
+                                title: langs1[42][lang], //调光值
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -674,7 +730,7 @@
                                 }
                             }, {
                                 field: 'p_time5',
-                                title:langs1[82][lang],   //时间
+                                title: langs1[82][lang], //时间
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -690,7 +746,7 @@
                             },
                             {
                                 field: 'p_val5',
-                                title: langs1[42][lang],  //调光值
+                                title: langs1[42][lang], //调光值
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -708,7 +764,7 @@
                                 }
                             }, {
                                 field: 'p_time6',
-                                title: langs1[82][lang],  //时间
+                                title: langs1[82][lang], //时间
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -724,7 +780,7 @@
                             },
                             {
                                 field: 'p_val6',
-                                title: langs1[42][lang],//调光值
+                                title: langs1[42][lang], //调光值
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -795,7 +851,7 @@
                             },
                             {
                                 field: 'p_name',
-                                title: langs1[69][lang],  //方案名称
+                                title: langs1[69][lang], //方案名称
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -813,7 +869,7 @@
                             },
                             {
                                 field: 'p_scene',
-                                title: langs1[83][lang],  //场景一
+                                title: langs1[83][lang], //场景一
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -823,7 +879,7 @@
                             },
                             {
                                 field: 'p_scene',
-                                title: langs1[84][lang],   //场景二
+                                title: langs1[84][lang], //场景二
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -833,7 +889,7 @@
                             },
                             {
                                 field: 'p_scene',
-                                title: langs1[85][lang],  //场景三
+                                title: langs1[85][lang], //场景三
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -843,7 +899,7 @@
                             },
                             {
                                 field: 'p_scene',
-                                title: langs1[86][lang],  //场景四
+                                title: langs1[86][lang], //场景四
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -853,7 +909,7 @@
                             },
                             {
                                 field: 'p_scene',
-                                title: langs1[87][lang],   //场景五
+                                title: langs1[87][lang], //场景五
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -863,7 +919,7 @@
                             },
                             {
                                 field: 'p_scene',
-                                title: langs1[88][lang],  //场景六
+                                title: langs1[88][lang], //场景六
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -873,7 +929,7 @@
                             },
                             {
                                 field: 'p_scene',
-                                title: langs1[90][lang],  //场景七
+                                title: langs1[90][lang], //场景七
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -883,7 +939,7 @@
                             },
                             {
                                 field: 'p_scene',
-                                title: langs1[91][lang],  //场景八
+                                title: langs1[91][lang], //场景八
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -894,7 +950,7 @@
                         ], [
                             {
                                 field: 'p_scene1',
-                                title: langs1[89][lang],  //场景号
+                                title: langs1[89][lang], //场景号
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -910,7 +966,7 @@
                             },
                             {
                                 field: 'p_val1',
-                                title: langs1[42][lang],  //调光值
+                                title: langs1[42][lang], //调光值
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -930,7 +986,7 @@
 
                             }, {
                                 field: 'p_scene2',
-                                title: langs1[89][lang],  //场景号
+                                title: langs1[89][lang], //场景号
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -946,7 +1002,7 @@
                             },
                             {
                                 field: 'p_val2',
-                                title: langs1[42][lang],  //调光值
+                                title: langs1[42][lang], //调光值
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -964,7 +1020,7 @@
                                 }
                             }, {
                                 field: 'p_scene3',
-                                title:langs1[89][lang], //场景号
+                                title: langs1[89][lang], //场景号
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -980,7 +1036,7 @@
                             },
                             {
                                 field: 'p_val3',
-                                title: langs1[42][lang],  //调光值
+                                title: langs1[42][lang], //调光值
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -998,7 +1054,7 @@
                                 }
                             }, {
                                 field: 'p_scene4',
-                                title: langs1[89][lang],  //场景号
+                                title: langs1[89][lang], //场景号
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -1082,7 +1138,7 @@
                             },
                             {
                                 field: 'p_val6',
-                                title: langs1[42][lang],//调光值
+                                title: langs1[42][lang], //调光值
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -1302,7 +1358,7 @@
                             <td></td>
                             <td>
                                 <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;
-                                   <span name="xxx" id="42">调光值</span>
+                                    <span name="xxx" id="42">调光值</span>
                                 </span>&nbsp;
                                 <input id="val2" class="form-control" name="val2" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
                             </td>
@@ -1315,7 +1371,7 @@
                             <td></td>
                             <td>
                                 <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;
-                                   <span name="xxx" id="42">调光值</span>
+                                    <span name="xxx" id="42">调光值</span>
                                 </span>&nbsp;
                                 <input id="val3" class="form-control" name="val3" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
                             </td>
@@ -1328,7 +1384,7 @@
                             <td></td>
                             <td>
                                 <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;
-                                   <span name="xxx" id="42">调光值</span>
+                                    <span name="xxx" id="42">调光值</span>
                                 </span>&nbsp;
                                 <input id="val4" class="form-control" name="val4" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
                             </td>
@@ -1484,7 +1540,7 @@
                             <td>
 
                                 <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;
-                                  <span name="xxx" id="69">方案名称</span>
+                                    <span name="xxx" id="69">方案名称</span>
                                 </span>&nbsp;
                                 <input id="p_name1" class="form-control"  name="p_name" style="width:150px;display: inline;" placeholder="请输入方案名" type="text"></td>
 
@@ -1532,7 +1588,7 @@
                             <td></td>
                             <td>
                                 <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;
-                                     <span name="xxx" id="42">调光值</span>
+                                    <span name="xxx" id="42">调光值</span>
                                 </span>&nbsp;
                                 <input id="val3_" class="form-control" name="val3" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
                             </td>
@@ -1571,7 +1627,7 @@
                             <td></td>
                             <td>
                                 <span style="margin-left:20px;">&nbsp;&nbsp;&nbsp;
-                                     <span name="xxx" id="42">调光值</span>
+                                    <span name="xxx" id="42">调光值</span>
                                 </span>&nbsp;
                                 <input id="val6_" class="form-control" name="val6" style="width:150px;display: inline;" placeholder="请输入调光值" type="text">
                             </td>
