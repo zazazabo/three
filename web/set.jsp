@@ -952,9 +952,9 @@
                                                     </select>
                                                 </span>  
                                             </td>
-                                            <td>
+<!--                                            <td>
                                                 <button type="button"  onclick="refleshgayway()" class="btn  btn-success btn-sm" style="margin-left: 2px;">刷新网关在线列表</button>
-                                            </td>
+                                            </td>-->
                                         </tr>
                                     </tbody>
                                 </table> 
@@ -1137,7 +1137,7 @@
                                                            data-options="editable:true,valueField:'id', textField:'text' " />
                                                 </span> 
                                                 <!-- <button  type="button" onclick="chgLampGroupe()" class="btn btn-success btn-sm">更换所有灯具的组号</button>&nbsp; -->
-                                                <span  onclick="setGroupe()" style=" margin-left: 2px;" class="label label-success" name="xxx" id="207" >更换</span>
+                                                <button  onclick="setGroupe()" style=" margin-left: 2px;" class="btn btn-success btn-xs" name="xxx" id="207" >更换</button>
 
                                                 <span style=" margin-left: 10px;" name="xxx" id="208">新工作方式</span>&nbsp;
                                                 <span class="menuBox">
@@ -1147,13 +1147,13 @@
                                                         <option value="2">场景</option>           
                                                     </select>
                                                 </span> 
-                                                <span  onclick="setWowktype()" style=" margin-left: 2px;" class="label label-success label-sm"  name="xxx" id="207">更换</span>
+                                                <button  onclick="setWowktype()" style=" margin-left: 2px;" class="btn btn-success btn-xs"  name="xxx" id="207">更换</button>
 
                                                 <button  type="button" onclick="delAllLamp()" class="btn btn-success btn-sm"><span id="209" name="xxx">删除全部灯具信息</span></button>
                                                 <button  style="float:right; margin-right: 5px;" type="button" onclick="delAllplan()" class="btn btn-success btn-sm"><span name="xxx" id="210">删除全部灯时间表</span></button>
                                             </td>
                                         </tr>
-
+                                        
 
 
                                     </tbody>
