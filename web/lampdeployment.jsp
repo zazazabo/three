@@ -239,7 +239,7 @@
                     layerAler(langs1[73][lang]);   //请勾选表格数据
                     return;
                 }
-                addlogon(u_name, "读取", o_pid, "回路部署", "读取灯具信息");
+                //addlogon(u_name, "读取", o_pid, "回路部署", "读取灯具信息");
                 var len = selects.length;
                 var h = len >> 8 & 0x00FF;
                 var l = len & 0x00ff;
