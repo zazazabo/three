@@ -345,53 +345,6 @@
                     offset: 'center'
                 });
             }
-
-            function tourloopCB(obj) {
-                var v = Str2BytesH(obj.data);
-                var s = "";
-                for (var i = 0; i < v.length; i++) {
-
-                    s = s + sprintf("%02x", v[i]) + " ";
-                }
-                var s1 = v[72];
-                var a1 = s1 & 1 == 1 ? "手动" : "自动";
-                var a2 = s1 >> 1 & 1 == 1 ? "经纬度" : "时间表";
-                var a3 = s1 >> 2 & 1 == 1 ? "闭合" : "断开"
-//                  var a3 = (s1 & 4 == 4 ? "闭合" : "断开");
-//                  alert(a3);
-//                console.log("aaaaaaaa:",s1);
-//                var a1 = s1 & 1 == 1 ? "手动" : "自动";
-//                  console.log("aaaaaaaa:",s1);
-//                var a2 = s1 & 2 == 2 ? "经纬度" : "时间表";
-//                  console.log("aaaaaaaa:",s1);
-//                var a3 = s1 & 4 == 4 ? "闭合" : "断开";
-//                console.log(s1&4);
-//                  console.log("aaaaaaaa:",s1);
-                var str = "运行方式:" + a1 + "<br>" + "运行方案:" + a2 + "<br>" + "当前状态:" + a3;
-                layerAler(str);
-            }
-            function tourloop() {
-                var selects = $('#gravidaTable').bootstrapTable('getSelections');
-                if (selects.length == 0) {
-                    layerAler(langs1[73][lang]); //请勾选表格数据
-                    return;
-                }
-
-                var o1 = $("#form1").serializeObject();
-                var ele = selects[0];
-                console.log(ele);
-                var vv = [];
-                var setcode = ele.l_code;
-                var l_code = parseInt(setcode);
-                var a = l_code >> 8 & 0x00FF;
-                var b = l_code & 0x00ff;
-                vv.push(b);//装置序号  2字节            
-                vv.push(a);//装置序号  2字节              
-                var num = randnum(0, 9) + 0x70; //随机帧序列号
-                var comaddr = ele.l_comaddr;
-                var data = buicode(comaddr, 0x04, 0xAC, num, 0, 608, vv); //0320    
-                dealsend2("AC", data, 608, "tourloopCB", comaddr, 0, 0, 0);
-            }
             $(function () {
                 var aaa = $("span[name=xxx]");
                 for (var i = 0; i < aaa.length; i++) {
@@ -614,13 +567,10 @@
 
 
                                 <td>
-                                    <button id="btnremove" type="button" onclick="removeloop()" class="btn btn-success btn-sm"><span name="xxx" id="381">移除回路</span></button>
+                                    <button type="button" onclick="removeloop()" class="btn btn-success btn-sm"><span name="xxx" id="381">移除回路</span></button>
                                     &nbsp;
                                 </td>
-                                <td>
-                                    <button id="btnremove" type="button" onclick="tourloop()" class="btn btn-success btn-sm"><span name="xxxx" id="381">读取回路状态</span></button>
-                                    &nbsp;
-                                </td>
+
                             </tr>
                         </tbody>
                     </table>
@@ -660,149 +610,10 @@
                 </table>
             </div>
         </div>
-        <!--            <div class="col-xs-1 " align="right"  style=" padding: 4px;">
-                        <span >方案列表</span>
-                    </div>
-                    <div align="left" class="col-xs-2"  style=" padding: 0px; width: 140px;">
-                        <input id="p_plan" class="easyui-combobox" name="p_plan" style="width:150px; height: 30px; " 
-                               data-options="editable:false,valueField:'id', textField:'text' " />
-                    </div>
-                    <div id="type0">
-                        <div class="col-xs-1" align="right"  style=" padding: 0px; padding-top: 4px; padding-left: 20px;" >
-                            <span  >闭合时间</span>&nbsp;
-                        </div>
-                        <div class="col-xs-1"  align="left" style=" padding: 0px; padding-top: 0px;" >
-                            <input id="intime" name="intime" style=" height: 30px; width: 100px;  "  class="easyui-timespinner">
-                        </div>
-        
-                        <div class="col-xs-1" align="right"  style=" padding-left: 5px; padding-top: 4px;">
-                            <span  style=" margin-left: 10px;" >断开时间</span>
-                        </div>
-                        <div class="col-xs-1"  align="left" style=" padding: 0px; padding-top: 0px; padding-left: 0px;" >
-                            <input id="outtime" name="outtime" style=" height: 30px; width: 100px;  "  class="easyui-timespinner">
-                        </div>-->
-        <!--                <div class="col-xs-1"  align="left" style=" padding: 0px; padding-top: 4px;" >
-                            <input id="outtime" name="outtime" style=" height: 30px; width: 100px;  "  class="easyui-timespinner">
-                        </div>-->
-        <!--</div>-->
-
-        <!--        <div id="type1" style=" display: none">
-                    <div class="col-xs-6" align="left" style=" width: 600px;">
-                        <table >
-                            <tr  >
-                                <td>
-                                    <span style="margin-left:20px;">区域经度</span>&nbsp;
-                                </td>
-                                <td>
-                                    <input id="longitudem26d" class="form-control" name="longitudem26d" style="width:51px;display: inline;" type="text">&nbsp;°
-                                    <input id="longitudem26m" class="form-control" name="longitudem26m" style="width:45px;display: inline;" type="text">&nbsp;'
-                                    <input id="longitudem26s" class="form-control" name="longitudem26s" style="width:45px;display: inline;" type="text">&nbsp;"
-                                </td>
-                                <td>
-                                    <span style="margin-left:20px;">区域纬度&nbsp;</span>
-        
-                                </td>
-                                <td>
-                                    <input id="latitudem26d" class="form-control" name="latitudem26d" style="width:51px;display: inline;" type="text">&nbsp;°
-                                    <input id="latitudem26m" class="form-control" name="latitudem26m" style="width:45px;display: inline;" type="text">&nbsp;'
-                                    <input id="latitudem26s" class="form-control" name="latitudem26s" style="width:45px;display: inline;" type="text">&nbsp;"
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>-->
-
-        <!--        <div class="col-xs-3" align="left" >
-                    <button  onclick="setLoopPlan()" type="button" class="btn btn-success btn-sm">部署回路方案</button>
-        
-                    <button  onclick="readLoopPlan()" type="button" class="btn btn-success btn-sm">读取回路时间表</button>
-                </div>   -->
+       
 
 
-
-
-        <input type="hidden" id="p_type" name="p_type" />
-        <!--            <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; ">
-                        <tr>
-                            <td> <span style="margin-left:20px;">方案列表</span>&nbsp;</td>
-                            <td>
-                                <input id="p_plan" class="easyui-combobox" name="p_plan" style="width:150px; height: 30px" 
-                                       data-options="editable:false,valueField:'id', textField:'text' " />
-                            </td>
-        
-                            <td>
-                                <span style="margin-left:20px;">闭合时间</span>&nbsp;
-                            </td>
-                            <td> <input id="intime" name="intime" style=" height: 30px; width: 100px;  "  class="easyui-timespinner">
-                            </td>
-                            <td>
-                                <span style="margin-left:20px;">断开时间&nbsp;</span>
-                            </td>
-                            <td>
-                                <input id="outtime" name="outtime" style=" height: 30px; width: 100px;  "  class="easyui-timespinner">
-                            </td>
-                            <td >
-                                <button style=" margin-left: 40px;" onclick="setLoopPlan()" type="button" class="btn btn-success btn-sm">部署回路方案</button>
-                            </td>
-                            <td>
-                                <button  onclick="readLoopPlan()" type="button" class="btn btn-success btn-sm">读取回路时间表</button>
-                            </td>
-                        </tr>
-        
-                                            <tr id="type0">
-                                                <td>
-                                                    <span style="margin-left:20px;">闭合时间</span>&nbsp;
-                                                </td>
-                                                <td> <input id="intime" name="intime" style=" height: 30px; width: 150px;  "  class="easyui-timespinner">
-                                                </td>
-                                                <td>
-                                                    <span style="margin-left:20px;">断开时间&nbsp;</span>
-                                                </td>
-                                                <td>
-                                                    <input id="outtime" name="outtime" style=" height: 30px; width: 150px;  "  class="easyui-timespinner">
-                                                </td>
-                                            </tr>
-        
-                                            <tr id="type1" style=" display: none" >
-                                                <td>
-                                                    <span style="margin-left:20px;">区域经度</span>&nbsp;
-                                                </td>
-                                                <td>
-                                                    <input id="longitudem26d" class="form-control" name="longitudem26d" style="width:51px;display: inline;" type="text">&nbsp;°
-                                                    <input id="longitudem26m" class="form-control" name="longitudem26m" style="width:45px;display: inline;" type="text">&nbsp;'
-                                                    <input id="longitudem26s" class="form-control" name="longitudem26s" style="width:45px;display: inline;" type="text">&nbsp;"
-                                                </td>
-                                                <td>
-                                                    <span style="margin-left:20px;">区域纬度&nbsp;</span>
-                        
-                                                </td>
-                                                <td>
-                                                    <input id="latitudem26d" class="form-control" name="latitudem26d" style="width:51px;display: inline;" type="text">&nbsp;°
-                                                    <input id="latitudem26m" class="form-control" name="latitudem26m" style="width:45px;display: inline;" type="text">&nbsp;'
-                                                    <input id="latitudem26s" class="form-control" name="latitudem26s" style="width:45px;display: inline;" type="text">&nbsp;"
-                                                </td>
-                                            </tr>
-                        
-                                            <tr>
-                                                <td colspan="4">
-                                                    <button style=" margin-left: 40px;" onclick="setLoopPlan()" type="button" class="btn btn-success btn-sm">部署回路方案</button>
-                        
-                                                    <button  onclick="readLoopPlan()" type="button" class="btn btn-success btn-sm">读取回路时间表</button>
-                                                </td>
-                                            </tr>
-                    </table> 
-        
-        -->
-
-
-
-
-        <!--                            <div class="col-xs-6">
-                    
-                                        <button style=" margin-left: 40px;" onclick="setLoopPlan()" type="button" class="btn btn-success">部署回路方案</button>
-                    
-                                        <button  onclick="readLoopPlan()" type="button" class="btn btn-success">读取回路时间表</button>
-                                    </div>-->
+        <input type="hidden" id="p_type" name="p_type" /> 
     </div>
 
 </form>
