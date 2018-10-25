@@ -405,6 +405,104 @@
                 var data = buicode(comaddr, 0x04, 0xA5, num, 0, 302, vv); //01 03 F24     
                 dealsend2("A5", data, 302, "lightCB", comaddr, obj.groupetype, param, groupeval);
             }
+            //巡测灯具状态
+            function tourlamp() {
+                var selects = $('#gravidaTable').bootstrapTable('getSelections');
+               // var o = $("#form1").serializeObject();
+                var vv = new Array();
+                if (selects.length == 0) {
+                    layerAler(langs1[73][lang]);   //请勾选表格数据
+                    return;
+                }
+               
+                var vv = [];
+                vv.push(0);
+                var iii = 0;
+                for (var i = 0; i < selects.length; i++) {
+                    var ele = selects[i];
+                    if (ele.l_deplayment == "1") {
+                        iii += 1;
+                        var setcode = ele.l_code;
+                        var l_code = parseInt(setcode);
+                        var a = l_code >> 8 & 0x00FF;
+                        var b = l_code & 0x00ff;
+                        vv.push(b);//装置序号  2字节            
+                        vv.push(a);//装置序号  2字节           
+                    }
+                }
+                vv[0] = iii;
+                var comaddr = selects[0].l_comaddr;
+                var num = randnum(0, 9) + 0x70;
+                var data = buicode(comaddr, 0x04, 0xAC, num, 0, 40, vv);
+
+                dealsend2("AC", data, 40, "tourlampCB", comaddr, 0, 0, 0);
+            }
+            //巡测回调函数
+            function tourlampCB(obj) {
+                var v = Str2BytesH(obj.data);
+                var s = "";
+                for (var i = 0; i < v.length; i++) {
+
+                    s = s + sprintf("%02x", v[i]) + " ";
+                }
+                console.log(s);
+                if (v[14] == 0 && v[15] == 0 && v[16] == 0x40 && v[17] == 0) {
+                    var z = 19;
+                    var len = v[18];
+                    console.log(len);
+                    for (i = 0; i < len; i++) {
+
+
+                        var l_code = v[z + 1] * 256 + v[z];
+                        //电压
+                        console.log(l_code);
+                        z = z + 2;
+                        var bw = v[z + 1] >> 4 & 0xf;
+                        var sw = v[z + 1] & 0xf;
+                        var gw = v[z] >> 4 & 0xf;
+                        var sfw = v[z] & 0xf;
+                        var voltage = sprintf("%d%d%d.%d(V)", bw, sw, gw, sfw);  //电压
+                        console.log(voltage);
+
+                        //电流
+                        z = z + 2;
+                        var sw = v[z + 1] >> 4 & 0xf;
+                        var gw = v[z + 1] & 0xf;
+                        var sfw = v[z] >> 4 & 0xf;
+                        var bfw = v[z] & 0xf;
+                        var electric = sprintf("%d%d.%d%d(A)", sw, gw, sfw, bfw);
+                        console.log(electric);
+                        //有功功率
+                        z = z + 2;
+                        var qw = v[z + 3] >> 4 & 0xf;
+                        var bw = v[z + 3] & 0xf;
+                        var sw = v[z + 2] >> 4 & 0xf;
+                        var gw = v[z + 2] & 0xf;
+                        var sfw = v[z + 1] >> 4 & 0xf;
+                        var bfw = v[z + 1] & 0xf;
+                        var qfw = v[z] >> 4 & 0xf;
+                        var wfw = v[z] & 0xf;
+                        var activepower = sprintf("%d%d%d.%d%d%d%d(KW)", qw, bw, gw, sfw, bfw, qfw, wfw);
+                        console.log(activepower);
+                        //灯控器状态
+                        z = z + 4;
+                        var s1 = v[z];
+                        var s2 = v[z + 1];
+                        var s3 = v[z + 2];
+                        var s4 = v[z + 3];
+                        //调光值
+                        z = z + 4;
+                        var l_value = v[z];
+                        console.log(l_value);
+                        //温度
+                        z = z + 2;
+                        var temperature = v[z+1]==1?-v[z]:v[z];
+                        layerAler("电压："+voltage+"<br>电流："+electric+"<br>有功功率："+activepower+"<br>调光值："+l_value+"<br>温度："+temperature);
+
+                    }
+
+                }
+            }
 
 
             $(function () {
@@ -567,7 +665,7 @@
                                 }
                             }
                         }],
-                    singleSelect: false,
+                    singleSelect: true,
                     sortName: 'id',
                     locale: 'zh-CN', //中文支持,
                     showColumns: true,
@@ -874,6 +972,10 @@
                                         <!--关灯-->
                                         <span id="36" name="xxx">关灯</span>
                                     </button>&nbsp;
+                                </td>
+                                
+                                <td>
+                                    <button style="margin-left:10px;"  type="button" onclick="tourlamp()" class="btn btn-success btn-xm"><span name="xxxx" id="403">巡测灯具状态</span></button>
                                 </td>
 
                             </tr>
