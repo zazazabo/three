@@ -29,7 +29,6 @@
 
             function search() {
                 var o = $("#formsearch").serializeObject();
-                console.log(o);
                 var opt = {
                     url: "lamp.lampform.getlampList.action",
                     query: o
@@ -57,18 +56,15 @@
                 var vv = new Array();
                 vv.push(groupearr.length);
                 var comaddr = o.l_comaddr;
-
+                var param = [];
                 for (var i = 0; i < groupearr.length; i++) {
                     vv.push(parseInt(groupearr[i].id));
                     vv.push(val);
+                    param.push(groupearr[i].id);
                 }
-
                 var num = randnum(0, 9) + 0x70;
-
-                var param = {};
-                param.l_groupe = l_groupe;
                 var data = buicode(comaddr, 0x04, 0xA5, num, 0, 302, vv); //01 03 F24     
-                dealsend2("A5", data, 302, "lightCB", comaddr, 3, 0, 100);
+                dealsend2("A5", data, 302, "lightCB", comaddr, 3, param, val);
             }
             //关灯
             function offlamp(val) {
@@ -90,18 +86,16 @@
                 var vv = new Array();
                 vv.push(groupearr.length);
                 var comaddr = o.l_comaddr;
-
+                var param = [];
                 for (var i = 0; i < groupearr.length; i++) {
                     vv.push(parseInt(groupearr[i].id));
                     vv.push(val);
+                    param.push(groupearr[i].id);
                 }
 
                 var num = randnum(0, 9) + 0x70;
-
-                var param = {};
-                param.l_groupe = l_groupe;
                 var data = buicode(comaddr, 0x04, 0xA5, num, 0, 302, vv); //01 03 F24     
-                dealsend2("A5", data, 302, "lightCB", comaddr, 3, param, 0);
+                dealsend2("A5", data, 302, "lightCB", comaddr, 3, param, val);
 
             }
 
@@ -178,7 +172,7 @@
             }
 
 
-            function sceneAllCB(obj){
+            function sceneAllCB(obj) {
                 console.log(obj);
             }
 
@@ -202,9 +196,9 @@
 
                 for (var i = 0; i < groupearr.length; i++) {
                     vv.push(parseInt(groupearr[i].id));
-                     var scenenum = o.scennum;
+                    var scenenum = o.scennum;
                     vv.push(parseInt(o.scennum));
-                    
+
                 }
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA5, num, 0, 308, vv); //01 03
@@ -291,35 +285,33 @@
                         });
                     } else if (obj.fn == 302) {
                         var param = obj.param;
-                        var o = {};
-                        o.l_value = obj.val;
-                        o.l_comaddr = obj.comaddr;
-                        o.l_groupe = param.l_groupe;
-                        if (obj.type == 3) {
+
+
+                        for (var i = 0; i < param.length; i++) {
+                            var o = {};
+                            o.l_value = obj.val;
+                            o.l_comaddr = obj.comaddr;
+                            o.l_groupe = param[i];
                             $.ajax({async: false, url: "lamp.lampform.modifygroupevalAll.action", type: "get", datatype: "JSON", data: o,
                                 success: function (data) {
-                                    if (data != null) {
-                                        $('#gravidaTable').bootstrapTable('refresh');
-                                    }
+
                                 },
                                 error: function () {
                                     alert("提交失败！");
                                 }
                             });
-                        } else {
-                            $.ajax({async: false, url: "lamp.lampform.modifygroupeval.action", type: "get", datatype: "JSON", data: o,
-                                success: function (data) {
-                                    var arrlist = data.rs;
-                                    if (arrlist.length >= 1) {
-                                        $('#gravidaTable').bootstrapTable('refresh');
-                                    }
-                                },
-                                error: function () {
-                                    alert("提交失败！");
-                                }
-                            });
+
                         }
 
+                        layerAler("调光成功");
+
+                        var o = $("#formsearch").serializeObject();
+                        var opt = {
+                            url: "lamp.lampform.getlampList.action",
+                            query: o
+
+                        };
+                        $('#gravidaTable').bootstrapTable('refresh', opt);
                     }
                 }
 
@@ -335,7 +327,7 @@
                     return;
                 }
                 addlogon(u_name, "灯具调光", o_pid, "灯具调光", "单灯立即调光");
-      
+
                 var l_comaddr = $("#l_comaddr").combobox('getValue');
                 var select = selects[0];
                 console.log(select);
@@ -381,10 +373,108 @@
                 vv.push(parseInt(groupeval, "10")); //组亮度值
                 var num = randnum(0, 9) + 0x70;
 
-                var param = {};
-                param.l_groupe = l_groupe;
+                var param = [];
+                param.push(l_groupe);
                 var data = buicode(comaddr, 0x04, 0xA5, num, 0, 302, vv); //01 03 F24     
                 dealsend2("A5", data, 302, "lightCB", comaddr, obj.groupetype, param, groupeval);
+            }
+            //巡测灯具状态
+            function tourlamp() {
+                var selects = $('#gravidaTable').bootstrapTable('getSelections');
+                // var o = $("#form1").serializeObject();
+                var vv = new Array();
+                if (selects.length == 0) {
+                    layerAler(langs1[73][lang]);   //请勾选表格数据
+                    return;
+                }
+
+                var vv = [];
+                vv.push(0);
+                var iii = 0;
+                for (var i = 0; i < selects.length; i++) {
+                    var ele = selects[i];
+                    if (ele.l_deplayment == "1") {
+                        iii += 1;
+                        var setcode = ele.l_code;
+                        var l_code = parseInt(setcode);
+                        var a = l_code >> 8 & 0x00FF;
+                        var b = l_code & 0x00ff;
+                        vv.push(b);//装置序号  2字节            
+                        vv.push(a);//装置序号  2字节           
+                    }
+                }
+                vv[0] = iii;
+                var comaddr = selects[0].l_comaddr;
+                var num = randnum(0, 9) + 0x70;
+                var data = buicode(comaddr, 0x04, 0xAC, num, 0, 40, vv);
+
+                dealsend2("AC", data, 40, "tourlampCB", comaddr, 0, 0, 0);
+            }
+            //巡测回调函数
+            function tourlampCB(obj) {
+                var v = Str2BytesH(obj.data);
+                var s = "";
+                for (var i = 0; i < v.length; i++) {
+
+                    s = s + sprintf("%02x", v[i]) + " ";
+                }
+                console.log(s);
+                if (v[14] == 0 && v[15] == 0 && v[16] == 0x40 && v[17] == 0) {
+                    var z = 19;
+                    var len = v[18];
+                    console.log(len);
+                    for (i = 0; i < len; i++) {
+
+
+                        var l_code = v[z + 1] * 256 + v[z];
+                        //电压
+                        console.log(l_code);
+                        z = z + 2;
+                        var bw = v[z + 1] >> 4 & 0xf;
+                        var sw = v[z + 1] & 0xf;
+                        var gw = v[z] >> 4 & 0xf;
+                        var sfw = v[z] & 0xf;
+                        var voltage = sprintf("%d%d%d.%d(V)", bw, sw, gw, sfw);  //电压
+                        console.log(voltage);
+
+                        //电流
+                        z = z + 2;
+                        var sw = v[z + 1] >> 4 & 0xf;
+                        var gw = v[z + 1] & 0xf;
+                        var sfw = v[z] >> 4 & 0xf;
+                        var bfw = v[z] & 0xf;
+                        var electric = sprintf("%d%d.%d%d(A)", sw, gw, sfw, bfw);
+                        console.log(electric);
+                        //有功功率
+                        z = z + 2;
+                        var qw = v[z + 3] >> 4 & 0xf;
+                        var bw = v[z + 3] & 0xf;
+                        var sw = v[z + 2] >> 4 & 0xf;
+                        var gw = v[z + 2] & 0xf;
+                        var sfw = v[z + 1] >> 4 & 0xf;
+                        var bfw = v[z + 1] & 0xf;
+                        var qfw = v[z] >> 4 & 0xf;
+                        var wfw = v[z] & 0xf;
+                        var activepower = sprintf("%d%d%d.%d%d%d%d(KW)", qw, bw, gw, sfw, bfw, qfw, wfw);
+                        console.log(activepower);
+                        //灯控器状态
+                        z = z + 4;
+                        var s1 = v[z];
+                        var s2 = v[z + 1];
+                        var s3 = v[z + 2];
+                        var s4 = v[z + 3];
+                        //调光值
+                        z = z + 4;
+                        var l_value = v[z];
+                        console.log(l_value);
+                        //温度
+                        z = z + 2;
+                        var temperature = v[z + 1] == 1 ? -v[z] : v[z];
+                        layerAler("装置号:" + l_code.toString() + "<br>" + "电压：" + voltage + "<br>电流：" + electric + "<br>有功功率：" + activepower + "<br>调光值：" + l_value + "<br>温度：" + temperature);
+
+                    }
+
+                }
             }
 
 
@@ -463,7 +553,6 @@
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
-                                console.log(value);
                                 if (value == 0) {
                                     value = "时间表";
                                     return value;
@@ -482,9 +571,9 @@
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
-                             
-                             
-                            if (row.l_deplayment == 1) {
+
+
+                                if (row.l_deplayment == 1) {
 
                                     if (row.l_worktype == "0") {
                                         if (isJSON(row.l_plantime)) {
@@ -504,12 +593,12 @@
                                         }
 
                                     }
-                                }                         
-                             
-                             
-                             
-                             
-                             
+                                }
+
+
+
+
+
                             }
                         },
                         {
@@ -535,22 +624,21 @@
 
                             }
                         }, {
-                            field: 'l_deployment',
-                            title: langs1[317][lang], //部署情况
+                            field: 'presence',
+                            title: langs1[61][lang], //在线状态
                             width: 25,
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
-                                if (row.l_deplayment == "0") {
-                                    var str = "<span class='label label-warning'>" + langs1[318][lang] + "</span>";  //末部署
-                                    return  str;
-                                } else if (row.l_deplayment == "1") {
-                                    var str = "<span class='label label-success'>" + langs1[319][lang] + "</span>";  //已部署
-                                    return  str;
+                                if (value == 1) {
+                                    return "<img  src='img/online1.png'/>";  //onclick='hello()'
+
+                                } else {
+                                    return "<img  src='img/off.png'/>";  //onclick='hello()'
                                 }
                             }
                         }],
-                    singleSelect: false,
+                    singleSelect: true,
                     sortName: 'id',
                     locale: 'zh-CN', //中文支持,
                     showColumns: true,
@@ -587,7 +675,7 @@
                 });
 
 
-              $('#gravidaTable').on('click-cell.bs.table', function (field, value, row, element)
+                $('#gravidaTable').on('click-cell.bs.table', function (field, value, row, element)
                 {
                     if (value == "l_plan") {
                         if (element.l_deplayment == "1") {
@@ -627,7 +715,7 @@
                                 });
 
                             } else if (element.l_worktype == 2) {
-                                 var plan = "";
+                                var plan = "";
                                 if (isJSON(element.l_planscene)) {
                                     var obj = eval('(' + element.l_planscene + ')');
                                     plan = obj.p_code;
@@ -710,10 +798,6 @@
                     }
                 })
 
-
-
-
-
                 $('#l_comaddr').combobox({
                     url: "gayway.GaywayForm.getComaddr.action?pid=${param.pid}",
                     formatter: function (row) {
@@ -748,16 +832,15 @@
                         var url = "lamp.GroupeForm.getGroupe.action?l_comaddr=" + record.id + "&l_deplayment=1";
                         $("#l_groupe").combobox("clear");
                         $("#l_groupe").combobox("reload", url);
-                          var o={l_comaddr:record.id,pid:"${param.pid}"};
-                            var opt = {
-                                url: "lamp.lampform.getlampList.action",
-                                query: o
+                        var o = {l_comaddr: record.id, pid: "${param.pid}"};
+                        var opt = {
+                            url: "lamp.lampform.getlampList.action",
+                            query: o
 
-                            };
-                            $('#gravidaTable').bootstrapTable('refresh', opt);                       
+                        };
+                        $('#gravidaTable').bootstrapTable('refresh', opt);
                     }
                 })
-
 
                 $('#scenetype').combobox({
                     onSelect: function (record) {
@@ -769,13 +852,11 @@
                     }
                 });
 
-
                 $('#slide_lamp_val').slider({
                     onChange: function (v1, v2) {
                         $("#val").val(v1);
                     }
                 });
-
 
             })
         </script>
@@ -864,6 +945,10 @@
                                         <!--关灯-->
                                         <span id="36" name="xxx">关灯</span>
                                     </button>&nbsp;
+                                </td>
+
+                                <td>
+                                    <button style="margin-left:10px;"  type="button" onclick="tourlamp()" class="btn btn-success btn-xm"><span name="xxxx" id="403">巡测灯具状态</span></button>
                                 </td>
 
                             </tr>
