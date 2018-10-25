@@ -312,33 +312,6 @@
 
                         };
                         $('#gravidaTable').bootstrapTable('refresh', opt);
-
-
-//                        if (obj.type == 3) {
-//                            $.ajax({async: false, url: "lamp.lampform.modifygroupevalAll.action", type: "get", datatype: "JSON", data: o,
-//                                success: function (data) {
-//                                    if (data != null) {
-//                                        $('#gravidaTable').bootstrapTable('refresh');
-//                                    }
-//                                },
-//                                error: function () {
-//                                    alert("提交失败！");
-//                                }
-//                            });
-//                        } else {
-//                            $.ajax({async: false, url: "lamp.lampform.modifygroupeval.action", type: "get", datatype: "JSON", data: o,
-//                                success: function (data) {
-//                                    var arrlist = data.rs;
-//                                    if (arrlist.length >= 1) {
-//                                        $('#gravidaTable').bootstrapTable('refresh');
-//                                    }
-//                                },
-//                                error: function () {
-//                                    alert("提交失败！");
-//                                }
-//                            });
-//                        }
-
                     }
                 }
 
@@ -408,13 +381,13 @@
             //巡测灯具状态
             function tourlamp() {
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
-               // var o = $("#form1").serializeObject();
+                // var o = $("#form1").serializeObject();
                 var vv = new Array();
                 if (selects.length == 0) {
                     layerAler(langs1[73][lang]);   //请勾选表格数据
                     return;
                 }
-               
+
                 var vv = [];
                 vv.push(0);
                 var iii = 0;
@@ -496,8 +469,8 @@
                         console.log(l_value);
                         //温度
                         z = z + 2;
-                        var temperature = v[z+1]==1?-v[z]:v[z];
-                        layerAler("电压："+voltage+"<br>电流："+electric+"<br>有功功率："+activepower+"<br>调光值："+l_value+"<br>温度："+temperature);
+                        var temperature = v[z + 1] == 1 ? -v[z] : v[z];
+                        layerAler("装置号:" + l_code.toString() + "<br>" + "电压：" + voltage + "<br>电流：" + electric + "<br>有功功率：" + activepower + "<br>调光值：" + l_value + "<br>温度：" + temperature);
 
                     }
 
@@ -973,7 +946,7 @@
                                         <span id="36" name="xxx">关灯</span>
                                     </button>&nbsp;
                                 </td>
-                                
+
                                 <td>
                                     <button style="margin-left:10px;"  type="button" onclick="tourlamp()" class="btn btn-success btn-xm"><span name="xxxx" id="403">巡测灯具状态</span></button>
                                 </td>
