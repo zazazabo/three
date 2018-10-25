@@ -15,6 +15,22 @@
             .btn{ margin-left: 10px;}   
         </style>
         <script type="text/javascript"  src="js/getdate.js"></script>
+
+
+        <script type="text/javascript" language=JavaScript charset="UTF-8">
+            document.onkeydown = function (event) {
+                var e = event || window.event || arguments.callee.caller.arguments[0];
+                if (e && e.keyCode == 27) { // 按 Esc 
+                    $('#panemask').hideLoading();
+                }
+
+            };
+        </script>
+
+
+
+
+
         <script>
             var lang = '${param.lang}';//'zh_CN';
             var langs1 = parent.parent.getLnas();
@@ -65,6 +81,14 @@
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA5, num, 0, 302, vv); //01 03 F24     
                 dealsend2("A5", data, 302, "lightCB", comaddr, 3, param, val);
+
+                $('#panemask').showLoading({
+                    'afterShow': function () {
+                        setTimeout("$('#panemask').hideLoading()", 30000);
+                    }
+                }
+                );
+
             }
             //关灯
             function offlamp(val) {
@@ -96,7 +120,12 @@
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA5, num, 0, 302, vv); //01 03 F24     
                 dealsend2("A5", data, 302, "lightCB", comaddr, 3, param, val);
-
+                $('#panemask').showLoading({
+                    'afterShow': function () {
+                        setTimeout("$('#panemask').hideLoading()", 30000);
+                    }
+                }
+                );
             }
 
 
@@ -168,11 +197,17 @@
                     var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 140, vv); //01 03
                     dealsend2("A5", data, 180, "restoreCB", l_comaddr, o.type, 0, select.l_code);
                 }
-
+                $('#panemask').showLoading({
+                    'afterShow': function () {
+                        setTimeout("$('#panemask').hideLoading()", 30000);
+                    }
+                }
+                );
             }
 
 
             function sceneAllCB(obj) {
+                $('#panemask').hideLoading()
                 console.log(obj);
             }
 
@@ -203,6 +238,12 @@
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA5, num, 0, 308, vv); //01 03
                 dealsend2("A5", data, 308, "sceneAllCB", comaddr, 0, 0, 0);
+                $('#panemask').showLoading({
+                    'afterShow': function () {
+                        setTimeout("$('#panemask').hideLoading()", 30000);
+                    }
+                }
+                );
             }
             function scenegroupe() {
                 var obj = $("#formsearch").serializeObject();
@@ -230,6 +271,12 @@
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 308, vv); //01 03
                 dealsend2("A5", data, 308, "sceneCB", l_comaddr, obj.lighttype, groupe, scenenum);
+                $('#panemask').showLoading({
+                    'afterShow': function () {
+                        setTimeout("$('#panemask').hideLoading()", 30000);
+                    }
+                }
+                );
             }
 
             function scenesingle() {
@@ -261,10 +308,16 @@
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 304, vv); //01 03
                 dealsend2("A5", data, 304, "sceneCB", l_comaddr, obj.lighttype, param, scenenum);
+                $('#panemask').showLoading({
+                    'afterShow': function () {
+                        setTimeout("$('#panemask').hideLoading()", 10000);
+                    }
+                }
+                );
             }
 
             function lightCB(obj) {
-
+                $('#panemask').hideLoading();
                 if (obj.status == "success") {
                     if (obj.fn == 301) {
                         layerAler(langs1[313][lang]);  //单灯调光成功
@@ -353,7 +406,12 @@
                 var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 301, vv); //01 03
                 //dealsend(sss, o1);
                 dealsend2("A5", data, 301, "lightCB", l_comaddr, o.groupetype, param, lampval);
-
+                $('#panemask').showLoading({
+                    'afterShow': function () {
+                        setTimeout("$('#panemask').hideLoading()", 30000);
+                    }
+                }
+                );
             }
 
             function lightgroupe() {
@@ -377,6 +435,12 @@
                 param.push(l_groupe);
                 var data = buicode(comaddr, 0x04, 0xA5, num, 0, 302, vv); //01 03 F24     
                 dealsend2("A5", data, 302, "lightCB", comaddr, obj.groupetype, param, groupeval);
+                $('#panemask').showLoading({
+                    'afterShow': function () {
+                        setTimeout("$('#panemask').hideLoading()", 30000);
+                    }
+                }
+                );
             }
             //巡测灯具状态
             function tourlamp() {
@@ -409,9 +473,16 @@
                 var data = buicode(comaddr, 0x04, 0xAC, num, 0, 40, vv);
 
                 dealsend2("AC", data, 40, "tourlampCB", comaddr, 0, 0, 0);
+                $('#panemask').showLoading({
+                    'afterShow': function () {
+                        setTimeout("$('#panemask').hideLoading()", 10000);
+                    }
+                }
+                );
             }
             //巡测回调函数
             function tourlampCB(obj) {
+                $('#panemask').hideLoading();
                 var v = Str2BytesH(obj.data);
                 var s = "";
                 for (var i = 0; i < v.length; i++) {
@@ -861,14 +932,14 @@
             })
         </script>
     </head>
-    <body>
+    <body id="panemask">
 
 
         <form id="formsearch">
             <input type="hidden" name="pid" value="${param.pid}">
 
 
-            <div class="row" >
+            <div class="row"  >
                 <div class="col-xs-12">
                     <table style="border-collapse:separate;  border-spacing:0px 10px;border: 1px solid #16645629; margin-left: 20px; margin-top: 10px; align-content:  center">
                         <tbody>
