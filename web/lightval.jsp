@@ -29,7 +29,6 @@
 
             function search() {
                 var o = $("#formsearch").serializeObject();
-                console.log(o);
                 var opt = {
                     url: "lamp.lampform.getlampList.action",
                     query: o
@@ -57,18 +56,15 @@
                 var vv = new Array();
                 vv.push(groupearr.length);
                 var comaddr = o.l_comaddr;
-
+                var param = [];
                 for (var i = 0; i < groupearr.length; i++) {
                     vv.push(parseInt(groupearr[i].id));
                     vv.push(val);
+                    param.push(groupearr[i].id);
                 }
-
                 var num = randnum(0, 9) + 0x70;
-
-                var param = {};
-                param.l_groupe = l_groupe;
                 var data = buicode(comaddr, 0x04, 0xA5, num, 0, 302, vv); //01 03 F24     
-                dealsend2("A5", data, 302, "lightCB", comaddr, 3, 0, 100);
+                dealsend2("A5", data, 302, "lightCB", comaddr, 3, param, val);
             }
             //关灯
             function offlamp(val) {
@@ -90,18 +86,16 @@
                 var vv = new Array();
                 vv.push(groupearr.length);
                 var comaddr = o.l_comaddr;
-
+                var param = [];
                 for (var i = 0; i < groupearr.length; i++) {
                     vv.push(parseInt(groupearr[i].id));
                     vv.push(val);
+                    param.push(groupearr[i].id);
                 }
 
                 var num = randnum(0, 9) + 0x70;
-
-                var param = {};
-                param.l_groupe = l_groupe;
                 var data = buicode(comaddr, 0x04, 0xA5, num, 0, 302, vv); //01 03 F24     
-                dealsend2("A5", data, 302, "lightCB", comaddr, 3, param, 0);
+                dealsend2("A5", data, 302, "lightCB", comaddr, 3, param, val);
 
             }
 
@@ -178,7 +172,7 @@
             }
 
 
-            function sceneAllCB(obj){
+            function sceneAllCB(obj) {
                 console.log(obj);
             }
 
@@ -202,9 +196,9 @@
 
                 for (var i = 0; i < groupearr.length; i++) {
                     vv.push(parseInt(groupearr[i].id));
-                     var scenenum = o.scennum;
+                    var scenenum = o.scennum;
                     vv.push(parseInt(o.scennum));
-                    
+
                 }
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA5, num, 0, 308, vv); //01 03
@@ -291,34 +285,59 @@
                         });
                     } else if (obj.fn == 302) {
                         var param = obj.param;
-                        var o = {};
-                        o.l_value = obj.val;
-                        o.l_comaddr = obj.comaddr;
-                        o.l_groupe = param.l_groupe;
-                        if (obj.type == 3) {
+
+
+                        for (var i = 0; i < param.length; i++) {
+                            var o = {};
+                            o.l_value = obj.val;
+                            o.l_comaddr = obj.comaddr;
+                            o.l_groupe = param[i];
                             $.ajax({async: false, url: "lamp.lampform.modifygroupevalAll.action", type: "get", datatype: "JSON", data: o,
                                 success: function (data) {
-                                    if (data != null) {
-                                        $('#gravidaTable').bootstrapTable('refresh');
-                                    }
+
                                 },
                                 error: function () {
                                     alert("提交失败！");
                                 }
                             });
-                        } else {
-                            $.ajax({async: false, url: "lamp.lampform.modifygroupeval.action", type: "get", datatype: "JSON", data: o,
-                                success: function (data) {
-                                    var arrlist = data.rs;
-                                    if (arrlist.length >= 1) {
-                                        $('#gravidaTable').bootstrapTable('refresh');
-                                    }
-                                },
-                                error: function () {
-                                    alert("提交失败！");
-                                }
-                            });
+
                         }
+
+                        layerAler("调光成功");
+
+                        var o = $("#formsearch").serializeObject();
+                        var opt = {
+                            url: "lamp.lampform.getlampList.action",
+                            query: o
+
+                        };
+                        $('#gravidaTable').bootstrapTable('refresh', opt);
+
+
+//                        if (obj.type == 3) {
+//                            $.ajax({async: false, url: "lamp.lampform.modifygroupevalAll.action", type: "get", datatype: "JSON", data: o,
+//                                success: function (data) {
+//                                    if (data != null) {
+//                                        $('#gravidaTable').bootstrapTable('refresh');
+//                                    }
+//                                },
+//                                error: function () {
+//                                    alert("提交失败！");
+//                                }
+//                            });
+//                        } else {
+//                            $.ajax({async: false, url: "lamp.lampform.modifygroupeval.action", type: "get", datatype: "JSON", data: o,
+//                                success: function (data) {
+//                                    var arrlist = data.rs;
+//                                    if (arrlist.length >= 1) {
+//                                        $('#gravidaTable').bootstrapTable('refresh');
+//                                    }
+//                                },
+//                                error: function () {
+//                                    alert("提交失败！");
+//                                }
+//                            });
+//                        }
 
                     }
                 }
@@ -335,7 +354,7 @@
                     return;
                 }
                 addlogon(u_name, "灯具调光", o_pid, "灯具调光", "单灯立即调光");
-      
+
                 var l_comaddr = $("#l_comaddr").combobox('getValue');
                 var select = selects[0];
                 console.log(select);
@@ -381,8 +400,8 @@
                 vv.push(parseInt(groupeval, "10")); //组亮度值
                 var num = randnum(0, 9) + 0x70;
 
-                var param = {};
-                param.l_groupe = l_groupe;
+                var param = [];
+                param.push(l_groupe);
                 var data = buicode(comaddr, 0x04, 0xA5, num, 0, 302, vv); //01 03 F24     
                 dealsend2("A5", data, 302, "lightCB", comaddr, obj.groupetype, param, groupeval);
             }
@@ -463,7 +482,6 @@
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
-                                console.log(value);
                                 if (value == 0) {
                                     value = "时间表";
                                     return value;
@@ -482,9 +500,9 @@
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
-                             
-                             
-                            if (row.l_deplayment == 1) {
+
+
+                                if (row.l_deplayment == 1) {
 
                                     if (row.l_worktype == "0") {
                                         if (isJSON(row.l_plantime)) {
@@ -504,12 +522,12 @@
                                         }
 
                                     }
-                                }                         
-                             
-                             
-                             
-                             
-                             
+                                }
+
+
+
+
+
                             }
                         },
                         {
@@ -586,7 +604,7 @@
                 });
 
 
-              $('#gravidaTable').on('click-cell.bs.table', function (field, value, row, element)
+                $('#gravidaTable').on('click-cell.bs.table', function (field, value, row, element)
                 {
                     if (value == "l_plan") {
                         if (element.l_deplayment == "1") {
@@ -626,7 +644,7 @@
                                 });
 
                             } else if (element.l_worktype == 2) {
-                                 var plan = "";
+                                var plan = "";
                                 if (isJSON(element.l_planscene)) {
                                     var obj = eval('(' + element.l_planscene + ')');
                                     plan = obj.p_code;
@@ -709,10 +727,6 @@
                     }
                 })
 
-
-
-
-
                 $('#l_comaddr').combobox({
                     url: "gayway.GaywayForm.getComaddr.action?pid=${param.pid}",
                     formatter: function (row) {
@@ -747,16 +761,15 @@
                         var url = "lamp.GroupeForm.getGroupe.action?l_comaddr=" + record.id + "&l_deplayment=1";
                         $("#l_groupe").combobox("clear");
                         $("#l_groupe").combobox("reload", url);
-                          var o={l_comaddr:record.id,pid:"${param.pid}"};
-                            var opt = {
-                                url: "lamp.lampform.getlampList.action",
-                                query: o
+                        var o = {l_comaddr: record.id, pid: "${param.pid}"};
+                        var opt = {
+                            url: "lamp.lampform.getlampList.action",
+                            query: o
 
-                            };
-                            $('#gravidaTable').bootstrapTable('refresh', opt);                       
+                        };
+                        $('#gravidaTable').bootstrapTable('refresh', opt);
                     }
                 })
-
 
                 $('#scenetype').combobox({
                     onSelect: function (record) {
@@ -768,13 +781,11 @@
                     }
                 });
 
-
                 $('#slide_lamp_val').slider({
                     onChange: function (v1, v2) {
                         $("#val").val(v1);
                     }
                 });
-
 
             })
         </script>
