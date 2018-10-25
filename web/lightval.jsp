@@ -535,18 +535,17 @@
 
                             }
                         }, {
-                            field: 'l_deployment',
-                            title: langs1[317][lang], //部署情况
+                            field: 'presence',
+                            title: langs1[61][lang], //在线状态
                             width: 25,
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
-                                if (row.l_deplayment == "0") {
-                                    var str = "<span class='label label-warning'>" + langs1[318][lang] + "</span>";  //末部署
-                                    return  str;
-                                } else if (row.l_deplayment == "1") {
-                                    var str = "<span class='label label-success'>" + langs1[319][lang] + "</span>";  //已部署
-                                    return  str;
+                                if (value == 1) {
+                                    return "<img  src='img/online1.png'/>";  //onclick='hello()'
+
+                                } else {
+                                    return "<img  src='img/off.png'/>";  //onclick='hello()'
                                 }
                             }
                         }],
