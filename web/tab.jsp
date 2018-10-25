@@ -90,7 +90,11 @@
 
                 /* 初始化加载三级菜单 */
                 var htmlFirst = $(".secondMenu li:eq(0)").attr('name');
-
+//                console.log(htmlFirst);
+//
+//                if (htmlFirst.indexOf("lightval.jsp") != -1) {
+//                    dealsend3("CheckLamp", "a", 0, 0, "check", 0, 0, "${param.pid}");
+//                }
                 $(".J_iframe").attr('src', htmlFirst);
 
                 $(".secondMenu li:eq(0)").addClass("layui-this active").siblings("li").removeClass("layui-this active");

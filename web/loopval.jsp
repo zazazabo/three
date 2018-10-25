@@ -21,7 +21,42 @@
             var o_pid = parent.parent.getpojectId();
             var lang = '${param.lang}';//'zh_CN';
             var langs1 = parent.parent.getLnas();
+            function tourloopCB(obj) {
+                var v = Str2BytesH(obj.data);
+                var s = "";
+                for (var i = 0; i < v.length; i++) {
 
+                    s = s + sprintf("%02x", v[i]) + " ";
+                }
+                var s1 = v[72];
+                var a1 = s1 & 1 == 1 ? "手动" : "自动";
+                var a2 = s1 >> 1 & 1 == 1 ? "经纬度" : "时间表";
+                var a3 = s1 >> 2 & 1 == 1 ? "闭合" : "断开"
+                var str = "运行方式:" + a1 + "<br>" + "运行方案:" + a2 + "<br>" + "当前状态:" + a3;
+                layerAler(str);
+            }
+            function tourloop() {
+                var selects = $('#gravidaTable').bootstrapTable('getSelections');
+                if (selects.length == 0) {
+                    layerAler(langs1[73][lang]); //请勾选表格数据
+                    return;
+                }
+
+                var o1 = $("#form1").serializeObject();
+                var ele = selects[0];
+                console.log(ele);
+                var vv = [];
+                var setcode = ele.l_code;
+                var l_code = parseInt(setcode);
+                var a = l_code >> 8 & 0x00FF;
+                var b = l_code & 0x00ff;
+                vv.push(b);//装置序号  2字节            
+                vv.push(a);//装置序号  2字节              
+                var num = randnum(0, 9) + 0x70; //随机帧序列号
+                var comaddr = ele.l_comaddr;
+                var data = buicode(comaddr, 0x04, 0xAC, num, 0, 608, vv); //0320    
+                dealsend2("AC", data, 608, "tourloopCB", comaddr, 0, 0, 0);
+            }
             function switchloopCB(obj) {
                 console.log(obj);
                 if (obj.status == "success") {
@@ -336,6 +371,10 @@
                                 <span id="41" name="xxx">恢复自动运行</span>
                             </button>
 
+                        </td>
+                        <td>
+                            <button  type="button" onclick="tourloop()" class="btn btn-success btn-sm"><span name="xxxx" id="381">读取回路状态</span></button>
+                            &nbsp;
                         </td>
                     </tr>
 

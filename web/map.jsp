@@ -585,6 +585,12 @@
                 button5.setAttribute("id", "zt");
                 div.appendChild(button5);
 
+                var button6 = document.createElement("input");
+                button6.setAttribute("type", "button");
+                button6.setAttribute("value", o[414][lang]);//状态标识
+                button6.setAttribute("style", "margin-left: 5px");
+                button6.setAttribute("id", "zt");
+                div.appendChild(button6);
 
                 //网关单击事件
                 button3.onclick = function (e) {
@@ -717,7 +723,7 @@
                         success: function (data) {
 
                             var arrlist = data.rs;
-                           // var flist = data.rs2;
+                            // var flist = data.rs2;
                             for (var i = 0; i < arrlist.length; i++) {
                                 (function (x) {
                                     var obj = arrlist[i];
@@ -734,7 +740,7 @@
 //                                            break;
 //                                        }
 //                                    }
-                                    if(obj.l_fault==1){
+                                    if (obj.l_fault == 1) {
                                         Isfault = lans[14][lang]; //异常
                                         isfault2 = 1;
                                     }
@@ -767,20 +773,20 @@
                                             <td>" + Isfault + "</td>\n\
                                         </tr>\n\ \n\
                                         <tr>\n\
-                                            <td>"+lans[95][lang]+":</td>\n\
-                                            <td>"+arrlist[i].voltage+"</td>\n\
+                                            <td>" + lans[95][lang] + ":</td>\n\
+                                            <td>" + arrlist[i].voltage + "</td>\n\
                                             <td>&nbsp;&nbsp;</td>\n\
-                                            <td>"+lans[96][lang]+":</td>\n\
-                                            <td>"+arrlist[i].electric+"</td>\n\
+                                            <td>" + lans[96][lang] + ":</td>\n\
+                                            <td>" + arrlist[i].electric + "</td>\n\
                                         </tr>\n\
                                         <tr>\n\
-                                            <td>"+lans[97][lang]+":</td>\n\
-                                            <td>"+arrlist[i].activepower+"</td>\n\
+                                            <td>" + lans[97][lang] + ":</td>\n\
+                                            <td>" + arrlist[i].activepower + "</td>\n\
                                             <td>&nbsp;&nbsp;</td>\n\
-                                            <td>"+lans[413][lang]+":</td>\n\
-                                            <td>"+arrlist[i].temperature+"</td>\n\
+                                            <td>" + lans[413][lang] + ":</td>\n\
+                                            <td>" + arrlist[i].temperature + "</td>\n\
                                         </tr>\n\
-                                    </table></div>";    
+                                    </table></div>";
                                     if ((Longitude != "" && latitude != "") && (Longitude != null && latitude != null)) {
                                         var point = new BMap.Point(Longitude, latitude);
                                         var marker1;
@@ -915,7 +921,9 @@
                     }
                 };
 
-
+                button6.onclick = function (e) {
+                    dealsend3("CheckLamp", "a", 0, 0, "check", 0, 0, "${param.pid}");
+                }
                 // 添加DOM元素到地图中
                 map.getContainer().appendChild(div);
                 // 将DOM元素返回

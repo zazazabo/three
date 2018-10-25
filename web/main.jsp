@@ -843,29 +843,18 @@
                         $(this).parent(".eachMenu").siblings(".eachMenu").children(".list").removeClass("active");
                         $(this).parent(".eachMenu").siblings(".eachMenu").children(".secondMenu").children(".secondMenuList").removeClass("active");
                         var iframesrc = $(this).attr("name");
-                        if (iframesrc.indexOf("map.jsp") != -1) {
-                            var user = new Object();
-                            user.begin = '6A';
-                            user.res = 1;
-                            user.status = "";
-                            user.msg = "CheckLamp";
-                            user.val = getpojectId();
-                            user.data = "aa";
-                            user.end = '6A';
-                            console.log(user);
-                            sendData(user);
-                        } else if (iframesrc.indexOf("lightval.jsp") != -1) {
-                            var user = new Object();
-                            user.begin = '6A';
-                            user.res = 1;
-                            user.status = "";
-                            user.msg = "CheckLoop";
-                            user.val = getpojectId();
-                            user.data = "aa";
-                            user.end = '6A';
-                            console.log(user);
-                            sendData(user);
-                        }
+//                        if (iframesrc.indexOf("map.jsp") != -1) {
+//                            var user = new Object();
+//                            user.begin = '6A';
+//                            user.res = 1;
+//                            user.status = "";
+//                            user.msg = "CheckLamp";
+//                            user.val = getpojectId();
+//                            user.data = "aa";
+//                            user.end = '6A';
+//                            console.log(user);
+//                            sendData(user);
+//                        } 
                         iframesrc = iframesrc + "&pid=" + getpojectId();
                         console.log(iframesrc);
                         $("#iframe").attr("src", iframesrc);
