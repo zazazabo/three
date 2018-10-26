@@ -73,6 +73,7 @@
             }
 
             function tourlampCB(obj) {
+                $('#panemask').hideLoading();
                 var v = Str2BytesH(obj.data);
                 var s = "";
                 for (var i = 0; i < v.length; i++) {
@@ -165,12 +166,6 @@
             }
             function tourlamp() {
 
-//                var vv = [];
-//                var l_comaddr = "17020101";
-//                var num = randnum(0, 9) + 0x70;
-//                var data = "0";
-//                dealsend2("CheckLamp", data, 1, "CheckLamp", l_comaddr, 0, 0, "${param.pid}");
-
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
                 var o = $("#form1").serializeObject();
                 var vv = new Array();
@@ -199,8 +194,15 @@
                 var data = buicode(comaddr, 0x04, 0xAC, num, 0, 40, vv);
 
                 dealsend2("AC", data, 40, "tourlampCB", comaddr, 0, 0, 0);
+                 $('#panemask').showLoading({
+                    'afterShow': function () {
+                        setTimeout("$('#panemask').hideLoading()", 10000);
+                    }
+                }
+                );
             }
             function  readlampCB(obj) {
+                $('#panemask').hideLoading();
                 if (obj.status == "success") {
                     var data = Str2BytesH(obj.data);
                     var v = "";
@@ -260,9 +262,16 @@
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(o.l_comaddr, 0x04, 0xAA, num, 0, 380, vv);
                 dealsend2("AA", data, 380, "readlampCB", comaddr, 0, 0, 0);
+                 $('#panemask').showLoading({
+                    'afterShow': function () {
+                        setTimeout("$('#panemask').hideLoading()", 10000);
+                    }
+                }
+                );
             }
 
             function deploylampCB(obj) {
+                $('#panemask').hideLoading();
                 if (obj.status == "success") {
                     var data = Str2BytesH(obj.data);
                     var v = "";
@@ -353,6 +362,12 @@
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(o.l_comaddr, 0x04, 0xA4, num, 0, 102, vv);
                 dealsend2("A4", data, 102, "deploylampCB", comaddr, 1, param, 1);
+                 $('#panemask').showLoading({
+                    'afterShow': function () {
+                        setTimeout("$('#panemask').hideLoading()", 10000);
+                    }
+                }
+                );
             }
             function removelamp() {
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
@@ -403,52 +418,15 @@
                 var data = buicode(o.l_comaddr, 0x04, 0xA4, num, 0, 102, vv);
                 var num = randnum(0, 9) + 0x70; //随机帧序列号
                 dealsend2("A4", data, 102, "deploylampCB", comaddr, 0, param, 0);
+                 $('#panemask').showLoading({
+                    'afterShow': function () {
+                        setTimeout("$('#panemask').hideLoading()", 10000);
+                    }
+                }
+                );
             }
             //  var websocket = null;
             $(function () {
-
-//                $.ajax({async: false, url: "lamp.lampform.getAllLamp.action", type: "get", datatype: "JSON", data: {l_deplayment: 1, pid: "${param.pid}"},
-//                    success: function (data) {
-//                        var list = data.rs;
-//                        var vv = {};
-//                        for (var i = 0; i < list.length; i++) {
-//                            var comaddr = list[i].l_comaddr;
-//                            var l_code = list[i].l_code;
-//                            if (typeof vv[comaddr] == "undefined") {
-//                                vv[comaddr] = [];
-//
-//                            }
-//                            vv[comaddr].push(l_code);
-//                        }
-//
-//                        for (var ele in vv) {
-//                            var l_codeArr = vv[ele];
-//                            var vv = [];
-//                            for (var j = 0; j < l_codeArr.length; j++) {
-//                                var v1 = j % 50;
-//                                var setcode = l_codeArr[j];
-//                                var l_code = parseInt(setcode);
-//                                var a = l_code >> 8 & 0x00FF;
-//                                var b = l_code & 0x00ff;
-//                                vv.push(b);//装置序号  2字节
-//                                vv.push(a);//装置序号  2字节
-//                                if (v1 == 0) {
-//                                    //console.log(l_codeArr[j]);
-//
-//                                }
-//                            }
-//
-//                        }
-//
-//                        console.log(vv);
-//                    },
-//                    error: function () {
-//                        alert("提交失败！");
-//                    }
-//                });
-
-
-
                 var aaa = $("span[name=xxx]");
                 for (var i = 0; i < aaa.length; i++) {
                     var d = aaa[i];
@@ -599,7 +577,7 @@
             })
         </script>
     </head>
-    <body>
+    <body id="panemask">
 
         <form id="form1">
             <div class="row">

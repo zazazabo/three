@@ -40,6 +40,7 @@
                 }
             }
             function resetWowktypeCB(obj) {
+                $('#panemask').hideLoading();
                 if (obj.status == "success") {
                     var o = {};
                     o.l_comaddr = obj.comaddr;
@@ -78,8 +79,15 @@
                 var data = buicode(comaddr, 0x04, 0xA4, num, 0, 120, vv); //01 03 F24    
 
                 dealsend2("A4", data, 120, "resetWowktypeCB", comaddr, o.type, oldlgroupe, o.l_worktype);
+                  $('#panemask').showLoading({
+                    'afterShow': function () {
+                        setTimeout("$('#panemask').hideLoading()", 10000);
+                    }
+                }
+                );
             }
             function resetGroupeCB(obj) {
+                $('#panemask').hideLoading();
                 var o = {};
                 o.l_comaddr = obj.comaddr;
                 o.l_groupe = obj.val;
@@ -120,11 +128,17 @@
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA4, num, 0, 110, vv); //01 03 F24    
                 dealsend2("A4", data, 110, "resetGroupeCB", comaddr, o.type, o.l_groupe, o.l_groupe1);
+                  $('#panemask').showLoading({
+                    'afterShow': function () {
+                        setTimeout("$('#panemask').hideLoading()", 10000);
+                    }
+                }
+                );
             }
 
 
             function setLampPlanCB(obj) {
-
+$('#panemask').hideLoading();
                 if (obj.status == "success") {
                     if (obj.fn == 140) { //时间
                         var oo = {p_code: obj.param, p_name: obj.type};
@@ -226,6 +240,7 @@
             }
 
             function readLampPlanCB(obj) {
+                $('#panemask').hideLoading();
                 console.log(obj);
                 var data = Str2BytesH(obj.data);
                 var v = "";
@@ -278,6 +293,12 @@
                     var num = randnum(0, 9) + 0x70;
                     var data = buicode(comaddr, 0x04, 0xAA, num, 0, 401, vv); //01 03 F24    
                     dealsend2("AA", data, 401, "readLampPlanCB", comaddr, 0, obj.p_type, 0, 0);
+                      $('#panemask').showLoading({
+                    'afterShow': function () {
+                        setTimeout("$('#panemask').hideLoading()", 10000);
+                    }
+                }
+                );
                 }
 
                 if (v == "1") {
@@ -331,6 +352,12 @@
                     var num = randnum(0, 9) + 0x70;
                     var data = buicode(comaddr, 0x04, 0xA4, num, 0, 140, vv); //01 03 F24    
                     dealsend2("A4", data, 140, "setLampPlanCB", comaddr, obj.p_name, obj.p_code, obj.l_groupe);
+                      $('#panemask').showLoading({
+                    'afterShow': function () {
+                        setTimeout("$('#panemask').hideLoading()", 10000);
+                    }
+                }
+                );
                 }
 
                 if (v == "1") {
@@ -363,7 +390,7 @@
             }
 
             function setlampAllPlanCB(obj) {
-
+$('#panemask').hideLoading();
 
             }
 
@@ -388,6 +415,12 @@
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA4, num, 0, 501, vv); //01 03 F24    
                 dealsend2("A4", data, 501, "setlampAllPlanCB", comaddr, 0, obj.p_code, 0);
+                  $('#panemask').showLoading({
+                    'afterShow': function () {
+                        setTimeout("$('#panemask').hideLoading()", 10000);
+                    }
+                }
+                );
             }
             $(function () {
                 var aaa = $("span[name=xxx]");
@@ -535,7 +568,7 @@
 
     </head>
 
-    <body>
+    <body id="panemask">
 
         <form id="form1">
             <input name="p_type" type="hidden" id="p_type" />

@@ -19,7 +19,7 @@
                 'indicatorZIndex': 5001,
                 'overlayZIndex': 5000,
                 'parent': '',
-                'marginTop': 0,
+                'marginTop': 200,
                 'marginLeft': 0,
                 'overlayWidth': null,
                 'overlayHeight': null
@@ -27,7 +27,7 @@
 
             $.extend(settings, options);
 
-            var loadingDiv = $('<div></div>');
+            var loadingDiv = $('<div>ESC键取消</div>');
             var overlayDiv = $('<div></div>');
 
             //

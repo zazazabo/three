@@ -318,7 +318,7 @@
                         $('#intime').timespinner('setValue', intime1);
                         $('#outtime').timespinner('setValue', outtime1);
                     }
-
+                    layerAler("读取成功");
                 }
             }
             function readLoopPlan() {
@@ -578,7 +578,6 @@
     </head>
     <body id="panemask">
         <form id="form1">
-
             <div class="row">
                 <div class="col-xs-12 " align="left"  >
 
