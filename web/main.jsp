@@ -160,7 +160,7 @@
             var o = {};
             var lang = getCookie("lang");
             var websocket = null;
-            var conectstr = "ws://103.46.128.47:18414/";
+            var conectstr = "ws://127.0.0.1:4040/";
             var timestamp = 0;
             function sendData(obj) {
 

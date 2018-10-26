@@ -1018,9 +1018,9 @@
                                     </button>&nbsp;
                                 </td>
 
-                                <td>
-                                    <button style="margin-left:10px;"  type="button" onclick="tourlamp()" class="btn btn-success btn-xm"><span name="xxxx" id="403">巡测灯具状态</span></button>
-                                </td>
+                                <!--                                <td>
+                                                                    <button style="margin-left:10px;"  type="button" onclick="tourlamp()" class="btn btn-success btn-xm"><span name="xxxx" id="403">巡测灯具状态</span></button>
+                                                                </td>-->
 
                             </tr>
 
@@ -1049,14 +1049,15 @@
                                     <!--恢复自动运行-->
                                     <span id="41" name="xxx">恢复自动运行</span>
                                 </button>
+
                             </td>
                         </tr>
                     </table>
                 </div>
-                <div class="col-xs-6" id="light0">
-                    <table  style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; width: 350px;margin-left: 20px;">
+                <div class="col-xs-4"  id="light0">
+                    <table   style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; width: 350px;margin-left: 20px;">
                         <tr>
-                            <td>
+                            <td >
                                 <span style="margin-left:10px;">
                                     <!--调光值-->
                                     <span id="42" name="xxx">调光值</span>
@@ -1086,7 +1087,7 @@
                 </div>
 
 
-                <div class="col-xs-6"  id="light1" style="display: none;">
+                <div class="col-xs-4"  id="light1" style="display: none;">
                     <table   style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; width: 350px; margin-left: 20px;">
                         <tbody>
                             <tr>
@@ -1124,6 +1125,19 @@
                                 </td>
 
                             </tr>
+
+                        </tbody>
+                    </table> 
+                </div>
+                <div class="col-xs-2"  >
+                    <table   style="border-collapse:separate; border-spacing:0px 10px;border: 0px solid #16645629;">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <button   type="button" onclick="tourlamp()" class="btn btn-success btn-xm"><span name="xxxx" id="403">巡测灯具状态</span></button>
+                                </td>
+                            </tr>
+
 
                         </tbody>
                     </table> 
