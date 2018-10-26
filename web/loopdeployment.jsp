@@ -70,6 +70,7 @@
             var o_pid = parent.parent.getpojectId();
 
             function deployloopCB(obj) {
+                $('#panemask').hideLoading();
                 if (obj.status == "success") {
                     var data = Str2BytesH(obj.data);
                     var v = "";
@@ -156,6 +157,12 @@
                 var num = randnum(0, 9) + 0x70; //随机帧序列号
                 var data = buicode(comaddr, 0x04, 0xA4, num, 0, 320, vv); //0320    
                 dealsend2("A4", data, 320, "deployloopCB", comaddr, 1, param, 1);
+                $('#panemask').showLoading({
+                    'afterShow': function () {
+                        setTimeout("$('#panemask').hideLoading()", 10000);
+                    }
+                }
+                );
             }
 
             function removeloop() {
@@ -197,9 +204,16 @@
                 var num = randnum(0, 9) + 0x70; //随机帧序列号
                 var data = buicode(comaddr, 0x04, 0xA4, num, 0, 320, vv); //0320    
                 dealsend2("A4", data, 320, "deployloopCB", comaddr, 0, param, 0);
+                $('#panemask').showLoading({
+                    'afterShow': function () {
+                        setTimeout("$('#panemask').hideLoading()", 10000);
+                    }
+                }
+                );
             }
 
             function setLoopPlanCB(obj) {
+                $('#panemask').hideLoading();
                 var param = obj.param;
                 console.log(param);
                 if (obj.status == "success") {
@@ -274,9 +288,16 @@
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA4, num, 0, 401, vv); //01 03 F24    
                 dealsend2("A4", data, 401, "setLoopPlanCB", comaddr, obj.p_type, param, 0);
+                $('#panemask').showLoading({
+                    'afterShow': function () {
+                        setTimeout("$('#panemask').hideLoading()", 10000);
+                    }
+                }
+                );
             }
 
             function readLoopPlanCB(obj) {
+                $('#panemask').hideLoading();
                 console.log(obj);
                 if (obj.status == "success") {
                     var data = Str2BytesH(obj.data);
@@ -337,6 +358,12 @@
                 var data = buicode(comaddr, 0x04, 0xAA, num, 0, 320, vv); //01 03 F24    
                 console.log(data);
                 dealsend2("AA", data, 320, "readLoopPlanCB", comaddr, s.index, obj.p_type, 0, s.id);
+                $('#panemask').showLoading({
+                    'afterShow': function () {
+                        setTimeout("$('#panemask').hideLoading()", 10000);
+                    }
+                }
+                );
             }
 
             function layerAler(str) {
@@ -549,7 +576,7 @@
 
         </script>
     </head>
-    <body>
+    <body id="panemask">
         <form id="form1">
 
             <div class="row">
@@ -610,7 +637,7 @@
                 </table>
             </div>
         </div>
-       
+
 
 
         <input type="hidden" id="p_type" name="p_type" /> 

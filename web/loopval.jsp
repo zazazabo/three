@@ -22,6 +22,7 @@
             var lang = '${param.lang}';//'zh_CN';
             var langs1 = parent.parent.getLnas();
             function tourloopCB(obj) {
+                $('#panemask').hideLoading();
                 var v = Str2BytesH(obj.data);
                 var s = "";
                 for (var i = 0; i < v.length; i++) {
@@ -56,8 +57,15 @@
                 var comaddr = ele.l_comaddr;
                 var data = buicode(comaddr, 0x04, 0xAC, num, 0, 608, vv); //0320    
                 dealsend2("AC", data, 608, "tourloopCB", comaddr, 0, 0, 0);
+                $('#panemask').showLoading({
+                    'afterShow': function () {
+                        setTimeout("$('#panemask').hideLoading()", 10000);
+                    }
+                }
+                );
             }
             function switchloopCB(obj) {
+                 $('#panemask').hideLoading();
                 console.log(obj);
                 if (obj.status == "success") {
                     var param = obj.param;
@@ -114,9 +122,15 @@
 
                 var data = buicode(comaddr, 0x04, 0xA5, num, 0, 208, vv); //01 03 F24     
                 dealsend2("A5", data, 208, "switchloopCB", comaddr, o1.type, param, switchval);
-
+                $('#panemask').showLoading({
+                    'afterShow': function () {
+                        setTimeout("$('#panemask').hideLoading()", 10000);
+                    }
+                }
+                );
             }
             function restoreloopCB(obj) {
+                $('#panemask').hideLoading();
                 console.log(obj);
                 if (obj.status == "success") {
                     layerAler(langs1[308][lang]); //恢复成功
@@ -147,6 +161,12 @@
                     var num = randnum(0, 9) + 0x70;
                     var data = buicode(comaddr, 0x04, 0xA5, num, 0, 280, vv); //01 03 F24     
                     dealsend2("A5", data, 280, "restoreloopCB", comaddr, o1.type, 0, 0);
+                    $('#panemask').showLoading({
+                        'afterShow': function () {
+                            setTimeout("$('#panemask').hideLoading()", 10000);
+                        }
+                    }
+                    );
                 } else if (o1.type == "1") {
                     var comaddr = o1.l_comaddr;
                     var vv = new Array();
@@ -155,6 +175,12 @@
                     var num = randnum(0, 9) + 0x70;
                     var data = buicode(comaddr, 0x04, 0xA5, num, 0, 240, vv); //01 03 F24     
                     dealsend2("A5", data, 240, "restoreloopCB", comaddr, o1.type, 0, 0);
+                    $('#panemask').showLoading({
+                        'afterShow': function () {
+                            setTimeout("$('#panemask').hideLoading()", 10000);
+                        }
+                    }
+                    );
                 }
             }
             function layerAler(str) {
@@ -320,7 +346,7 @@
 
         </script>
     </head>
-    <body>
+    <body id="panemask">
 
         <form id="form1">
             <table>
