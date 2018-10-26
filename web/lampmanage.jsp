@@ -117,8 +117,8 @@
                     return;
                 }
                 var select = selects[0];
-                if (select.l_deplayment == "1") {
-                    layerAler(langs1[368][lang]);  //已部署的不能删除
+                if (select.l_eplayment == "1") {
+                    layerAler(ladngs1[368][lang]);  //已部署的不能删除
                     return;
                 }
                 layer.confirm(langs1[145][lang], {//确认要删除吗？
@@ -129,7 +129,8 @@
                         success: function (data) {
                             var arrlist = data.rs;
                             if (arrlist.length == 1) {
-                                $("#gravidaTable").bootstrapTable('refresh');
+                                search();
+                               // $("#gravidaTable").bootstrapTable('refresh');
                                 layerAler(langs1[342][lang]);   //删除成功
                                 layer.close(index);
                             }
@@ -150,7 +151,8 @@
                     success: function (data) {
                         var a = data.rs;
                         if (a.length == 1) {
-                            $("#gravidaTable").bootstrapTable('refresh');
+                            search();
+                           // $("#gravidaTable").bootstrapTable('refresh');
                         }
                     },
                     error: function () {
@@ -358,19 +360,21 @@
 
             //搜索
             function  search() {
-                var l_comaddr = $("#l_comaddr2").val();  //网关地址
-                var l_deplayment = $("#busu").val();  //部署情况
-                var obj = {};
-                obj.type = "ALL";
-                if (l_comaddr != "") {
-                    //obj.l_name = encodeURI(lampname);
-                    obj.l_comaddr = l_comaddr;
-                }
-                obj.l_deplayment = l_deplayment;
-                obj.pid = o_pid;
+//                var l_comaddr = $("#l_comaddr2").val();  //网关地址
+//                var l_deplayment = $("#busu").val();  //部署情况
+//                var obj = {};
+//                obj.type = "ALL";
+//                if (l_comaddr != "") {
+//                    //obj.l_name = encodeURI(lampname);
+//                    obj.l_comaddr = l_comaddr;
+//                }
+//                obj.l_deplayment = l_deplayment;
+//                obj.pid = o_pid;
+                var obj = $("#formsearch").serializeObject();
+                console.log(obj);
                 var opt = {
                     url: "lamp.lampform.getlampList.action",
-                    silent: true,
+                    silent: false,
                     query: obj
                 };
                 $("#gravidaTable").bootstrapTable('refresh', opt);
@@ -378,6 +382,170 @@
 
 
             $(function () {
+
+
+                $('#gravidaTable').bootstrapTable({
+                    // url: 'lamp.lampform.getlampList.action',
+                    showExport: true, //是否显示导出
+                    exportDataType: "basic", //basic', 'a
+                    columns: [
+                        {
+                            title: '单选',
+                            field: 'select',
+                            //复选框
+                            checkbox: true,
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: 'name',
+                            title: langs1[314][lang], //网关名称
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: 'l_comaddr',
+                            title: langs1[25][lang], //网关地址
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: 'l_name',
+                            title: langs1[54][lang], //灯具名称
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: 'l_factorycode',
+                            title: langs1[292][lang], //灯具编号
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle',
+                            formatter: function (value, row, index, field) {
+                                if (value != null) {
+                                    value = value.replace(/\b(0+)/gi, "");
+                                    return value.toString();
+                                }
+
+                            }
+                        }, {
+                            field: 'l_groupe',
+                            title: langs1[332][lang], //组号
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle',
+                            formatter: function (value, row, index, field) {
+                                if (value != null) {
+                                    return value.toString();
+                                }
+
+                            }
+                        }, {
+                            field: 'l_code',
+                            title: langs1[315][lang], //装置序号
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: 'l_worktype',
+                            title: langs1[316][lang], //控制方式
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle',
+                            formatter: function (value, row, index, field) {
+                                if (value != null) {
+                                    if (value == 0) {
+                                        value = "时间表";
+                                        return value;
+                                    } else if (value == 1) {
+                                        value = "经纬度";
+                                        return value;
+                                    } else if (value == 2) {
+                                        value = "场景";
+                                        return value;
+                                    }
+
+                                }
+                            }
+                        }, {
+                            field: 'l_plan',
+                            title: langs1[373][lang], //控制方案
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle',
+                            formatter: function (value, row, index, field) {
+                                if (row.l_deplayment == 1) {
+
+                                    if (row.l_worktype == "0") {
+                                        if (isJSON(row.l_plantime)) {
+                                            var obj = eval('(' + row.l_plantime + ')');
+                                            return obj.p_name;
+                                        } else {
+                                            return  row.l_plantime;
+                                        }
+
+
+                                    } else if (row.l_worktype == "2") {
+                                        if (isJSON(row.l_planscene)) {
+                                            var obj = eval('(' + row.l_plantime + ')');
+                                            return obj.p_name;
+                                        } else {
+                                            return  row.l_planscene;
+                                        }
+
+                                    }
+                                }
+                            }
+                        }, {
+                            field: 'l_deployment',
+                            title: langs1[317][lang], //部署情况
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle',
+                            formatter: function (value, row, index, field) {
+                                if (row.l_deplayment == "0") {
+                                    var str = "<span class='label label-warning'>" + langs1[318][lang] + "</span>";  //未部署
+                                    return  str;
+                                } else if (row.l_deplayment == "1") {
+                                    var str = "<span class='label label-success'>" + langs1[319][lang] + "</span>";  //已部署
+                                    return  str;
+                                }
+                            }
+                        }],
+                    clickToSelect: true,
+                    singleSelect: true,
+                    sortName: 'id',
+                    locale: 'zh-CN', //中文支持,
+                    showColumns: true,
+                    sortOrder: 'desc',
+                    pagination: true,
+                    sidePagination: 'server',
+                    pageNumber: 1,
+                    pageSize: 50,
+                    showRefresh: true,
+                    showToggle: true,
+                    // 设置默认分页为 50
+                    pageList: [50, 100, 200, 300, 400],
+                    onLoadSuccess: function () {  //加载成功时执行  表格加载完成时 获取集中器在线状态
+//                        console.info("加载成功");
+                    },
+
+                    //服务器url
+                    queryParams: function (params)  {   //配置参数     
+                        var temp  =   {    //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的 
+                            search: params.search,
+                            skip: params.offset,
+                            limit: params.limit,
+                            type_id: "1",
+                            pid: "${param.pid}",
+                        };
+                         l_comaddr:'';    
+                        return temp;  
+                    },
+                });
+
+
+
                 var aaa = $("span[name=xxx]");
                 for (var i = 0; i < aaa.length; i++) {
                     var d = aaa[i];
@@ -385,11 +553,44 @@
                     $(d).html(langs1[e][lang]);
                 }
                 $("#l_comaddr2").combobox({
-                    url: "login.map.getallcomaddr.action?pid=" + o_pid,
+                    url: "gayway.GaywayForm.getComaddr.action?pid=${param.pid}",
+                    formatter: function (row) {
+                        var v1 = row.online == 1 ? "&nbsp;<img src='img/online1.png'>" : "&nbsp;<img src='img/off.png'>";
+                        var v = row.text + v1;
+                        row.id = row.id;
+                        row.text = v;
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
+                    },
                     onLoadSuccess: function (data) {
-//                        $(this).combobox("select", data[0].id);
-//                        $(this).val(data[0].text);
+                        if (Array.isArray(data) && data.length > 0) {
+                            for (var i = 0; i < data.length; i++) {
+                                data[i].text = data[i].id;
+                            }
+                            $(this).combobox('select', data[0].id);
+                        }
+
+                    },
+                    onSelect: function (record) {
+                        var obj = {};
+                        obj.l_comaddr = record.id;
+                        obj.pid = "${param.pid}";
+                        var opt = {
+                            url: "lamp.lampform.getlampList.action",
+                            query: obj,
+                            silent: false
+                        };
+                        $("#gravidaTable").bootstrapTable('refresh', opt);
                     }
+
+
+
+
+//                    url: "login.map.getallcomaddr.action?pid=" + o_pid,
+//                    onLoadSuccess: function (data) {
+////                        $(this).combobox("select", data[0].id);
+////                        $(this).val(data[0].text);
+//                    }
                 });
                 $('#warningtable').bootstrapTable({
                     columns: [
@@ -716,165 +917,6 @@
 
 
 
-                $('#gravidaTable').bootstrapTable({
-                    url: 'lamp.lampform.getlampList.action',
-                    showExport: true, //是否显示导出
-                    exportDataType: "basic", //basic', 'a
-                    columns: [
-                        {
-                            title: '单选',
-                            field: 'select',
-                            //复选框
-                            checkbox: true,
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
-                            field: 'name',
-                            title: langs1[314][lang], //网关名称
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
-                            field: 'l_comaddr',
-                            title: langs1[25][lang], //网关地址
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
-                            field: 'l_name',
-                            title: langs1[54][lang], //灯具名称
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
-                            field: 'l_factorycode',
-                            title: langs1[292][lang], //灯具编号
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle',
-                            formatter: function (value, row, index, field) {
-                                if (value != null) {
-                                    value = value.replace(/\b(0+)/gi, "");
-                                    return value.toString();
-                                }
-
-                            }
-                        }, {
-                            field: 'l_groupe',
-                            title: langs1[332][lang], //组号
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle',
-                            formatter: function (value, row, index, field) {
-                                if (value != null) {
-                                    return value.toString();
-                                }
-
-                            }
-                        }, {
-                            field: 'l_code',
-                            title: langs1[315][lang], //装置序号
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
-                            field: 'l_worktype',
-                            title: langs1[316][lang], //控制方式
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle',
-                            formatter: function (value, row, index, field) {
-                                if (value != null) {
-                                    if (value == 0) {
-                                        value = "时间表";
-                                        return value;
-                                    } else if (value == 1) {
-                                        value = "经纬度";
-                                        return value;
-                                    } else if (value == 2) {
-                                        value = "场景";
-                                        return value;
-                                    }
-
-                                }
-                            }
-                        }, {
-                            field: 'l_plan',
-                            title: langs1[373][lang], //控制方案
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle',
-                            formatter: function (value, row, index, field) {
-                                if (row.l_deplayment == 1) {
-
-                                    if (row.l_worktype == "0") {
-                                        if (isJSON(row.l_plantime)) {
-                                            var obj = eval('(' + row.l_plantime + ')');
-                                            return obj.p_name;
-                                        } else {
-                                            return  row.l_plantime;
-                                        }
-
-
-                                    } else if (row.l_worktype == "2") {
-                                        if (isJSON(row.l_planscene)) {
-                                            var obj = eval('(' + row.l_plantime + ')');
-                                            return obj.p_name;
-                                        } else {
-                                            return  row.l_planscene;
-                                        }
-
-                                    }
-                                }
-                            }
-                        }, {
-                            field: 'l_deployment',
-                            title: langs1[317][lang], //部署情况
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle',
-                            formatter: function (value, row, index, field) {
-                                if (row.l_deplayment == "0") {
-                                    var str = "<span class='label label-warning'>" + langs1[318][lang] + "</span>";  //未部署
-                                    return  str;
-                                } else if (row.l_deplayment == "1") {
-                                    var str = "<span class='label label-success'>" + langs1[319][lang] + "</span>";  //已部署
-                                    return  str;
-                                }
-                            }
-                        }],
-                    clickToSelect: true,
-                    singleSelect: true,
-                    sortName: 'id',
-                    locale: 'zh-CN', //中文支持,
-                    showColumns: true,
-                    sortOrder: 'desc',
-                    pagination: true,
-                    sidePagination: 'server',
-                    pageNumber: 1,
-                    pageSize: 50,
-                    showRefresh: true,
-                    showToggle: true,
-                    // 设置默认分页为 50
-                    pageList: [50, 100, 200, 300, 400],
-                    onLoadSuccess: function () {  //加载成功时执行  表格加载完成时 获取集中器在线状态
-//                        console.info("加载成功");
-                    },
-
-                    //服务器url
-                    queryParams: function (params)  {   //配置参数     
-                        var temp  =   {    //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的 
-                            search: params.search,
-                            skip: params.offset,
-                            limit: params.limit,
-                            type_id: "1",
-                            pid: "${param.pid}"    
-                        };      
-                        return temp;  
-                    },
-                });
-
             });
         </script>
 
@@ -895,43 +937,46 @@
 
     <body>
         <div class="row" >
-            <div class="col-xs-12">
-                <table style="border-collapse:separate;  border-spacing:0px 10px;border: 1px solid #16645629; margin-left: 10px; margin-top: 10px; align-content:  center">
-                    <tbody>
-                        <tr>
-                            <td>
-                                <span style="margin-left:10px;">
-                                    <span id="25" name="xxx">网关地址</span>
-                                    &nbsp;</span>
-                            </td>
-                            <td>
+            <form id="formsearch">
+                <div class="col-xs-12">
+                    <table style="border-collapse:separate;  border-spacing:0px 10px;border: 1px solid #16645629; margin-left: 10px; margin-top: 10px; align-content:  center">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span style="margin-left:10px;">
+                                        <span id="25" name="xxx">网关地址</span>
+                                        &nbsp;</span>
+                                </td>
+                                <td>
 
-                                <span class="menuBox">
-                                    <input id="l_comaddr2" class="easyui-combobox"  style="width:150px; height: 30px" 
-                                           data-options="editable:true,valueField:'id', textField:'text' " />
-                                </span>  
-                            </td>
-                            <td>
-                                <span style="margin-left:10px;">
-                                    <span id="317" name="xxx">部署情况</span>
-                                    &nbsp;</span>
-                            </td>
-                            <td>
-                                <select class="easyui-combobox" id="busu" style="width:150px; height: 30px">
-                                    <option value="0">未部署</option>
-                                    <option value="1">已部署</option>           
-                                </select>
-                            </td>
-                            <td>
-                                <button  type="button" style="margin-left:20px;" onclick="search()" class="btn btn-success btn-xm">
-                                    <!-- 搜索-->
-                                    <span id="34" name="xxx">搜索</span>
-                                </button>&nbsp;
-                            </td>
-                        </tr>
-                    </tbody>
-                </table> 
-            </div>
+                                    <span class="menuBox">
+                                        <input id="l_comaddr2" name="l_comaddr" class="easyui-combobox"  style="width:150px; height: 30px" 
+                                               data-options="editable:true,valueField:'id', textField:'text' " />
+                                    </span>  
+                                </td>
+                                <td>
+                                    <span style="margin-left:10px;">
+                                        <span id="317" name="xxx">部署情况</span>
+                                        &nbsp;</span>
+                                </td>
+                                <td>
+                                    <select class="easyui-combobox" name="l_deplayment"  id="busu" style="width:150px; height: 30px">
+                                        <option value="0">未部署</option>
+                                        <option value="1">已部署</option>           
+
+                                    </select>
+                                </td>
+                                <td>
+                                    <button  type="button" style="margin-left:20px;" onclick="search()" class="btn btn-success btn-xm">
+                                        <!-- 搜索-->
+                                        <span id="34" name="xxx">搜索</span>
+                                    </button>&nbsp;
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table> 
+                </div>
+            </form>
         </div>
 
         <div class="btn-group zuheanniu" id="zuheanniu" style="float:left;position:relative;z-index:100;margin:12px 0 0 10px;">

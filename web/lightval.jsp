@@ -68,7 +68,7 @@
                     layerAler(langs1[172][lang]);  //网关不能空
                     return;
                 }
-                addlogon(u_name, "灯具调光", o_pid, "灯具调光", "开灯");
+
                 var vv = new Array();
                 vv.push(groupearr.length);
                 var comaddr = o.l_comaddr;
@@ -80,6 +80,7 @@
                 }
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA5, num, 0, 302, vv); //01 03 F24     
+                addlogon(u_name, "灯具调光", o_pid, "灯具调光", "开灯", comaddr);
                 dealsend2("A5", data, 302, "lightCB", comaddr, 3, param, val);
 
                 $('#panemask').showLoading({
@@ -106,7 +107,7 @@
                     layerAler(langs1[172][lang]);  //网关不能空
                     return;
                 }
-                addlogon(u_name, "灯具调光", o_pid, "灯具调光", "关灯");
+
                 var vv = new Array();
                 vv.push(groupearr.length);
                 var comaddr = o.l_comaddr;
@@ -119,6 +120,7 @@
 
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA5, num, 0, 302, vv); //01 03 F24     
+                addlogon(u_name, "灯具调光", o_pid, "灯具调光", "关灯", comaddr);
                 dealsend2("A5", data, 302, "lightCB", comaddr, 3, param, val);
                 $('#panemask').showLoading({
                     'afterShow': function () {
@@ -160,7 +162,14 @@
                     var num = randnum(0, 9) + 0x70;
                     var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 180, vv); //01 03
                     //dealsend(sss, o1);
+                    addlogon(u_name, "灯具调光", o_pid, "灯具调光", "全网恢复自动运行", l_comaddr);
                     dealsend2("A4", data, 180, "restoreCB", l_comaddr, 0, 0, 0);
+                    $('#panemask').showLoading({
+                        'afterShow': function () {
+                            setTimeout("$('#panemask').hideLoading()", 30000);
+                        }
+                    }
+                    );
                 } else if (o.type == 2) {
 
                     if (o.l_comaddr == "" || o.l_groupe == "") {
@@ -175,7 +184,14 @@
                     vv.push(l_groupe); //组号
                     var num = randnum(0, 9) + 0x70;
                     var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 140, vv); //01 03
+                    addlogon(u_name, "灯具调光", o_pid, "灯具调光", "按组恢复自动运行", l_comaddr);
                     dealsend2("A4", data, 180, "restoreCB", l_comaddr, o.type, 0, groupe);
+                    $('#panemask').showLoading({
+                        'afterShow': function () {
+                            setTimeout("$('#panemask').hideLoading()", 30000);
+                        }
+                    }
+                    );
                 } else if (o.type == 1) {
                     var selects = $('#gravidaTable').bootstrapTable('getSelections');
 
@@ -183,7 +199,7 @@
                         layerAler(langs1[310][lang]);  //请勾选灯具数据
                         return;
                     }
-                    addlogon(u_name, "灯具调光", o_pid, "灯具调光", "恢复自动运行");
+
                     var select = selects[0];
 
                     var vv = new Array();
@@ -195,6 +211,7 @@
                     vv.push(h); //装置序号  2字节
                     var num = randnum(0, 9) + 0x70;
                     var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 140, vv); //01 03
+                    addlogon(u_name, "灯具调光", o_pid, "灯具调光", "单灯恢复自动运行", l_comaddr);
                     dealsend2("A5", data, 180, "restoreCB", l_comaddr, o.type, 0, select.l_code);
                 }
                 $('#panemask').showLoading({
@@ -237,6 +254,8 @@
                 }
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA5, num, 0, 308, vv); //01 03
+
+                addlogon(u_name, "灯具调光", o_pid, "灯具调光", "全网场景调光", comaddr);
                 dealsend2("A5", data, 308, "sceneAllCB", comaddr, 0, 0, 0);
                 $('#panemask').showLoading({
                     'afterShow': function () {
@@ -257,7 +276,7 @@
                     return
                 }
                 console.log(obj);
-                addlogon(u_name, "灯具调光", o_pid, "灯具调光", "按组场景调光");
+
                 var vv = new Array();
                 var l_comaddr = obj.l_comaddr;
                 vv.push(1);
@@ -270,6 +289,7 @@
                 vv.push(parseInt(obj.scennum));
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 308, vv); //01 03
+                addlogon(u_name, "灯具调光", o_pid, "灯具调光", "按组场景调光", l_comaddr);
                 dealsend2("A5", data, 308, "sceneCB", l_comaddr, obj.lighttype, groupe, scenenum);
                 $('#panemask').showLoading({
                     'afterShow': function () {
@@ -291,7 +311,7 @@
                     layerAler(langs1[310][lang]);  //请勾选灯具数据
                     return;
                 }
-                addlogon(u_name, "灯具调光", o_pid, "灯具调光", "按组立即调光");
+
                 var vv = new Array();
                 var l_comaddr = select.l_comaddr;
                 var c = parseInt(select.l_code);
@@ -307,6 +327,7 @@
                 param.row = select.index;
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 304, vv); //01 03
+                addlogon(u_name, "灯具调光", o_pid, "灯具调光", "单灯场景立即调光", l_comaddr);
                 dealsend2("A5", data, 304, "sceneCB", l_comaddr, obj.lighttype, param, scenenum);
                 $('#panemask').showLoading({
                     'afterShow': function () {
@@ -379,7 +400,7 @@
                     layerAler(langs1[310][lang]);  //请勾选灯具数据
                     return;
                 }
-                addlogon(u_name, "灯具调光", o_pid, "灯具调光", "单灯立即调光");
+
 
                 var l_comaddr = $("#l_comaddr").combobox('getValue');
                 var select = selects[0];
@@ -393,18 +414,13 @@
                 var l = c & 0x00ff;
                 vv.push(l);
                 vv.push(h); //装置序号  2字节
-
-
-
-
-
                 vv.push(parseInt(lampval));
                 var num = randnum(0, 9) + 0x70;
                 var param = {};
                 param.id = select.id;
                 param.row = select.index;
                 var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 301, vv); //01 03
-                //dealsend(sss, o1);
+                addlogon(u_name, "灯具调光", o_pid, "灯具调光", "单灯立即调光", l_comaddr);
                 dealsend2("A5", data, 301, "lightCB", l_comaddr, o.groupetype, param, lampval);
                 $('#panemask').showLoading({
                     'afterShow': function () {
@@ -420,7 +436,7 @@
                     layerAler(langs1[312][lang]);  //网关或组号不是数字
                     return
                 }
-                addlogon(u_name, "灯具调光", o_pid, "灯具调光", "按组立即调光");
+
                 var vv = new Array();
                 vv.push(1);
                 var comaddr = obj.l_comaddr;
@@ -433,7 +449,8 @@
 
                 var param = [];
                 param.push(l_groupe);
-                var data = buicode(comaddr, 0x04, 0xA5, num, 0, 302, vv); //01 03 F24     
+                var data = buicode(comaddr, 0x04, 0xA5, num, 0, 302, vv); //01 03 F24    
+                addlogon(u_name, "灯具调光", o_pid, "灯具调光", "按组立即调光", comaddr);
                 dealsend2("A5", data, 302, "lightCB", comaddr, obj.groupetype, param, groupeval);
                 $('#panemask').showLoading({
                     'afterShow': function () {
@@ -495,8 +512,6 @@
                     var len = v[18];
                     console.log(len);
                     for (i = 0; i < len; i++) {
-
-
                         var l_code = v[z + 1] * 256 + v[z];
                         //电压
                         console.log(l_code);
@@ -541,6 +556,9 @@
                         //温度
                         z = z + 2;
                         var temperature = v[z + 1] == 1 ? -v[z] : v[z];
+
+
+
                         layerAler("装置号:" + l_code.toString() + "<br>" + "电压：" + voltage + "<br>电流：" + electric + "<br>有功功率：" + activepower + "<br>调光值：" + l_value + "<br>温度：" + temperature);
 
                     }
@@ -550,21 +568,12 @@
 
 
             $(function () {
-
                 var aaa = $("span[name=xxx]");
                 for (var i = 0; i < aaa.length; i++) {
                     var d = aaa[i];
                     var e = $(d).attr("id");
                     $(d).html(langs1[e][lang]);
                 }
-
-//                var option = $("option[name=xxx]");
-//                for (var i = 0; i < option.length; i++) {
-//                    var d = option[i];
-//                    var e = $(d).attr("id");
-//                    $(d).html(langs1[e][lang]);
-//                }
-
                 $('#gravidaTable').bootstrapTable({
                     showExport: true, //是否显示导出
                     exportDataType: "basic", //basic', 'a
@@ -642,10 +651,7 @@
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
-
-
                                 if (row.l_deplayment == 1) {
-
                                     if (row.l_worktype == "0") {
                                         if (isJSON(row.l_plantime)) {
                                             var obj = eval('(' + row.l_plantime + ')');
@@ -653,8 +659,6 @@
                                         } else {
                                             return  row.l_plantime;
                                         }
-
-
                                     } else if (row.l_worktype == "2") {
                                         if (isJSON(row.l_planscene)) {
                                             var obj = eval('(' + row.l_plantime + ')');
@@ -1136,6 +1140,7 @@
                                 <td>
                                     <button   type="button" onclick="tourlamp()" class="btn btn-success btn-xm"><span name="xxxx" id="403">巡测灯具状态</span></button>
                                 </td>
+
                             </tr>
 
 

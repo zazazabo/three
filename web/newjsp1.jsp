@@ -104,10 +104,10 @@
 
     </head>
     <body>
-<<<<<<< HEAD
         <h1>Hello World!</h1>
-<%int a=80; out.println(a);%>
-=======
+        <%int a = 80;
+    out.println(a);%>
+
         <h1>
 
         </h1>
@@ -119,11 +119,24 @@
             var a = 1;
             var b = "en_us";
             document.write(o[a][b]);
-            
+
         </script>
 
 
->>>>>>> 667e3cdfec7b76c1e2fc09d614334d67db0f70f8
+        //显示遮罩
+        $(".add_test_img").showLoading();  
+   
+
+
+
+
+
+
+
+
+
+
+
         <input type="button" value="hit" onclick="hit()"/>
         <div class="container">
             <input class="easyui-combobox" name="language[]" style="width:100%;" data-options="

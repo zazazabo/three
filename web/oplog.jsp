@@ -29,6 +29,7 @@
                 $('#oplogtabel').bootstrapTable({
                     url: 'login.oplog.oplogInfo.action?pid=' + pid,
                     columns: [
+                        
                         {
                             field: 'o_type',
                             title: langs1[130][lang], //操作类型
@@ -42,6 +43,12 @@
                             align: 'center',
                             valign: 'middle'
                         }, {
+                            field: 'o_comaddr',
+                            title: langs1[50][lang], //操作类型
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        },{
                             field: 'o_comment',
                             title: langs1[132][lang], //详细内容
                             width: 25,

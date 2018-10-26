@@ -475,7 +475,7 @@
             </xsql> 
         </xhandle>  
         <xhandle desc="添加操作日志" id="addoplog" rtn="rs" rtnype="JSON">
-            <xsql id="a1" para="name,time,comment,type,pid,page" tpe="DDL" tpl="insert into t_oplog(o_name,o_time,o_comment,o_type,o_pid,o_page) values(':name',':time',':comment',':type',':pid',':page') " var="rs">
+            <xsql id="a1" para="name,time,comment,type,pid,page,l_comaddr" tpe="DDL" tpl="insert into t_oplog(o_name,o_time,o_comment,o_type,o_pid,o_page,o_comaddr) values(':name',':time',':comment',':type',':pid',':page',':l_comaddr') " var="rs">
             </xsql>
         </xhandle>              
     </xform>

@@ -65,7 +65,7 @@
                 );
             }
             function switchloopCB(obj) {
-                 $('#panemask').hideLoading();
+                $('#panemask').hideLoading();
                 console.log(obj);
                 if (obj.status == "success") {
                     var param = obj.param;
@@ -102,7 +102,7 @@
                     layerAler(langs1[330][lang]); //请部署后再操作
                     return;
                 }
-                addlogon(u_name, "合闸开关", o_pid, "回路断合闸", "回路断合闸");
+
                 var comaddr = select.l_comaddr;
                 var switchval = o1.switch;
 
@@ -121,6 +121,7 @@
                 param.id = select.id;
 
                 var data = buicode(comaddr, 0x04, 0xA5, num, 0, 208, vv); //01 03 F24     
+                addlogon(u_name, "合闸开关", o_pid, "回路断合闸", "回路断合闸", comaddr);
                 dealsend2("A5", data, 208, "switchloopCB", comaddr, o1.type, param, switchval);
                 $('#panemask').showLoading({
                     'afterShow': function () {
@@ -143,7 +144,7 @@
                     layerAler(langs1[329][lang]);//网关地址不能为空
                     return;
                 }
-                addlogon(u_name, "恢复自动运行", o_pid, "回路断合闸", "恢复回路自动运行");
+
                 if (o1.type == "0") {
                     var selects = $('#gravidaTable').bootstrapTable('getSelections');
                     if (selects.length == 0) {
@@ -160,6 +161,7 @@
                     vv.push(h); //装置序号  2字节
                     var num = randnum(0, 9) + 0x70;
                     var data = buicode(comaddr, 0x04, 0xA5, num, 0, 280, vv); //01 03 F24     
+                    addlogon(u_name, "恢复自动运行", o_pid, "回路断合闸", "恢复回路自动运行", comaddr);
                     dealsend2("A5", data, 280, "restoreloopCB", comaddr, o1.type, 0, 0);
                     $('#panemask').showLoading({
                         'afterShow': function () {
@@ -174,6 +176,7 @@
                     vv.push(parseInt(switchval));
                     var num = randnum(0, 9) + 0x70;
                     var data = buicode(comaddr, 0x04, 0xA5, num, 0, 240, vv); //01 03 F24     
+                    addlogon(u_name, "恢复自动运行", o_pid, "回路断合闸", "恢复回路自动运行", comaddr);
                     dealsend2("A5", data, 240, "restoreloopCB", comaddr, o1.type, 0, 0);
                     $('#panemask').showLoading({
                         'afterShow': function () {
@@ -206,7 +209,7 @@
                 $('#gravidaTable').bootstrapTable({
                     showExport: true, //是否显示导出
                     exportDataType: "basic", //basic', 'a
-                    url: "loop.loopForm.getLoopList.action",
+                    //url: "loop.loopForm.getLoopList.action",
                     columns: [
                         {
                             title: '单选',

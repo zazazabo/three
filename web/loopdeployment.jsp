@@ -68,7 +68,15 @@
             }
             var u_name = parent.parent.getusername();
             var o_pid = parent.parent.getpojectId();
-
+            function  search() {
+                var obj = $("#form1").serializeObject();
+                var opt = {
+                    url: "loop.loopForm.getLoopList.action",
+                    silent: false,
+                    query: obj
+                };
+                $("#gravidaTable").bootstrapTable('refresh', opt);
+            }
             function deployloopCB(obj) {
                 $('#panemask').hideLoading();
                 if (obj.status == "success") {
@@ -78,7 +86,6 @@
                         v = v + sprintf("%02x", data[i]) + " ";
                     }
                     console.log(v);
-                    console.log(obj);
                     if (data[0xe] == 0 && data[0xf] == 0 && data[0x10] == 0x1 && data[0x11] == 0x0) {
                         var param = obj.param;
                         for (var i = 0; i < param.length; i++) {
@@ -90,7 +97,10 @@
                                 }
                             });
                         }
-                        $("#gravidaTable").bootstrapTable('refresh');
+                        var str = obj.val == "1" ? "部署成功" : "移除成功";
+                        layerAler(str);
+                        search();
+
                     } else if (data[0xe] == 0 && data[0xf] == 0 && data[0x10] == 0x4 && data[0x11] == 0x0) {
 
                         var err = data[20];
