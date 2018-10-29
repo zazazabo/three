@@ -270,7 +270,8 @@
 
             var l_comaddr; //灯具所属网关
             var l_code;  //装置序号
-
+            var name = parent.parent.getusername();
+            var pid = parent.parent.getpojectId();
             function lightCB1(obj) {
                 if (obj.status == "success") {
 
@@ -283,6 +284,7 @@
                         o.comaddr = comaddr;
                         o.l_code = l_code;
                         o.l_value = val;
+                        addlogon(name, "开灯",pid, "地图导航", "开灯",comaddr);
                         $.ajax({async: false, url: "login.map.lampval.action", type: "get", datatype: "JSON", data: o,
                             success: function (data) {
                                 var arrlist = data.rs;
@@ -311,6 +313,7 @@
                         o.comaddr = comaddr;
                         o.l_code = l_code;
                         o.l_value = val;
+                        addlogon(name, "关灯",pid, "地图导航", "关灯",comaddr);
                         $.ajax({async: false, url: "login.map.lampval.action", type: "get", datatype: "JSON", data: o,
                             success: function (data) {
                                 var arrlist = data.rs;
@@ -361,6 +364,7 @@
                         o.comaddr = comaddr;
                         o.l_code = l_code;
                         o.l_value = val;
+                        addlogon(name, "调光",pid, "地图导航", "单灯调光",comaddr);
                         $.ajax({async: false, url: "login.map.lampval.action", type: "get", datatype: "JSON", data: o,
                             success: function (data) {
                                 var arrlist = data.rs;
@@ -395,6 +399,7 @@
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 304, vv); //01 03
                 dealsend3("A5", data, 304, "sceneCB", l_comaddr, 0, 0, scenenum);
+                addlogon(name, "切换场景",pid, "地图导航", "切换场景",l_comaddr);
                 $('#switchCj').dialog("close");
             }
             //切换场景回调
@@ -410,11 +415,6 @@
             }
             //读取灯具时间表回调函数
             function readLampPlanCB(obj) {
-
-                if(obj.status == ""){
-                     layerAler("jhhjjj");
-                     return ;
-                }
                 var data = Str2BytesH(obj.data);
                 var v = "";
                 for (var i = 0; i < data.length; i++) {
