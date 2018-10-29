@@ -132,6 +132,7 @@
 
 
             function sceneCB(obj) {
+                $('#panemask').hideLoading();
                 console.log(obj);
                 if (obj.status == "success") {
                     if (obj.fn == 304) {
@@ -507,6 +508,11 @@
                     s = s + sprintf("%02x", v[i]) + " ";
                 }
                 console.log(s);
+                var objwork = {"0": "时间表", "1": "经纬度", "2": "场景"};
+                var objstatus = {"0": "自动", "1": "手动"};
+                var objtiming = {"0": "末请求", "1": "请求"};
+
+                var objfault = {"0": "灯具故障", "1": "温度故障", "2": "超负荷故障", "3": "功率因数过低故障", "4": "时钟故障", "5": "", "6": "灯珠故障", "7": "电源故障"};
                 if (v[14] == 0 && v[15] == 0 && v[16] == 0x40 && v[17] == 0) {
                     var z = 19;
                     var len = v[18];
@@ -541,7 +547,9 @@
                         var bfw = v[z + 1] & 0xf;
                         var qfw = v[z] >> 4 & 0xf;
                         var wfw = v[z] & 0xf;
-                        var activepower = sprintf("%d%d%d.%d%d%d%d(KW)", qw, bw, gw, sfw, bfw, qfw, wfw);
+                        var activepower = sprintf("%d%d%d.%d%d%d%d", qw, bw, gw, sfw, bfw, qfw, wfw);
+                        console.log(activepower);
+                        activepower = parseFloat(activepower) * 1000;
                         console.log(activepower);
                         //灯控器状态
                         z = z + 4;
@@ -549,17 +557,49 @@
                         var s2 = v[z + 1];
                         var s3 = v[z + 2];
                         var s4 = v[z + 3];
+                        var worktype = s1 & 0x3;
                         //调光值
                         z = z + 4;
                         var l_value = v[z];
                         console.log(l_value);
                         //温度
-                        z = z + 2;
+                        z = z + 1;
                         var temperature = v[z + 1] == 1 ? -v[z] : v[z];
+                        //抄表时间
+                        z = z + 2;
+                        var ms = v[z + 3] >> 4 & 0xf;
+                        var mg = v[z + 3] & 0xf;
+                        var ds = v[z + 2] >> 4 & 0xf;
+                        var dg = v[z + 2] & 0xf;
+                        var hs = v[z + 1] >> 4 & 0xf;
+                        var hg = v[z + 1] & 0xf;
+                        var mins = v[z] >> 4 & 0xf;
+                        var ming = v[z] & 0xf;
+                        var readtime = sprintf("%d%d月%d%d日 %d%d:%d%d", ms, mg, ds, dg, hs, hg, mins, ming);
+                        var l_codestr = "装置号:" + l_code.toString() + "<br>";
+                        var voltagestr = "电压：" + voltage + "<br>";
+                        var electricstr = "电流：" + electric + "<br>";
+                        var activepowerstr = "有功功率：" + activepower + "(w)<br>";
+                        var l_valuestr = "调光值：" + l_value + "<br>";
+                        var worktypstr = "工作方式:" + objwork[s2 & 3] + "<br>";
+                        var n = s2 >> 2 & 0x1;
+                        var controstatus = "控制状态:" + objstatus[n] + "<br>";
+                        var n1 = s2 >> 3 & 0x1;
+                        var timingstr = "校时状态:" + objtiming[n1] + "<br>";
+                        var strfault = "";
+                        for (var i = 0; i < 8; i++) {
+                            var temp = Math.pow(2, i);
+                            if ((s3 & temp) == temp) {
+                                if (objfault[i] != "") {
+                                    strfault = strfault + objfault[i] + "|";
+                                }
 
-
-
-                        layerAler("装置号:" + l_code.toString() + "<br>" + "电压：" + voltage + "<br>电流：" + electric + "<br>有功功率：" + activepower + "<br>调光值：" + l_value + "<br>温度：" + temperature);
+                            }
+                        }
+                        strfault = strfault == "" ? "无" : strfault;
+                        var strfault1 = "故障信息:" + strfault + "<br>";
+                        var uuu = l_codestr + voltagestr + electricstr + activepowerstr + l_valuestr + worktypstr + timingstr + strfault1 + "抄读时间:" + readtime;
+                        layerAler(uuu);
 
                     }
 
@@ -746,7 +786,6 @@
                 $('#gravidaTable').on("check.bs.table", function (field, value, row, element) {
                     var index = row.data('index');
                     value.index = index;
-                    console.log(value);
                 });
 
 
