@@ -18,6 +18,7 @@
         <script>
             var lang = '${param.lang}';//'zh_CN';
             var langs1 = parent.parent.getLnas();
+            var pid = parent.parent.getpojectId();
             $(function () {
                 var aaa = $("span[name=xxx]");
                 for (var i = 0; i < aaa.length; i++) {
@@ -25,7 +26,6 @@
                     var e = $(d).attr("id");
                     $(d).html(langs1[e][lang]);
                 }
-                var pid = parent.parent.getpojectId();
                 $('#oplogtabel').bootstrapTable({
                     url: 'login.oplog.oplogInfo.action?pid=' + pid,
                     columns: [
@@ -91,6 +91,8 @@
                             search: params.search,
                             skip: params.offset,
                             limit: params.limit,
+                            statr:$("#sday").val(),
+                            end :$("#eday").val(),
                             type_id: "1"    
                         };      
                         return temp;  
@@ -116,6 +118,7 @@
                     } else {
                         obj.end = end;
                     }
+                    obj.pid = pid;
                     var opt = {
                         url: "login.oplog.oplogInfo.action",
                         silent: true,

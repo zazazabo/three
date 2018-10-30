@@ -985,6 +985,7 @@
                                     }
                                     var lampcode = parseInt(arrlist[i].l_factorycode);
                                     //lans[][]代表的文字依次是：亮度、名称、灯具编号、网关地址、在线情况、状态、电压、电流
+                                    var activepower = arrlist[i].activepower*1000;  //有功功率
                                     var textvalue = "<div style='line-height:1.8em;font-size:12px;'>\n\
                                    \n\
                                     <table style='text-align:center'>\n\
@@ -1011,17 +1012,21 @@
                                         </tr>\n\ \n\
                                         <tr>\n\
                                             <td>" + lans[95][lang] + ":</td>\n\
-                                            <td>" + arrlist[i].voltage + "</td>\n\
+                                            <td>" + arrlist[i].voltage + "(V)</td>\n\
                                             <td>&nbsp;&nbsp;</td>\n\
                                             <td>" + lans[96][lang] + ":</td>\n\
-                                            <td>" + arrlist[i].electric + "</td>\n\
+                                            <td>" + arrlist[i].electric + "(A)</td>\n\
                                         </tr>\n\
                                         <tr>\n\
                                             <td>" + lans[97][lang] + ":</td>\n\
-                                            <td>" + arrlist[i].activepower + "</td>\n\
+                                            <td>" + activepower + "(W)</td>\n\
                                             <td>&nbsp;&nbsp;</td>\n\
                                             <td>" + lans[413][lang] + ":</td>\n\
                                             <td>" + arrlist[i].temperature + "</td>\n\
+                                        </tr>\n\
+                                        <tr>\n\
+                                            <td>" +"抄读时间"+ ":</td>\n\
+                                            <td>" + arrlist[i].newlyread + "</td>\n\
                                         </tr>\n\
                                     </table></div>";
                                     if ((Longitude != "" && latitude != "") && (Longitude != null && latitude != null)) {
@@ -1045,7 +1050,7 @@
                                                 icon: lhui
                                             });
                                         }
-                                        var opts = {title: '<span style="font-size:14px;color:#0A8021">' + lans[404][lang] + '</span>', width: 300, height: 140};//设置信息框、信息说明
+                                        var opts = {title: '<span style="font-size:14px;color:#0A8021">' + lans[404][lang] + '</span>', width: 300, height: 170};//设置信息框、信息说明
                                         var infoWindow = new BMap.InfoWindow(textvalue, opts); // 创建信息窗口对象，引号里可以书写任意的html语句。
                                         marker1.addEventListener("mouseover", function () {
                                             this.openInfoWindow(infoWindow);
