@@ -111,6 +111,7 @@
                                     });
 
                                 }
+                                layerAler("保存成功");
 
                             },
                             error: function () {
