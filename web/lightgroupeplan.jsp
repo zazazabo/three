@@ -79,7 +79,7 @@
                 var data = buicode(comaddr, 0x04, 0xA4, num, 0, 120, vv); //01 03 F24    
 
                 dealsend2("A4", data, 120, "resetWowktypeCB", comaddr, o.type, oldlgroupe, o.l_worktype);
-                  $('#panemask').showLoading({
+                $('#panemask').showLoading({
                     'afterShow': function () {
                         setTimeout("$('#panemask').hideLoading()", 10000);
                     }
@@ -128,7 +128,7 @@
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA4, num, 0, 110, vv); //01 03 F24    
                 dealsend2("A4", data, 110, "resetGroupeCB", comaddr, o.type, o.l_groupe, o.l_groupe1);
-                  $('#panemask').showLoading({
+                $('#panemask').showLoading({
                     'afterShow': function () {
                         setTimeout("$('#panemask').hideLoading()", 10000);
                     }
@@ -136,108 +136,6 @@
                 );
             }
 
-
-            function setLampPlanCB(obj) {
-$('#panemask').hideLoading();
-                if (obj.status == "success") {
-                    if (obj.fn == 140) { //时间
-                        var oo = {p_code: obj.param, p_name: obj.type};
-                        var p_code = JSON.stringify(oo);
-                        var ooo = {l_comaddr: obj.comaddr, l_groupe: obj.val, l_plantime: p_code};
-                        $.ajax({
-                            async: false, url: "lamp.planForm.modifylampplantime.action", type: "get", datatype: "JSON", data: ooo,
-                            success: function (data) {
-
-                                var arrlist = data.rs;
-                                if (arrlist.length == 1) {
-                                 
-                                }
-                            },
-                            error: function () {
-                                alert("提交灯具挂钩的方案！");
-                            }
-                        });
-
-                        var a = $("#form1").serializeObject();
-                        var obj1 = {"time": a.time1, "value": parseInt(a.val1)};
-                        var obj2 = {"time": a.time2, "value": parseInt(a.val2)};
-                        var obj3 = {"time": a.time3, "value": parseInt(a.val3)};
-                        var obj4 = {"time": a.time4, "value": parseInt(a.val4)};
-                        var obj5 = {"time": a.time5, "value": parseInt(a.val5)};
-                        var obj6 = {"time": a.time6, "value": parseInt(a.val6)};
-
-                        a.p_time1 = JSON.stringify(obj1);
-                        a.p_time2 = JSON.stringify(obj2);
-                        a.p_time3 = JSON.stringify(obj3);
-                        a.p_time4 = JSON.stringify(obj4);
-                        a.p_time5 = JSON.stringify(obj5);
-                        a.p_time6 = JSON.stringify(obj6);
-                        $.ajax({
-                            async: false, url: "lamp.planForm.editlamp.action", type: "get", datatype: "JSON", data: a,
-                            success: function (data) {
-                                var arrlist = data.rs;
-                                if (arrlist.length == 1) {
-                                    // $('#p_plan').combobox('reload');
-                                    layerAler(langs1[394][lang]);   //部署灯具时间方案成功
-                                    addlogon(u_name, "部署", o_pid, "灯具分组管理", "部署灯具方案");
-                                    // $('#p_plan').combobox('setValue', a.p_code);
-                                }
-                            },
-                            error: function () {
-                                alert("提交失败！");
-                            }
-                        });
-                    } else if (obj.fn == 480) {  //场景
-
-                        var oo = {p_code: obj.param, p_name: obj.type};
-                        var p_code = JSON.stringify(oo);
-                        var ooo = {l_comaddr: obj.comaddr, l_groupe: obj.val, l_planscene: p_code};
-                        $.ajax({
-                            async: false, url: "lamp.planForm.modifylampplanscene.action", type: "get", datatype: "JSON", data: ooo,
-                            success: function (data) {
-                                var arrlist = data.rs;
-                                if (arrlist.length == 1) {
-
-                                }
-                            },
-                            error: function () {
-                                alert("提交灯具挂钩场景的方案！");
-                            }
-                        });
-
-
-
-
-                        var a = $("#form1").serializeObject();
-                        console.log(a);
-                        var o = {};
-                        for (var i = 0; i < 8; i++) {
-                            var f = "p_scene" + (i + 1).toString();
-                            var num = "__num" + (i + 1).toString();
-                            var val = "__val" + (i + 1).toString();
-                            var o1 = {"num": a[num], "value": a[val]};
-                            o[f] = JSON.stringify(o1);
-                        }
-                        o.p_code = obj.param;
-                        var ret = false;
-                        $.ajax({
-                            async: false, url: "lamp.planForm.editlampscenebycode.action", type: "get", datatype: "JSON", data: o,
-                            success: function (data) {
-                                var arrlist = data.rs;
-                                if (arrlist.length == 1) {
-                                    layerAler(langs1[395][lang]);  //部署灯具场景方案成功
-                                    // $('#p_plan').combobox('reload');
-                                }
-                            },
-                            error: function () {
-                                alert("提交失败！");
-                            }
-                        });
-
-                    }
-
-                }
-            }
 
             function readLampPlanCB(obj) {
                 $('#panemask').hideLoading();
@@ -293,12 +191,12 @@ $('#panemask').hideLoading();
                     var num = randnum(0, 9) + 0x70;
                     var data = buicode(comaddr, 0x04, 0xAA, num, 0, 401, vv); //01 03 F24    
                     dealsend2("AA", data, 401, "readLampPlanCB", comaddr, 0, obj.p_type, 0, 0);
-                      $('#panemask').showLoading({
-                    'afterShow': function () {
-                        setTimeout("$('#panemask').hideLoading()", 10000);
+                    $('#panemask').showLoading({
+                        'afterShow': function () {
+                            setTimeout("$('#panemask').hideLoading()", 10000);
+                        }
                     }
-                }
-                );
+                    );
                 }
 
                 if (v == "1") {
@@ -313,8 +211,107 @@ $('#panemask').hideLoading();
                 }
             }
 
+            function setLampPlanCB(obj) {
+                $('#panemask').hideLoading();
+                if (obj.status == "success") {
+                    if (obj.fn == 140) { //时间
+                        var oo = {p_code: obj.param, p_name: obj.type};
+                        var p_code = JSON.stringify(oo);
+                        var ooo = {l_comaddr: obj.comaddr, l_groupe: obj.val, l_plantime: p_code};
+                        $.ajax({
+                            async: false, url: "lamp.planForm.modifylampplantime.action", type: "get", datatype: "JSON", data: ooo,
+                            success: function (data) {
+
+                                var arrlist = data.rs;
+                                if (arrlist.length == 1) {
+
+                                }
+                            },
+                            error: function () {
+                                alert("提交灯具挂钩的方案！");
+                            }
+                        });
+
+                        var a = $("#form1").serializeObject();
+                        var obj1 = {"time": a.time1, "value": parseInt(a.val1)};
+                        var obj2 = {"time": a.time2, "value": parseInt(a.val2)};
+                        var obj3 = {"time": a.time3, "value": parseInt(a.val3)};
+                        var obj4 = {"time": a.time4, "value": parseInt(a.val4)};
+                        var obj5 = {"time": a.time5, "value": parseInt(a.val5)};
+                        var obj6 = {"time": a.time6, "value": parseInt(a.val6)};
+
+                        a.p_time1 = JSON.stringify(obj1);
+                        a.p_time2 = JSON.stringify(obj2);
+                        a.p_time3 = JSON.stringify(obj3);
+                        a.p_time4 = JSON.stringify(obj4);
+                        a.p_time5 = JSON.stringify(obj5);
+                        a.p_time6 = JSON.stringify(obj6);
+                        $.ajax({
+                            async: false, url: "lamp.planForm.editlamp.action", type: "get", datatype: "JSON", data: a,
+                            success: function (data) {
+                                var arrlist = data.rs;
+                                if (arrlist.length == 1) {
+                                    // $('#p_plan').combobox('reload');
+                                    layerAler(langs1[394][lang]);   //部署灯具时间方案成功
+                                    addlogon(u_name, "部署", o_pid, "灯具分组管理", "部署灯具方案");
+                                    // $('#p_plan').combobox('setValue', a.p_code);
+                                }
+                            },
+                            error: function () {
+                                alert("提交失败！");
+                            }
+                        });
+                    } else if (obj.fn == 480) {  //场景
+
+                        var oo = {p_code: obj.param, p_name: obj.type};
+                        var p_code = JSON.stringify(oo);
+                        var ooo = {l_comaddr: obj.comaddr, l_groupe: obj.val, l_planscene: p_code};
+                        $.ajax({
+                            async: false, url: "lamp.planForm.modifylampplanscene.action", type: "get", datatype: "JSON", data: ooo,
+                            success: function (data) {
+                                var arrlist = data.rs;
+                                if (arrlist.length == 1) {
+
+                                }
+                            },
+                            error: function () {
+                                alert("提交灯具挂钩场景的方案！");
+                            }
+                        });
+                        var a = $("#form1").serializeObject();
+                        console.log(a);
+                        var o = {};
+                        for (var i = 0; i < 8; i++) {
+                            var f = "p_scene" + (i + 1).toString();
+                            var num = "__num" + (i + 1).toString();
+                            var val = "__val" + (i + 1).toString();
+                            var o1 = {"num": a[num], "value": a[val]};
+                            o[f] = JSON.stringify(o1);
+                        }
+                        o.p_code = obj.param;
+                        o.p_name = obj.type;
+                        var ret = false;
+                        $.ajax({
+                            async: false, url: "lamp.planForm.editlampscenebycode.action", type: "get", datatype: "JSON", data: o,
+                            success: function (data) {
+                                var arrlist = data.rs;
+                                if (arrlist.length == 1) {
+                                    layerAler(langs1[395][lang]);  //部署灯具场景方案成功
+                                    // $('#p_plan').combobox('reload');
+                                }
+                            },
+                            error: function () {
+                                alert("提交失败！");
+                            }
+                        });
+
+                    }
+
+                }
+            }
+
             function setLampPlan() {
-               
+
                 var obj = $("#form1").serializeObject();
                 if (obj.l_comaddr == "" || obj.l_groupe == "") {
                     layerAler(langs1[392][lang]);   //网关或组号不能为空
@@ -328,7 +325,7 @@ $('#panemask').hideLoading();
                         var val = parseInt(obj[b]);
                         if (!(/^([0-9][0-9]{0,1}|100)$/.test(val))) {
                             layerAler(langs1[409][lang]);  //调光值必须为0-100的正整数
-                            return ;
+                            return;
                         }
 
                     }
@@ -352,12 +349,12 @@ $('#panemask').hideLoading();
                     var num = randnum(0, 9) + 0x70;
                     var data = buicode(comaddr, 0x04, 0xA4, num, 0, 140, vv); //01 03 F24    
                     dealsend2("A4", data, 140, "setLampPlanCB", comaddr, obj.p_name, obj.p_code, obj.l_groupe);
-                      $('#panemask').showLoading({
-                    'afterShow': function () {
-                        setTimeout("$('#panemask').hideLoading()", 10000);
+                    $('#panemask').showLoading({
+                        'afterShow': function () {
+                            setTimeout("$('#panemask').hideLoading()", 10000);
+                        }
                     }
-                }
-                );
+                    );
                 }
 
                 if (v == "1") {
@@ -366,9 +363,9 @@ $('#panemask').hideLoading();
                         var val = obj[b];
                         if (!(/^([0-9][0-9]{0,1}|100)$/.test(val))) {
                             layerAler(langs1[409][lang]);  //调光值必须为0-100的正整数
-                            return ;
+                            return;
                         }
-                       
+
                     }
                     var vv = [];
                     vv.push(1);
@@ -390,7 +387,7 @@ $('#panemask').hideLoading();
             }
 
             function setlampAllPlanCB(obj) {
-$('#panemask').hideLoading();
+                $('#panemask').hideLoading();
 
             }
 
@@ -415,7 +412,7 @@ $('#panemask').hideLoading();
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA4, num, 0, 501, vv); //01 03 F24    
                 dealsend2("A4", data, 501, "setlampAllPlanCB", comaddr, 0, obj.p_code, 0);
-                  $('#panemask').showLoading({
+                $('#panemask').showLoading({
                     'afterShow': function () {
                         setTimeout("$('#panemask').hideLoading()", 10000);
                     }
@@ -658,13 +655,6 @@ $('#panemask').hideLoading();
                 </div>
             </div>
 
-
-
-
-
-
-
-
             <div class="row" style=" display: none">
                 <div class="col-xs-12">
                     <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; margin-top: 10px;">
@@ -698,7 +688,6 @@ $('#panemask').hideLoading();
 
                 <div class="col-xs-12">
                     <table id="type0" style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; display: none ">
-
                         <tr>
                             <td>
                                 <span style="margin-left:20px;" name="xxx" id="75">时间一</span>&nbsp;
