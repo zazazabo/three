@@ -66,6 +66,35 @@
                     </xfltpara>
                 </xflt>
             </xsql>
+            
+            <xsql id="a6" list="true" page="true" tpe="SQL" tpl="select count(id) as num from t_baseinfo  where  @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@pid">
+                    <xfltpara id="pid" nrp="1=1" para="pid" sql="pid=':pid'">
+                    </xfltpara>
+                   
+                </xflt>
+            </xsql> 
+            <xsql id="a7" list="true" page="true" tpe="SQL" tpl="select count(id) as num from t_baseinfo  where online=1 and  @CONDITION " var="onlineNumber">
+                <xflt id="CONDITION" nrp="" tpl="@pid">
+                    <xfltpara id="pid" nrp="1=1" para="pid" sql="pid=':pid'">
+                    </xfltpara>
+                   
+                </xflt>
+            </xsql> 
+            <xsql id="a8" list="true" page="true" tpe="SQL" tpl="select count(id) as num from t_lamp where @CONDITION" var="lampNumber">
+                <xflt id="CONDITION" nrp="" tpl="@pid">
+                    <xfltpara id="pid" nrp="1=1" para="pid" sql="l_comaddr in(select comaddr from t_baseinfo where  pid = ':pid' )">
+                    </xfltpara>
+                   
+                </xflt>
+            </xsql>
+            <xsql id="a9" list="true" page="true" tpe="SQL" tpl="select count(id) as num from t_lamp where presence=1 AND @CONDITION" var="lamponline">
+                <xflt id="CONDITION" nrp="" tpl="@pid">
+                    <xfltpara id="pid" nrp="1=1" para="pid" sql="l_comaddr in(select comaddr from t_baseinfo where  pid = ':pid' )">
+                    </xfltpara>
+                   
+                </xflt>
+            </xsql>
         </xhand>
     </xform>
     <xform desc="告警模块" id="warn">

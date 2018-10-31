@@ -265,30 +265,8 @@
             var echarts;
             var lang = '${param.lang}';
             var langs1 = parent.parent.getLnas();
-            var pid = parent.parent.getpojectId();
+           // var pid = parent.parent.getpojectId();
             $(function () {
-                 var obj = {};
-                obj.pid =pid;
-                 $.ajax({async: false, url: "login.mainsub.number.action", type: "get", datatype: "JSON", data:obj,
-                    success: function (data) {
-                        var rs = data.rs;
-                        //console.log("rs:"+ rs[0].num);
-                        var rs2 = data.onlineNumber;
-                        var rs3 = data.lampNumber;
-                        var wgsum = rs[0].num; //网关总数
-                        var online = rs2[0].num;  //在线数
-                        var noline  = wgsum -online;  //网不在线数
-                        var lampsum = rs3[0].num;  //灯具总数
-                        $("#wgsum").html(wgsum);
-                        $("#wgms").html("集中器（在线："+online+" 离线："+noline+"）");
-                        $("#lampSum").html(lampsum);
-                    },
-                    error: function () {
-                        alert("提交失败！");
-                    }
-                });
-
-
                 var aaa = $("span[name=xxx]");
                 for (var i = 0; i < aaa.length; i++) {
                     var d = aaa[i];
@@ -303,7 +281,13 @@
                 var date = new Date;
                 var year = date.getFullYear();
                 var month = date.getMonth() + 1;
-
+                
+                var wgsum = ${rs[0].num}; //网关总数
+                var online = ${onlineNumber[0].num};  //在线数
+                var noline = wgsum - online;  //网不在线数
+                var lonlime =  ${lampNumber[0].num} -${lamponline[0].num};
+                $("#wgms").html("集中器（在线：${onlineNumber[0].num} 离线："+noline+"）");
+                $("#djms").html("灯具（在线：${lamponline[0].num} 离线："+lonlime+"）");
                 //计划能耗
             <c:if test="${fn:length(rs4)==0}">
                 planvalue = "";
@@ -349,7 +333,7 @@
 
 
             $(function () {
-              
+
                 var a3 = new Array();
                 var o3 = new Object();
                 var date = new Date;
@@ -769,7 +753,7 @@
                 $('#online').html(str);
             }
 
-           
+
         </script>
 
 
@@ -800,35 +784,28 @@
                                 ${(rs1[0].count-rs2[0].count)/rs1[0].count * 100}%
                             </c:if> 
                         </span>
-                        <span name="xxx" id="6">
-                             亮灯率
-                        </span>
+                        <span name="xxx" id="6"> 亮灯率</span>
                     </div>
                 </div>
                 <div class="topLeftOneBox">
                     <span class="redius" style="background: lawngreen;"><img src="img/jien.png"></span>
                     <div class="Mess energySavingRate">
-                        <span id="jnl">
-                        </span>
-                        <span name="xxx" id="7">
-                            节能率
-                        </span>
+                        <span id="jnl"></span>
+                        <span name="xxx" id="7">节能率</span>
                     </div>
                 </div>
                 <div class="topLeftOneBox">
                     <span class="redius" style="background:#42bcec;"><img src="img/jien.png"></span>
                     <div class="Mess energySavingRate">
-                        <span id="wgsum">0</span>
-                        <span style=" font-size: 14px;" id="wgms">集中器（在线：0 离线：0）</span>
+                        <span>${rs[0].num}</span>
+                        <span style="font-size: 14px;" id="wgms"></span>
                     </div>
                 </div>
                 <div class="topLeftOneBox">
                     <span class="redius" style="background: #bdebee;"><img src="img/dp.png"></span>
                     <div class="Mess energySavingRate">
-                        <span id="lampSum">90</span>
-                        <span>
-                            灯具数量
-                        </span>
+                        <span>${lampNumber[0].num}</span>
+                        <span style="font-size: 14px;" id="djms"></span>
                     </div>
                 </div>
             </div>
