@@ -768,8 +768,8 @@
                             align: 'center',
                             valign: 'middle'
                         }, {
-                            field: 'f_setcode',
-                            title: o[236][lang], //装置号
+                            field: 'l_factorycode',
+                            title: o[236][lang], //灯具编号
                             width: 25,
                             align: 'center',
                             valign: 'middle'

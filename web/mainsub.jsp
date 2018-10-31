@@ -92,7 +92,8 @@
                 float: left;
                 display: inline;
                 overflow: hidden;
-                width: 18%;
+/*                width: 18%;*/
+               width: 260px;
                 margin-left: 3%;
                 height: 90%;
                 
@@ -126,7 +127,7 @@
                 float: left;
                 display: inline;
                 height: 100%;
-                width: 190px;
+                width: 180px;
                 padding-top: 8%;
             }
             .Mess span {
