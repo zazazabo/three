@@ -234,6 +234,39 @@
                 return upid;
             }
 
+            //处理异常
+            function handle() {
+                var checks = $("#fauttable").bootstrapTable('getSelections');
+                if (checks.length < 1) {
+                    layerAler("请勾选数据");
+                    return;
+                }
+                for (var i = 0; i < checks.length; i++) {
+                    //console.log(checks[i].id);
+                    var obj = {};
+                    obj.id=checks[i].id;
+                    $.ajax({async: false, url: "login.main.updfualt.action", type: "get", datatype: "JSON", data: obj,
+                        success: function (data) {
+                        }
+                    });
+
+                }
+                
+                var pid = $("#pojects").val();
+                var obj2 = {};
+                obj2.pid = pid;
+                var opt = {
+                    method: "post",
+                    contentType: "application/x-www-form-urlencoded",
+                    url: "login.main.faultInfo.action",
+                    silent: true,
+                    query: obj2
+                };
+                $("#fauttable").bootstrapTable('refresh', opt);
+
+
+            }
+
             //退出
             function getout() {
                 layer.confirm(o[282][lang], {//确认要删除吗？
@@ -597,7 +630,7 @@
 
         <div class="modal" id="faultDiv" data-backdrop="static">
             <div class="modal-dialog">
-                <div class="modal-content" style="min-width:750px;">
+                <div class="modal-content" style="min-width:800px;">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">
                             <span style="font-size:20px ">×</span></button>
@@ -608,8 +641,8 @@
                             <tbody class="search">
                                 <tr>
                                     <td>
-                                        <span style="margin-left:0px;" id="64" name="xxx">
-                                            所属区域
+                                        <span style="margin-left:0px;" id="292" name="xxx">
+                                            灯具编号
                                         </span>&nbsp;
                                         <input type="text" id ="area" style="width:150px; height: 30px;">
                                     </td>
@@ -626,6 +659,7 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <hr>
                         <table id="fauttable">
 
                         </table>
@@ -633,8 +667,8 @@
                     </div>
                     <!-- 注脚 -->
                     <div class="modal-footer" id="modal_footer_edit" >
-                        <!-- 添加按钮 -->
-                        <!--                        <button id="xiugai" type="button" onclick="handle()" class="btn btn-primary">处理报警</button>-->
+                        <!--                         添加按钮 -->
+                        <button type="button" onclick="handle()" class="btn btn-primary">处理报警</button>
                         <!-- 关闭按钮 -->
                         <button type="button" class="btn btn-default" data-dismiss="modal"><label name="xxx" id="57">关闭</label></button>
                     </div>
@@ -744,6 +778,14 @@
                     url: 'login.main.faultInfo.action',
                     columns: [
                         {
+                            title: '单选',
+                            field: 'select',
+                            //复选框
+                            checkbox: true,
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
                             field: 'f_comaddr',
                             title: o[120][lang], //设备名称
                             width: 25,
@@ -769,7 +811,7 @@
                             valign: 'middle'
                         }, {
                             field: 'l_factorycode',
-                            title: o[236][lang], //灯具编号
+                            title: o[292][lang], //灯具编号
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -819,7 +861,7 @@
                             }
                         }],
                     clickToSelect: true,
-                    singleSelect: true,
+                    singleSelect: false, //设置单选还是多选，true为单选 false为多选
                     sortName: 'id',
                     locale: 'zh-CN', //中文支持,
                     showColumns: true,
