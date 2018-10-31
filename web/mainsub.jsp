@@ -95,12 +95,13 @@
                 width: 18%;
                 margin-left: 3%;
                 height: 90%;
+                
             }
             .topLeftOneBox {
-                overflow: hidden;
+                overflow: visible;
                 width: 100%;
-                height: 23%;
-                margin-top: 2%;
+                height: 24%;
+                margin-top: 1%;
             }
             .redius {
                 display: block;
@@ -125,7 +126,7 @@
                 float: left;
                 display: inline;
                 height: 100%;
-                width: 200px;
+                width: 190px;
                 padding-top: 8%;
             }
             .Mess span {

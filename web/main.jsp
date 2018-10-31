@@ -317,10 +317,9 @@
             //查看警异常信息总数
             function fualtCount() {
                 var pid = $("#pojects").val();
-                var d = new Date();
                 var obj = {};
                 obj.pid = pid;
-                obj.f_day = d.toLocaleDateString();
+                //obj.f_day = d.toLocaleDateString();
                 $.ajax({url: "login.main.fualtCount.action", async: false, type: "get", datatype: "JSON", data: obj,
                     success: function (data) {
                         if (data.rs[0].number == 0) {
@@ -352,120 +351,17 @@
             function imgM() {
                 $("#faultDiv").modal("show");
                 var pid = $("#pojects").val();
-                var d = new Date();
-                var obj2 = {};
-                obj2.pid = pid;
-                obj2.f_day = d.toLocaleDateString();
-                $('#fauttable').bootstrapTable({
-                    url: 'login.main.faultInfo.action',
-                    columns: [
-                        {
-                            field: 'f_comaddr',
-                            title: o[120][lang], //设备名称
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
-                            field: 'f_day',
-                            title: o[82][lang], //时间
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
-                            field: 'f_type',
-                            title: o[121][lang], //异常类型
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
-                            field: 'f_comment',
-                            title: o[123][lang], //异常说明
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
-                            field: 'f_setcode',
-                            title: o[236][lang], //装置号
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        },
-                        {
-                            field: '',
-                            title: '详情', //状态字2
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle',
-                            formatter: function (value, row, index, field) {
-                                //console.log(row);
-                                var str = "";
-                                var info = eventobj[row.f_type];
-                                if (typeof info == "object") {
-                                    var s1 = info.status1;
-                                    var s2 = info.status2;
-                                    for (var i = 0; i < 8; i++) {
-                                        var temp = Math.pow(2, i);
-                                        if ((row.f_status1 & temp) == temp) {
-                                            if (s1[i] != "") {
-                                                str = str + s1[i] + "|";
-                                            }
+                var obj = {};
+                obj.pid = pid;
+                var opt = {
+                    method: "post",
+                    contentType: "application/x-www-form-urlencoded",
+                    url: "login.main.faultInfo.action",
+                    silent: true,
+                    query: obj
+                };
+                $("#fauttable").bootstrapTable('refresh', opt);
 
-                                        }
-                                    }
-
-                                    for (var i = 0; i < 8; i++) {
-                                        var temp = Math.pow(2, i);
-                                        if ((row.f_status2 & temp) == temp) {
-                                            if (s1[i] != "") {
-                                                str = str + s1[i] + "|";
-                                            }
-
-                                        }
-                                    }
-
-                                    return str.substr(0, str.length - 1);
-                                } else if (row.f_type == "ERC49") {
-                                    var d = Str2BytesH(row.f_data);
-                                    var count = d[21] << 8 + d[20];
-                                }
-
-
-                                // console.log(len1);
-
-                            }
-                        }],
-                    clickToSelect: true,
-                    singleSelect: true,
-                    sortName: 'id',
-                    locale: 'zh-CN', //中文支持,
-                    showColumns: true,
-                    sortOrder: 'desc',
-                    pagination: true,
-                    sidePagination: 'server',
-                    pageNumber: 1,
-                    pageSize: 5,
-                    showRefresh: true,
-                    showToggle: true,
-                    // 设置默认分页为 50
-                    pageList: [5, 10, 15, 20, 25],
-                    onLoadSuccess: function () {  //加载成功时执行  表格加载完成时 获取集中器在线状态
-//                        console.info("加载成功");
-                    },
-
-                    //服务器url
-                    queryParams: function (params)  {   //配置参数     
-                        var temp  =   {    //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的 
-                            search: params.search,
-                            skip: params.offset,
-                            limit: params.limit,
-                            type_id: "1",
-                            pid: pid,
-                            f_day: d.toLocaleDateString()
-                                       
-                        };      
-                        return temp;  
-                    },
-                });
             }
 
             //获取语言
@@ -552,8 +448,6 @@
                 websocket.onerror = onerror;
                 //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
                 window.onbeforeunload = onbeforeunload;
-                //查看警异常信息总数
-                fualtCount();
             });
         </script>
     </head>
@@ -710,6 +604,28 @@
                         <span class="glyphicon glyphicon-floppy-disk" style="font-size: 20px"></span>
                         <h4 class="modal-title" style="display: inline;"><label name="xxx" id="274">告警信息</label></h4></div>    
                     <div class="modal-body">
+                        <table>
+                            <tbody class="search">
+                                <tr>
+                                    <td>
+                                        <span style="margin-left:0px;" id="64" name="xxx">
+                                            所属区域
+                                        </span>&nbsp;
+                                        <input type="text" id ="area" style="width:150px; height: 30px;">
+                                    </td>
+                                    <td>
+                                        <span style="margin-left:30px;">                                     
+                                            <span id="25" name="xxx">网关地址</span>
+                                            &nbsp;</span>
+                                        <input id="comaddrlist" data-options='editable:false,valueField:"id", textField:"text"' class="easyui-combobox"/>
+                                    </td>
+                                    <td>
+                                        <!-- <input type="button" class="btn btn-sm btn-success" onclick="selectlamp()" value="搜索" style="margin-left:10px;">-->
+                                        <button class="btn btn-sm btn-success" onclick="" style="margin-left:10px;"><span id="34" name="xxx">搜索</span></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                         <table id="fauttable">
 
                         </table>
@@ -822,6 +738,115 @@
                     options += "<option value=\"" + pids[i] + "\">" + pname[i] + "</option>";
                     $("#pojects").html(options);
                 }
+                //查看警异常信息总数
+                fualtCount();
+                $('#fauttable').bootstrapTable({
+                    url: 'login.main.faultInfo.action',
+                    columns: [
+                        {
+                            field: 'f_comaddr',
+                            title: o[120][lang], //设备名称
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: 'f_day',
+                            title: o[82][lang], //时间
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: 'f_type',
+                            title: o[121][lang], //异常类型
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: 'f_comment',
+                            title: o[123][lang], //异常说明
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: 'f_setcode',
+                            title: o[236][lang], //装置号
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        },
+                        {
+                            field: '',
+                            title: '详情', //状态字2
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle',
+                            formatter: function (value, row, index, field) {
+                                //console.log(row);
+                                var str = "";
+                                var info = eventobj[row.f_type];
+                                if (typeof info == "object") {
+                                    var s1 = info.status1;
+                                    var s2 = info.status2;
+                                    for (var i = 0; i < 8; i++) {
+                                        var temp = Math.pow(2, i);
+                                        if ((row.f_status1 & temp) == temp) {
+                                            if (s1[i] != "") {
+                                                str = str + s1[i] + "|";
+                                            }
+
+                                        }
+                                    }
+
+                                    for (var i = 0; i < 8; i++) {
+                                        var temp = Math.pow(2, i);
+                                        if ((row.f_status2 & temp) == temp) {
+                                            if (s1[i] != "") {
+                                                str = str + s1[i] + "|";
+                                            }
+
+                                        }
+                                    }
+
+                                    return str.substr(0, str.length - 1);
+                                } else if (row.f_type == "ERC49") {
+                                    var d = Str2BytesH(row.f_data);
+                                    var count = d[21] << 8 + d[20];
+                                }
+
+
+                                // console.log(len1);
+
+                            }
+                        }],
+                    clickToSelect: true,
+                    singleSelect: true,
+                    sortName: 'id',
+                    locale: 'zh-CN', //中文支持,
+                    showColumns: true,
+                    sortOrder: 'desc',
+                    pagination: true,
+                    sidePagination: 'server',
+                    pageNumber: 1,
+                    pageSize: 5,
+                    showRefresh: true,
+                    showToggle: true,
+                    // 设置默认分页为 50
+                    pageList: [5, 10, 15, 20, 25],
+                    onLoadSuccess: function () {  //加载成功时执行  表格加载完成时 获取集中器在线状态
+//                        console.info("加载成功");
+                    },
+
+                    //服务器url
+                    queryParams: function (params)  {   //配置参数     
+                        var temp  =   {    //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的 
+                            search: params.search,
+                            skip: params.offset,
+                            limit: params.limit,
+                            type_id: "1"            
+                        };      
+                        return temp;  
+                    }
+                });
 
 
 
@@ -879,7 +904,7 @@
                 $(".Home").click(function () {
                     $("#iframe").attr("src", "abc/homeIntelligent.action");
                     changeColor("#071519");
-                })
+                });
 
                 /* 登录注销 */
                 $(".twoL li:eq(0)").click(function () {

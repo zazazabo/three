@@ -813,6 +813,7 @@
                                     return str;
                                 }
                             }
+
                         }],
                     singleSelect: true,
                     sortName: 'id',
