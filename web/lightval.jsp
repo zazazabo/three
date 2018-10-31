@@ -55,6 +55,7 @@
             }
             //开灯
             function onlamp(val) {
+
                 val = parseInt(val);
                 var o = $("#formsearch").serializeObject();
                 var groupearr = $("#l_groupe").combobox("getData");
@@ -460,37 +461,98 @@
                 }
                 );
             }
+
+            function tourControllampCB(obj) {
+                console.log(obj);
+                if (obj.status == "success") {
+                    var vv = [];
+                    vv.push(1);
+                    var l_code = parseInt(obj.val);
+                    var a = l_code >> 8 & 0x00FF;
+                    var b = l_code & 0x00ff;
+                    vv.push(b);//装置序号  2字节            
+                    vv.push(a);//装置序号  2字节                       
+                    var comaddr = obj.comaddr;
+                    var num = randnum(0, 9) + 0x70;
+                    var data = buicode(comaddr, 0x04, 0xAC, num, 0, 40, vv);
+                    dealsend2("AC", data, 40, "tourlampCB", comaddr, 0, 0, 0);
+                }
+            }
+            function  tourControllamp() {
+
+                dealsend2("CheckLamp", "a", 0, 0, "check", 0, 0, "${param.pid}");
+
+//                var selects = $('#gravidaTable').bootstrapTable('getSelections');
+//                // var o = $("#form1").serializeObject();
+//                var vv = new Array();
+//                if (selects.length == 0) {
+//                    layerAler(langs1[73][lang]);   //请勾选表格数据
+//                    return;
+//                }
+//                var vv = [];
+//                vv.push(3);
+//                vv.push(1);
+//                vv.push(0);
+//                var ele = selects[0];
+//                var setcode = ele.l_code;
+//                var l_code = parseInt(setcode);
+//                var a = l_code >> 8 & 0x00FF;
+//                var b = l_code & 0x00ff;
+//                vv.push(b);//装置序号  2字节            
+//                vv.push(a);//装置序号  2字节 
+//                var comaddr = selects[0].l_comaddr;
+//                var num = randnum(0, 9) + 0x70;
+//                var data = buicode(comaddr, 0x04, 0xA5, num, 0, 1, vv);
+//                dealsend2("A5", data, 40, "tourControllampCB", comaddr, 0, 0, l_code);
+//                $('#panemask').showLoading({
+//                    'afterShow': function () {
+//                        setTimeout("$('#panemask').hideLoading()", 10000);
+//                    }
+//                }
+//                );
+
+
+            }
+
             //巡测灯具状态
-            function tourlamp() {
-                var selects = $('#gravidaTable').bootstrapTable('getSelections');
-                // var o = $("#form1").serializeObject();
+            function tourlamp(comaddr, l_code) {
+
+//                var vv = [];
+//                vv.push(3);
+//                vv.push(1);
+//                vv.push(0);
+//
+//                var setcode = l_code;
+//                var l_code = parseInt(setcode);
+//                var a = l_code >> 8 & 0x00FF;
+//                var b = l_code & 0x00ff;
+//                vv.push(b);//装置序号  2字节            
+//                vv.push(a);//装置序号  2字节 
+//                var comaddr = comaddr.toString();
+//                var num = randnum(0, 9) + 0x70;
+//                var data = buicode(comaddr, 0x04, 0xA5, num, 0, 1, vv);
+//                dealsend2("A5", data, 40, "tourControllampCB", comaddr, 0, 0, l_code);
+//                $('#panemask').showLoading({
+//                    'afterShow': function () {
+//                        setTimeout("$('#panemask').hideLoading()", 10000);
+//                    }
+//                }
+//                );
+
                 var vv = new Array();
-                if (selects.length == 0) {
-                    layerAler(langs1[73][lang]);   //请勾选表格数据
-                    return;
-                }
-
-                var vv = [];
-                vv.push(0);
-                var iii = 0;
-                for (var i = 0; i < selects.length; i++) {
-                    var ele = selects[i];
-                    if (ele.l_deplayment == "1") {
-                        iii += 1;
-                        var setcode = ele.l_code;
-                        var l_code = parseInt(setcode);
-                        var a = l_code >> 8 & 0x00FF;
-                        var b = l_code & 0x00ff;
-                        vv.push(b);//装置序号  2字节            
-                        vv.push(a);//装置序号  2字节           
-                    }
-                }
-                vv[0] = iii;
-                var comaddr = selects[0].l_comaddr;
+                vv.push(1);
+                var setcode = l_code;
+                var l_code = parseInt(setcode);
+                var a = l_code >> 8 & 0x00FF;
+                var b = l_code & 0x00ff;
+                vv.push(b);//装置序号  2字节            
+                vv.push(a);//装置序号  2字节    
                 var num = randnum(0, 9) + 0x70;
-                var data = buicode(comaddr, 0x04, 0xAC, num, 0, 40, vv);
-
-                dealsend2("AC", data, 40, "tourlampCB", comaddr, 0, 0, 0);
+                var l_comaddr = comaddr.toString();
+                console.log(typeof l_comaddr);
+                var data = buicode(l_comaddr, 0x04, 0xAC, num, 0, 40, vv);
+                console.log(data);
+                dealsend2("AC", data, 40, "tourlampCB", l_comaddr, 0, 0, 0);
                 $('#panemask').showLoading({
                     'afterShow': function () {
                         setTimeout("$('#panemask').hideLoading()", 10000);
@@ -579,7 +641,7 @@
                         var l_codestr = "装置号:" + l_code.toString() + "<br>";
                         var voltagestr = "电压：" + voltage + "<br>";
                         var electricstr = "电流：" + electric + "<br>";
-                        var activepowerstr = "有功功率：" + activepower + "(w)<br>";
+                        var activepowerstr = "有功功率：" + activepower.toFixed(2) + "(w)<br>";
                         var l_valuestr = "调光值：" + l_value + "<br>";
                         var worktypstr = "工作方式:" + objwork[s2 & 3] + "<br>";
                         var n = s2 >> 2 & 0x1;
@@ -606,7 +668,9 @@
                 }
             }
 
-
+            function test(comaddr, l_code) {
+                alert(comaddr);
+            }
             $(function () {
                 var aaa = $("span[name=xxx]");
                 for (var i = 0; i < aaa.length; i++) {
@@ -709,11 +773,6 @@
 
                                     }
                                 }
-
-
-
-
-
                             }
                         },
                         {
@@ -745,11 +804,13 @@
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
-                                if (value == 1) {
-                                    return "<img  src='img/online1.png'/>";  //onclick='hello()'
-
+                                if (value == 1) { //data-toggle="tooltip"
+                                    var str = '<img data-toggle="tooltip"  src="img/online1.png" onclick="tourlamp(' + row.l_comaddr + ',' + row.l_code + ')" />';
+//                                    var str = '<a href="#"  class="tooltip-show" data-toggle="tooltip" title="show">' + str1 + '</a>';
+                                    return  str;
                                 } else {
-                                    return "<img  src='img/off.png'/>";  //onclick='hello()'
+                                    var str = '<img data-toggle="tooltip"  src="img/off.png" onclick="tourlamp(' + row.l_comaddr + ',' + row.l_code + ')" />';
+                                    return str;
                                 }
                             }
                         }],
@@ -864,11 +925,6 @@
 
 
                 });
-
-
-
-
-
 
 
 
@@ -1177,7 +1233,7 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <button   type="button" onclick="tourlamp()" class="btn btn-success btn-xm"><span name="xxxx" id="403">巡测灯具状态</span></button>
+                                    <button   type="button" onclick="tourControllamp()" class="btn btn-success btn-xm"><span name="xxxx" id="403">巡测所有灯具状态</span></button>
                                 </td>
 
                             </tr>

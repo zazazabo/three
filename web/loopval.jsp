@@ -33,8 +33,40 @@
                 var a1 = s1 & 1 == 1 ? "手动" : "自动";
                 var a2 = s1 >> 1 & 1 == 1 ? "经纬度" : "时间表";
                 var a3 = s1 >> 2 & 1 == 1 ? "闭合" : "断开"
+
+                var l_switch = s1 >> 2 & 1 == 1 ? 85 : 170;
                 var str = "运行方式:" + a1 + "<br>" + "运行方案:" + a2 + "<br>" + "当前状态:" + a3;
+                var o = {id: obj.val, l_switch: l_switch};
+                $.ajax({async: false, url: "loop.loopForm.modifySwitch.action", type: "get", datatype: "JSON", data: o,
+                    success: function (data) {
+                        var arrlist = data.rs;
+                        if (arrlist.length == 1) {
+                            //var  index= $element.data('index');
+                            //var index = $("#gravidaTable").bootstrapTable("getRowByUniqueId",o.id);
+//                            console.log(o);
+//                            var oldRow = $("#gravidaTable").bootstrapTable("getRowByUniqueId", '94');
+//                            console.log(oldRow);
+                            // $("#gravidaTable").bootstrapTable('updateCell', {index: obj.val, field: "l_switch", value: a3});
+                            // $("#gravidaTable").bootstrapTable('updateCell', {0, field: "l_switch", value: a3});
+
+                            var selects = $('#gravidaTable').bootstrapTable('getSelections');
+                            var ele = selects[0];
+                            console.log(ele);
+                            $("#gravidaTable").bootstrapTable('updateCell', {index: ele.index, field: "l_switch", value: l_switch});
+
+
+
+
+
+                        }
+                    },
+                    error: function () {
+                        alert("提交失败！");
+                    }
+                });
+
                 layerAler(str);
+
             }
             function tourloop() {
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
@@ -56,7 +88,7 @@
                 var num = randnum(0, 9) + 0x70; //随机帧序列号
                 var comaddr = ele.l_comaddr;
                 var data = buicode(comaddr, 0x04, 0xAC, num, 0, 608, vv); //0320    
-                dealsend2("AC", data, 608, "tourloopCB", comaddr, 0, 0, 0);
+                dealsend2("AC", data, 608, "tourloopCB", comaddr, 0, 0, ele.id);
                 $('#panemask').showLoading({
                     'afterShow': function () {
                         setTimeout("$('#panemask').hideLoading()", 10000);
@@ -211,6 +243,17 @@
                     exportDataType: "basic", //basic', 'a
                     //url: "loop.loopForm.getLoopList.action",
                     columns: [
+                        {
+                            //field: 'Number',//可不加  
+                            title: '序号', //标题  可不加  
+                            align: "center",
+                            width: "132px",
+                            visible: false,
+                            formatter: function (value, row, index) {
+                                row.index = index;
+                                return index + 1;
+                            }
+                        },
                         {
                             title: '单选',
                             field: 'select',

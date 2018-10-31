@@ -33,9 +33,70 @@
                 offset: 'center'
             });
         }
+        function readPreWarningCB(obj) {
+            var v = Str2BytesH(obj.data);
+            var s = "";
+            for (var i = 0; i < v.length; i++) {
 
+                s = s + sprintf("%02x", v[i]) + " ";
+            }
 
+            var status = v[18];
+            for (var i = 0; i < 8; i++) {
+                var n = status >> i & 0x1;
+                console.log(n);
+                if (n == 1) {
 
+                    $("#prewarningtable").bootstrapTable('check', i);
+                } else {
+                    $("#prewarningtable").bootstrapTable('uncheck', i);
+                }
+
+            }
+        
+
+        }
+        function readPreWarning() {
+
+            var obj = $("#form1").serializeObject();
+            var vv = [];
+            var comaddr = obj.l_comaddr;
+            var num = randnum(0, 9) + 0x70;
+            var data = buicode(comaddr, 0x04, 0xAA, num, 0, 602, vv); //01 03 F24    
+            dealsend2("AA", data, 602, "readWarningCB", comaddr, 0, 0, 0);
+
+        }
+        function readWarningCB(obj) {
+            var v = Str2BytesH(obj.data);
+            var s = "";
+            for (var i = 0; i < v.length; i++) {
+
+                s = s + sprintf("%02x", v[i]) + " ";
+            }
+            console.log(s);
+            var status = v[18];
+            for (var i = 0; i < 8; i++) {
+                var n = status >> i & 0x1;
+                console.log(n);
+                if (n == 1) {
+
+                    $("#warningtable").bootstrapTable('uncheck', i);
+                } else {
+                    $("#warningtable").bootstrapTable('check', i);
+                }
+
+            }
+                layerAler("读取成功");
+
+        }
+        function readWarning() {
+            var obj = $("#form1").serializeObject();
+            var vv = [];
+            var comaddr = obj.l_comaddr;
+            var num = randnum(0, 9) + 0x70;
+            var data = buicode(comaddr, 0x04, 0xAA, num, 0, 604, vv); //01 03 F24    
+            dealsend2("AA", data, 604, "readWarningCB", comaddr, 0, 0, 0);
+        }
         $(function () {
             var aaa = $("span[name=xxx]");
             for (var i = 0; i < aaa.length; i++) {
@@ -64,8 +125,8 @@
 
             var data2 = [{"name": "灯控器故障开关"}, {"name": "温度故障开关"}, {"name": "超负荷故障开关"}, {"name": "功率因数过低故障开关"}, {"name": "时钟故障开关"}, {"name": "集中器与灯控器通信中断"}, {"name": "灯珠故障"}, {"name": "电源故障"}];
 
-
-            var str = "<button  type='button'  onclick='setPreWarning()' class='btn btn-success btn-sm'>"+langs1[214][lang]+"</button>";  //设置灯具预警参数
+//&nbsp;&nbsp;<button  type='button'  onclick='readPreWarning()' class='btn btn-success btn-sm'>" + langs1[418][lang] + "</button>
+            var str = "<button  type='button'  onclick='setPreWarning()' class='btn btn-success btn-sm'>" + langs1[214][lang] + "</button> ";  //设置灯具预警参数
             $('#prewarningtable').bootstrapTable({
                 columns: [[{
                             title: str,
@@ -103,7 +164,8 @@
 
             });
 
-            var str1 = "<button   type='button'  onclick='setWarning()' class='btn btn-success btn-sm'>"+langs1[215][lang]+"</button>";  //设置灯具报警参数
+            var str1 = "<button   type='button'  onclick='setWarning()' class='btn btn-success btn-sm'>" + langs1[215][lang] + "</button>" ;  //设置灯具报警参数
+//            &nbsp;&nbsp;&nbsp; <button   type='button'  onclick='readWarning()' class='btn btn-success btn-sm'>" + langs1[417][lang] + "</button>"
             $('#warningtable').bootstrapTable({
                 columns: [[{
                             title: str1,
@@ -124,7 +186,7 @@
                             valign: 'middle'
                         }, {
                             field: 'name',
-                            title: langs1[216][lang],  //报警参数
+                            title: langs1[216][lang], //报警参数
                             width: 25,
                             align: 'center',
                             valign: 'middle'

@@ -2,7 +2,7 @@
 <xforms>
     <xform desc="回路" id="loopForm">
         <xhandle desc="查询回路表" id="getLoopList" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT * FROM  t_loop  WHERE @CONDITION  " var="bootstrap">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT *,id as uniqueId FROM  t_loop  WHERE @CONDITION  " var="bootstrap">
                 <xflt id="CONDITION" nrp="" tpl="@l_comaddr AND @l_code AND @l_deplayment  AND @pid">
                     <xfltpara id="l_comaddr" nrp="1=1" para="l_comaddr" sql="l_comaddr = ':l_comaddr'">
                     </xfltpara>

@@ -949,6 +949,16 @@
                 });
 
                 $("#pojects").change(function () {
+                    var user = new Object();
+                    user.begin = '6A';
+                    user.res = 0;
+                    user.status = "";
+                    user.msg = "CheckLamp";
+                    user.val = getpojectId();
+                    user.data = "aa";
+                    user.end = '6A';
+                    console.log(user);
+                    sendData(user);
                     fualtCount();
                     $(".MenuBox .list:eq(0)").click();
 
