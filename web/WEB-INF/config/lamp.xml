@@ -151,7 +151,7 @@
                 </xflt>
             </xsql>
         </xhandle>
-        <xhandle desc="修改灯具所在的时间表" id="modifylampplanscene" rtnype="JSON">
+        <xhandle desc="修改灯具所在的场景表" id="modifylampplanscene" rtnype="JSON">
             <xsql id="a1" para="l_planscene" tpe="DDL" tpl="update t_lamp set l_planscene=':l_planscene' where l_deplayment=1 AND @CONDITION " var="rs">
                 <xflt id="CONDITION" tpl="@l_comaddr AND @l_groupe ">
                     <xfltpara id="l_comaddr" nrp="1=2" para="l_comaddr" sql="l_comaddr=':l_comaddr'"></xfltpara>

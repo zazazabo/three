@@ -454,9 +454,9 @@
         <xhandle desc="查看操作日志信息" id="oplogInfo" rtn="rs" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_oplog where  @CONDITION order by o_time desc" var="bootstrap">
                 <xflt id="CONDITION" nrp="" tpl="@o_time AND @end AND @o_pid">
-                    <xfltpara id="o_time" nrp="1=1" para="statr" sql="o_time &gt;=  ':statr' ">
+                    <xfltpara id="o_time" nrp="1=1" para="statr" sql="o_time &gt;=  ':statr 00:00:00'  ">
                     </xfltpara>
-                    <xfltpara id="end" nrp="1=1" para="end" sql="o_time &lt;=  ':end' ">
+                    <xfltpara id="end" nrp="1=1" para="end" sql="o_time &lt;=  ':end 23:59:59' ">
                     </xfltpara>
                     <xfltpara id="o_pid" nrp="1=1" para="pid" sql="o_pid like  '%:pid%' ">
                     </xfltpara>
