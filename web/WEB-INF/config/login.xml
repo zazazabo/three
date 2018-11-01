@@ -61,9 +61,13 @@
         </xhandle>
               
         <xhandle desc="查询所有故障信息" id="faultInfo" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select *  from t_fault where f_Isfault is null AND @CONDITION" var="bootstrap">
-                <xflt id="CONDITION" nrp="" tpl="@pid">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select *  from t_fault where f_Isfault is null AND @CONDITION order by f_day desc" var="bootstrap">
+                <xflt id="CONDITION" nrp="" tpl="@pid AND @f_comaddr AND @l_factorycode">
                     <xfltpara id="pid" nrp="1=1" para="pid" sql="f_comaddr in (select comaddr from t_baseinfo where pid=':pid')">
+                    </xfltpara>
+                    <xfltpara id="f_comaddr" nrp="1=1" para="f_comaddr" sql="f_comaddr=':f_comaddr'">
+                    </xfltpara>
+                    <xfltpara id="l_factorycode" nrp="1=1" para="l_factorycode" sql="l_factorycode=':l_factorycode'">
                     </xfltpara>
                 </xflt>
             </xsql>

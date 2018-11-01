@@ -233,6 +233,22 @@
                 var upid = $("#upid").val();
                 return upid;
             }
+            //查询
+            function select() {
+                var pid = $("#pojects").val();
+                var obj2 = {};
+                obj2.pid = pid;
+                obj2.f_comaddr = $("#comaddrlist").val();
+                obj2.l_factorycode = $("#l_factorycode").val();
+                var opt = {
+                    method: "post",
+                    contentType: "application/x-www-form-urlencoded",
+                    url: "login.main.faultInfo.action",
+                    silent: true,
+                    query: obj2
+                };
+                $("#fauttable").bootstrapTable('refresh', opt);
+            }
 
             //处理异常
             function handle() {
@@ -244,14 +260,14 @@
                 for (var i = 0; i < checks.length; i++) {
                     //console.log(checks[i].id);
                     var obj = {};
-                    obj.id=checks[i].id;
+                    obj.id = checks[i].id;
                     $.ajax({async: false, url: "login.main.updfualt.action", type: "get", datatype: "JSON", data: obj,
                         success: function (data) {
                         }
                     });
 
                 }
-                
+
                 var pid = $("#pojects").val();
                 var obj2 = {};
                 obj2.pid = pid;
@@ -263,6 +279,7 @@
                     query: obj2
                 };
                 $("#fauttable").bootstrapTable('refresh', opt);
+                fualtCount();
 
 
             }
@@ -382,7 +399,7 @@
             }
             //点击告警信息
             function imgM() {
-                $("#faultDiv").modal("show");
+//                $("#faultDiv").modal("show");
                 var pid = $("#pojects").val();
                 var obj = {};
                 obj.pid = pid;
@@ -395,6 +412,13 @@
                 };
                 $("#fauttable").bootstrapTable('refresh', opt);
 
+                $("#comaddrlist").combobox({
+                    url: "login.map.getallcomaddr.action?pid=" + pid,
+                    onLoadSuccess: function (data) {
+                        $(this).combobox("select", data[0].id);
+                        $(this).val(data[0].text);
+                    }
+                });
             }
 
             //获取语言
@@ -484,7 +508,7 @@
             });
         </script>
     </head>
-    <body>
+    <body id="panemask">
 
         <div class="wraper"> 
             <div class="bodyLeft" style="background: rgb(14, 98, 199) none repeat scroll 0% 0%;">
@@ -542,7 +566,7 @@
 
                             </select>
                         </li>
-                        <li class="one imgM" id ="imgM" onclick="imgM()" title="告警信息">
+                        <li class="one imgM" id ="imgM" onclick="imgM()" title="告警信息" data-toggle="modal" data-target="#faultDiv">
                             <img src="img/xx.png" class="alarmLi">
                             <div class="alarmNub alarmLi" id="alarmNumber">0</div>
                         </li>
@@ -628,7 +652,7 @@
             </div>
         </div>
 
-        <div class="modal" id="faultDiv" data-backdrop="static">
+        <div class="modal" id="faultDiv" data-backdrop="static" >
             <div class="modal-dialog">
                 <div class="modal-content" style="min-width:800px;">
                     <div class="modal-header">
@@ -641,20 +665,20 @@
                             <tbody class="search">
                                 <tr>
                                     <td>
-                                        <span style="margin-left:0px;" id="292" name="xxx">
-                                            灯具编号
-                                        </span>&nbsp;
-                                        <input type="text" id ="area" style="width:150px; height: 30px;">
-                                    </td>
-                                    <td>
-                                        <span style="margin-left:30px;">                                     
+                                        <span style="margin-left:10px;">                                     
                                             <span id="25" name="xxx">网关地址</span>
                                             &nbsp;</span>
                                         <input id="comaddrlist" data-options='editable:false,valueField:"id", textField:"text"' class="easyui-combobox"/>
                                     </td>
                                     <td>
+                                        <span style="margin-left:20px;" id="292" name="xxx">
+                                            灯具编号
+                                        </span>&nbsp;
+                                        <input type="text" id ="l_factorycode" style="width:150px; height: 30px;">
+                                    </td>
+                                    <td>
                                         <!-- <input type="button" class="btn btn-sm btn-success" onclick="selectlamp()" value="搜索" style="margin-left:10px;">-->
-                                        <button class="btn btn-sm btn-success" onclick="" style="margin-left:10px;"><span id="34" name="xxx">搜索</span></button>
+                                        <button class="btn btn-sm btn-success" onclick="select()" style="margin-left:10px;"><span id="34" name="xxx">搜索</span></button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -739,16 +763,6 @@
                 $(".MenuBox .list:eq(0)").click();
             }
 
-
-
-
-
-
-
-
-
-
-
             $(function () {
                 var pid = '${rs[0].pid}';
                 var pids = pid.split(",");   //项目编号
@@ -796,7 +810,19 @@
                             title: o[82][lang], //时间
                             width: 25,
                             align: 'center',
-                            valign: 'middle'
+                            valign: 'middle',
+                            formatter: function (value) {
+                                var date = new Date(value);
+                                var year = date.getFullYear();
+                                var month = date.getMonth() + 1; //月份是从0开始的 
+                                var day = date.getDate(), hour = date.getHours();
+                                var min = date.getMinutes(), sec = date.getSeconds();
+                                var preArr = Array.apply(null, Array(10)).map(function (elem, index) {
+                                    return '0' + index;
+                                });////开个长度为10的数组 格式为 00 01 02 03 
+                                var newTime = year + '-' + (preArr[month] || month) + '-' + (preArr[day] || day) + ' ' + (preArr[hour] || hour) + ':' + (preArr[min] || min) + ':' + (preArr[sec] || sec);
+                                return newTime;
+                            }
                         }, {
                             field: 'f_type',
                             title: o[121][lang], //异常类型
@@ -884,15 +910,15 @@
                             search: params.search,
                             skip: params.offset,
                             limit: params.limit,
-                            type_id: "1"            
+                            type_id: "1",
+                            pageSize: params.limit,
+                            f_comaddr: "", // = $("#comaddrlist").val();
+                            l_factorycode: "", // = $("#l_factorycode").val();
+                            pid: $("#pojects").val()
                         };      
                         return temp;  
                     }
                 });
-
-
-
-
 
                 $("body").delegate(".list", "click", function () {
                     if ($(this).siblings(".secondMenu").length != 0) {
@@ -1004,7 +1030,8 @@
 
 
 
-            });
+            }
+            );
 
             $(function () {
 
@@ -1028,7 +1055,12 @@
                     sendData(user);
                     fualtCount();
                     $(".MenuBox .list:eq(0)").click();
+                    $('#panemask').showLoading({
+                        'afterShow': function () {
+                            setTimeout("$('#panemask').hideLoading()", 3000);
+                        }
 
+                    });
                 });
             });
 

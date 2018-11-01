@@ -705,7 +705,7 @@
             function ZoomControl() {
                 // 默认停靠位置和偏移量
                 this.defaultAnchor = BMAP_ANCHOR_TOP_LEFT;
-                this.defaultOffset = new BMap.Size(500, 5);
+                this.defaultOffset = new BMap.Size(450, 5);
             }
 
             // 通过JavaScript的prototype属性继承于BMap.Control

@@ -222,12 +222,13 @@
                 background: #fff;
             }
             .echarts3 {
-                width: 45%;
+                width: 39%;
                 height: 95%;
                 float: left;
+/*                float: right;*/
                 display: inline;
                 margin-top: 20px;
-                margin-left: 20px;
+/*                margin-left: 20px;*/
             }
             .bottomRight {
                 float: left;
@@ -869,8 +870,8 @@
             </div>
 
             <!--横向对比分析-->
-            <div class="topTitle" style="position:absolute;top:2%;left:61%;color:#000;font-size:20px;font-weight:600;">
-
+            <div class="topTitle" style="position:absolute;top:2%;left:60%;color:#000;font-size:20px;font-weight:600;">
+<!--                 position:absolute;top:2%;left:61%;color:#000;font-size:20px;font-weight:600;-->
                 <!-- 横向对比分析-->
                 <span id="15" name="xxx">横向对比分析</span>
             </div>
