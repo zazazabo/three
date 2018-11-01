@@ -182,7 +182,7 @@
             }
             .topCenter3Mess {
                 position: relative;
-                width: 10%;
+                width: 9%;
                 float: left;
                 display: inline;
                 height: 90%;
@@ -222,7 +222,7 @@
                 background: #fff;
             }
             .echarts3 {
-                width: 39%;
+                width: 40%;
                 height: 95%;
                 float: left;
 /*                float: right;*/
@@ -288,9 +288,10 @@
                 var wgsum = ${rs[0].num}; //网关总数
                 var online = ${onlineNumber[0].num};  //在线数
                 var noline = wgsum - online;  //网不在线数
-                var lonlime =  ${lampNumber[0].num} -${lamponline[0].num};
+                var faults = ${rs2[0].num};  //灯具异常数
+                var lonlime =  ${lampNumber[0].num} -${lamponline[0].num}-${rs2[0].num};
                 $("#wgms").html("集中器（在线：${onlineNumber[0].num} 离线："+noline+"）");
-                $("#djms").html("灯具（在线：${lamponline[0].num} 离线："+lonlime+"）");
+                $("#djms").html("灯具（在线：${lamponline[0].num} 离线："+lonlime+" 异常："+faults+"）");
                 //计划能耗
             <c:if test="${fn:length(rs4)==0}">
                 planvalue = "";
@@ -779,12 +780,12 @@
                         <img src="img/dp.png"></span>
                     <div class="Mess lightingRate">
                         <span>
-                            <c:if test="${rs1[0].count-rs2[0].count<=0}">
+                            <c:if test="${rs1[0].num-rs2[0].num<=0}">
                                 0%
                             </c:if>
 
-                            <c:if test="${rs1[0].count-rs2[0].count>0}">
-                                ${(rs1[0].count-rs2[0].count)/rs1[0].count * 100}%
+                            <c:if test="${rs1[0].num-rs2[0].num>0}">
+                                ${(rs1[0].num-rs2[0].num)/rs1[0].num * 100}%
                             </c:if> 
                         </span>
                         <span name="xxx" id="6"> 亮灯率</span>

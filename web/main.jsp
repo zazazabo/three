@@ -26,6 +26,8 @@
             }
         </style>
         <script>
+            var o = {};
+            var lang;
             var eventobj = {
                 "ERC44": {
                     "status1": {
@@ -157,8 +159,6 @@
 
                 }
             };
-            var o = {};
-            var lang = getCookie("lang");
             var websocket = null;
             var conectstr = "ws://103.46.128.47:18414/";
             var timestamp = 0;
@@ -399,7 +399,7 @@
             }
             //点击告警信息
             function imgM() {
-//                $("#faultDiv").modal("show");
+                $('#faultDiv').dialog('open');
                 var pid = $("#pojects").val();
                 var obj = {};
                 obj.pid = pid;
@@ -459,7 +459,7 @@
                 websocket.close();
             }
             $(function () {
-
+            lang = getCookie("lang");
             <c:forEach items="${lans}" var="t" varStatus="i">
                 var id =${t.id};
                 var zh_CN1 = "${empty t.zh_CN?"":t.zh_CN}";
@@ -468,7 +468,6 @@
 
                 o[id] = {zh_CN: zh_CN1, en_US: en_US1, e_BY: e_BY1};
             </c:forEach>
-                //  console.log(o);
                 var aaa = $("span[name=xxx]");
                 for (var i = 0; i < aaa.length; i++) {
                     var d = aaa[i];
@@ -566,7 +565,7 @@
 
                             </select>
                         </li>
-                        <li class="one imgM" id ="imgM" onclick="imgM()" title="告警信息" data-toggle="modal" data-target="#faultDiv">
+                        <li class="one imgM" id ="imgM" onclick="imgM()" title="告警信息">
                             <img src="img/xx.png" class="alarmLi">
                             <div class="alarmNub alarmLi" id="alarmNumber">0</div>
                         </li>
@@ -652,53 +651,32 @@
             </div>
         </div>
 
-        <div class="modal" id="faultDiv" data-backdrop="static" >
-            <div class="modal-dialog">
-                <div class="modal-content" style="min-width:800px;">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">
-                            <span style="font-size:20px ">×</span></button>
-                        <span class="glyphicon glyphicon-floppy-disk" style="font-size: 20px"></span>
-                        <h4 class="modal-title" style="display: inline;"><label name="xxx" id="274">告警信息</label></h4></div>    
-                    <div class="modal-body">
-                        <table>
-                            <tbody class="search">
-                                <tr>
-                                    <td>
-                                        <span style="margin-left:10px;">                                     
-                                            <span id="25" name="xxx">网关地址</span>
-                                            &nbsp;</span>
-                                        <input id="comaddrlist" data-options='editable:false,valueField:"id", textField:"text"' class="easyui-combobox"/>
-                                    </td>
-                                    <td>
-                                        <span style="margin-left:20px;" id="292" name="xxx">
-                                            灯具编号
-                                        </span>&nbsp;
-                                        <input type="text" id ="l_factorycode" style="width:150px; height: 30px;">
-                                    </td>
-                                    <td>
-                                        <!-- <input type="button" class="btn btn-sm btn-success" onclick="selectlamp()" value="搜索" style="margin-left:10px;">-->
-                                        <button class="btn btn-sm btn-success" onclick="select()" style="margin-left:10px;"><span id="34" name="xxx">搜索</span></button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <hr>
-                        <table id="fauttable">
+       <div id="faultDiv"  class=""  style=" display: none" title="告警信息">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            <span style="margin-left:10px;">                                     
+                                <span id="25" name="xxx">网关地址</span>
+                                &nbsp;</span>
+                            <input id="comaddrlist" data-options='editable:false,valueField:"id", textField:"text"' class="easyui-combobox"/>
+                        </td>
+                        <td>
+                            <span style="margin-left:20px;" id="292" name="xxx">
+                                灯具编号
+                            </span>&nbsp;
+                            <input type="text" id ="l_factorycode" style="width:150px; height: 30px;">
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-success" onclick="select()" style="margin-left:10px;"><span id="34" name="xxx">搜索</span></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <hr>
+            <table id="fauttable">
 
-                        </table>
-                        <!--                        <table id="peopletable"></table>-->
-                    </div>
-                    <!-- 注脚 -->
-                    <div class="modal-footer" id="modal_footer_edit" >
-                        <!--                         添加按钮 -->
-                        <button type="button" onclick="handle()" class="btn btn-primary">处理报警</button>
-                        <!-- 关闭按钮 -->
-                        <button type="button" class="btn btn-default" data-dismiss="modal"><label name="xxx" id="57">关闭</label></button>
-                    </div>
-
-                </div>
-            </div>
+            </table>
         </div>
 
         <iframe id="alarmTable" src="abc.action_files/warningToday.htm" name="alarmTable" frameborder="0">
@@ -762,7 +740,6 @@
             </c:forEach>
                 $(".MenuBox .list:eq(0)").click();
             }
-
             $(function () {
                 var pid = '${rs[0].pid}';
                 var pids = pid.split(",");   //项目编号
@@ -801,13 +778,13 @@
                             valign: 'middle'
                         }, {
                             field: 'f_comaddr',
-                            title: o[120][lang], //设备名称
+                            title: '设备名称', //设备名称 o[120][lang]
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'f_day',
-                            title: o[82][lang], //时间
+                            title: '时间' , //时间 o[82][lang]
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -825,19 +802,19 @@
                             }
                         }, {
                             field: 'f_type',
-                            title: o[121][lang], //异常类型
+                            title:'异常类型' , //异常类型 o[121][lang]
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'f_comment',
-                            title: o[123][lang], //异常说明
+                            title: '异常说明', //异常说明 o[123][lang]
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_factorycode',
-                            title: o[292][lang], //灯具编号
+                            title: '灯具编号' , //灯具编号  o[292][lang]
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -1061,6 +1038,21 @@
                         }
 
                     });
+                });
+                
+                $("#faultDiv").dialog({
+                    autoOpen: false,
+                    modal: true,
+                    width: 700,
+//                    height: 350,
+                    position: ["top", "top"],
+                    buttons: {
+                        处理报警: function () {
+                            handle();
+                        }, 关闭: function () {
+                            $("#faultDiv").dialog("close");
+                        }
+                    }
                 });
             });
 

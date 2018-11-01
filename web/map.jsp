@@ -723,7 +723,8 @@
                 text.setAttribute("type", "text");
                 text.setAttribute("value", "");
                 text.setAttribute("id", "showtext");
-                text.setAttribute("style", "margin-right: 100px");
+                text.setAttribute("style", "margin-right: 40px;");
+                text.setAttribute("readonly", "readonly");
                 div.appendChild(text);
                 button1.setAttribute("type", "text");
                 button1.setAttribute("value", "");
