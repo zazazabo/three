@@ -457,7 +457,7 @@
 
         <form id="searchForm">
             <div class="row" style=" border: 1px solid #16645629; margin-left: 20px; margin-top: 10px; "  >
-                <div class="col-md-3" id="div1" style="display:none">  
+                <div class="col-sm-3" id="div1" style="display:none">  
                     <div class="input-group input-inline-sm col-sm-12" >  
                         <span class="input-group-addon " id="82" name="xxx" >时间</span>  
                         <input type="text" class="form-control form_datetime" name="d1"  readOnly id="timeMin1" onchange="changeTime(1)">  
@@ -466,7 +466,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-3" id="div2" style="display:none">  
+                <div class="col-sm-3" id="div2" style="display:none">  
                     <div class="input-group input-inline-sm col-sm-12" >  
                         <span class="input-group-addon " id="82" name="xxx" >时间</span>  
                         <input type="text" class="form-control form_datetime2" name="m1"  readOnly id="timeMin2" onchange="changeTime(3)">  
@@ -475,7 +475,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-3" id="div3">  
+                <div class="col-sm-3" id="div3">  
                     <div class="input-group input-inline-sm col-sm-12" >  
                         <span class="input-group-addon " id="82" name="xxx" >时间</span>  
                         <input type="text" class="form-control form_datetime3" name="y1"  readOnly id="timeMin3" onchange="changeTime(5)">  
@@ -483,7 +483,7 @@
                         <input type="text" class="form-control form_datetime3" name="y2"   readOnly id="timeMax3" onchange="changeTime(6)">
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-xs-3">
                     <button type="button" class="btn btn-success btn-sm" onclick="search();">
                         <span id="34" name="xxx">搜索</span>
                     </button>
