@@ -514,22 +514,7 @@
                             // console.log(data);
                             var arrlist1 = data.rs;
                             if (arrlist1.length == 1) {
-                                var id = arrlist1[0].id;
-//                                window.location = "login.main.home.action?id=" + id;
-                                var nobj = {};
-                                nobj.name = name;
-                                var day = getNowFormatDate2();
-                                nobj.time = day;
-                                nobj.type = "登陆";
-                                nobj.pid = arrlist1[0].pid;
-                                $.ajax({async: false, url: "login.oplog.addoplog.action", type: "get", datatype: "JSON", data: nobj,
-                                    success: function (data) {
-                                        var arrlist = data.rs;
-                                        if (arrlist.length > 0) {
-
-                                        }
-                                    }
-                                });
+                                addlogon(name, "登陆",arrlist1[0].pid, "登陆", "登陆");
 
                                 var o1 = arrlist1[0];
                                 o1.role = arrlist1[0].m_code;

@@ -367,17 +367,17 @@
     </head>
     <body>
 
-        <div class="panel panel-success" >
+        <div class="panel panel-success">
             <div class="panel-heading">
                 <h3 class="panel-title"><span name="xxx" id="243">权限分配</span></h3>
             </div>
             <div class="panel-body" >
-                <div class="container"  >
-                    <div class="row">
-                        <div class="col-xs-3">
+                <div class="container" style="width: 100%"  >
+                    <div class="" style=" width: 100%;">
+                        <div class="" style="width:20%;float: left;">
                             <ul id="treeDemo" class="ztree"></ul>
                         </div>
-                        <div class="col-xs-2" style="  align-items: center">
+                        <div class="" style="align-items: center;width:10%; float: left;">
                             <div id="btnauthor" style=" display: none;" >
 
                                 <button class="btn btn-success" onclick="addauthor()" style="  margin-top: 20px"><span name="xxx" id="244">分配权限</span></button>
@@ -386,11 +386,11 @@
 
                         </div>
 
-                        <div class="col-xs-3" style=" width: 20%;">
-                            <span class="label label-success label-lg " style=" width: 30%;" name="xxx" id="245">角色列表</span>
+                        <div class="" style=" width: 30%; float: left; margin-top: 2%;">
+                            <span style=" width: 30%;" name="xxx" id="245">角色列表</span>
                             <input id="role" class="easyui-combobox" name="role" style="width:60%; height: 34px" data-options="editable:true,valueField:'id', textField:'text',url:'login.usermanage.rolemenu.action?parent_id=${param.role}'" />
                         </div>
-                        <div class="col-xs-4" style=" width: 33%; margin-left: 5%;">
+                        <div class="" style=" width: 30%; margin-left: 5%; float: left; margin-top: 2%;">
                             <span style=" width: 30%;" name="xxx" id="246">角色名称</span>&nbsp;
                             <input id="rolename" class="form-control" name="rolename" style="width:40%;display: inline;" placeholder="请输入角色名称" type="text">
                             <button id="btnrole" onclick="addrole()" class="btn btn-success" style=" width: 30%;"><span name="xxx" id="247">生成角色</span></button>

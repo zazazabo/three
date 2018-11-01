@@ -316,7 +316,10 @@
                             search: params.search,
                             skip: params.offset,
                             limit: params.limit,
-                            type_id: "1"    
+                            type_id: "1",
+                            statr:$("#sday").val(),
+                            end :$("#eday").val()
+                               
                         };      
                         return temp;  
                     },
@@ -343,6 +346,7 @@
                     } else {
                         obj.end = end;
                     }
+                    obj.pid  = pid;
                     var opt = {
                         url: "login.policereord.reordInfo.action",
                         silent: true,

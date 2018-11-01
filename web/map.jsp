@@ -270,7 +270,8 @@
 
             var l_comaddr; //灯具所属网关
             var l_code;  //装置序号
-
+            var name = parent.parent.getusername();
+            var pid = parent.parent.getpojectId();
             function lightCB1(obj) {
                 if (obj.status == "success") {
 
@@ -283,6 +284,7 @@
                         o.comaddr = comaddr;
                         o.l_code = l_code;
                         o.l_value = val;
+                        addlogon(name, "开灯",pid, "地图导航", "开灯",comaddr);
                         $.ajax({async: false, url: "login.map.lampval.action", type: "get", datatype: "JSON", data: o,
                             success: function (data) {
                                 var arrlist = data.rs;
@@ -311,6 +313,7 @@
                         o.comaddr = comaddr;
                         o.l_code = l_code;
                         o.l_value = val;
+                        addlogon(name, "关灯",pid, "地图导航", "关灯",comaddr);
                         $.ajax({async: false, url: "login.map.lampval.action", type: "get", datatype: "JSON", data: o,
                             success: function (data) {
                                 var arrlist = data.rs;
@@ -361,6 +364,7 @@
                         o.comaddr = comaddr;
                         o.l_code = l_code;
                         o.l_value = val;
+                        addlogon(name, "调光",pid, "地图导航", "单灯调光",comaddr);
                         $.ajax({async: false, url: "login.map.lampval.action", type: "get", datatype: "JSON", data: o,
                             success: function (data) {
                                 var arrlist = data.rs;
@@ -395,6 +399,7 @@
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 304, vv); //01 03
                 dealsend3("A5", data, 304, "sceneCB", l_comaddr, 0, 0, scenenum);
+                addlogon(name, "切换场景",pid, "地图导航", "切换场景",l_comaddr);
                 $('#switchCj').dialog("close");
             }
             //切换场景回调
@@ -410,11 +415,6 @@
             }
             //读取灯具时间表回调函数
             function readLampPlanCB(obj) {
-
-                if(obj.status == ""){
-                     layerAler("jhhjjj");
-                     return ;
-                }
                 var data = Str2BytesH(obj.data);
                 var v = "";
                 for (var i = 0; i < data.length; i++) {
@@ -705,7 +705,7 @@
             function ZoomControl() {
                 // 默认停靠位置和偏移量
                 this.defaultAnchor = BMAP_ANCHOR_TOP_LEFT;
-                this.defaultOffset = new BMap.Size(500, 5);
+                this.defaultOffset = new BMap.Size(450, 5);
             }
 
             // 通过JavaScript的prototype属性继承于BMap.Control
@@ -723,7 +723,8 @@
                 text.setAttribute("type", "text");
                 text.setAttribute("value", "");
                 text.setAttribute("id", "showtext");
-                text.setAttribute("style", "margin-right: 100px");
+                text.setAttribute("style", "margin-right: 40px;");
+                text.setAttribute("readonly", "readonly");
                 div.appendChild(text);
                 button1.setAttribute("type", "text");
                 button1.setAttribute("value", "");
@@ -985,6 +986,7 @@
                                     }
                                     var lampcode = parseInt(arrlist[i].l_factorycode);
                                     //lans[][]代表的文字依次是：亮度、名称、灯具编号、网关地址、在线情况、状态、电压、电流
+                                    var activepower = arrlist[i].activepower*1000;  //有功功率
                                     var textvalue = "<div style='line-height:1.8em;font-size:12px;'>\n\
                                    \n\
                                     <table style='text-align:center'>\n\
@@ -1011,17 +1013,21 @@
                                         </tr>\n\ \n\
                                         <tr>\n\
                                             <td>" + lans[95][lang] + ":</td>\n\
-                                            <td>" + arrlist[i].voltage + "</td>\n\
+                                            <td>" + arrlist[i].voltage + "(V)</td>\n\
                                             <td>&nbsp;&nbsp;</td>\n\
                                             <td>" + lans[96][lang] + ":</td>\n\
-                                            <td>" + arrlist[i].electric + "</td>\n\
+                                            <td>" + arrlist[i].electric + "(A)</td>\n\
                                         </tr>\n\
                                         <tr>\n\
                                             <td>" + lans[97][lang] + ":</td>\n\
-                                            <td>" + arrlist[i].activepower + "</td>\n\
+                                            <td>" + activepower + "(W)</td>\n\
                                             <td>&nbsp;&nbsp;</td>\n\
                                             <td>" + lans[413][lang] + ":</td>\n\
                                             <td>" + arrlist[i].temperature + "</td>\n\
+                                        </tr>\n\
+                                        <tr>\n\
+                                            <td>" +"抄读时间"+ ":</td>\n\
+                                            <td>" + arrlist[i].newlyread + "</td>\n\
                                         </tr>\n\
                                     </table></div>";
                                     if ((Longitude != "" && latitude != "") && (Longitude != null && latitude != null)) {
@@ -1045,7 +1051,7 @@
                                                 icon: lhui
                                             });
                                         }
-                                        var opts = {title: '<span style="font-size:14px;color:#0A8021">' + lans[404][lang] + '</span>', width: 300, height: 140};//设置信息框、信息说明
+                                        var opts = {title: '<span style="font-size:14px;color:#0A8021">' + lans[404][lang] + '</span>', width: 300, height: 170};//设置信息框、信息说明
                                         var infoWindow = new BMap.InfoWindow(textvalue, opts); // 创建信息窗口对象，引号里可以书写任意的html语句。
                                         marker1.addEventListener("mouseover", function () {
                                             this.openInfoWindow(infoWindow);

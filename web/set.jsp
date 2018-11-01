@@ -29,6 +29,33 @@
                 return reg.test(ip);
             }
 
+            function StartCheck() {
+                var o = $("#form1").serializeObject();
+                var obj = $("#form2").serializeObject();
+
+                var vv = [];
+                vv.push(1);
+                vv.push(parseInt(obj.l_groupe)); //新组号  1字节            
+                var comaddr = o.l_comaddr;
+                var num = randnum(0, 9) + 0x70;
+                var data = buicode(comaddr, 0x04, 0xA5, num, 0, 1, vv); //01 03 F24   
+                dealsend2("A5", data, 1, "allCallBack", comaddr, 0, 0, 0, 0);
+            }
+
+            function StopCheck() {
+                var o = $("#form1").serializeObject();
+                var obj = $("#form2").serializeObject();
+
+                var vv = [];
+                vv.push(1);
+                vv.push(parseInt(obj.l_groupe)); //新组号  1字节            
+                var comaddr = o.l_comaddr;
+                var num = randnum(0, 9) + 0x70;
+                var data = buicode(comaddr, 0x04, 0xA5, num, 0, 2, vv); //01 03 F24   
+                dealsend2("A5", data, 2, "allCallBack", comaddr, 0, 0, 0, 0);
+            }
+
+
             function refleshgayway(obj) {
                 var vv = [];
                 var l_comaddr = "17020101";
@@ -858,7 +885,7 @@
                 $.ajax({async: false, url: "login.rc.r.action", type: "get", datatype: "JSON", data: obj,
                     success: function (data) {
                         var list = data.cl[0];
-                       
+
                         $("#sunrise").val(list.rc);  //日出
                         $("#sunset").val(list.rl);  //日落
                         $("#sunriseSunset").show();
@@ -949,12 +976,13 @@
                                                         <option value="6">设置灯具</option> 
                                                         <option value="7">设置回路</option> 
                                                         <option value="8">设置经纬度</option> 
+                                                        <option value="9">设置巡测任务</option> 
                                                     </select>
                                                 </span>  
                                             </td>
-<!--                                            <td>
-                                                <button type="button"  onclick="refleshgayway()" class="btn  btn-success btn-sm" style="margin-left: 2px;">刷新网关在线列表</button>
-                                            </td>-->
+                                            <!--                                            <td>
+                                                                                            <button type="button"  onclick="refleshgayway()" class="btn  btn-success btn-sm" style="margin-left: 2px;">刷新网关在线列表</button>
+                                                                                        </td>-->
                                         </tr>
                                     </tbody>
                                 </table> 
@@ -1153,7 +1181,7 @@
                                                 <button  style="float:right; margin-right: 5px;" type="button" onclick="delAllplan()" class="btn btn-success btn-sm"><span name="xxx" id="210">删除全部灯时间表</span></button>
                                             </td>
                                         </tr>
-                                        
+
 
 
                                     </tbody>
@@ -1261,6 +1289,23 @@
                                 </table>
                             </div>
                         </div>
+
+                        <div class="row" id="row9"  style=" display: none">
+                            <div class="col-xs-12">
+                                <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629;">
+                                    <tbody>
+                                        <tr>
+                                            <td>       
+                                                <button  type="button" onclick="StartCheck()" class="btn btn-success btn-sm"><span id="415" name="xxx">启动巡测任务</span></button>&nbsp;
+                                                <button  type="button" onclick="StopCheck()" class="btn btn-success btn-sm"><span id="416">结束巡测任务</span></button>&nbsp;
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>                   
+
                     </form>
                 </div>
 

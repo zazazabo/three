@@ -42,18 +42,17 @@
    
         
         <xhandle desc="查看故障信息数量" id="fualtCount" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select count(id) as number from t_fault where @CONDITION" var="rs">
-                <xflt id="CONDITION" nrp="" tpl="@f_day AND @pid">
-                    <xfltpara id="f_day" nrp="1=1" para="f_day" sql="f_day=':f_day'">
-                    </xfltpara>
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select count(id) as number from t_fault where f_Isfault is null AND @CONDITION" var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@pid">
                     <xfltpara id="pid" nrp="1=1" para="pid" sql="f_comaddr in (select comaddr from t_baseinfo where pid=':pid')">
                     </xfltpara>
                 </xflt>
             </xsql>
+            
         </xhandle>
         
         <xhandle desc="修改故障信息为已读" id="updfualt" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="update t_fault set f_state = 0 where @CONDITION " var="rs">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="update t_fault set f_Isfault = 0 where  @CONDITION " var="rs">
                 <xflt id="CONDITION" nrp="" tpl="@id">
                     <xfltpara id="id" nrp="1=1" para="id" sql="id=:id">
                     </xfltpara>
@@ -62,19 +61,13 @@
         </xhandle>
               
         <xhandle desc="查询所有故障信息" id="faultInfo" rtnype="JSON">
-            <!--            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_fault where @CONDITION" var="bootstrap"> 
-                <xflt id="CONDITION" nrp="" tpl="@f_day AND @pid">
-                    <xfltpara id="f_day" nrp="1=1" para="f_day" sql="f_day=':f_day'">
-                    </xfltpara>
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select *  from t_fault where f_Isfault is null AND @CONDITION order by f_day desc" var="bootstrap">
+                <xflt id="CONDITION" nrp="" tpl="@pid AND @f_comaddr AND @l_factorycode">
                     <xfltpara id="pid" nrp="1=1" para="pid" sql="f_comaddr in (select comaddr from t_baseinfo where pid=':pid')">
                     </xfltpara>
-                </xflt>
-            </xsql>-->
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select *  from t_fault where @CONDITION" var="bootstrap">
-                <xflt id="CONDITION" nrp="" tpl="@f_day AND @pid">
-                    <xfltpara id="f_day" nrp="1=1" para="f_day" sql="f_day=':f_day'">
+                    <xfltpara id="f_comaddr" nrp="1=1" para="f_comaddr" sql="f_comaddr=':f_comaddr'">
                     </xfltpara>
-                    <xfltpara id="pid" nrp="1=1" para="pid" sql="f_comaddr in (select comaddr from t_baseinfo where pid=':pid')">
+                    <xfltpara id="l_factorycode" nrp="1=1" para="l_factorycode" sql="l_factorycode=':l_factorycode'">
                     </xfltpara>
                 </xflt>
             </xsql>
@@ -424,11 +417,11 @@
             </xsql>               
         </xhandle>
         <xhandle desc="添加警告人员信息" id="addpeople" rtn="rs" rtnype="JSON">
-            <xsql id="a1" para="u_phone,u_name,u_email,u_warntype,u_content,u_pid" tpe="DDL" tpl="insert into t_people (u_phone,u_name,u_email,u_warntype,u_content,u_pid) values (':u_phone',':u_name',':u_email',':u_warntype',':u_content',':u_pid')" var="rs">
+            <xsql id="a1" para="u_phone,u_name,u_email,u_content,u_pid" tpe="DDL" tpl="insert into t_people (u_phone,u_name,u_email,u_content,u_pid) values (':u_phone',':u_name',':u_email',':u_content',':u_pid')" var="rs">
             </xsql>
         </xhandle>
         <xhandle desc="修改警告人员信息" id="update" rtn="rs" rtnype="JSON">
-            <xsql id="a1" para="u_name,u_phone,u_email,u_warntype" tpe="DDL" tpl="update t_people set u_name =':u_name' ,u_phone =':u_phone' ,u_email =':u_email' ,u_warntype =':u_warntype' where  @CONDITION " var="rs">
+            <xsql id="a1" para="u_name,u_phone,u_email,u_content" tpe="DDL" tpl="update t_people set u_name =':u_name' ,u_phone =':u_phone' ,u_email =':u_email',u_content=':u_content' where  @CONDITION " var="rs">
                 <xflt id="CONDITION" nrp="" tpl="@u_id ">
                     <xfltpara id="u_id" nrp="1=1" para="u_id" sql="u_id=:u_id">
                     </xfltpara>
@@ -465,9 +458,9 @@
         <xhandle desc="查看操作日志信息" id="oplogInfo" rtn="rs" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_oplog where  @CONDITION order by o_time desc" var="bootstrap">
                 <xflt id="CONDITION" nrp="" tpl="@o_time AND @end AND @o_pid">
-                    <xfltpara id="o_time" nrp="1=1" para="statr" sql="o_time &gt;=  ':statr' ">
+                    <xfltpara id="o_time" nrp="1=1" para="statr" sql="o_time &gt;=  ':statr 00:00:00'  ">
                     </xfltpara>
-                    <xfltpara id="end" nrp="1=1" para="end" sql="o_time &lt;=  ':end' ">
+                    <xfltpara id="end" nrp="1=1" para="end" sql="o_time &lt;=  ':end 23:59:59' ">
                     </xfltpara>
                     <xfltpara id="o_pid" nrp="1=1" para="pid" sql="o_pid like  '%:pid%' ">
                     </xfltpara>
@@ -665,6 +658,32 @@
             </xsql> 
         </xhandle>    
           
+    </xform>
+    
+    <xform desc="查看集中器数灯具数" id="mainsub">
+        <xhandle desc="查询集中器数" id="number" rtn="rs" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select count(id) as num from t_baseinfo  where  @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@pid">
+                    <xfltpara id="pid" nrp="1=1" para="pid" sql="pid=':pid'">
+                    </xfltpara>
+                   
+                </xflt>
+            </xsql> 
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select count(id) as num from t_baseinfo  where online=1 and  @CONDITION " var="onlineNumber">
+                <xflt id="CONDITION" nrp="" tpl="@pid">
+                    <xfltpara id="pid" nrp="1=1" para="pid" sql="pid=':pid'">
+                    </xfltpara>
+                   
+                </xflt>
+            </xsql> 
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select count(id) as num from t_lamp where @CONDITION" var="lampNumber">
+                <xflt id="CONDITION" nrp="" tpl="@pid">
+                    <xfltpara id="pid" nrp="1=1" para="pid" sql="l_comaddr in(select comaddr from t_baseinfo where  pid = ':pid' )">
+                    </xfltpara>
+                   
+                </xflt>
+            </xsql>
+        </xhandle> 
     </xform>
     
 </xforms>

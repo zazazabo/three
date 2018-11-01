@@ -101,19 +101,12 @@
                                 align: 'center',
                                 valign: 'middle'
                             }, {
-                                field: 'u_warntype',
-                                title: langs1[138][lang],  //告警类型
+                                field: 'u_content',
+                                title:'备注',  //告警类型
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle'
                             }
-//                            , {
-//                                field: 'u_pid',
-//                                title: '管理项目', 
-//                                width: 25,
-//                                align: 'center',
-//                                valign: 'middle'
-//                            }
                         ]
                     ],
                     clickToSelect: true,
@@ -150,7 +143,8 @@
                     var uphone = $("#updphone").val();
                     var uid = $("#updid").val();
                     var uemail = $("#updemail").val();
-                    var uwarntype = $("#upd_warntype").val();
+                   // var uwarntype = $("#upd_warntype").val();
+                    var u_content = $("#u_content").val();
                     if (uname == "") {
                         alert(langs1[139][lang]);  //姓名不能为空
                         return;
@@ -163,16 +157,13 @@
                         alert(langs1[141][lang]); //邮箱不能为空
                         return;
                     }
-                    if (uwarntype == "") {
-                        alert(langs1[142][lang]); //告警类型不能为空
-                        return;
-                    }
+                   
 
                     var obj = {};
                     obj.u_name = uname;
                     obj.u_phone = uphone;
                     obj.u_email = uemail;
-                    obj.u_warntype = uwarntype;
+                    obj.u_content = u_content;
                     obj.u_id = uid;
                     $.ajax({url: "login.warnning.update.action", async: false, type: "get", datatype: "JSON", data: obj,
                         success: function (data) {
@@ -203,7 +194,7 @@
                 $("#updphone").val(select.u_phone);
                 $("#updemail").val(select.u_email);
                 $("#updid").val(select.u_id);
-                $("#upd_warntype").combobox('setValue', select.u_warntype);
+                $("#u_content").val(select.u_content);
                 $("#updatetable").modal();
             }
             //添加警告配置
@@ -211,7 +202,7 @@
                 var phone = $("#adphone").val();
                 var name = $("#adname").val();
                 var email = $("#ademail").val();
-                var warntype = $("#adu_warntype").val();
+               // var warntype = $("#adu_warntype").val();
                 var content = $("#adu_content").val();
                 var pid = o_pid;
                 if (name == "") {
@@ -226,16 +217,11 @@
                     alert(langs1[141][lang]);  //邮箱不能为空
                     return;
                 }
-                if (warntype == "") {
-                    alert(langs1[142][lang]); //告警类型不能为空
-                    return;
-                }
 
                 var obj = {};
                 obj.u_phone = phone;
                 obj.u_name = name;
                 obj.u_email = email;
-                obj.u_warntype = warntype;
                 obj.u_content = content;
                 obj.u_pid = pid;
                 $.ajax({url: "login.warnning.addpeople.action", async: false, type: "get", datatype: "JSON", data: obj,
@@ -339,16 +325,9 @@
                                             <input id="adphone" class="form-control"  name="phone" style="width:150px;display: inline;" placeholder="请输入电话" type="text"></td>
                                         <td></td>
                                         <td>
-                                            <span style="margin-left:20px;" name="xxx" id="138">警告类型</span>&nbsp;
-                                            <input id="adu_warntype" class="easyui-combobox" name="u_warntype" style="width:150px; height: 34px" data-options="editable:true,valueField:'w_id', textField:'w_name',url:'login.warnning.warntype.action'"/>
-                                        </td>
-                                    </tr> 
-                                    <tr>
-                                        <td>
-                                            <span style="margin-left:20px;" name="xxx" id="137">邮箱</span>&nbsp;
+                                            <span style="margin-left:50px;" name="xxx" id="137">邮箱</span>&nbsp;
                                             <input id="ademail" class="form-control" name="email" style="width:150px;display: inline;" placeholder="请输入邮箱" type="text">
                                         </td>
-                                        <td></td>
                                     </tr> 
 
                                 </tbody>
@@ -387,8 +366,8 @@
                                     </td>
                                     <td></td>
                                     <td>
-                                        <span style="margin-left:20px;" name="xxx" id="138">警告类型</span>&nbsp;
-                                        <input id="upd_warntype" class="easyui-combobox"  style="width:150px; height: 34px" data-options="editable:true,valueField:'w_id', textField:'w_name',url:'login.warnning.warntype.action'">
+                                        <span style="margin-left:48px;">备注</span>&nbsp;
+                                        <input type="text" class="form-control"  style="width:175px;display: inline;" id="u_content">
                                     </td>
                                 </tr>
 
