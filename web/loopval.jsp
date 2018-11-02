@@ -292,7 +292,7 @@
                             }
                         }, {
                             field: 'l_switch',
-                            title: langs1[333][lang], //合闸参数
+                            title: '状态', //合闸参数
                             width: 25,
                             align: 'center',
                             valign: 'middle',
