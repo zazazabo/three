@@ -261,6 +261,8 @@
                     //console.log(checks[i].id);
                     var obj = {};
                     obj.id = checks[i].id;
+                    obj.f_handlep =  $("#u_name").text();  //处理人
+                    obj.f_handletime = getNowFormatDate2();;  //处理时间
                     $.ajax({async: false, url: "login.main.updfualt.action", type: "get", datatype: "JSON", data: obj,
                         success: function (data) {
                         }
@@ -279,6 +281,8 @@
                     query: obj2
                 };
                 $("#fauttable").bootstrapTable('refresh', opt);
+                var name = $("#u_name").text();
+                addlogon(name,"处理异常",pid,"首页","处理异常");
                 fualtCount();
 
 

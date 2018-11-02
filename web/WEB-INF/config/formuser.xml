@@ -34,18 +34,34 @@
     </xform>
     <xform desc="主页" id="mainsub">
         <xhand id="home" rtn="mainsub.jsp" rtnype="PGE">
-            <xsql desc="所有已经部署的灯具" id="a1" list="true" page="true" tpe="SQL" tpl="select count(id) as num from t_lamp  where l_deplayment=1 and  @CONDITION" var="rs1">
+            <xsql desc="所有已经部署的灯具" id="a1" list="true" page="true" tpe="SQL" tpl="select count(id) as num from t_lamp  where l_deplayment=1 and  @CONDITION" var="ybsdj">
                 <xflt id="CONDITION" nrp="" tpl="@pid ">
                     <xfltpara id="pid" nrp="1=1" para="pid" sql="l_comaddr in(select comaddr from t_baseinfo where  pid = ':pid' )">
                     </xfltpara>
                 </xflt>
             </xsql>
-            <xsql desc="有故障的灯具" id="a2" list="true" page="true" tpe="SQL" tpl=" select count(id) as num from t_lamp  where l_fault=1 and  @CONDITION" var="rs2">
+            <xsql desc="有故障的灯具" id="a2" list="true" page="true" tpe="SQL" tpl=" select count(id) as num from t_lamp  where  @CONDITION" var="djgzs">
                 <xflt id="CONDITION" nrp="" tpl="@pid ">
-                    <xfltpara id="pid" nrp="1=1" para="pid" sql="l_comaddr in(select comaddr from t_baseinfo where  pid = ':pid' )">
+                    <xfltpara id="pid" nrp="1=1" para="pid" sql="l_comaddr in(select comaddr from t_baseinfo where  pid = ':pid' ) and  l_fault=1">
                     </xfltpara>
                 </xflt>
             </xsql>
+            <xsql desc="灯具总数" id="a8" list="true" page="true" tpe="SQL" tpl="select count(id) as num from t_lamp where @CONDITION" var="lampNumber">
+                <xflt id="CONDITION" nrp="" tpl="@pid">
+                    <xfltpara id="pid" nrp="1=1" para="pid" sql="l_comaddr in(select comaddr from t_baseinfo where  pid = ':pid' )">
+                    </xfltpara>
+                   
+                </xflt>
+            </xsql>
+            <xsql desc="灯具在线数" id="a9" list="true" page="true" tpe="SQL" tpl="select count(id) as num from t_lamp where  @CONDITION" var="djzxs">
+                <xflt id="CONDITION" nrp="" tpl="@pid">
+                    <xfltpara id="pid" nrp="1=1" para="pid" sql="l_comaddr in(select comaddr from t_baseinfo where  pid = ':pid' ) and presence=1">
+                    </xfltpara>
+                   
+                </xflt>
+            </xsql>
+            
+            
             <xsql desc="某个月的统计的能量值" id="a3" list="true" page="true" tpe="SQL" tpl=" SELECT sum(MONTH(day)) AS m,SUM( (CONVERT(decimal (18, 2), power45)-  CONVERT(decimal (18, 2), power00))) AS mpower FROM t_power WHERE  datediff(month,day,getdate())=0 AND comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE @CONDITION  )  " var="rs3">
                 <xflt id="CONDITION" nrp="" tpl="@pid ">
                     <xfltpara id="pid" nrp="1=2" para="pid" sql="pid = ':pid'">
@@ -67,34 +83,20 @@
                 </xflt>
             </xsql>
             
-            <xsql id="a6" list="true" page="true" tpe="SQL" tpl="select count(id) as num from t_baseinfo  where  @CONDITION " var="rs">
+            <xsql desc="网关数" id="a6" list="true" page="true" tpe="SQL" tpl="select count(id) as num from t_baseinfo  where  @CONDITION " var="rs">
                 <xflt id="CONDITION" nrp="" tpl="@pid">
                     <xfltpara id="pid" nrp="1=1" para="pid" sql="pid=':pid'">
                     </xfltpara>
                    
                 </xflt>
             </xsql> 
-            <xsql id="a7" list="true" page="true" tpe="SQL" tpl="select count(id) as num from t_baseinfo  where online=1 and  @CONDITION " var="onlineNumber">
+            <xsql desc="网关在线数"  id="a7" list="true" page="true" tpe="SQL" tpl="select count(id) as num from t_baseinfo  where online=1 and  @CONDITION " var="onlineNumber">
                 <xflt id="CONDITION" nrp="" tpl="@pid">
                     <xfltpara id="pid" nrp="1=1" para="pid" sql="pid=':pid'">
                     </xfltpara>
                    
                 </xflt>
             </xsql> 
-            <xsql id="a8" list="true" page="true" tpe="SQL" tpl="select count(id) as num from t_lamp where @CONDITION" var="lampNumber">
-                <xflt id="CONDITION" nrp="" tpl="@pid">
-                    <xfltpara id="pid" nrp="1=1" para="pid" sql="l_comaddr in(select comaddr from t_baseinfo where  pid = ':pid' )">
-                    </xfltpara>
-                   
-                </xflt>
-            </xsql>
-            <xsql id="a9" list="true" page="true" tpe="SQL" tpl="select count(id) as num from t_lamp where presence=1 AND @CONDITION" var="lamponline">
-                <xflt id="CONDITION" nrp="" tpl="@pid">
-                    <xfltpara id="pid" nrp="1=1" para="pid" sql="l_comaddr in(select comaddr from t_baseinfo where  pid = ':pid' )">
-                    </xfltpara>
-                   
-                </xflt>
-            </xsql>
         </xhand>
     </xform>
     <xform desc="告警模块" id="warn">
