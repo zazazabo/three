@@ -15,7 +15,7 @@
         <link rel="stylesheet" type="text/css" href="bootstrap-datetimepicker/bootstrap-datetimepicker.css">
         <link rel="stylesheet" type="text/css" href="bootstrap-3.3.7-dist/css/bootstrap.css">
         <script src="bootstrap-datetimepicker/bootstrap-datetimepicker.js"></script>
-         <script type="text/javascript" src="js/genel.js"></script>
+        <script type="text/javascript" src="js/genel.js"></script>
         <script>
 
 
@@ -172,7 +172,7 @@
                     $(d).html(langs1[e][lang]);
                 }
                 $('#reordtabel').bootstrapTable({
-                    url: 'login.policereord.reordInfo.action?pid='+pid,
+                    url: 'login.policereord.reordInfo.action?pid=' + pid,
                     columns: [{
                             title: '单选',
                             field: 'select',
@@ -193,7 +193,10 @@
                             title: langs1[82][lang], //时间
                             width: 25,
                             align: 'center',
-                            valign: 'middle'
+                            valign: 'middle',
+                            formatter: function (value, row, index, field) {
+                                return  value.replace(".0", "");
+                            }
                         }, {
                             field: 'f_type',
                             title: langs1[121][lang], //异常类型
@@ -206,50 +209,57 @@
                             width: 25,
                             align: 'center',
                             valign: 'middle',
-                        }, {
-                            field: 'f_setcode',
-                            title: langs1[236][lang], //装置号
+                        }
+//                        {
+//                            field: 'f_setcode',
+//                            title: langs1[236][lang], //装置号
+//                            width: 25,
+//                            align: 'center',
+//                            valign: 'middle'
+//                        }
+                        , {
+                            field: 'l_factorycode',
+                            title: langs1[292][lang], //灯具编号
                             width: 25,
                             align: 'center',
-                            valign: 'middle',
-                        }, 
+                            valign: 'middle'
+                        },
                         {
-                            field: '',
+                            field: 'f_detail',
                             title: '详情', //状态字2
                             width: 25,
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
                                 //console.log(row);
-                                 var str="";
-                                 var info= eventobj[row.f_type];
+                                var str = "";
+                                var info = eventobj[row.f_type];
                                 if (typeof info == "object") {
-                                        var s1=info.status1;
-                                        var s2=info.status2;
-                                    for(var i=0;i<8;i++){
-                                        var temp= Math.pow(2,i);
-                                        if ((row.f_status1 &temp)==temp) {
-                                            if (s1[i]!="") {
-                                                str=str + s1[i] + "|";
+                                    var s1 = info.status1;
+                                    var s2 = info.status2;
+                                    for (var i = 0; i < 8; i++) {
+                                        var temp = Math.pow(2, i);
+                                        if ((row.f_status1 & temp) == temp) {
+                                            if (s1[i] != "") {
+                                                str = str + s1[i] + "|";
                                             }
-                                                
+
                                         }
                                     }
 
-                                     for(var i=0;i<8;i++){
-                                        var temp= Math.pow(2,i);
-                                        if ((row.f_status2 &temp)==temp) {
-                                            if (s1[i]!="") {
-                                                str=str + s1[i] + "|";
+                                    for (var i = 0; i < 8; i++) {
+                                        var temp = Math.pow(2, i);
+                                        if ((row.f_status2 & temp) == temp) {
+                                            if (s1[i] != "") {
+                                                str = str + s1[i] + "|";
                                             }
-                                                
+
                                         }
                                     }
 
                                     return str.substr(0, str.length - 1);
-                                }else if (row.f_type=="ERC49") {
-                                    var d= Str2BytesH(row.f_data);
-                                        var count= d[21]<<8+d[20];
+                                } else {
+                                    return  value;
                                 }
 
 
@@ -317,8 +327,8 @@
                             skip: params.offset,
                             limit: params.limit,
                             type_id: "1",
-                            statr:$("#sday").val(),
-                            end :$("#eday").val()
+                            statr: $("#sday").val(),
+                            end: $("#eday").val()
                                
                         };      
                         return temp;  
@@ -346,7 +356,7 @@
                     } else {
                         obj.end = end;
                     }
-                    obj.pid  = pid;
+                    obj.pid = pid;
                     var opt = {
                         url: "login.policereord.reordInfo.action",
                         silent: true,

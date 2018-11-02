@@ -1041,44 +1041,36 @@
 
             <div class="row"  >
                 <div class="col-xs-12">
-                    <table style="border-collapse:separate;  border-spacing:0px 10px;border: 1px solid #16645629; margin-left: 20px; margin-top: 10px; align-content:  center">
+                    <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; margin-left: 20px; margin-top: 10px; align-content:  center">
                         <tbody>
                             <tr>
 
-                                <td>
-                                    <span style="margin-left:10px;">
+                                <td style=" padding-left: 5px;">
+                                    <span  id="25" name="xxx" >
                                         <!--网关地址-->
-                                        <span id="25" name="xxx">网关地址</span>
+                                        网关地址&nbsp;
+                                    </span>
+                                </td>
+                                <td  style=" padding-left: 5px;">
+                                    <input id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 
+                                           data-options="editable:true,valueField:'id', textField:'text' " />
+                                </td>
+                                <td style=" padding-left: 10px;">
+                                    <span id="26" name="xxx">
+                                        灯具组号
                                         &nbsp;</span>
                                 </td>
-                                <td>
+                                <td style=" padding-left: 5px;">
 
-                                    <span class="menuBox">
-                                        <input id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 
-                                               data-options="editable:true,valueField:'id', textField:'text' " />
-                                    </span>  
+                                    <input id="l_groupe" class="easyui-combobox" name="l_groupe" style="width:100px; height: 30px" 
+                                           data-options="editable:false,valueField:'id', textField:'text' " />
                                 </td>
-                                <td>
-                                    <span style="margin-left:10px;">
-                                        <!--灯具组号-->
-                                        <span id="26" name="xxx">灯具组号</span>
-                                        &nbsp;</span>
+                                <td style=" padding-left: 10px;">
+                                    <span id="28" name="xxx" >
+                                        分组方式&nbsp;</span>
                                 </td>
-                                <td>
-
-                                    <span class="menuBox">
-                                        <input id="l_groupe" class="easyui-combobox" name="l_groupe" style="width:100px; height: 30px" 
-                                               data-options="editable:false,valueField:'id', textField:'text' " />
-                                    </span>  
-                                </td>
-                                <td>
-                                    <span style="margin-left:10px;">
-                                        <!-- 分组方式-->
-                                        <span id="28" name="xxx">分组方式</span>
-                                        &nbsp;</span>
-                                </td>
-                                <td>
-                                    <select class="easyui-combobox" id="groupetype" name="groupetype" style="width:150px; height: 30px">
+                                <td style=" padding-left: 5px;">
+                                    <select class="easyui-combobox" id="groupetype" name="groupetype" style="width:120px; height: 30px">
                                         <option value="0" name="xxx" id="29">单灯调光</option>
                                         <option value="1" name="xxx" id="30">组号调光</option>           
                                         <option value="2" name="xxx" id="336">全部调光</option>           
@@ -1086,34 +1078,31 @@
 
                                 </td>
 
-                                <td>
-                                    <span style="margin-left:10px;">
+                                <td style=" padding-left: 10px;">
+                                    <span id="31" name="xxx" >
                                         <!--  调光模式-->
-                                        <span id="31" name="xxx">调光模式</span>
+                                        调光模式
                                         &nbsp;</span>
                                 </td>
-                                <td>
+                                <td style=" padding-left: 10px;">
                                     <select class="easyui-combobox" id="scenetype" name="scenetype" style="width:150px; height: 30px">
                                         <option value="0" name="xxx" id="32">立即调光</option>
                                         <option value="1" name="xxx" id="33">场景调光</option>           
                                     </select>
                                 </td>
 
-
-
                                 <td>
-                                    <button  type="button" style="margin-left:20px;" onclick="search()" class="btn btn-success btn-xm">
+                                    <button  type="button"id="34" name="xxx"  onclick="search()" class="btn btn-success btn-sm">
                                         <span id="34" name="xxx">搜索</span>
                                     </button>&nbsp;
                                 </td>
                                 <td>
-                                    <button  type="button" style="margin-left:20px;" onclick="onlamp(100)" class="btn btn-success btn-xm">
+                                    <button  type="button" style="margin-left:20px;" onclick="onlamp(100)" class="btn btn-success btn-sm">
                                         <span id="35" name="xxx">开灯</span>
                                     </button>&nbsp;                                    
                                 </td>            
                                 <td>
-                                    <button  type="button" style="margin-left:20px;" onclick="offlamp(0)" class="btn btn-success btn-xm">
-                                        <!--关灯-->
+                                    <button  type="button" style="margin-left:20px;" onclick="offlamp(0)" class="btn btn-success btn-sm">
                                         <span id="36" name="xxx">关灯</span>
                                     </button>&nbsp;
                                 </td>
@@ -1132,35 +1121,36 @@
 
             <div class="row" style="  margin-top: 10px;">
 
-                <div class="col-xs-4">
+                <div class="col-xs-3">
                     <table  style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; width: 350px;margin-left: 20px;">
                         <tr>
-                            <td>
-                                <span style="margin-left:10px;">
-                                    <!--恢复模式-->
-                                    <span id="37" name="xxx"></span>
+                            <td style=" padding-left: 5px;">
+                                <span id="37" name="xxx" >
+                                    恢复模式
                                     &nbsp;</span>
-                                <select class="easyui-combobox" id="type" name="type" style="width:150px; height: 30px">
+                            </td>
+                            <td>
+                                <select class="easyui-combobox" id="type" name="type" style="width:120px; height: 30px">
                                     <option value="1" name="xxx" id="38">单灯恢复</option>
                                     <option value="2" name="xxx" id="39">按组恢复</option>    
                                     <option value="3" name="xxx" id="40">全部恢复</option>  
                                 </select>
-                                <button  type="button" style="margin-left:20px;" onclick="restore()" class="btn btn-success btn-sm">
+                            </td>
+                            <td>
+                                <button  type="button" onclick="restore()" class="btn btn-success btn-sm">
                                     <!--恢复自动运行-->
                                     <span id="41" name="xxx">恢复自动运行</span>
                                 </button>
-
                             </td>
                         </tr>
                     </table>
                 </div>
-                <div class="col-xs-4"  id="light0">
-                    <table   style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; width: 350px;margin-left: 20px;">
+                <div class="col-xs-5"  style=" margin-left: 80px;"  id="light0">
+                    <table   style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; width: 350px;margin-left: 30px;">
                         <tr>
                             <td >
-                                <span style="margin-left:10px;">
-                                    <!--调光值-->
-                                    <span id="42" name="xxx">调光值</span>
+                                <span id="42" name="xxx">
+                                    调光值
                                     &nbsp;</span>
                                 <input id="val" value="0" class="form-control" readonly="true" name="val" style="width:50px;display: inline; height: 30px; " placeholder="调光值" type="text">
 
@@ -1187,8 +1177,8 @@
                 </div>
 
 
-                <div class="col-xs-4"  id="light1" style="display: none;">
-                    <table   style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; width: 350px; margin-left: 20px;">
+                <div class="col-xs-5"  id="light1" style="margin-left: 80px;display: none;">
+                    <table   style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; width: 350px; margin-left: 30px;">
                         <tbody>
                             <tr>
                                 <td>
@@ -1229,19 +1219,10 @@
                         </tbody>
                     </table> 
                 </div>
-                <div class="col-xs-2"  >
-                    <table   style="border-collapse:separate; border-spacing:0px 10px;border: 0px solid #16645629;">
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <button   type="button" onclick="tourControllamp()" class="btn btn-success btn-xm"><span name="xxxx" id="403">巡测所有灯具状态</span></button>
-                                </td>
+                <div class="col-xs-2" style=" margin-top: 10px; margin-left: -30px; "  >
 
-                            </tr>
+                    <button   type="button" onclick="tourControllamp()" class="btn btn-success btn-xm"><span name="xxxx" id="403">巡测所有灯具状态</span></button>
 
-
-                        </tbody>
-                    </table> 
                 </div>
             </div>
 
