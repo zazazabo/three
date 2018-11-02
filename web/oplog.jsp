@@ -59,7 +59,19 @@
                             title: langs1[82][lang],  //时间
                             width: 25,
                             align: 'center',
-                            valign: 'middle'
+                            valign: 'middle',
+                            formatter: function (value) {
+                                var date = new Date(value);
+                                var year = date.getFullYear();
+                                var month = date.getMonth() + 1; //月份是从0开始的 
+                                var day = date.getDate(), hour = date.getHours();
+                                var min = date.getMinutes(), sec = date.getSeconds();
+                                var preArr = Array.apply(null, Array(10)).map(function (elem, index) {
+                                    return '0' + index;
+                                });////开个长度为10的数组 格式为 00 01 02 03 
+                                var newTime = year + '-' + (preArr[month] || month) + '-' + (preArr[day] || day) + ' ' + (preArr[hour] || hour) + ':' + (preArr[min] || min) + ':' + (preArr[sec] || sec);
+                                return newTime;
+                            }
                         }, {
                             field: 'o_name',
                             title: langs1[133][lang],  //操作人
@@ -81,6 +93,7 @@
                     showToggle: true,
                     // 设置默认分页为 50
                     pageList: [5, 10, 15, 20, 25],
+                    striped : true,
                     onLoadSuccess: function () {  //加载成功时执行  表格加载完成时 获取集中器在线状态
 //                        console.info("加载成功");
                     },

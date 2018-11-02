@@ -286,12 +286,20 @@
                 var month = date.getMonth() + 1;
                 
                 var wgsum = ${rs[0].num}; //网关总数
-                var online = ${onlineNumber[0].num};  //在线数
-                var noline = wgsum - online;  //网不在线数
-                var faults = ${rs2[0].num};  //灯具异常数
-                var lonlime =  ${lampNumber[0].num} -${lamponline[0].num}-${rs2[0].num};
-                $("#wgms").html("集中器（在线：${onlineNumber[0].num} 离线："+noline+"）");
-                $("#djms").html("灯具（在线：${lamponline[0].num} 离线："+lonlime+" 异常："+faults+"）");
+                var wgzx = ${onlineNumber[0].num};  //网关在线数
+                var wglx = wgsum - wgzx;  //网关不在线数
+                var gzdj = ${djgzs[0].num};  //灯具异常数
+                var djzxs = ${djzxs[0].num}; //灯具在线数
+                var lampNumber =  ${lampNumber[0].num};  //灯具总数
+                var djlxs =  lampNumber -gzdj-djzxs;
+                $("#wgms").html("集中器（在线："+wgzx+" 离线："+wglx+"）");
+                $("#djms").html("灯具（在线："+djzxs+" 离线："+djlxs+" 异常："+gzdj+"）");
+                if((${ybsdj[0].num-djgzs[0].num}-djlxs)<=0){
+                    $("#ldl").html("0%");
+                }else{
+                    var ldl =((${(ybsdj[0].num-djgzs[0].num)}-djlxs)/${ybsdj[0].num}) * 100;
+                    $("#ldl").html(ldl.toFixed(2)+"%");
+                }
                 //计划能耗
             <c:if test="${fn:length(rs4)==0}">
                 planvalue = "";
@@ -779,15 +787,7 @@
                     <span class="redius" style="background:#fdd237;">
                         <img src="img/dp.png"></span>
                     <div class="Mess lightingRate">
-                        <span>
-                            <c:if test="${rs1[0].num-rs2[0].num<=0}">
-                                0%
-                            </c:if>
-
-                            <c:if test="${rs1[0].num-rs2[0].num>0}">
-                                ${(rs1[0].num-rs2[0].num)/rs1[0].num * 100}%
-                            </c:if> 
-                        </span>
+                        <span id="ldl">100%</span>
                         <span name="xxx" id="6"> 亮灯率</span>
                     </div>
                 </div>

@@ -173,15 +173,7 @@
                 }
                 $('#reordtabel').bootstrapTable({
                     url: 'login.policereord.reordInfo.action?pid=' + pid,
-                    columns: [{
-                            title: '单选',
-                            field: 'select',
-                            //复选框
-                            checkbox: true,
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        },
+                    columns: [
                         {
                             field: 'f_comaddr',
                             title: langs1[120][lang], //设备名称
@@ -190,7 +182,7 @@
                             valign: 'middle'
                         }, {
                             field: 'f_day',
-                            title: langs1[82][lang], //时间
+                            title: '报警时间', //时间
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -261,46 +253,71 @@
                                 } else {
                                     return  value;
                                 }
-
-
-                                // console.log(len1);
-
                             }
                         },
-                                // , {
-                                //     field: 'f_status1',
-                                //     title: langs1[122][lang],   //处理状态
-                                //     width: 25,
-                                //     align: 'center',
-                                //     valign: 'middle',
-                                //     formatter: function (value, row, index, field) {
-                                //         if (value == 0) {
-                                //             value = langs1[127][lang];  //已处理
-                                //             return  value;
-                                //         }
-                                //         if (value == 1) {
-                                //             value = langs1[127][lang];   //未处理
-                                //             return  value;
-                                //         }
-                                //     }
-                                // }, 
+                        {
+                            field: 'f_handletime',
+                            title: '处理时间', //异常类型
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle',
+                            formatter: function (value) {
+                                if (value == null || value == "") {
+                                    return  null;
+                                } else {
+                                    var date = new Date(value);
+                                    var year = date.getFullYear();
+                                    var month = date.getMonth() + 1; //月份是从0开始的 
+                                    var day = date.getDate(), hour = date.getHours();
+                                    var min = date.getMinutes(), sec = date.getSeconds();
+                                    var preArr = Array.apply(null, Array(10)).map(function (elem, index) {
+                                        return '0' + index;
+                                    });////开个长度为10的数组 格式为 00 01 02 03 
+                                    var newTime = year + '-' + (preArr[month] || month) + '-' + (preArr[day] || day) + ' ' + (preArr[hour] || hour) + ':' + (preArr[min] || min) + ':' + (preArr[sec] || sec);
+                                    return newTime;
+                                }
+                            }
+                        },
+                        {
+                            field: 'f_handlep',
+                            title: '处理人', //异常类型
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        },
+                        {
+                            field: 'f_Isfault',
+                            title: langs1[122][lang], //处理状态
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle',
+                            formatter: function (value, row, index, field) {
+                                if (value == 0) {
+                                    var str = "<span class='label label-success'>" + langs1[127][lang] + "</span>";  //已处理
+                                    return  str;
+                                } else {
+                                    var str = "<span class='label label-warning'>" + langs1[128][lang] + "</span>";  //未处理
+                                    return  str;
+                                }
+                            }
+                        }
 
-                                // {
-                                //     field: 'f_state',
-                                //     title: langs1[124][lang], //信息发送状态
-                                //     width: 25,
-                                //     align: 'center',
-                                //     valign: 'middle',
-                                //     formatter: function (value, row, index, field) {
-                                //         if (value == 0) {
-                                //             value = langs1[125][lang];  //已发送
-                                //             return value;
-                                //         } else if (value == 1) {
-                                //             value = langs[126][lang]; //未发送
-                                //             return value;
-                                //         }
-                                //     }
-                                // }
+                        // {
+                        //     field: 'f_state',
+                        //     title: langs1[124][lang], //信息发送状态
+                        //     width: 25,
+                        //     align: 'center',
+                        //     valign: 'middle',
+                        //     formatter: function (value, row, index, field) {
+                        //         if (value == 0) {
+                        //             value = langs1[125][lang];  //已发送
+                        //             return value;
+                        //         } else if (value == 1) {
+                        //             value = langs[126][lang]; //未发送
+                        //             return value;
+                        //         }
+                        //     }
+                        // }
                     ],
                     clickToSelect: true,
                     singleSelect: true,
@@ -311,11 +328,12 @@
                     pagination: true,
                     sidePagination: 'server',
                     pageNumber: 1,
-                    pageSize: 5,
+                    pageSize: 10,
                     showRefresh: true,
                     showToggle: true,
                     // 设置默认分页为 50
                     pageList: [5, 10, 15, 20, 25],
+                    striped: true,
                     onLoadSuccess: function () {  //加载成功时执行  表格加载完成时 获取集中器在线状态
 //                        console.info("加载成功");
                     },
