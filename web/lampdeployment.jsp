@@ -495,13 +495,15 @@
                             width: 25,
                             align: 'center',
                             valign: 'middle'
-                        }, {
-                            field: 'l_code',
-                            title: langs1[315][lang], //装置序号
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
+                        }, 
+//                        {
+//                            field: 'l_code',
+//                            title: langs1[315][lang], //装置序号
+//                            width: 25,
+//                            align: 'center',
+//                            valign: 'middle'
+//                        },
+                        {
                             field: 'l_worktype',
                             title: langs1[316][lang], //控制方式
                             width: 25,

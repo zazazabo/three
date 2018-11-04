@@ -386,13 +386,15 @@
                             width: 25,
                             align: 'center',
                             valign: 'middle'
-                        }, {
-                            field: 'pid',
-                            title: langs1[349][lang],  //所属项目
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
+                        }
+//                        , {
+//                            field: 'pid',
+//                            title: langs1[349][lang],  //所属项目
+//                            width: 25,
+//                            align: 'center',
+//                            valign: 'middle'
+//                        }
+                        , {
                             field: 'model',
                             title: langs1[62][lang],  //型号
                             width: 25,
