@@ -693,7 +693,7 @@
                             align: 'center',
                             valign: 'middle'
                         }, {
-                            field: 'name',
+                            field: 'commname',
                             title: langs1[314][lang], //网关名称
                             width: 25,
                             align: 'center',
@@ -1149,7 +1149,7 @@
                     <table   style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; width: 350px;margin-left: 30px;">
                         <tr>
                             <td >
-                                <span id="42" name="xxx">
+                                <span id="42" name="xxx" style="margin-left:10px;">
                                     调光值
                                     &nbsp;</span>
                                 <input id="val" value="0" class="form-control" readonly="true" name="val" style="width:50px;display: inline; height: 30px; " placeholder="调光值" type="text">

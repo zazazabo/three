@@ -2,7 +2,7 @@
 <xforms>
     <xform desc="灯具" id="lampform">
         <xhandle desc="查询灯具表" id="getlampList" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT * FROM  t_lamp tl WHERE    @CONDITION  " var="bootstrap">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT tb.name AS commname,*FROM  t_lamp tl,t_baseinfo AS tb WHERE tl.l_comaddr = tb.comaddr AND    @CONDITION  " var="bootstrap">
                 <xflt id="CONDITION" nrp="" tpl="@l_comaddr AND @l_factorycode AND @l_groupe AND @l_deplayment AND @pid">
                     <xfltpara id="l_comaddr" nrp="1=1" para="l_comaddr" sql="l_comaddr = ':l_comaddr'"></xfltpara>
                     <xfltpara id="l_factorycode" nrp="1=1" para="l_factorycode" sql="l_factorycode = :l_factorycode"></xfltpara>

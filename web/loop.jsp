@@ -260,7 +260,7 @@
                 $("#l_factorycode1").val(select.l_factorycode);
                 $("#l_comaddr1").combobox('setValue', select.l_comaddr);
                 $("#l_deployment").val(select.l_deplayment);
-                $("#comaddrname1").val(select.name);
+                $("#comaddrname1").val(select.commname);
                 $("#l_name1").val(select.l_name);
                 $("#l_code").val(select.l_code);
                 $("#hide_id").val(select.id);
@@ -308,7 +308,7 @@
                             align: 'center',
                             valign: 'middle'
                         }, {
-                            field: 'name',
+                            field: 'commname',
                             title: langs1[314][lang], //网关名称
                             width: 25,
                             align: 'center',

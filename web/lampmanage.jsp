@@ -191,7 +191,7 @@
                 $("#l_factorycode1").val(s.l_factorycode);
                 $("#l_comaddr1").val(s.l_comaddr);
 
-                $("#name").val(s.name);
+                $("#name").val(s.commname);
                 $("#l_name1").val(s.l_name);
                 $("#hide_id").val(s.id);
                 $('#dialog-edit').dialog('open');
@@ -398,7 +398,7 @@
                             align: 'center',
                             valign: 'middle'
                         }, {
-                            field: 'name',
+                            field: 'commname',
                             title: langs1[314][lang], //网关名称
                             width: 25,
                             align: 'center',
