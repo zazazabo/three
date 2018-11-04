@@ -261,6 +261,9 @@
                     //console.log(checks[i].id);
                     var obj = {};
                     obj.id = checks[i].id;
+                    obj.f_handlep = $("#u_name").text();  //处理人
+                    obj.f_handletime = getNowFormatDate2();
+                    ;  //处理时间
                     $.ajax({async: false, url: "login.main.updfualt.action", type: "get", datatype: "JSON", data: obj,
                         success: function (data) {
                         }
@@ -279,6 +282,8 @@
                     query: obj2
                 };
                 $("#fauttable").bootstrapTable('refresh', opt);
+                var name = $("#u_name").text();
+                addlogon(name, "处理异常", pid, "首页", "处理异常");
                 fualtCount();
 
 
@@ -459,7 +464,7 @@
                 websocket.close();
             }
             $(function () {
-            lang = getCookie("lang");
+                lang = getCookie("lang");
             <c:forEach items="${lans}" var="t" varStatus="i">
                 var id =${t.id};
                 var zh_CN1 = "${empty t.zh_CN?"":t.zh_CN}";
@@ -651,7 +656,7 @@
             </div>
         </div>
 
-       <div id="faultDiv"  class=""  style=" display: none" title="告警信息">
+        <div id="faultDiv"  class=""  style=" display: none" title="告警信息">
             <table>
                 <tbody>
                     <tr>
@@ -784,7 +789,7 @@
                             valign: 'middle'
                         }, {
                             field: 'f_day',
-                            title: '时间' , //时间 o[82][lang]
+                            title: '时间', //时间 o[82][lang]
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -802,7 +807,7 @@
                             }
                         }, {
                             field: 'f_type',
-                            title:'异常类型' , //异常类型 o[121][lang]
+                            title: '异常类型', //异常类型 o[121][lang]
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -814,13 +819,13 @@
                             valign: 'middle'
                         }, {
                             field: 'l_factorycode',
-                            title: '灯具编号' , //灯具编号  o[292][lang]
+                            title: '灯具编号', //灯具编号  o[292][lang]
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         },
                         {
-                            field: '',
+                            field: 'f_detail',
                             title: '详情', //状态字2
                             width: 25,
                             align: 'center',
@@ -853,14 +858,9 @@
                                     }
 
                                     return str.substr(0, str.length - 1);
-                                } else if (row.f_type == "ERC49") {
-                                    var d = Str2BytesH(row.f_data);
-                                    var count = d[21] << 8 + d[20];
+                                } else {
+                                    return  value;
                                 }
-
-
-                                // console.log(len1);
-
                             }
                         }],
                     clickToSelect: true,
@@ -1039,7 +1039,7 @@
 
                     });
                 });
-                
+
                 $("#faultDiv").dialog({
                     autoOpen: false,
                     modal: true,

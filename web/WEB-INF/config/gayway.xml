@@ -21,6 +21,19 @@
                 </xflt>
             </xsql>
         </xhandle>
+
+            <xhandle desc="" id="getComaddrList" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_baseinfo where @CONDITION " var="list">
+                <xflt id="CONDITION" nrp="" tpl="@id AND @comaddr AND @pid">
+                    <xfltpara id="id" nrp="1=1" para="id" sql="id = ':id'">
+                    </xfltpara>
+                    <xfltpara id="comaddr" nrp="1=1" para="comaddr" sql="comaddr = ':comaddr'">
+                    </xfltpara>
+                    <xfltpara id="pid" nrp="1=2" para="pid" sql="pid = ':pid'">
+                    </xfltpara>
+                </xflt>
+            </xsql>
+        </xhandle>      
         <xhandle desc="回路和灯具是否存在网关" id="existcomaddr" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl=" SELECT * FROM (SELECT l_comaddr FROM t_lamp t1 UNION SELECT l_comaddr FROM t_loop t2) AS v WHERE @CONDITION  " var="list">
                 <xflt id="CONDITION" tpl="@l_comaddr ">

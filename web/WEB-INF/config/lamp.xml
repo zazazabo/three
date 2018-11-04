@@ -12,6 +12,20 @@
                 </xflt>
             </xsql>
         </xhandle>
+        <xhandle desc="" id="getComaddrList" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_baseinfo where @CONDITION " var="list">
+                <xflt id="CONDITION" nrp="" tpl="@id AND @comaddr AND @pid">
+                    <xfltpara id="id" nrp="1=1" para="id" sql="id = ':id'">
+                    </xfltpara>
+                    <xfltpara id="comaddr" nrp="1=1" para="comaddr" sql="comaddr = ':comaddr'">
+                    </xfltpara>
+                    <xfltpara id="pid" nrp="1=2" para="pid" sql="pid = ':pid'">
+                    </xfltpara>
+                </xflt>
+            </xsql>
+        </xhandle>     
+        
+        
         <xhandle desc="查询灯具是否存" id="existlamp" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT * FROM  t_lamp tl WHERE    @CONDITION  " var="bootstrap">
                 <xflt id="CONDITION" nrp="" tpl="@l_factorycode AND @l_comaddr">
@@ -21,7 +35,7 @@
             </xsql>
         </xhandle>
         
-             <xhandle desc="查询灯具是否存" id="existlamp" rtnype="JSON">
+        <xhandle desc="查询灯具是否存" id="existlamp" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT * FROM  t_lamp tl WHERE    @CONDITION  " var="bootstrap">
                 <xflt id="CONDITION" nrp="" tpl="@l_factorycode AND @l_comaddr">
                     <xfltpara id="l_factorycode" nrp="1=2" para="l_factorycode" sql="l_factorycode = :l_factorycode"></xfltpara>

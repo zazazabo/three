@@ -406,7 +406,7 @@
     <body>
 
         <div class="row" >
-            <div class="col-xs-12">
+            <div class="col-sm-12">
                 <form id="form1">
                     <table style="border-collapse:separate;  border-spacing:0px 10px;border: 1px solid #16645629; margin-left: 20px; margin-top: 10px; align-content:  center">
                         <tbody>
@@ -483,7 +483,8 @@
                         <input type="text" class="form-control form_datetime3" name="y2"   readOnly id="timeMax3" onchange="changeTime(6)">
                     </div>
                 </div>
-                <div class="col-xs-3">
+
+                <div class="col-sm-3">
                     <button type="button" class="btn btn-success btn-sm" onclick="search();">
                         <span id="34" name="xxx">搜索</span>
                     </button>
