@@ -67,7 +67,7 @@
                     </xfltpara>
                     <xfltpara id="f_comaddr" nrp="1=1" para="f_comaddr" sql="f_comaddr=':f_comaddr'">
                     </xfltpara>
-                    <xfltpara id="l_factorycode" nrp="1=1" para="l_factorycode" sql="l_factorycode=':l_factorycode'">
+                    <xfltpara id="l_factorycode" nrp="1=1" para="l_factorycode" sql="l_factorycode like '%:l_factorycode%'">
                     </xfltpara>
                 </xflt>
             </xsql>
@@ -154,19 +154,15 @@
         </xhandle> 
         <xhandle desc="查询灯具分布列表" id="queryLamp" rtnype="JSON">
             <xsql id="a2" list="true" page="true" tpe="SQL" tpl="SELECT *  FROM t_lamp  AS tb where @CONDITION " var="rs">
-                <xflt id="CONDITION" nrp="" tpl="@comaddr AND @pid">
-                    <xfltpara id="comaddr" nrp="1=1" para="comaddr" sql="comaddr = ':comaddr'">
+                <xflt id="CONDITION" nrp="" tpl="@comaddr AND @pid AND @l_lampnumber">
+                    <xfltpara id="comaddr" nrp="1=1" para="comaddr" sql="l_comaddr = ':comaddr'">
+                    </xfltpara>
+                    <xfltpara id="l_lampnumber" nrp="1=1" para="l_lampnumber" sql="l_lampnumber = ':l_lampnumber'">
                     </xfltpara>
                     <xfltpara id="pid" nrp="1=1" para="pid" sql="l_comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE  pid = ':pid')">
                     </xfltpara>
                 </xflt>      
-            </xsql> 
-            <xsql id="a3" list="true" page="true" tpe="SQL" tpl=" select f_comaddr,f_setcode from t_fault where f_type ='ERC44' and @CONDITION " var="rs2">
-                <xflt id="CONDITION" nrp="" tpl="@f_day">
-                    <xfltpara id="f_day" nrp="1=1" para="f_day" sql="f_day=':f_day'">
-                    </xfltpara>
-                </xflt>  
-            </xsql>              
+            </xsql>             
         </xhandle>
         <xhandle desc="获取所有项目" id="getProject" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT   tl.code as id,tl.name as text FROM t_project as tl" var="list">
@@ -183,6 +179,22 @@
                 </xflt>
             </xsql>
         </xhandle> 
+         <xhandle desc="查询项目下所有网关和灯具" id="getAllinfo" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT *  FROM t_lamp  AS tb where @CONDITION " var="lamprs">
+                <xflt id="CONDITION" nrp="" tpl="@pid">
+<!--                    <xfltpara id="comaddr" nrp="1=1" para="comaddr" sql="comaddr = ':comaddr'">
+                    </xfltpara>-->
+                    <xfltpara id="pid" nrp="1=1" para="pid" sql="l_comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE  pid = ':pid')">
+                    </xfltpara>
+                </xflt>      
+            </xsql>
+            <xsql id="a2" list="true" page="true" tpe="SQL" tpl="SELECT * FROM t_baseinfo where @CONDITION" var="wgrs">
+                <xflt id="CONDITION" nrp="" tpl="@pid">
+                    <xfltpara id="pid" nrp="1=1" para="pid" sql="pid = ':pid'">
+                    </xfltpara>
+                </xflt>
+            </xsql>             
+        </xhandle>
     </xform>
     
     

@@ -173,7 +173,7 @@
                 $("#l_code").val(s.l_code);
                 $("#l_worktype1").combobox('setValue', s.l_worktype);
                 $("#l_groupe1").combobox('setValue', s.l_groupe);
-
+                $("#l_lampnumber1").val(s.l_lampnumber);
                 if (s.l_deplayment == "1") {    //判断是否部署
                     $("#trlamp").show();
                     $("#trlamp1").show();
@@ -215,7 +215,6 @@
                     layerAler(langs1[371][lang]);   //灯具编号是12位的十进制
                     return false;
                 }
-                addlogon(u_name, "添加", o_pid, "灯具管理", "添加灯具");
                 var isflesh = false;
                 $.ajax({url: "lamp.lampform.existlamp.action", async: false, type: "get", datatype: "JSON", data: o,
                     success: function (data) {
@@ -227,6 +226,7 @@
                                     var arrlist = data.rs;
                                     if (arrlist.length == 1) {
                                         isflesh = true;
+                                        addlogon(u_name, "添加", o_pid, "灯具管理", "添加灯具");
                                         $("#gravidaTable").bootstrapTable('refresh');
                                     }
                                 },
@@ -428,6 +428,12 @@
                                 }
 
                             }
+                        }, {
+                            field: 'l_lampnumber',
+                            title: '灯杆编号', //灯杆编号
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
                         }, {
                             field: 'l_groupe',
                             title: langs1[332][lang], //组号
@@ -1074,7 +1080,14 @@
                                     </select>
                                 </span>
                             </td>
-                        </tr>                  
+                        </tr> 
+                        <tr>
+                            <td>
+                                <span style="margin-left:20px;">灯杆编号</span>&nbsp;
+                                <input id="l_lampnumber" class="form-control"  name="l_lampnumber" style="width:150px;display: inline;" placeholder="请输入灯杆编号" type="text">
+                                </span> 
+                            </td>
+                        </tr>
 
 
                     </tbody>
@@ -1116,9 +1129,9 @@
                             <td></td>
                             <td>
                                 <span style="margin-left:20px;" name="xxx" id="54">灯具名称</span>&nbsp;
-                                <input id="l_name1"  class="form-control"  name="l_name" style="width:150px;display: inline;" placeholder="灯具名称" type="text"></td>
-
+                                <input id="l_name1"  class="form-control"  name="l_name" style="width:150px;display: inline;" placeholder="灯具名称" type="text">
                             </td>
+
                         </tr>                                   
 
 
@@ -1140,9 +1153,6 @@
                                         <option value="2">场景</option>           
                                     </select>
                                 </span>  
-                            </td>
-                            <td>
-
                             </td>
                         </tr>                  
 
@@ -1171,9 +1181,15 @@
                                 <button  onclick="resetWowktype()" style=" margin-left: 2px;" class="btn btn-success btn-xs"><span name="xxx" id="375">在线修改</span></button>
                             </td>
                         </tr> 
+                         <tr>
+                            <td>
+                                <span style="margin-left:20px;">灯杆编号</span>&nbsp;
+                                <input id="l_lampnumber1" class="form-control" name="l_lampnumber" style="width:150px;display: inline;" placeholder="灯具编号" type="text">
+                            </td>
+                        </tr> 
                         <tr id="trlamp1">
                         </tr> 
-
+                        
                     </tbody>
                 </table>   
             </form>

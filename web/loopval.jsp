@@ -436,7 +436,7 @@
                                data-url="gayway.GaywayForm.getComaddrList.action?pid=${param.pid}&page=ALL" style="width:200px;" >
                             <thead >
                                 <tr >
-                                    <th data-width="100"    data-select="false" data-align="center"  data-checkbox="true"  ></th>
+                                    <th data-width="25"    data-select="false" data-align="center"  data-checkbox="true"  ></th>
                                     <th data-width="100" data-field="comaddr" data-align="center" data-formatter='formartcomaddr'   >网关地址</th>
                                     <!--<th data-width="100" data-field="name" data-align="center"    >网关名称</th>-->
                                 </tr>
