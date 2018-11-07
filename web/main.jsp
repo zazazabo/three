@@ -169,6 +169,7 @@
 
                     layer.confirm("通迅已断开,重连吗?", {//确认要删除吗？
                         btn: [o[146][lang], o[147][lang]] //确定、取消按钮
+                        
                     }, function (index) {
                         websocket = new WebSocket(conectstr);
                         // 连接成功建立的回调方法
@@ -262,8 +263,7 @@
                     var obj = {};
                     obj.id = checks[i].id;
                     obj.f_handlep = $("#u_name").text();  //处理人
-                    obj.f_handletime = getNowFormatDate2();
-                    ;  //处理时间
+                    obj.f_handletime = getNowFormatDate2();//处理时间
                     $.ajax({async: false, url: "login.main.updfualt.action", type: "get", datatype: "JSON", data: obj,
                         success: function (data) {
                         }
@@ -520,12 +520,12 @@
                     <span  style="width:80px;margin-left:30px;"><label name="xxx" id="275">智慧城市照明管理系统</label></span>
                 </div>
 
-                <ul class="layui-nav layui-nav-tree  MenuBox " >
+                <ul class="layui-nav layui-nav-tree  MenuBox ">
                     <c:forEach items="${menulist}" var="t" varStatus="i">
                         <c:if test="${t.m_parent==0}">
                             <c:if test="${i.index==0}">
                                 <li class="eachMenu layui-nav-item">
-                                    <a class="list listdisplayNone active" href="javascript:;" name="${t.m_action}?m_parent=${t.m_code}&role=${t.roletype}&lang=${empty cookie.lang.value?"zh_CN":cookie.lang.value}">
+                                    <a  class="list listdisplayNone active" href="javascript:;" name="${t.m_action}?m_parent=${t.m_code}&role=${t.roletype}&lang=${empty cookie.lang.value?"zh_CN":cookie.lang.value}">
                                         <span class="${t.m_icon}"></span>
                                         <span class="menuMessage" >
                                             <script>
@@ -539,8 +539,8 @@
                                 </li>         
                             </c:if>
                             <c:if test="${i.index>0}">  
-                                <li class="eachMenu layui-nav-item">
-                                    <a class="list listdisplayNone" href="javascript:;" name="${t.m_action}?m_parent=${t.m_code}&role=${t.roletype}&lang=${empty cookie.lang.value?"zh_CN":cookie.lang.value}">
+                                <li class="eachMenu layui-nav-item ">
+                                    <a  class="list listdisplayNone" href="javascript:;" name="${t.m_action}?m_parent=${t.m_code}&role=${t.roletype}&lang=${empty cookie.lang.value?"zh_CN":cookie.lang.value}">
                                         <span class="${t.m_icon}"></span>
                                         <span class="menuMessage" >
                                             <script>
@@ -564,9 +564,12 @@
                         <img src="abc.action_files/sz-tit.png" style="min-width:50px;height:50px;float:left;" id="logoImg">
                     </div>
                     <ul class="controlMessage animated fadeInRight">
+                        <li class="one" style=" margin-right: 30px;">
+                            <button class="btn " style=" background-color:#bdebee;" id="shuaxing">刷新</button>
+                        </li>
                         <li class="one">
                             <span id="1" name="xxx">项目</span>&nbsp;&nbsp;
-                            <select style="width: 200px; height: 30px; margin-top:0px; font-size: 16px; border: 1px solid;" id="pojects">
+                            <select style="width: 200px; height: 30px; margin-top:0px; font-size: 16px; border: 1px solid; background-color: #bdebee; " id="pojects">
 
                             </select>
                         </li>
@@ -664,7 +667,7 @@
                             <span style="margin-left:10px;">                                     
                                 <span id="25" name="xxx">网关地址</span>
                                 &nbsp;</span>
-                            <input id="comaddrlist" data-options='editable:false,valueField:"id", textField:"text"' class="easyui-combobox"/>
+                            <input id="comaddrlist" data-options='editable:true,valueField:"id", textField:"text"' class="easyui-combobox"/>
                         </td>
                         <td>
                             <span style="margin-left:20px;" id="292" name="xxx">
@@ -805,13 +808,15 @@
                                 var newTime = year + '-' + (preArr[month] || month) + '-' + (preArr[day] || day) + ' ' + (preArr[hour] || hour) + ':' + (preArr[min] || min) + ':' + (preArr[sec] || sec);
                                 return newTime;
                             }
-                        }, {
-                            field: 'f_type',
-                            title: '异常类型', //异常类型 o[121][lang]
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
+                        },
+//                        {
+//                            field: 'f_type',
+//                            title: '异常类型', //异常类型 o[121][lang]
+//                            width: 25,
+//                            align: 'center',
+//                            valign: 'middle'
+//                        },
+                        {
                             field: 'f_comment',
                             title: '异常说明', //异常说明 o[123][lang]
                             width: 25,
@@ -932,7 +937,7 @@
 
                     }
                 });
-
+                
                 function size() {
                     var iframeHeight = $(window).height() - 57;
                     $("#iframe").css("height", iframeHeight);
@@ -1018,7 +1023,7 @@
                     // $("#iframe").attr('src', html);
                     //导航栏颜色
                 });
-
+        
                 $("#pojects").change(function () {
                     var user = new Object();
                     user.begin = '6A';
@@ -1039,6 +1044,12 @@
 
                     });
                 });
+                //刷新
+                $("#shuaxing").click(function(){
+                    $(".MenuBox .list:eq(0)").click();
+                });
+                
+                
 
                 $("#faultDiv").dialog({
                     autoOpen: false,

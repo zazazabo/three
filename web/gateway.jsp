@@ -25,6 +25,12 @@
 
             .bodycenter { text-align: -webkit-center; text-align: -moz-center; width: 600px; margin: auto; } 
 
+            .mb{
+                top:-60%;
+                position:absolute;
+                z-index:9999;
+                background-color:#FFFFFF;
+            }
         </style>
 
         <script type="text/javascript" src="SheetJS-js-xlsx/dist/xlsx.core.min.js"></script>
@@ -53,8 +59,8 @@
                 if (num == 0) {
                     layerAler(langs1[263][lang]);//请选择您要删除的数据
                 } else {
-                    layer.confirm(langs1[145][lang], {   //确定要删除吗？
-                        btn: [langs1[146][lang],langs1[147][lang]], //按钮、取消按钮
+                    layer.confirm(langs1[145][lang], {//确定要删除吗？
+                        btn: [langs1[146][lang], langs1[147][lang]], //按钮、取消按钮
                         icon: 3,
                         offset: 'center',
                         title: langs1[174][lang]  //提示
@@ -192,13 +198,13 @@
                             align: 'center',
                             valign: 'middle'
                         }, {
-                            title: langs1[345][lang],  //序号
+                            title: langs1[345][lang], //序号
                             field: '序号',
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
-                            title: langs1[25][lang],  //网关地址
+                            title: langs1[25][lang], //网关地址
                             field: '网关地址',
                             width: 25,
                             align: 'center',
@@ -211,25 +217,25 @@
                             valign: 'middle'
                         }, {
                             title: langs1[59][lang], //经度
-                            field: '经度',  
+                            field: '经度',
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
-                            field: '纬度',  //纬度
+                            field: '纬度', //纬度
                             title: langs1[60][lang],
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
-                            field: '倍率',  
+                            field: '倍率',
                             title: langs1[346][lang], //倍率
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
-                            field: '安装位置',  
-                            title: langs1[347][lang],   //安装位置
+                            field: '安装位置',
+                            title: langs1[347][lang], //安装位置
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -269,8 +275,9 @@
                             }
                         }
                         var headStr = '序号,名称,网关地址,经度,纬度,倍率,安装位置';
+                        var headStr2 = '序号,名称,网关地址,倍率,安装位置';
                         for (var i = 0; i < persons.length; i++) {
-                            if (Object.keys(persons[i]).join(',') !== headStr) {
+                            if (Object.keys(persons[i]).join(',') !== headStr &&Object.keys(persons[i]).join(',') !== headStr2) {
                                 alert(langs1[366][lang]); //导入文件格式不正确
                                 persons = [];
                             }
@@ -396,37 +403,37 @@
 //                        }
                         , {
                             field: 'model',
-                            title: langs1[62][lang],  //型号
+                            title: langs1[62][lang], //型号
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'name',
-                            title: langs1[63][lang],  //名称
+                            title: langs1[63][lang], //名称
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'comaddr',
-                            title: langs1[25][lang],  //网关地址
+                            title: langs1[25][lang], //网关地址
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'Longitude',
-                            title: langs1[59][lang],     //经度
+                            title: langs1[59][lang], //经度
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'latitude',
-                            title: langs1[60][lang],    //纬度
+                            title: langs1[60][lang], //纬度
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'online',
-                            title:langs1[61][lang],  //在线状态
+                            title: langs1[61][lang], //在线状态
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -482,7 +489,7 @@
                     layerAler(langs1[350][lang]);  //请选择您要保存的数据
                     return;
                 }
-                addlogon(u_name, "添加", o_pid, "网关管理", "导入excel文件");
+                addlogon(u_name, "添加", o_pid, "网关管理", "导入excel文件添加网关");
                 var pid = parent.parent.getpojectId();
                 for (var i = 0; i <= selects.length - 1; i++) {
                     var comaddr = selects[i].网关地址;
@@ -607,11 +614,11 @@
             <button class="btn btn-success ctrol" onclick="excel()" id="addexcel" >
                 <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;<span name="xxx" id="353">导入Excel</span>
             </button>
-            <!--            <button class="btn btn-success ctrol" onClick ="$('#tb_departments').tableExport({type: 'excel', escape: 'false'})" id="outexcel" >
-                            <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;导出Excel
-                        </button>-->
             <button type="button" id="download" id="btn_download" class="btn btn-primary" onClick ="$('#gravidaTable').tableExport({type: 'excel', escape: 'false'})">
-               <span name="xxx" id="110">导出Excel</span>
+                <span name="xxx" id="110">导出Excel</span>
+            </button>
+            <button class="btn btn-success ctrol" onclick="$('#wgmb').tableExport({type: 'excel', escape: 'false'})" id="addexcel" >
+                <span>导出Excel模板</span>
             </button>
 
 
@@ -794,6 +801,29 @@
             <input type="file" id="excel-file" style=" height: 40px;">
             <table id="warningtable"></table>
 
+        </div>
+
+        <div class="mb">
+            <table id="wgmb" style=" border: 1px">
+                <tr>
+                    <td>序号</td>
+                    <td>名称</td>
+                    <td>网关地址</td>
+                    <td>经度</td>
+                    <td>纬度</td>
+                    <td>倍率</td>
+                    <td>安装位置</td>
+                </tr>
+                <tr>
+                    <td>如1、2、3</td>
+                    <td>网关名称</td>
+                    <td>网地址不可重复</td>
+                    <td>可以不输入</td>
+                    <td>可以不输入</td>
+                    <td>必须为正整数</td>
+                    <td>安装位置</td>
+                </tr>
+            </table>
         </div>
 
 

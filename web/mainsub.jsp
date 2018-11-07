@@ -160,13 +160,12 @@
             }
             .nenghao {
                 width: 100%;
-                height: 20%;
+/*                height: 20%;*/
                 line-height: 30px;
                 color: gray;
             }
             .nenghao1 {
                 width: 100%;
-                height: 30%;
                 line-height: 30px;
                 color: gray;
             }
@@ -293,7 +292,7 @@
                 var djzxs = ${djzxs[0].num}; //灯具在线数
                 var lampNumber = ${lampNumber[0].num};  //灯具总数
                 var djlxs = lampNumber - gzdj - djzxs;
-                $("#wgms").html("集中器（在线：" + wgzx + " 离线：" + wglx + "）");
+                $("#wgms").html("集控器（在线：" + wgzx + " 离线：" + wglx + "）");
                 $("#djms").html("灯具（在线：" + djzxs + " 离线：" + djlxs + " 异常：" + gzdj + "）");
                 if ((${ybsdj[0].num-djgzs[0].num} - djlxs) <= 0) {
                     $("#ldl").html("0%");
@@ -405,10 +404,10 @@
 //                console.log(o4);
                 a4.push(o4);
                 var data = a4;
-                var echarts4DataX = [data[0].date1, data[0].date2, data[0].date3];
-                var echarts4DataY = [data[0].thisYear1, data[0].thisYear2, data[0].thisYear3];
+//                var echarts4DataX = [data[0].date1, data[0].date2, data[0].date3];
+//                var echarts4DataY = [data[0].thisYear1, data[0].thisYear2, data[0].thisYear3];
                 //var sjqs = $("#16").html();
-                ech4('echarts4', langs1[16][lang], langs1[302][lang], echarts4DataX, echarts4DataY, 'bar', 'kW·h', "#337dd7"); //数据趋势、能耗
+               // ech4('echarts4', langs1[16][lang], langs1[302][lang], echarts4DataX, echarts4DataY, 'bar', 'kW·h', "#337dd7"); //数据趋势、能耗
 
 
                 var date = new Date();
@@ -780,16 +779,12 @@
 
 
     <body>
-
-
-
-        <br>
-        <div class="top" style="width:100%;height:450px;position:relative; border: 1px solid greenyellow;">
+        <div class="top" style="width:100%;height:450px;position:relative; margin-top: 10px;">
             <div class="topTitle" style="position:absolute;top:2%;left:2%;color:#000;font-size:20px;font-weight:600;">
                 <span id="5" name="xxx">设备分析</span>
                 <!-- 设备分析-->
             </div>
-            <div class="topLeft" style="height:400px;padding-top:40px; border: 1px solid #90c948;">
+            <div class="topLeft" style="height:400px;padding-top:40px;">
                 <div class="topLeftOneBox">
                     <span class="redius" style="background:#fdd237;">
                         <img src="img/dp.png"></span>
@@ -832,10 +827,10 @@
                     <span id="8" name="xxx">单位</span>
                     ：kW·h</span>
             </div>
-            <div class="topCenter3" id="echarts2"  style="height: 400px; border: 1px solid #fdd237;">    
+            <div class="topCenter3" id="echarts2"  style="height: 400px;">    
 
             </div>
-            <div class="topCenter3Mess" style="height:400px; border: 1px solid blue;" >
+            <div class="topCenter3Mess" style="height:400px;" >
 
                 <div class="topCenter3MessMM" style="margin-top:40%;">
                     <div class="first">
@@ -876,45 +871,46 @@
 
                 </div>
             </div>
-<!--            <div class="topTitle" style="position:absolute;top:2%;left:60%;color:#000;font-size:20px;font-weight:600;">
-                <span id="15" name="xxx">横向对比分析</span>
+            <div class="topTitle" style="position:absolute;top:2%;left:60%;color:#000;font-size:20px;font-weight:600;">
+                <span >能耗分析</span>
             </div>
+                    <!--
             <div class="echarts3" id="echarts3" style="height: 430px;">
             </div>-->
 <!--            <div class="topTitle" style="position:absolute;top:2%;left:60%;color:#000;font-size:20px;font-weight:600;">
                 <span id="17" name="xxx">分析</span>-->
-            <div class="topCenter1" id="echarts1" style="width: 26%; height: 85%; float: left; border: 1px solid red;">
+            <div class="topCenter1" id="echarts1" style="width: 27%; height: 85%; float: left;">
 
             </div>
-            <div class="topCenter4" style=" width: 10%; height:85%;float:left; border: 1px solid yellow; margin-left: 1%; font-size: 0.9em;">
+            <div class="topCenter4" style=" width: 9%; height:85%;float:left;margin-left: 1%; font-size: 0.9em;">
                 <div class="topCenter2Mess">	
                     <div class="nenghao">
                         <span class="subPara">
                             <span name="xxx" id="18">本月耗能</span>
                             :</span><br>
-                        <span id="benyue" class="paraValue"></span>kW·h</div>
+                        <span id="benyue" class="paraValue"></span>kW</div>
                     <div class="nenghao1">
                         <span class="subPara">
                             <span id="19" name="xxx">上月耗能</span>
                             :</span><br>
-                        <span id="shangyue" class="paraValue"></span>kW·h<br>
-                        <span><span id="20" name="xxx"></span>：</span>
-                        <span class="tongbi" id="lastMonth"></span>
-                        kW·h
+                        <span id="shangyue" class="paraValue"></span>kW
+                    </div>
+                    <div class="nenghao1" >
+                        <span><span id="20" name="xxx">环比</span>：</span><br>
+                        <span class="tongbi" id="lastMonth" style=" font-size: 16px;"></span>
+                        kW
                     </div>
                     <div class="nenghao1">
-
                         <span class="subPara">
                             <span id="21" name="xxx">去年同期</span>
                             :</span><br>
-                        <span id="qunian" class="paraValue"></span>
-                       
+                        <span id="qunian" class="paraValue">0</span>kW  
                     </div>
                     <div class="nenghao1">
                          <span>
                             <span id="22" name="xxx">同比</span>
-                            ：</span>
-                        <span class="tongbi" id="lastYearSameMonth"></span>
+                            ：</span><br>
+                        <span class="tongbi" id="lastYearSameMonth" style=" font-size: 16px;"></span>
                         kW·h
                     </div>
                 </div>
@@ -923,11 +919,17 @@
 
 
         <div class="bottom1">
-            <span name="xxx" id="16" style=" display: none" >数据趋势</span>
+            <div style="width: 20%; height: 100%; border: 1px solid red; float: left;">
+                
+            </div>
+            <div style="width: 80%; height: 100%; border: 1px solid yellow;float: left;">
+                
+            </div>
+<!--            <span name="xxx" id="16" style=" display: none" >数据趋势</span>
             <div class="echarts4" id="echarts4" style="width: 35%; height: 85%; float: left; margin: 20px 0px 20px 30px;">
 
 
-            </div>
+            </div>-->
 <!--            <span name="xxx" id="17" style=" display: none" >能耗分析</span>
             <div class="topCenter4" style="width:10%;height:85%;float:right;">
                 <div class="topCenter2Mess">	

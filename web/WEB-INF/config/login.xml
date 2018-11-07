@@ -602,6 +602,11 @@
                 </xflt>
             </xsql> 
         </xhandle> 
+        <xhandle desc="查看灯具前一条信息当做模板" id="getmb" rtn="rs" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select TOP 1  * from t_lamp" var="bootstrap">
+               
+            </xsql> 
+        </xhandle> 
         <xhandle desc="查看灯具编码是否唯一" id="getfactorycode" rtn="rs" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select l_factorycode from t_lamp where @CONDITION " var="rs">
                 <xflt id="CONDITION" nrp="" tpl="@l_factorycode">
@@ -612,7 +617,7 @@
         </xhandle>  
         
         <xhandle desc="添加灯具" id="addlamp" rtn="rs" rtnype="JSON">
-            <xsql id="a1" para="l_name,l_worktype,l_comaddr,l_deplayment,l_factorycode,l_groupe,lng,lat,wname" tpe="DDL" tpl="insert into t_lamp(l_name,l_worktype,l_comaddr,l_deplayment,l_factorycode,l_groupe,Longitude,latitude,name) values(':l_name',':l_worktype',':l_comaddr',':l_deplayment',':l_factorycode',':l_groupe',':lng',':lat',':wname') " var="rs">
+            <xsql id="a1" para="l_name,l_worktype,l_comaddr,l_deplayment,l_factorycode,l_lampnumber,l_groupe" tpe="DDL" tpl="insert into t_lamp(l_name,l_worktype,l_comaddr,l_deplayment,l_factorycode,l_groupe,l_lampnumber) values(':l_name',':l_worktype',':l_comaddr',':l_deplayment',':l_factorycode',':l_groupe',':l_lampnumber') " var="rs">
             </xsql>
         </xhandle>    
     </xform>
@@ -648,16 +653,18 @@
         </xhandle>  
         
         <xhandle desc="查看回路编码是否唯一" id="getl_code" rtn="rs" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select l_code from t_loop where @CONDITION " var="rs">
-                <xflt id="CONDITION" nrp="" tpl="@l_code">
-                    <xfltpara id="l_code" nrp="1=1" para="l_code" sql="l_code=':l_code'">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select l_factorycode from t_loop where @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@l_code AND @l_comaddr">
+                    <xfltpara id="l_code" nrp="1=1" para="l_code" sql="l_factorycode=':l_code'">
+                    </xfltpara>
+                    <xfltpara id="l_comaddr" nrp="1=1" para="l_comaddr" sql="l_comaddr=':l_comaddr'">
                     </xfltpara>
                 </xflt>
             </xsql> 
         </xhandle> 
             
-        <xhandle desc="添加网关" id="addloop" rtn="rs" rtnype="JSON">
-            <xsql id="a1" para="l_name,l_code,l_worktype,l_comaddr,l_deplayment,l_groupe,name" tpe="DDL" tpl="insert into t_loop(l_name,l_code,l_worktype,l_comaddr,l_deplayment,l_groupe,name) values(':l_name',':l_code',':l_worktype',':l_comaddr',':l_deplayment',':l_groupe',':name') " var="rs">
+        <xhandle desc="添加回路" id="addloop" rtn="rs" rtnype="JSON">
+            <xsql id="a1" para="l_name,l_factorycode,l_worktype,l_comaddr,l_deplayment,l_groupe" tpe="DDL" tpl="insert into t_loop(l_name,l_factorycode,l_worktype,l_comaddr,l_deplayment,l_groupe) values(':l_name',':l_factorycode',':l_worktype',':l_comaddr',':l_deplayment',':l_groupe') " var="rs">
             </xsql>
         </xhandle>    
     </xform>

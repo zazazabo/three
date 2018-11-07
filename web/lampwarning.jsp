@@ -142,13 +142,13 @@
                             field: 'select',
                             //复选框
                             checkbox: true,
-                            width: 25,
+                            width: 20,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'name',
                             title: langs1[213][lang], //预警参数
-                            width: 25,
+                            width: 100,
                             align: 'center',
                             valign: 'middle'
                         }
@@ -181,13 +181,13 @@
                             field: 'select',
                             //复选框
                             checkbox: true,
-                            width: 25,
+                            width: 20,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'name',
                             title: langs1[216][lang], //报警参数
-                            width: 25,
+                            width: 100,
                             align: 'center',
                             valign: 'middle'
                         }
