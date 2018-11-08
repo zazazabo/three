@@ -179,12 +179,10 @@
                 </xflt>
             </xsql>
         </xhandle> 
-         <xhandle desc="查询项目下所有网关和灯具" id="getAllinfo" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT *  FROM t_lamp  AS tb where @CONDITION " var="lamprs">
+        <xhandle desc="查询项目下所有网关和灯具" id="getAllinfo" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT *  FROM t_lamp where @CONDITION " var="lamprs">
                 <xflt id="CONDITION" nrp="" tpl="@pid">
-<!--                    <xfltpara id="comaddr" nrp="1=1" para="comaddr" sql="comaddr = ':comaddr'">
-                    </xfltpara>-->
-                    <xfltpara id="pid" nrp="1=1" para="pid" sql="l_comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE  pid = ':pid')">
+                    <xfltpara id="pid" nrp="1=1" para="pid" sql="l_comaddr IN (SELECT comaddr  FROM t_baseinfo  WHERE  pid = ':pid')">
                     </xfltpara>
                 </xflt>      
             </xsql>

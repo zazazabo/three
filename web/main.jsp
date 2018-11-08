@@ -169,7 +169,7 @@
 
                     layer.confirm("通迅已断开,重连吗?", {//确认要删除吗？
                         btn: [o[146][lang], o[147][lang]] //确定、取消按钮
-                        
+
                     }, function (index) {
                         websocket = new WebSocket(conectstr);
                         // 连接成功建立的回调方法
@@ -517,10 +517,10 @@
         <div class="wraper"> 
             <div class="bodyLeft" style="background: rgb(14, 98, 199) none repeat scroll 0% 0%;">
                 <div class="bodyLeftTop listdisplayNone" style="background:#5cb75c ">
-                    <span  style="width:80px;margin-left:30px;"><label name="xxx" id="275">智慧城市照明管理系统</label></span>
+                    <span  style="width:80px;margin-left:30px; font-size: 24px;"><label name="xxx" id="275">智慧城市照明管理系统</label></span>
                 </div>
 
-                <ul class="layui-nav layui-nav-tree  MenuBox ">
+                <ul class="layui-nav layui-nav-tree  MenuBox " id="alist">
                     <c:forEach items="${menulist}" var="t" varStatus="i">
                         <c:if test="${t.m_parent==0}">
                             <c:if test="${i.index==0}">
@@ -937,7 +937,7 @@
 
                     }
                 });
-                
+
                 function size() {
                     var iframeHeight = $(window).height() - 57;
                     $("#iframe").css("height", iframeHeight);
@@ -1023,7 +1023,7 @@
                     // $("#iframe").attr('src', html);
                     //导航栏颜色
                 });
-        
+
                 $("#pojects").change(function () {
                     var user = new Object();
                     user.begin = '6A';
@@ -1045,11 +1045,11 @@
                     });
                 });
                 //刷新
-                $("#shuaxing").click(function(){
-                    $(".MenuBox .list:eq(0)").click();
+                $("#shuaxing").click(function () {
+
                 });
-                
-                
+
+
 
                 $("#faultDiv").dialog({
                     autoOpen: false,

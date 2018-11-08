@@ -1163,6 +1163,7 @@
                     success: function (data) {
                         var arrlist = data.wgrs;   //网关集合
                         var lamplist = data.lamprs;  //灯具集合
+                        console.log("lamp:"+ lamplist.length);
                         if (arrlist.length > 0) {
                             wglist(arrlist);
                         }
@@ -1722,6 +1723,7 @@
                         var lampcode = parseInt(arrlist[i].l_factorycode);
                         //lans[][]代表的文字依次是：亮度、名称、灯具编号、网关地址、在线情况、状态、电压、电流
                         var activepower = arrlist[i].activepower * 1000;  //有功功率
+                            activepower = activepower.toFixed(2);
                         var textvalue = "<div style='line-height:1.8em;font-size:12px;'>\n\
                                    \n\
                                     <table style='text-align:center'>\n\
@@ -1788,7 +1790,7 @@
                                     icon: lhui
                                 });
                             }
-                            var opts = {title: '<span style="font-size:14px;color:#0A8021">' + lans[404][lang] + '</span>', width: 250, height: 170};//设置信息框、信息说明
+                            var opts = {title: '<span style="font-size:14px;color:#0A8021">' + lans[404][lang] + '</span>', width: 250, height: 220};//设置信息框、信息说明
                             var infoWindow = new BMap.InfoWindow(textvalue, opts); // 创建信息窗口对象，引号里可以书写任意的html语句。
                             marker1.addEventListener("mouseover", function () {
                                 this.openInfoWindow(infoWindow);
