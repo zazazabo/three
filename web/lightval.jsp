@@ -1034,7 +1034,7 @@
                     <input type="hidden" name="pid" value="${param.pid}">
                     <div class="row"  >
                         <div class="col-xs-12">
-                            <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; margin-left: 20px; margin-top: 10px; align-content:  center">
+                            <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; margin-top: 10px; align-content:  center">
                                 <tbody>
                                     <tr>
 
@@ -1113,7 +1113,7 @@
                     <div class="row" style="  margin-top: 10px;">
 
                         <div class="col-xs-3">
-                            <table  style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; width: 320px;margin-left: 20px;">
+                            <table  style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; width: 320px;">
                                 <tr>
                                     <td style=" padding-left: 5px;">
                                         <span id="37" name="xxx" >
@@ -1217,7 +1217,7 @@
 
                 </form>
 
-                <table id="lamptable" style="width:100%;"  >
+                <table  id="lamptable" style="width:100%; "  >
                 </table>
             </div>
         </div>

@@ -449,7 +449,7 @@
             </div>   
             <div class="col-xs-10">
                 <form id="form1">
-                    <table>
+                    <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; margin-top: 10px; align-content:  center">
                         <tbody>
                             <tr>
                                 <!--                                <td>

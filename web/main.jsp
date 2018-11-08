@@ -1046,7 +1046,32 @@
                 });
                 //刷新
                 $("#shuaxing").click(function () {
+                    var vv = $(".MenuBox").children();
+                    for (var i = 0; i < vv.length; i++) {
+                        var aele = $(vv[i]).children();
+                        if (typeof aele == 'object') {
+                            var strclass = $(aele).attr('class');
+                            var name = $(aele).attr('name');
+                            console.log(strclass, typeof strclass,name);
+                            if (strclass.indexOf("active") != -1) {
+                                if (name.indexOf("tab") != -1) {
+                                    var obj = $("iframe").eq(0);
+                                    var win = obj[0].contentWindow;
+                                    if (win.hasOwnProperty("callhit")) {
+                                        win.callhit();
+                                    }
+                                } else {
+                                    $(aele).click();
+                                }
+                                break;
+                            }
 
+
+
+
+                        }
+
+                    }
                 });
 
 

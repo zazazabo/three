@@ -246,7 +246,7 @@
                                 rowspan: 1
                             }, {
                                 field: 'power',
-                                title: langs1[99][lang]+'(KW)', //正向有功电能量
+                                title: langs1[99][lang]+'(KW.h)', //正向有功电能量
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
