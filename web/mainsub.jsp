@@ -437,6 +437,21 @@
                 qiantb = Math.floor(qiantb * 100) / 100;
                 $("#lastYearSameMonth").html(qiantb);
 
+
+                $('#gayway').on('click-row.bs.table', function (row, element) {
+                    var l_comaddr = element.comaddr;
+                    var obj = {};
+                    obj.l_comaddr = l_comaddr;
+
+
+                    var vv = [];
+
+                    var num = randnum(0, 9) + 0x70;
+                    var data = buicode(l_comaddr, 0x04, 0xAC, num, 0, 602, vv); //01 03 F24   
+                    dealsend("AC", data, 602, "collectinfo", l_comaddr, 0, 0, 0, 0);
+
+                });
+
             });
             window.onresize = function () {
 
@@ -746,22 +761,6 @@
                 };
                 myChart5.setOption(option);
             }
-            function dealsend() {
-
-                var user = new Object();
-                user.count = 0;
-                user.res = 1;
-                user.afn = 0;
-                user.status = "";
-                user.function = "getCount";
-                user.errcode = 0;
-                user.frame = 0;
-                user.msg = "Online";
-                user.res = 1;
-                user.page = 1;
-                parent.sendData(user);
-            }
-
 
             function getCount(obj) {
                 console.log(obj);
@@ -776,6 +775,18 @@
                 var v1 = row.online == 1 ? "&nbsp;<img src='img/online1.png'>" : "&nbsp;<img src='img/off.png'>";
                 return   v1;
             }
+
+            function collectinfo(obj) {
+                var data = Str2BytesH(obj.data);
+                var v = "";
+                for (var i = 0; i < data.length; i++) {
+
+                    v = v + sprintf("%02x", data[i]) + " ";
+                }
+                console.log(v);
+            }
+
+
         </script>
 
 
@@ -923,56 +934,56 @@
 
 
         <div class="bottom1">
-            
-                    <div class="row "   >
-                        <div class="col-xs-2 " style="width:200px" >
-                <table id="gayway" style="width:100%;"   data-toggle="table" 
-                       data-height="400"
-                       data-single-select="true"
-                       data-striped="true"
-                       data-click-to-select="true"
-                       data-search="false"
-                       data-checkbox-header="true"
-                       data-show-header='false'
-                       data-search-align='right'
-                       data-silent-sort='true'
-                       data-url="gayway.GaywayForm.getComaddrList.action?pid=${param.pid}&page=ALL"  >
-                    <thead >
-                        <tr >
-                            <th data-width="5" data-field="online"  data-formatter='formartcomaddr'   >在线状态</th>
-                            <th data-width="60" data-align="center"  data-field="comaddr"   >网关地址</th>
-             
-                                           <!--<th data-width="25"  data-visible="true"   data-select="false" data-align="center"  data-checkbox="true"  ></th>-->
-                            <!--<th data-width="100" data-field="name" data-align="center"    >网关名称</th>-->
-                        </tr>
-                    </thead>       
 
-                </table>
-                <!--                    </div>
-                                </div>    -->
+            <div class="row "   >
+                <div class="col-xs-2 " style="width:200px" >
+                    <table id="gayway" style="width:100%;"   data-toggle="table" 
+                           data-height="400"
+                           data-single-select="true"
+                           data-striped="true"
+                           data-click-to-select="true"
+                           data-search="false"
+                           data-checkbox-header="true"
+                           data-show-header='false'
+                           data-search-align='right'
+                           data-silent-sort='true'
+                           data-url="gayway.GaywayForm.getComaddrList.action?pid=${param.pid}&page=ALL"  >
+                        <thead >
+                            <tr >
+                                <th data-width="5" data-field="online"  data-formatter='formartcomaddr'   >在线状态</th>
+                                <th data-width="60" data-align="center"  data-field="comaddr"   >网关地址</th>
 
+                                <!--<th data-width="25"  data-visible="true"   data-select="false" data-align="center"  data-checkbox="true"  ></th>-->
+                                <!--<th data-width="100" data-field="name" data-align="center"    >网关名称</th>-->
+                            </tr>
+                        </thead>       
+
+                    </table>
+                    <!--                    </div>
+                                    </div>    -->
+
+                </div>
+                <div class="col-xs-10">
+
+                </div>
             </div>
-            <div class="col-xs-10">
 
-            </div>
-        </div>
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-<!--            <div style="width: 20%; height: 100%; border: 1px solid red; float: left;">
 
-            </div>
-            <div style="width: 80%; height: 100%; border: 1px solid yellow;float: left;">
 
-            </div>-->
+
+
+
+
+
+
+
+
+            <!--            <div style="width: 20%; height: 100%; border: 1px solid red; float: left;">
+            
+                        </div>
+                        <div style="width: 80%; height: 100%; border: 1px solid yellow;float: left;">
+            
+                        </div>-->
             <!--            <span name="xxx" id="16" style=" display: none" >数据趋势</span>
                         <div class="echarts4" id="echarts4" style="width: 35%; height: 85%; float: left; margin: 20px 0px 20px 30px;">
             

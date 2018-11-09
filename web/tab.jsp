@@ -69,7 +69,7 @@
             </div>
         </div>
 
-        <input style=" margin-left: 400px; margin-top: 10px" type="button" value="aaaaaaaaaaaaaa" onclick="ddddddd();" />
+        <!--<input style=" margin-left: 400px; margin-top: 10px" type="button" value="aaaaaaaaaaaaaa" onclick="ddddddd();" />-->
         <!--<script type="text/javascript" src="abc_files/jquery.js"></script>-->
         <script type="text/javascript" src="layer/layui.js"></script>  
 

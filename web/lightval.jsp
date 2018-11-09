@@ -644,16 +644,6 @@
                     var e = $(d).attr("id");
                     $(d).html(langs1[e][lang]);
                 }
-
-
-
-
-
-
-
-
-
-
                 $('#lamptable').on('click-cell.bs.table', function (field, value, row, element)
                 {
                     if (value == "l_worktype") {
@@ -742,12 +732,6 @@
                     };
                     $('#lamptable').bootstrapTable('refresh', opt);
                 });
-
-
-
-
-
-
 
 
                 $('#lamptable').bootstrapTable({
@@ -935,11 +919,7 @@
                 });
 
 
-
-
-
 // 组号方式
-
                 $('#groupetype').combobox({
                     onSelect: function (record) {
                         if (record.value == 0) {
@@ -1003,7 +983,7 @@
     <body id="panemask">
 
         <div class="row "   >
-            <div class="col-xs-2 " >
+            <div class="col-xs-2 "    >
                 <table id="gayway" style="width:100%;"   data-toggle="table" 
                        data-height="800"
                        data-single-select="true"
@@ -1012,13 +992,14 @@
                        data-search="true"
                        data-checkbox-header="true"
                        data-show-header='true'
+                
                        data-search-align='right'
                        data-silent-sort='true'
                        data-url="gayway.GaywayForm.getComaddrList.action?pid=${param.pid}&page=ALL" style="width:200px;" >
                     <thead >
                         <tr >
                             <th data-width="25"  data-visible="true"   data-select="false" data-align="center"  data-checkbox="true"  ></th>
-                            <th data-width="100" data-field="comaddr"  data-formatter='formartcomaddr'   >网关地址</th>
+                            <th data-width="100" data-align="center" data-field="comaddr"  data-formatter='formartcomaddr'   >网关地址</th>
                             <!--<th data-width="100" data-field="name" data-align="center"    >网关名称</th>-->
                         </tr>
                     </thead>       
