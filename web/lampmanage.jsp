@@ -126,7 +126,7 @@ Author     : admin
                 layer.confirm(langs1[145][lang], {//确认要删除吗？
                     btn: [langs1[146][lang], langs1[147][lang]] //确定、取消按钮
                 }, function (index) {
-                    addlogon(u_name, "删除", o_pid, "灯具管理", "删除灯具");
+                    addlogon(u_name, "删除", o_pid, "灯具管理", "删除灯具",select.l_comaddr);
                     $.ajax({url: "lamp.lampform.deleteLamp.action", type: "POST", datatype: "JSON", data: {id: select.id},
                         success: function (data) {
                             var arrlist = data.rs;
@@ -146,8 +146,8 @@ Author     : admin
             }
 
             function  editlamp() {
-                addlogon(u_name, "修改", o_pid, "灯具管理", "修改灯具");
                 var o = $("#form2").serializeObject();
+                addlogon(u_name, "修改", o_pid, "灯具管理", "修改灯具",o.l_comaddr);
                 $.ajax({async: false, url: "lamp.lampform.modifylamp.action", type: "get", datatype: "JSON", data: o,
                     success: function (data) {
                         var a = data.rs;
@@ -221,7 +221,7 @@ Author     : admin
                                     var arrlist = data.rs;
                                     if (arrlist.length == 1) {
                                         isflesh = true;
-                                        addlogon(u_name, "添加", o_pid, "灯具管理", "添加灯具");
+                                        addlogon(u_name, "添加", o_pid, "灯具管理", "添加灯具",o.l_comaddr);
                                         $("#gravidaTable").bootstrapTable('refresh');
                                     }
                                 },

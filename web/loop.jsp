@@ -16,7 +16,7 @@
         <style>
             .mb{
                 top:-60%;
-/*                left:60%;*/
+                /*                left:60%;*/
                 position:absolute;
                 z-index:9999;
                 background-color:#FFFFFF;
@@ -47,7 +47,7 @@
                     layerAler(langs1[350][lang]); //请选择您要保存的数据
                     return;
                 }
-                addlogon(u_name, "添加", o_pid, "回路管理", "导入Excel文件");
+                addlogon(u_name, "添加", o_pid, "回路管理", "导入Excel文件添加回路");
                 var pid = parent.parent.getpojectId();
                 for (var i = 0; i <= selects.length - 1; i++) {
                     var comaddr = selects[i].网关地址;
@@ -59,7 +59,7 @@
                         success: function (data) {
                             var arrlist = data.rs;
                             if (arrlist.length > 0) {
-                                $.ajax({async: false, url: "login.loop.getl_code.action", type: "POST", datatype: "JSON", data: {l_code: l_code,l_comaddr:comaddr},
+                                $.ajax({async: false, url: "login.loop.getl_code.action", type: "POST", datatype: "JSON", data: {l_code: l_code, l_comaddr: comaddr},
                                     success: function (data) {
                                         var arrlist = data.rs;
                                         if (arrlist.length == 0) {
@@ -132,25 +132,24 @@
 
                 var namesss = false;
 
-                addlogon(u_name, "添加", o_pid, "回路管理", "添加回路");
-                $.ajax({async: false, cache: false, url: "loop.loopForm.getLoopList.action", type: "GET", data: o,
+                addlogon(u_name, "添加", o_pid, "回路管理", "添加回路", o.l_comaddr);
+                $.ajax({async: false, cache: false, url: "loop.loopForm.getloopCode.action", type: "GET", data: o,
                     success: function (data) {
-                        if (data.total > 0) {
+                        if (data.rs.length > 0) {
                             layerAler(langs1[360][lang]); //此回路已存在
                             return false;
                         }
-                        if (data.total == 0) {
-                            $.ajax({async: false, cache: false, url: "loop.loopForm.addloop.action", type: "GET", data: o,
-                                success: function (data) {
+                        $.ajax({async: false, cache: false, url: "loop.loopForm.addloop.action", type: "GET", data: o,
+                            success: function (data) {
+                                if (data.rs.length > 0) {
                                     $("#gravidaTable").bootstrapTable('refresh');
                                     namesss = true;
-                                },
-                                error: function () {
-                                    layerAler("系统错误，刷新后重试");
                                 }
-                            });
-                            return  false;
-                        }
+                            },
+                            error: function () {
+                                layerAler("系统错误，刷新后重试");
+                            }
+                        });
 
                     },
                     error: function () {
@@ -173,7 +172,7 @@
                     var oo = {};
                     oo.id = obj.param;
                     oo.l_worktype = obj.val;
-                    //  addlogon(u_name, "修改", o_pid, "回路管理", "修改回路");
+                    addlogon(u_name, "修改", o_pid, "回路管理", "修改回路");
 
                     $.ajax({async: false, url: "loop.loopForm.modifyWorkType.action", type: "get", datatype: "JSON", data: oo,
                         success: function (data) {
@@ -231,7 +230,7 @@
             function modifyLoopName() {
                 var o = $("#form2").serializeObject();
                 o.id = o.hide_id;
-                addlogon(u_name, "修改", o_pid, "回路管理", "修改回路");
+                addlogon(u_name, "修改", o_pid, "回路管理", "修改回路", $("#l_comaddr1").val());
                 $.ajax({async: false, url: "loop.loopForm.modifyname.action", type: "get", datatype: "JSON", data: o,
                     success: function (data) {
                         var arrlist = data.rs;

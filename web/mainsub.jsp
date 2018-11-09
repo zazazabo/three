@@ -936,7 +936,7 @@
         <div class="bottom1">
 
             <div class="row "   >
-                <div class="col-xs-2 " style="width:200px" >
+                <div class="col-xs-2 "  >
                     <table id="gayway" style="width:100%;"   data-toggle="table" 
                            data-height="400"
                            data-single-select="true"
@@ -964,6 +964,38 @@
 
                 </div>
                 <div class="col-xs-10">
+
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                网关[17020101]电能量信息 开灯时间:[18:00]  关灯时间:[6:00]
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            <table style="border-collapse:separate;  border-spacing:0px 10px;border: 1px solid #16645629; margin-top: 2px;">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            A相有功功率:
+                                        </td>
+                                        <td>
+                                            <input id="ip"  class="form-control" name="ip" value="10"  style="width:150px; " placeholder="有功功率" type="text">
+                                        </td>
+
+                                    </tr>
+                                </tbody>
+                            </table> 
+                        </div>
+                    </div>              
+
+
+
+
+
+
+
+
 
                 </div>
             </div>

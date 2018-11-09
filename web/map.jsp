@@ -414,7 +414,7 @@
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 304, vv); //01 03
                 dealsend3("A5", data, 304, "sceneCB", l_comaddr, 0, 0, scenenum);
-                addlogon(name, "切换场景", pid, "地图导航", "切换场景", l_comaddr);
+                addlogon(name, "单灯切换场景", pid, "地图导航", "切换场景", l_comaddr);
                 $('#switchCj').dialog("close");
             }
             //切换场景回调
@@ -1644,6 +1644,7 @@
                                                     var arrlist = data.rs;
                                                     if (arrlist.length == 1) {
                                                         alert(lans[143][lang]);  //修改成功
+                                                        addlogon(name, "移动网关", pid, "地图导航", "移动网关",obj.comaddr);
                                                     } else {
                                                         alert(lans[281][lang]);  //修改失败
                                                     }
@@ -1677,6 +1678,7 @@
                                                             var arrlist = data.rs;
                                                             if (arrlist.length == 1) {
                                                                 alert("移除成功");  //修改成功
+                                                                addlogon(name, "移除网关", pid, "地图导航", "移除网关",obj.comaddr);
                                                             } else {
                                                                 alert("移除失败");  //修改失败
                                                             }
@@ -1898,6 +1900,7 @@
                                     layer.confirm("确认要移动该灯具吗", {//确认要移动该灯具吗？
                                         btn: [lans[146][lang], lans[147][lang]] //确定、取消按钮
                                     }, function (index) {
+                                        addlogon(name, "移动灯具", pid, "地图导航", "移动灯具",obj.l_comaddr);
                                         marker1.enableDragging(); //标注可拖拽
                                         marker1.addEventListener("dragend", function (e) {
                                             var x = e.point.lng; //经度
@@ -1945,6 +1948,7 @@
                                                             var arrlist = data.rs;
                                                             if (arrlist.length == 1) {
                                                                 alert("移除成功");  //修改成功
+                                                                addlogon(name, "移除灯具", pid, "地图导航", "移除灯具",obj.l_comaddr);
                                                             } else {
                                                                 alert("移除失败");  //修改失败
                                                             }

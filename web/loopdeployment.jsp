@@ -134,13 +134,13 @@
 
                 var o1 = $("#form1").serializeObject();
                 console.log(o1);
-                addlogon(u_name, "部署", o_pid, "回路部署", "部署回路");
                 var vv = [];
                 var param = [];
                 for (var i = 0; i < selects.length; i++) {
 
                     var ele = selects[i];
                     var comaddr = ele.l_comaddr;
+                     addlogon(u_name, "部署", o_pid, "回路部署", "部署回路",comaddr);
                     if (o1.l_comaddr != comaddr) {
                         layerAler(langs1[376][lang]);  //只能在同一网关下操作
                         return;
@@ -183,12 +183,12 @@
                     return;
                 }
                 var o1 = $("#form1").serializeObject();
-                addlogon(u_name, "移除", o_pid, "回路部署", "移除回路");
                 var vv = [];
                 var param = [];
                 for (var i = 0; i < selects.length; i++) {
                     var ele = selects[i];
                     var comaddr = ele.l_comaddr;
+                    addlogon(u_name, "移除", o_pid, "回路部署", "移除回路",comaddr);
                     if (o1.l_comaddr != comaddr) {
                         layerAler(langs1[376][lang]);  //只能在同一网关下操作
                         return;
@@ -252,7 +252,6 @@
                     layerAler(langs1[73][lang]); //请勾选表格数据
                     return;
                 }
-                addlogon(u_name, "部署", o_pid, "回路部署", "部署回路方案");
                 var obj = $("#form1").serializeObject();
                 console.log(obj);
 
@@ -294,6 +293,7 @@
                 }
 
                 var comaddr = s.l_comaddr;
+                addlogon(u_name, "部署", o_pid, "回路部署", "部署回路方案",comaddr);
                 var param = {p_intime: obj.intime, p_outtime: obj.outtime, p_code: obj.p_plan};
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA4, num, 0, 401, vv); //01 03 F24    

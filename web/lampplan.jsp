@@ -55,7 +55,7 @@
             function checkPlanLampAdd() {
 
                 var a = $("#formadd").serializeObject();
-                // addlogon(u_name, "添加", o_pid, "灯具策略", "添加灯具方案");
+                addlogon(u_name, "添加", o_pid, "灯具策略", "添加灯具方案");
                 if (a.p_type == "0") {
                     var val1 = 0;
                     var val2 = 0;
@@ -807,7 +807,7 @@
                     pagination: true,
                     sidePagination: 'server',
                     pageNumber: 1,
-                    pageSize: 5,
+                    pageSize: 10,
                     showRefresh: true,
                     showToggle: true,
                     // 设置默认分页为 50

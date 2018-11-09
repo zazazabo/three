@@ -65,7 +65,7 @@
                         offset: 'center',
                         title: langs1[174][lang]  //提示
                     }, function (index) {
-                        addlogon(u_name, "删除", o_pid, "网关管理", "删除网关");
+                        addlogon(u_name, "删除", o_pid, "网关管理", "删除网关",selects[0].comaddr);
                         var o = {l_comaddr: selects[0].comaddr, id: selects[0].id};
                         $.ajax({url: "gayway.GaywayForm.existcomaddr.action", async: false, type: "POST", datatype: "JSON", data: o,
                             success: function (data) {
@@ -136,7 +136,7 @@
 
                     $("#id_").val(s.id);
                     $("#comaddr_").val(s.comaddr);
-                    $("#multpower_").val(s.multpower);
+//                    $("#multpower_").val(s.multpower);
 
                     var arrlatitude = s.latitude.split(".");
                     var arrLongitude = s.Longitude.split(".");
@@ -162,7 +162,7 @@
                 obj.latitude = latitudemstr;
                 var longitudemstr = obj.longitudem26d + "." + obj.longitudem26m + "." + obj.longitudem26s;
                 obj.longitude = longitudemstr;
-                addlogon(u_name, "修改", o_pid, "网关管理", "修改网关");
+                addlogon(u_name, "修改", o_pid, "网关管理", "修改网关",obj.comaddr);
                 $.ajax({async: false, cache: false, url: "gayway.GaywayForm.modifyGateway.action", type: "GET", data: obj,
                     success: function (data) {
                         // namesss = true;
@@ -228,12 +228,6 @@
                             align: 'center',
                             valign: 'middle'
                         }, {
-                            field: '倍率',
-                            title: langs1[346][lang], //倍率
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
                             field: '安装位置',
                             title: langs1[347][lang], //安装位置
                             width: 25,
@@ -274,8 +268,8 @@
                                 // break; // 如果只取第一张表，就取消注释这行
                             }
                         }
-                        var headStr = '序号,名称,网关地址,经度,纬度,倍率,安装位置';
-                        var headStr2 = '序号,名称,网关地址,倍率,安装位置';
+                        var headStr = '序号,名称,网关地址,经度,纬度,安装位置';
+                        var headStr2 = '序号,名称,网关地址,安装位置';
                         for (var i = 0; i < persons.length; i++) {
                             if (Object.keys(persons[i]).join(',') !== headStr &&Object.keys(persons[i]).join(',') !== headStr2) {
                                 alert(langs1[366][lang]); //导入文件格式不正确
@@ -507,7 +501,7 @@
                                 adobj.latitude = selects[i].纬度;
                                 adobj.area = selects[i].安装位置;
                                 adobj.pid = pid;
-                                adobj.multpower = selects[i].倍率;
+                                //adobj.multpower = selects[i].倍率;
                                 adobj.presence = 0;
                                 adobj.connecttype = 0;
                                 $.ajax({url: "login.gateway.addbase.action", async: false, type: "get", datatype: "JSON", data: adobj,
@@ -548,7 +542,6 @@
                     });
                     return false;
                 }
-                addlogon(u_name, "添加", o_pid, "网关管理", "添加网关");
                 var obj = $("#formadd").serializeObject();
 
                 var namesss = false;
@@ -575,6 +568,7 @@
                             $.ajax({async: false, cache: false, url: "gayway.GaywayForm.addGateway.action", type: "GET", data: obj,
                                 success: function (data) {
                                     namesss = true;
+                                    addlogon(u_name, "添加", o_pid, "网关管理", "添加网关",$("#comaddr").val().trim());
                                     $("#gravidaTable").bootstrapTable('refresh');
                                 },
                                 error: function () {
@@ -642,7 +636,19 @@
                             </td>
                             <td>
                             </td>
-                            <td>
+                             <td>
+                                <span style="margin-left:10px;" name="xxx" id="357">通信方式</span>&nbsp;
+
+
+                                <span class="menuBox">
+
+
+                                    <select class="easyui-combobox" id="connecttype" name="connecttype" data-options='editable:false' style="width:150px; height: 30px">
+                                        <option value="0" selected="true">GPRS</option>
+                                        <option value="1">网线</option>    
+                                        <option value="2">485</option>           
+                                    </select>
+                                </span>
 
                             </td>
                         </tr>
@@ -675,29 +681,6 @@
                             <td>
                                 <span style="margin-left:10px;" name="xxx" id="25">网关地址</span>&nbsp;
                                 <input id="comaddr" class="form-control" name="comaddr" style="width:150px;display: inline;" placeholder="请输入网关地址" type="text">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span style="margin-left:20px;" name="xxx" id="357">通信方式</span>&nbsp;
-
-
-                                <span class="menuBox">
-
-
-                                    <select class="easyui-combobox" id="connecttype" name="connecttype" data-options='editable:false' style="width:150px; height: 30px">
-                                        <option value="0" selected="true">GPRS</option>
-                                        <option value="1">网线</option>    
-                                        <option value="2">485</option>           
-                                    </select>
-                                </span>
-
-                            </td>
-
-                            <td></td>
-                            <td>
-                                <span style="margin-left:35px;" nane="xxx" id="346">倍率</span>&nbsp;
-                                <input id="multpower" class="form-control" name="multpower" style="width:150px;display: inline;" placeholder="请输入倍率" type="text">
                             </td>
                         </tr>
                         <tr>
@@ -774,9 +757,9 @@
                             </td>
 
                             <td></td>
-                            <td>
+<!--                            <td>
                                 <span style="margin-left:35px;" nane="xxx" id="346">倍率</span>&nbsp;
-                                <input id="multpower_" class="form-control" name="multpower" style="width:150px;display: inline;" placeholder="请输入倍率" type="text"></td>
+                                <input id="multpower_" class="form-control" name="multpower" style="width:150px;display: inline;" placeholder="请输入倍率" type="text"></td>-->
                         </tr>
                         <tr>
                             <td>
@@ -811,7 +794,6 @@
                     <td>网关地址</td>
                     <td>经度</td>
                     <td>纬度</td>
-                    <td>倍率</td>
                     <td>安装位置</td>
                 </tr>
                 <tr>
@@ -820,7 +802,6 @@
                     <td>网地址不可重复</td>
                     <td>可以不输入</td>
                     <td>可以不输入</td>
-                    <td>必须为正整数</td>
                     <td>安装位置</td>
                 </tr>
             </table>
