@@ -88,7 +88,7 @@
                     pagination: true,
                     sidePagination: 'server',
                     pageNumber: 1,
-                    pageSize: 10,
+                    pageSize: 15,
                     showRefresh: true,
                     showToggle: true,
                     // 设置默认分页为 50

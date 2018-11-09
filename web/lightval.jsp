@@ -373,12 +373,12 @@
                         }
 
                         layerAler("调光成功");
-                        var o = $("#formsearch").serializeObject();
+                        // var o = $("#formsearch").serializeObject();
+                        var sobj = {};
+                        sobj.l_comaddr = obj.comaddr;
                         var opt = {
                             url: "lamp.lampform.getlampList.action",
-                            query: o,
-                            l_comaddr:obj.comaddr
-
+                            query: sobj
                         };
                         $('#lamptable').bootstrapTable('refresh', opt);
                     }
@@ -729,7 +729,7 @@
 
 
 
-                $('#gayway').on('click-cell.bs.table', function (field, value, row, element){
+                $('#gayway').on('click-cell.bs.table', function (field, value, row, element) {
                     var l_comaddr = element.comaddr;
                     var url = "lamp.GroupeForm.getGroupe.action?l_comaddr=" + l_comaddr + "&l_deplayment=1";
                     $("#l_groupe").combobox("clear");
@@ -894,13 +894,13 @@
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
                                 console.log(row);
-                                if(row.l_fault==1){
+                                if (row.l_fault == 1) {
                                     var str = '<img data-toggle="tooltip"  src="img/lred3.png" onclick="tourlamp(' + row.l_comaddr + ',' + row.l_code + ')" />';
                                     return  str;
-                                }else if(value==1&&row.l_value>0){
+                                } else if (value == 1 && row.l_value > 0) {
                                     var str = '<img data-toggle="tooltip"  src="img/lyello.png" onclick="tourlamp(' + row.l_comaddr + ',' + row.l_code + ')" />';
                                     return  str;
-                                }else if (value == 1) {
+                                } else if (value == 1) {
                                     var str = '<img data-toggle="tooltip"  src="img/yl.png" onclick="tourlamp(' + row.l_comaddr + ',' + row.l_code + ')" />';
                                     return  str;
                                 } else {
@@ -1017,13 +1017,10 @@
                        data-click-to-select="true"
                        data-search="true"
                        data-checkbox-header="true"
-                       data-show-header='true'
-                       data-search-align='right'
-                       data-silent-sort='true'
                        data-url="gayway.GaywayForm.getComaddrList.action?pid=${param.pid}&page=ALL" style="width:200px;" >
                     <thead >
                         <tr >
-                            <th data-width="25"  data-visible="true"   data-select="false" data-align="center"  data-checkbox="true"  ></th>
+                            <th data-width="25"  data-visible="true"   data-select="false" data-align="center"  data-checkbox="true"></th>
                             <th data-width="100" data-field="comaddr"  data-formatter='formartcomaddr'   >网关地址</th>
                             <!--<th data-width="100" data-field="name" data-align="center"    >网关名称</th>-->
                         </tr>
