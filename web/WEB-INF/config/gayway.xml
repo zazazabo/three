@@ -21,7 +21,16 @@
                 </xflt>
             </xsql>
         </xhandle>
-
+        <xhandle desc="" id="info" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_baseinfo where @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@comaddr">
+                    <xfltpara id="comaddr" nrp="1=1" para="comaddr" sql="comaddr = ':comaddr'">
+                    </xfltpara>
+                    <xfltpara id="pid" nrp="1=2" para="pid" sql="pid = ':pid'">
+                    </xfltpara>
+                </xflt>
+            </xsql>
+        </xhandle>
             <xhandle desc="" id="getComaddrList" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_baseinfo where @CONDITION " var="list">
                 <xflt id="CONDITION" nrp="" tpl="@id AND @comaddr AND @pid">

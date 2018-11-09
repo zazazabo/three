@@ -203,6 +203,12 @@
                         console.log(timestamp, timestamptemp);
                         if ((timestamptemp - timestamp) / 1000 < 1) {
                             //layerAler("请不要连续发送");
+                            if (obj.val=="cansend") {
+                                timestamp = timestamptemp;
+                                console.log(obj);
+                                var datajson = JSON.stringify(obj);
+                                websocket.send(datajson);
+                            }
                         } else {
                             timestamp = timestamptemp;
                             console.log(obj);
@@ -1052,7 +1058,7 @@
                         if (typeof aele == 'object') {
                             var strclass = $(aele).attr('class');
                             var name = $(aele).attr('name');
-                            console.log(strclass, typeof strclass,name);
+                            console.log(strclass, typeof strclass, name);
                             if (strclass.indexOf("active") != -1) {
                                 if (name.indexOf("tab") != -1) {
                                     var obj = $("iframe").eq(0);
