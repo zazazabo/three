@@ -514,11 +514,11 @@
                             // console.log(data);
                             var arrlist1 = data.rs;
                             if (arrlist1.length == 1) {
-                                addlogon(name, "登陆",arrlist1[0].pid, "登陆", "登陆");
+                                addlogon(name, "登陆", arrlist1[0].pid, "登陆", "登陆");
 
                                 var o1 = arrlist1[0];
                                 o1.role = arrlist1[0].m_code;
-                                 console.log(o1);
+                                console.log(o1);
                                 $.PostSubmitForm('login.main.home.action', arrlist1[0]);
 
 
@@ -604,8 +604,15 @@
                     $("#login").val("Login");
                     $("#top").html("Account login");
                 });
-
             });
+            //回车登录
+            document.onkeydown = function mykeyDown(e) {
+                //compatible IE and firefox because there is not event in firefox
+                e = e || event;
+                if (e.keyCode == 13) {
+                    document.getElementById("login").click(); //调用登录按钮的登录事件
+                }
+            };
         </script>
     </head>
     <body>
