@@ -185,7 +185,7 @@
                     vv.push(h); //装置序号  2字节
                     var num = randnum(0, 9) + 0x70;
                     var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 280, vv); //01 03 F24     
-                    addlogon(u_name, "恢复自动运行", o_pid, "回路断合闸", "恢复回路自动运行", l_comaddr);
+                    addlogon(u_name, "恢复自动运行", o_pid, "回路断合闸", "恢复单个回路自动运行", l_comaddr);
                     dealsend2("A5", data, 280, "restoreloopCB", l_comaddr, o1.type, 0, 0);
                     $('#panemask').showLoading({
                         'afterShow': function () {
@@ -200,7 +200,7 @@
                     vv.push(parseInt(switchval));
                     var num = randnum(0, 9) + 0x70;
                     var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 240, vv); //01 03 F24     
-                    addlogon(u_name, "恢复自动运行", o_pid, "回路断合闸", "恢复回路自动运行", l_comaddr);
+                    addlogon(u_name, "恢复自动运行", o_pid, "回路断合闸", "恢复所有回路自动运行", l_comaddr);
                     dealsend2("A5", data, 240, "restoreloopCB", l_comaddr, o1.type, 0, 0);
                     $('#panemask').showLoading({
                         'afterShow': function () {
@@ -436,7 +436,7 @@
                                data-url="gayway.GaywayForm.getComaddrList.action?pid=${param.pid}&page=ALL" style="width:200px;" >
                             <thead >
                                 <tr >
-                                    <th data-width="100"    data-select="false" data-align="center"  data-checkbox="true"  ></th>
+                                    <th data-width="25"    data-select="false" data-align="center"  data-checkbox="true"  ></th>
                                     <th data-width="100" data-field="comaddr" data-align="center" data-formatter='formartcomaddr'   >网关地址</th>
                                     <!--<th data-width="100" data-field="name" data-align="center"    >网关名称</th>-->
                                 </tr>
@@ -449,7 +449,7 @@
             </div>   
             <div class="col-xs-10">
                 <form id="form1">
-                    <table>
+                    <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; margin-top: 10px; align-content:  center">
                         <tbody>
                             <tr>
                                 <!--                                <td>

@@ -29,6 +29,135 @@
                 return reg.test(ip);
             }
 
+            function setPowerCB(obj) {
+                if (obj.status == "success") {
+                    layerAler("设置成功");
+                }
+            }
+            function setPower() {
+                var o = $("#form1").serializeObject();
+                var obj = $("#form2").serializeObject();
+                var reg = /^(\d{3})+(\.\d{1})+$/;
+                if (reg.test(obj.voltage) == false) {
+                    layerAler("电压限值格式为:xxx.x x为数字");
+                    return
+                }
+                var reg = /^(\d{3})+(\.\d{3})+$/;
+                if (reg.test(obj.electric) == false) {
+                    layerAler("电流限值格式为:xxx.xxx x为数字");
+                    return
+                }
+
+                var reg = /^(\d{1})+(\.\d{3})+$/;
+                if (reg.test(obj.powerfactor) == false) {
+                    layerAler("功率因数限值格式为:x.xxx x为数字");
+                    return
+                }
+
+                var reg = /^(\d{1,3})$/;
+                if (reg.test(obj.power) == false) {
+                    layerAler("倍率为0到256");
+                    return
+                }
+                if (parseInt(obj.power) > 256) {
+                    layerAler("倍率为0到256");
+                    return
+                }
+
+                var vol = obj.voltage
+                vol = vol.replace(".", "");
+                var volarr = Str2BytesH(vol);
+
+
+                var elec = obj.electric
+                elec = elec.replace(".", "");
+                var elecarr = Str2BytesH(elec);
+
+                var factor = obj.powerfactor
+                factor = factor.replace(".", "");
+                var factorarr = Str2BytesH(factor);
+
+
+                var vv = [];
+                vv.push(volarr[1]);
+                vv.push(volarr[0]);
+                vv.push(elecarr[2]);
+                vv.push(elecarr[1]);
+                vv.push(elecarr[0]);
+                vv.push(factorarr[1]);
+                vv.push(factorarr[0]);
+                vv.push(parseInt(obj.power));
+                var comaddr = o.l_comaddr;
+                var num = randnum(0, 9) + 0x70;
+                var data = buicode(comaddr, 0x04, 0xFF, num, 0, 8, vv); //01 03 F24   
+
+                dealsend2("FF", data, 8, "setPowerCB", comaddr, 0, 0, 0, 0);
+
+
+            }
+
+            function  readPowerCB(obj) {
+                if (obj.status == "success") {
+                    if (obj.msg == "FE" && obj.fn == 8) {
+                        var data = Str2BytesH(obj.data);
+                        var v = "";
+                        for (var i = 0; i < data.length; i++) {
+
+                            v = v + sprintf("%02x", data[i]) + " ";
+                        }
+                        console.log(v);
+                        var z = 18;
+                        //电压超限值
+                        var bw = data[z + 1] >> 4 & 0xf;
+                        var sw = data[z + 1] & 0x0f;
+                        var gw = data[z] >> 4 & 0x0f;
+                        var fw = data[z] & 0x0f;
+                        var voltage = sprintf("%d%d%d.%d", bw, sw, gw, fw);
+                        $("#voltage").val(voltage);
+
+                        //电流超限值
+                        z = z + 2;
+                        var bw = data[z + 2] >> 4 & 0xf;
+                        var sw = data[z + 2] & 0x0f;
+                        var gw = data[z + 1] >> 4 & 0x0f;
+                        var sfw = data[z + 1] & 0x0f;
+                        var bfw = data[z] >> 4 & 0x0f;
+                        var qfw = data[z] & 0x0f;
+                        var electric = sprintf("%d%d%d.%d%d%d", bw, sw, gw, sfw, bfw, qfw);
+                        $("#electric").val(electric);
+                        //功率因数限值
+                        z = z + 3
+                        var gw = data[z + 1] >> 4 & 0xf;
+                        var sfw = data[z + 1] & 0x0f;
+                        var bfw = data[z] >> 4 & 0x0f;
+                        var qfw = data[z] & 0x0f;
+                        var powerfactor = sprintf("%d.%d%d%d", gw, sfw, bfw, qfw);
+                        $("#powerfactor").val(powerfactor);
+                        //电流互感变比
+                        z = z + 2;
+                        var power = sprintf("%02x", data[z]);
+                        $("#power").val(power);
+                        var vv1 = data[z];
+                        console.log('变比:', vv1);
+                    }
+                }
+
+            }
+
+            function readpower() {
+                var o = $("#form1").serializeObject();
+                var obj = $("#form2").serializeObject();
+
+                var vv = [];
+                vv.push(1);
+                vv.push(parseInt(obj.l_groupe)); //新组号  1字节            
+                var comaddr = o.l_comaddr;
+                var num = randnum(0, 9) + 0x70;
+                var data = buicode(comaddr, 0x04, 0xFE, num, 0, 8, vv); //01 03 F24   
+                dealsend2("FE", data, 8, "readPowerCB", comaddr, 0, 0, 0, 0);
+            }
+
+
             function StartCheck() {
                 var o = $("#form1").serializeObject();
                 var obj = $("#form2").serializeObject();
@@ -37,6 +166,7 @@
                 vv.push(1);
                 vv.push(parseInt(obj.l_groupe)); //新组号  1字节            
                 var comaddr = o.l_comaddr;
+                addlogon(u_name, "巡测", o_pid, "网关参数设置", "启动巡测任务", o.l_comaddr);
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA5, num, 0, 1, vv); //01 03 F24   
                 dealsend2("A5", data, 1, "allCallBack", comaddr, 0, 0, 0, 0);
@@ -50,6 +180,7 @@
                 vv.push(1);
                 vv.push(parseInt(obj.l_groupe)); //新组号  1字节            
                 var comaddr = o.l_comaddr;
+                addlogon(u_name, "巡测", o_pid, "网关参数设置", "结束巡测任务", o.l_comaddr);
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA5, num, 0, 2, vv); //01 03 F24   
                 dealsend2("A5", data, 2, "allCallBack", comaddr, 0, 0, 0, 0);
@@ -166,7 +297,7 @@
                                 alert("提交失败！");
                             }
                         });
-                        layerAler(langs1[165][lang]); //更换工作方式
+                        layerAler("更换工作方式成功"); //更换工作方式
                     } else if (obj.msg == "A4" && obj.fn == 108) {
                         //删除所有灯配置
                         var o = {l_comaddr: obj.comaddr, l_deplayment: 0};
@@ -243,6 +374,15 @@
                         var str = timezone1 >> 4 & 0xf;
                         $("#areazone").combobox("select", str);
                     } else if (obj.msg == "FF") {
+                        var val = obj.val;
+                        var oo = {longitude: val.jd, latitude: val.wd, l_comaddr: obj.comaddr};
+                        $.ajax({async: false, url: "loop.loopForm.editloopjwd1.action", type: "get", datatype: "JSON", data: oo,
+                            success: function (data) {
+                            },
+                            error: function () {
+                                alert("提交失败！");
+                            }
+                        });
                         layerAler("success");
                     }
 
@@ -250,22 +390,23 @@
             }
 
             function readjwd() {
+
                 var o = $("#form1").serializeObject();
                 var obj = $("#form2").serializeObject();
 
                 var vv = [];
-                vv.push(1);
-                vv.push(parseInt(obj.l_groupe)); //新组号  1字节            
                 var comaddr = o.l_comaddr;
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xFE, num, 0, 10, vv); //01 03 F24   
-                dealsend2("FE", data, 10, "allCallBack", comaddr, 0, 0, obj.l_groupe);
+                dealsend2("FE", data, 10, "allCallBack", comaddr, 0, 0, 0);
             }
             function setjwd() {
                 var o = $("#form1").serializeObject();
                 var obj = $("#form2").serializeObject();
                 var long = obj.Longitude;
                 var lati = obj.latitude;
+
+                var oo = {jd: long, wd: lati};
                 var longarr = long.split(".");
                 var latiarr = lati.split(".");
                 console.log(longarr.length);
@@ -326,9 +467,11 @@
                 vv.push(parseInt(obj.timezone));
 
                 var comaddr = o.l_comaddr;
+                addlogon(u_name, "设置", o_pid, "网关参数设置", "设置网关经纬度", o.l_comaddr);
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xff, num, 0, 10, vv); //01 03 F24   
-                dealsend2("FF", data, 10, "allCallBack", comaddr, 0, 0, obj.l_groupe);
+
+                dealsend2("FF", data, 10, "allCallBack", comaddr, 0, 0, oo);
             }
 
             function setGroupe() {
@@ -340,7 +483,8 @@
                 vv.push(parseInt(obj.l_groupe)); //新组号  1字节            
                 var comaddr = o.l_comaddr;
                 var num = randnum(0, 9) + 0x70;
-                var data = buicode(comaddr, 0x04, 0xA4, num, 0, 110, vv); //01 03 F24    
+                var data = buicode(comaddr, 0x04, 0xA4, num, 0, 110, vv); //01 03 F24   
+                addlogon(u_name, "跟换", o_pid, "网关参数设置", "更换组号", comaddr);
                 dealsend2("A4", data, 110, "allCallBack", comaddr, 0, 0, obj.l_groupe);
             }
 
@@ -348,6 +492,7 @@
                 var o = $("#form1").serializeObject();
                 var vv = [];
                 var comaddr = o.l_comaddr;
+                addlogon(u_name, "删除", o_pid, "网关参数设置", "删除所有灯具时间表", o.l_comaddr);
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA4, num, 0, 180, vv); //01 03 F24    
                 dealsend2("A4", data, 180, "allCallBack", comaddr, 0, 0, 0);
@@ -355,6 +500,7 @@
             function delAllLoopPlan() {
                 var o = $("#form1").serializeObject();
                 var vv = [];
+                addlogon(u_name, "删除", o_pid, "网关参数设置", "删除所有回路时间表", o.l_comaddr);
                 var comaddr = o.l_comaddr;
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA4, num, 0, 402, vv); //01 03 F24    
@@ -363,6 +509,7 @@
             function delAllLoop() {
                 var o = $("#form1").serializeObject();
                 var vv = [];
+                addlogon(u_name, "删除", o_pid, "网关参数设置", "删除所有回路开关信息", o.l_comaddr);
                 var comaddr = o.l_comaddr;
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA4, num, 0, 340, vv); //01 03 F24    
@@ -376,7 +523,7 @@
                 var comaddr = o.l_comaddr;
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA4, num, 0, 108, vv); //01 03 F24    
-
+                addlogon(u_name, "删除", o_pid, "网关参数设置", "删除全部灯具信息", comaddr);
                 dealsend2("A4", data, 108, "allCallBack", comaddr, 0, 0, 0);
             }
             function setWowktype() {
@@ -389,7 +536,7 @@
                 var comaddr = o.l_comaddr;
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA4, num, 0, 120, vv); //01 03 F24    
-
+                addlogon(u_name, "更换", o_pid, "网关参数设置", "跟换工作方式", comaddr);
                 dealsend2("A4", data, 120, "allCallBack", comaddr, 0, 0, obj.l_worktype);
             }
 
@@ -587,7 +734,7 @@
                 var hexport = parseInt(obj.port);
                 var u1 = hexport >> 8 & 0x00ff;
                 var u2 = hexport & 0x000ff;
-                addlogon(u_name, "设置", o_pid, "网关参数设置", "设置主站信息");
+                addlogon(u_name, "设置", o_pid, "网关参数设置", "设置主站信息", obj1.l_comaddr);
                 var vv = [];
                 if (obj.sitetype == "1") {
                     if (isValidIP(obj.ip) == false) {
@@ -707,6 +854,7 @@
                 vv.push(h2);
                 vv.push(m2);
                 var comaddr = o.l_comaddr;
+                addlogon(u_name, "设置", o_pid, "网关参数设置", "设置换日时间和冻结时间", comaddr);
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA4, num, 0, 4, vv); //01 03 F24    
                 dealsend2("A4", data, 4, "setChgTimeCB", comaddr, 0, oo, 0);
@@ -730,7 +878,7 @@
                     layerAler(langs1[176][lang]);
                     return;
                 }
-                addlogon(u_name, "设置", o_pid, "网关参数设置", "设置运营商APN");
+                addlogon(u_name, "设置", o_pid, "网关参数设置", "设置运营商APN", o.l_comaddr);
                 var vv = [];
                 for (var i = 0; i < 16; i++) {
                     var apn = obj.apn;
@@ -832,6 +980,7 @@
                 }
             }
             function setArea() {
+                addlogon(u_name, "设置", o_pid, "网关参数设置", "设置行政参数划码");
                 var vv = [];
                 var obj = $("#form1").serializeObject();
                 var obj1 = $("#form2").serializeObject();
@@ -977,6 +1126,7 @@
                                                         <option value="7">设置回路</option> 
                                                         <option value="8">设置经纬度</option> 
                                                         <option value="9">设置巡测任务</option> 
+                                                        <option value="10">互感器变比设置</option> 
                                                     </select>
                                                 </span>  
                                             </td>
@@ -1305,6 +1455,75 @@
                                 </table>
                             </div>
                         </div>                   
+
+
+                        <div class="row" id="row10"  style=" display: none">
+                            <div class="col-xs-12">
+
+
+                                <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629;">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <span style=" float: right; " name="xxxx" id="421">电压超限值&nbsp;</span>&nbsp;
+                                            </td>
+                                            <td>
+                                                <input id="voltage" name="voltage"  value="" style="width:80px;" placeholder="电压超限值" type="text">
+                                            </td>
+                                            <td style=" padding-left: 10px;">
+                                                <span style="float: right; " name="xxxx" id="422">电流超限值&nbsp;</span>
+                                            </td>
+                                            <td>
+                                                <input id="electric" name="electric"  value="" style="width:80px;" placeholder="电流超限值" type="text"> &nbsp;
+                                            </td>
+                                            <td style=" padding-left: 5px;">
+                                                <span style="float: right; " name="xxxx" id="424">功率因数&nbsp;</span>
+                                            </td>
+                                            <td>
+                                                <input id="powerfactor" name="powerfactor"  value="" style="width:80px;" placeholder="功率因数限值" type="text">
+                                            </td>
+
+                                            <td style=" padding-left: 10px;">
+                                                <span style="float: right; " name="xxxx" id="423">互感器变比&nbsp;</span>
+                                            </td>
+                                            <td>
+                                                <input id="power" name="power"  value="" style="width:80px;" placeholder="互感器变比" type="text"> &nbsp;
+                                            </td>
+                                            <td colspan="2" style=" padding-left: 5px;">       
+                                                <button  type="button" onclick="readpower()" class="btn btn-success btn-sm"><span id="205" name="xxx">读取</span></button>&nbsp;
+
+
+                                            </td>
+                                            <td colspan="2" style=" padding-left: 5px;">    
+                                                <button  type="button" onclick="setPower()" class="btn btn-success btn-sm"><span id="49" name="xxx">设置</span></button>&nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+
+
+                                        </tr>
+                                        <tr>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+
+
+
+
+
+
+
+
+
+
+
+                            </div>
+
+                        </div>      
+
+
 
                     </form>
                 </div>

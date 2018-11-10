@@ -197,7 +197,7 @@
                             valign: 'middle'
                         }, {
                             field: 'val',
-                            title: langs1[112][lang]+'(KW)', //消耗量
+                            title: langs1[112][lang]+'(KW·h)', //消耗量
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -253,7 +253,7 @@
 
                         }, {
                             field: 'val',
-                            title: langs1[112][lang]+'(KW)', //消耗量
+                            title: langs1[112][lang]+'(KW·h)', //消耗量
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -306,7 +306,7 @@
                             valign: 'middle'
                         }, {
                             field: 'val',
-                            title: langs1[112][lang]+'(KW)', //消耗量
+                            title: langs1[112][lang]+'(KW·h)', //消耗量
                             width: 25,
                             align: 'center',
                             valign: 'middle'

@@ -46,7 +46,7 @@
                     </xfltpara>
                 </xflt>
             </xsql>
-            <xsql desc="灯具总数" id="a8" list="true" page="true" tpe="SQL" tpl="select count(id) as num from t_lamp where @CONDITION" var="lampNumber">
+            <xsql desc="灯具总数" id="a8" list="true" page="true" tpe="SQL" tpl="select count(id) as num from t_lamp where l_deplayment=1 and @CONDITION" var="lampNumber">
                 <xflt id="CONDITION" nrp="" tpl="@pid">
                     <xfltpara id="pid" nrp="1=1" para="pid" sql="l_comaddr in(select comaddr from t_baseinfo where  pid = ':pid' )">
                     </xfltpara>

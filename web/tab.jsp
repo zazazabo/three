@@ -34,10 +34,25 @@
                     win[func](obj);
                 }
             }
+            function callhit() {
+                var vvvv = $(".secondMenu").children('li').each(function () {
+                    var attr = $(this).attr("class");
+
+                    if (attr.indexOf("active") != -1) {
+                        $(this).click();
+                        return;
+                        // break;
+                    }
+                });
+            }
         </script>
     </head>
 
     <body>
+
+
+
+        <br>
         <div class="contents">
             <div class="top">
                 <ul class="secondMenu layui-nav">
@@ -53,10 +68,15 @@
                 <iframe class="J_iframe" name="iframe0" src="#"  seamless="" width="100%" height="100%" frameborder="0"></iframe>
             </div>
         </div>
+
+        <!--<input style=" margin-left: 400px; margin-top: 10px" type="button" value="aaaaaaaaaaaaaa" onclick="ddddddd();" />-->
         <!--<script type="text/javascript" src="abc_files/jquery.js"></script>-->
         <script type="text/javascript" src="layer/layui.js"></script>  
 
         <script>
+
+
+
             $(function () {
                 $(".secondMenu").children('li').remove();
                 var objrole = {role: ${param.role}, m_parent:${param.m_parent}};

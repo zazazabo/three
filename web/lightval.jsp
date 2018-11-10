@@ -13,6 +13,9 @@
         <script type="text/javascript" src="js/genel.js"></script>
         <style>
             .btn{ margin-left: 10px;}   
+            #gayway tr td{
+                cursor:pointer;
+            }
         </style>
         <script type="text/javascript"  src="js/getdate.js"></script>
 
@@ -59,11 +62,9 @@
                     layerAler("请勾选网关");
                 }
                 var l_comaddr = s2[0].comaddr;
-                console.log(l_comaddr);
                 val = parseInt(val);
                 var o = $("#formsearch").serializeObject();
                 var groupearr = $("#l_groupe").combobox("getData");
-                console.log(groupearr);
                 if (groupearr.length == 0) {
                     layerAler(langs1[305][lang]); //此网关下没部署灯具
                     return;
@@ -118,7 +119,7 @@
 
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 302, vv); //01 03 F24     
-                addlogon(u_name, "灯具调光", o_pid, "灯具调光", "关灯", comaddr);
+                addlogon(u_name, "灯具调光", o_pid, "灯具调光", "关灯", l_comaddr);
                 dealsend2("A5", data, 302, "lightCB", l_comaddr, 3, param, val);
                 $('#panemask').showLoading({
                     'afterShow': function () {
@@ -131,7 +132,6 @@
 
             function sceneCB(obj) {
                 $('#panemask').hideLoading();
-                console.log(obj);
                 if (obj.status == "success") {
                     if (obj.fn == 304) {
                         layerAler(langs1[306][lang]); //单灯场景调光成功
@@ -142,7 +142,6 @@
             }
 
             function restoreCB(obj) {
-                console.log(obj);
                 if (obj.status == "success") {
                     layerAler(langs1[308][lang]); //恢复成功
                 }
@@ -228,7 +227,6 @@
                 var l_comaddr = s2[0].comaddr;
 
                 var o = $("#formsearch").serializeObject();
-                console.log(o);
                 var groupearr = $("#l_groupe").combobox("getData");
                 console.log(groupearr);
                 if (groupearr.length == 0) {
@@ -375,11 +373,12 @@
                         }
 
                         layerAler("调光成功");
-                        var o = $("#formsearch").serializeObject();
+                        // var o = $("#formsearch").serializeObject();
+                        var sobj = {};
+                        sobj.l_comaddr = obj.comaddr;
                         var opt = {
                             url: "lamp.lampform.getlampList.action",
-                            query: o
-
+                            query: sobj
                         };
                         $('#lamptable').bootstrapTable('refresh', opt);
                     }
@@ -449,7 +448,7 @@
                 var param = [];
                 param.push(l_groupe);
                 var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 302, vv); //01 03 F24    
-                addlogon(u_name, "灯具调光", o_pid, "灯具调光", "按组立即调光", comaddr);
+                addlogon(u_name, "灯具调光", o_pid, "灯具调光", "按组立即调光", l_comaddr);
                 dealsend2("A5", data, 302, "lightCB", l_comaddr, obj.groupetype, param, groupeval);
                 $('#panemask').showLoading({
                     'afterShow': function () {
@@ -645,16 +644,6 @@
                     var e = $(d).attr("id");
                     $(d).html(langs1[e][lang]);
                 }
-
-
-
-
-
-
-
-
-
-
                 $('#lamptable').on('click-cell.bs.table', function (field, value, row, element)
                 {
                     if (value == "l_worktype") {
@@ -730,8 +719,7 @@
 
 
 
-
-                $('#gayway').on('check.bs.table', function (row, element) {
+                $('#gayway').on('click-cell.bs.table', function (field, value, row, element) {
                     var l_comaddr = element.comaddr;
                     var url = "lamp.GroupeForm.getGroupe.action?l_comaddr=" + l_comaddr + "&l_deplayment=1";
                     $("#l_groupe").combobox("clear");
@@ -744,22 +732,6 @@
                     };
                     $('#lamptable').bootstrapTable('refresh', opt);
                 });
-
-
-
-
-
-
-
-
-
-
-//             $('#gayway').on('onLoadSuccess', function (data) {
-//                 console.log(data);
-//                });
-
-
-
 
 
                 $('#lamptable').bootstrapTable({
@@ -781,19 +753,19 @@
                                 return  value;
                             }
                         },
-//                        {
-//                            field: 'name',
-//                            title: langs1[314][lang], //网关名称
-//                            width: 25,
-//                            align: 'center',
-//                            valign: 'middle'
-//                        }, {
-//                            field: 'l_comaddr',
-//                            title: langs1[25][lang], //网关地址
-//                            width: 25,
-//                            align: 'center',
-//                            valign: 'middle'
-//                        },
+                        {
+                            field: 'name',
+                            title: langs1[314][lang], //网关名称
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: 'l_comaddr',
+                            title: langs1[25][lang], //网关地址
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        },
                         {
                             field: 'l_name',
                             title: langs1[54][lang], //灯具名称
@@ -802,7 +774,7 @@
                             valign: 'middle'
                         }, {
                             field: 'l_factorycode',
-                            title: langs1[292][lang], //灯具编号
+                            title: '灯控地址', //灯具编号
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -814,6 +786,14 @@
 
                             }
                         },
+                        {
+                            field: 'l_lampnumber',
+                            title: '灯杆编号', //装置序号
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+
+                        },
 //                        {
 //                            field: 'l_code',
 //                            title: langs1[315][lang], //装置序号
@@ -822,52 +802,52 @@
 //                            valign: 'middle'
 //
 //                        }, 
-                        {
-                            field: 'l_worktype',
-                            title: langs1[316][lang], //控制方式
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle',
-                            formatter: function (value, row, index, field) {
-                                if (value == 0) {
-                                    value = "时间表";
-                                    return value;
-                                } else if (value == 1) {
-                                    value = "经纬度";
-                                    return value;
-                                } else if (value == 2) {
-                                    value = "场景";
-                                    return value;
-                                }
-                            }
-                        },
 //                        {
-//                            field: 'l_plan',
-//                            title: langs1[373][lang], //控制方案
+//                            field: 'l_worktype',
+//                            title: langs1[316][lang], //控制方式
 //                            width: 25,
 //                            align: 'center',
 //                            valign: 'middle',
 //                            formatter: function (value, row, index, field) {
-//                                if (row.l_deplayment == 1) {
-//                                    if (row.l_worktype == "0") {
-//                                        if (isJSON(row.l_plantime)) {
-//                                            var obj = eval('(' + row.l_plantime + ')');
-//                                            return obj.p_name;
-//                                        } else {
-//                                            return  row.l_plantime;
-//                                        }
-//                                    } else if (row.l_worktype == "2") {
-//                                        if (isJSON(row.l_planscene)) {
-//                                            var obj = eval('(' + row.l_plantime + ')');
-//                                            return obj.p_name;
-//                                        } else {
-//                                            return  row.l_planscene;
-//                                        }
-//
-//                                    }
+//                                if (value == 0) {
+//                                    value = "时间表";
+//                                    return value;
+//                                } else if (value == 1) {
+//                                    value = "经纬度";
+//                                    return value;
+//                                } else if (value == 2) {
+//                                    value = "场景";
+//                                    return value;
 //                                }
 //                            }
 //                        },
+                        {
+                            field: 'l_plan',
+                            title: langs1[373][lang], //控制方案
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle',
+                            formatter: function (value, row, index, field) {
+                                if (row.l_deplayment == 1) {
+                                    if (row.l_worktype == "0") {
+                                        if (isJSON(row.l_plantime)) {
+                                            var obj = eval('(' + row.l_plantime + ')');
+                                            return obj.p_name;
+                                        } else {
+                                            return  row.l_plantime;
+                                        }
+                                    } else if (row.l_worktype == "2") {
+                                        if (isJSON(row.l_planscene)) {
+                                            var obj = eval('(' + row.l_plantime + ')');
+                                            return obj.p_name;
+                                        } else {
+                                            return  row.l_planscene;
+                                        }
+
+                                    }
+                                }
+                            }
+                        },
                         {
                             field: 'l_groupe',
                             title: langs1[26][lang], //灯具组号
@@ -892,17 +872,23 @@
                             }
                         }, {
                             field: 'presence',
-                            title: langs1[61][lang], //在线状态
+                            title: '状态', //在线状态
                             width: 25,
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
-                                if (value == 1) { //data-toggle="tooltip"
-                                    var str = '<img data-toggle="tooltip"  src="img/online1.png" onclick="tourlamp(' + row.l_comaddr + ',' + row.l_code + ')" />';
-//                                    var str = '<a href="#"  class="tooltip-show" data-toggle="tooltip" title="show">' + str1 + '</a>';
+                                console.log(row);
+                                if (row.l_fault == 1) {
+                                    var str = '<img data-toggle="tooltip"  src="img/lred3.png" onclick="tourlamp(' + row.l_comaddr + ',' + row.l_code + ')" />';
+                                    return  str;
+                                } else if (value == 1 && row.l_value > 0) {
+                                    var str = '<img data-toggle="tooltip"  src="img/lyello.png" onclick="tourlamp(' + row.l_comaddr + ',' + row.l_code + ')" />';
+                                    return  str;
+                                } else if (value == 1) {
+                                    var str = '<img data-toggle="tooltip"  src="img/yl.png" onclick="tourlamp(' + row.l_comaddr + ',' + row.l_code + ')" />';
                                     return  str;
                                 } else {
-                                    var str = '<img data-toggle="tooltip"  src="img/off.png" onclick="tourlamp(' + row.l_comaddr + ',' + row.l_code + ')" />';
+                                    var str = '<img data-toggle="tooltip"  src="img/lhui.png" onclick="tourlamp(' + row.l_comaddr + ',' + row.l_code + ')" />';
                                     return str;
                                 }
                             }
@@ -939,11 +925,7 @@
                 });
 
 
-
-
-
 // 组号方式
-
                 $('#groupetype').combobox({
                     onSelect: function (record) {
                         if (record.value == 0) {
@@ -1007,15 +989,7 @@
     <body id="panemask">
 
         <div class="row "   >
-            <div class="col-xs-2 " >
-
-                <!--                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h3 align='center' class="panel-title">
-                                            网关列表
-                                        </h3>
-                                    </div>
-                                    <div class="panel-body">-->
+            <div class="col-xs-2 "    >
                 <table id="gayway" style="width:100%;"   data-toggle="table" 
                        data-height="800"
                        data-single-select="true"
@@ -1029,8 +1003,8 @@
                        data-url="gayway.GaywayForm.getComaddrList.action?pid=${param.pid}&page=ALL" style="width:200px;" >
                     <thead >
                         <tr >
-                            <th data-width="100"    data-select="false" data-align="center"  data-checkbox="true"  ></th>
-                            <th data-width="100" data-field="comaddr" data-align="center" data-formatter='formartcomaddr'   >网关地址</th>
+                            <th data-width="25"  data-visible="true"   data-select="false" data-align="center"  data-checkbox="true"  ></th>
+                            <th data-width="100" data-align="center" data-field="comaddr"  data-formatter='formartcomaddr'   >网关地址</th>
                             <!--<th data-width="100" data-field="name" data-align="center"    >网关名称</th>-->
                         </tr>
                     </thead>       
@@ -1046,7 +1020,7 @@
                     <input type="hidden" name="pid" value="${param.pid}">
                     <div class="row"  >
                         <div class="col-xs-12">
-                            <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; margin-left: 20px; margin-top: 10px; align-content:  center">
+                            <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; margin-top: 10px; align-content:  center">
                                 <tbody>
                                     <tr>
 
@@ -1125,7 +1099,7 @@
                     <div class="row" style="  margin-top: 10px;">
 
                         <div class="col-xs-3">
-                            <table  style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; width: 320px;margin-left: 20px;">
+                            <table  style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; width: 320px;">
                                 <tr>
                                     <td style=" padding-left: 5px;">
                                         <span id="37" name="xxx" >
@@ -1229,7 +1203,7 @@
 
                 </form>
 
-                <table id="lamptable" style="width:100%;"  >
+                <table  id="lamptable" style="width:100%; "  >
                 </table>
             </div>
         </div>

@@ -13,6 +13,15 @@
         <script type="text/javascript" src="SheetJS-js-xlsx/dist/xlsx.core.min.js"></script>
         <script type="text/javascript" src="js/genel.js"></script>
         <script type="text/javascript" src="js/getdate.js"></script>
+        <style>
+            .mb{
+                top:-60%;
+                /*                left:60%;*/
+                position:absolute;
+                z-index:9999;
+                background-color:#FFFFFF;
+            }
+        </style>
         <script>
             var lang = '${param.lang}';//'zh_CN';
             var langs1 = parent.parent.getLnas();
@@ -38,7 +47,7 @@
                     layerAler(langs1[350][lang]); //请选择您要保存的数据
                     return;
                 }
-                addlogon(u_name, "添加", o_pid, "回路管理", "导入Excel文件");
+                addlogon(u_name, "添加", o_pid, "回路管理", "导入Excel文件添加回路");
                 var pid = parent.parent.getpojectId();
                 for (var i = 0; i <= selects.length - 1; i++) {
                     var comaddr = selects[i].网关地址;
@@ -50,21 +59,23 @@
                         success: function (data) {
                             var arrlist = data.rs;
                             if (arrlist.length > 0) {
-                                $.ajax({async: false, url: "login.loop.getl_code.action", type: "POST", datatype: "JSON", data: {l_code: l_code},
+                                $.ajax({async: false, url: "login.loop.getl_code.action", type: "POST", datatype: "JSON", data: {l_code: l_code, l_comaddr: comaddr},
                                     success: function (data) {
                                         var arrlist = data.rs;
                                         if (arrlist.length == 0) {
-                                            var cmdname = selects[i].网关名称;
+                                            //var cmdname = selects[i].网关名称;
                                             var lname = selects[i].回路名称;
                                             var groupe = selects[i].回路组号;
+                                            var l_worktype = selects[i].控制方式;
                                             var adobj = {};
                                             adobj.l_name = lname;
-                                            adobj.l_code = l_code;
+                                            adobj.l_factorycode = l_code;
                                             adobj.l_worktype = 0;
                                             adobj.l_comaddr = comaddr;
                                             adobj.l_deplayment = 0;
-                                            adobj.l_groupe = groupe;
-                                            adobj.name = cmdname;
+                                            adobj.l_groupe = parseInt(groupe);
+                                            adobj.l_worktype = parseInt(l_worktype);
+                                            //adobj.name = cmdname;
                                             $.ajax({url: "login.loop.addloop.action", async: false, type: "get", datatype: "JSON", data: adobj,
                                                 success: function (data) {
                                                     var arrlist = data.rs;
@@ -121,25 +132,24 @@
 
                 var namesss = false;
 
-                addlogon(u_name, "添加", o_pid, "回路管理", "添加回路");
-                $.ajax({async: false, cache: false, url: "loop.loopForm.getLoopList.action", type: "GET", data: o,
+                addlogon(u_name, "添加", o_pid, "回路管理", "添加回路", o.l_comaddr);
+                $.ajax({async: false, cache: false, url: "loop.loopForm.getloopCode.action", type: "GET", data: o,
                     success: function (data) {
-                        if (data.total > 0) {
+                        if (data.rs.length > 0) {
                             layerAler(langs1[360][lang]); //此回路已存在
                             return false;
                         }
-                        if (data.total == 0) {
-                            $.ajax({async: false, cache: false, url: "loop.loopForm.addloop.action", type: "GET", data: o,
-                                success: function (data) {
+                        $.ajax({async: false, cache: false, url: "loop.loopForm.addloop.action", type: "GET", data: o,
+                            success: function (data) {
+                                if (data.rs.length > 0) {
                                     $("#gravidaTable").bootstrapTable('refresh');
                                     namesss = true;
-                                },
-                                error: function () {
-                                    layerAler("系统错误，刷新后重试");
                                 }
-                            });
-                            return  false;
-                        }
+                            },
+                            error: function () {
+                                layerAler("系统错误，刷新后重试");
+                            }
+                        });
 
                     },
                     error: function () {
@@ -162,7 +172,7 @@
                     var oo = {};
                     oo.id = obj.param;
                     oo.l_worktype = obj.val;
-                    //  addlogon(u_name, "修改", o_pid, "回路管理", "修改回路");
+                    addlogon(u_name, "修改", o_pid, "回路管理", "修改回路");
 
                     $.ajax({async: false, url: "loop.loopForm.modifyWorkType.action", type: "get", datatype: "JSON", data: oo,
                         success: function (data) {
@@ -220,7 +230,7 @@
             function modifyLoopName() {
                 var o = $("#form2").serializeObject();
                 o.id = o.hide_id;
-                addlogon(u_name, "修改", o_pid, "回路管理", "修改回路");
+                addlogon(u_name, "修改", o_pid, "回路管理", "修改回路", $("#l_comaddr1").val());
                 $.ajax({async: false, url: "loop.loopForm.modifyname.action", type: "get", datatype: "JSON", data: o,
                     success: function (data) {
                         var arrlist = data.rs;
@@ -497,12 +507,6 @@
                             align: 'center',
                             valign: 'middle'
                         }, {
-                            title: langs1[314][lang], //网关名称
-                            field: '网关名称',
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
                             field: '网关地址',
                             title: langs1[25][lang], //网关地址
                             width: 25,
@@ -523,6 +527,12 @@
                         }, {
                             field: '回路组号',
                             title: langs1[365][lang], //回路组号
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: '控制方式',
+                            title: '控制方式', //控制方式
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -562,7 +572,7 @@
                                 // break; // 如果只取第一张表，就取消注释这行
                             }
                         }
-                        var headStr = '序号,网关名称,网关地址,回路名称,回路编号,回路组号';
+                        var headStr = '序号,网关地址,回路名称,回路编号,回路组号,控制方式';
                         for (var i = 0; i < persons.length; i++) {
                             if (Object.keys(persons[i]).join(',') !== headStr) {
                                 alert(langs1[366][lang]);   //导入文件格式不正确
@@ -828,6 +838,9 @@
             <button type="button" id="btn_download" class="btn btn-primary" onClick ="$('#gravidaTable').tableExport({type: 'excel', escape: 'false'})">
                 <span name="xxx" id="110">导出Excel</span>
             </button>
+            <button class="btn btn-success ctrol" onclick="$('#loopmb').tableExport({type: 'excel', escape: 'false'})" id="addexcel" >
+                <span>导出Excel模板</span>
+            </button>
         </div>
 
         <div style="width:100%;">
@@ -967,24 +980,6 @@
                                 </span>
                             </td>
                         </tr>                 
-                        <!--                        <tr id="trworktype">
-                                                    <td>
-                        
-                                                        <span style="margin-left:20px;" name="xxx" id="316">控制方式</span>&nbsp;
-                                                        <span class="menuBox">
-                                                            <select class="easyui-combobox"  id="l_worktype2" name="l_worktype2" data-options='editable:false,valueField:"id", textField:"text"' style="width:150px; height: 30px">
-                                                                <option value="0" selected="true">走时间</option>
-                                                                <option value="1">走经纬度</option>           
-                                                            </select>
-                                                        </span>
-                        
-                                                    </td>
-                                                    <td>
-                                                        <span name="xxx" id="375" style=" margin-left: 10px;" class="label label-success" onclick="switchWorkType()" >在线修改</span>
-                                                    </td>
-                        
-                                                </tr> -->
-
                     </tbody>
                 </table>
 
@@ -996,6 +991,28 @@
             <input type="file" id="excel-file" style=" height: 40px;">
             <table id="warningtable"></table>
 
+        </div>
+
+
+        <div class="mb">
+            <table id="loopmb" style=" border: 1px">
+                <tr>
+                    <td>序号</td>
+                    <td>网关地址</td>
+                    <td>回路名称</td>
+                    <td>回路编号</td>
+                    <td>回路组号</td>
+                    <td>控制方式</td>
+                </tr>
+                <tr>
+                    <td>如1、2、3</td>
+                    <td>网关地址必须是已存在</td>
+                    <td>回路名称</td>
+                    <td>回路编号是网关下唯一</td>
+                    <td>回路组号</td>
+                    <td>0代表时间、1代表经纬度;输入0或1即可</td>
+                </tr>
+            </table>
         </div>
 
 

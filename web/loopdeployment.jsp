@@ -77,6 +77,111 @@
                 };
                 $("#gravidaTable").bootstrapTable('refresh', opt);
             }
+            function setdefaultCB(obj) {
+                console.log(obj);
+                $('#panemask').hideLoading();
+                var data = Str2BytesH(obj.data);
+                var v = "";
+                for (var i = 0; i < data.length; i++) {
+
+                    v = v + sprintf("%02x", data[i]) + " ";
+                }
+                console.log(v);
+
+                if (obj.fn == 320) {
+                    var m = sprintf("%02x", data[21]);
+                    var h = sprintf("%02x", data[22]);
+                    var m1 = sprintf("%02x", data[23]);
+                    var h1 = sprintf("%02x", data[24]);
+                    var intime1 = sprintf("%s:%s", h, m);
+                    var outtime1 = sprintf("%s:%s", h1, m1);
+                    var o = {id: obj.val, intime: intime1, outtime: outtime1, l_comaddr: obj.comaddr};
+                    console.log(o);
+                    $.ajax({async: false, url: "loop.loopForm.editlooptime.action", type: "get", datatype: "JSON", data: o,
+                        success: function (data) {
+                            layerAler("设置成功");
+                        },
+                        error: function () {
+                            alert("提交失败！");
+                        }
+                    });
+                } else if (obj.fn == 10) {
+                    var i = 18;
+                    var wfw = data[i] & 0xf;
+                    var qfw = data[i] >> 4 & 0xf;
+                    var bfw = data[i + 1] & 0xf;
+                    var sfw = data[i + 1] >> 4 & 0xf;
+                    var gw = data[i + 2] & 0xf;
+                    var sw = data[i + 2] >> 4 & 0xf;
+                    var bw = data[i + 3] & 0xf;
+                    var qw = data[i + 3] >> 4 & 0xf;
+                    var jd = sprintf("%d%d%d%d.%d%d%d%d", qw, bw, sw, gw, sfw, bfw, qfw, wfw);
+                    console.log(jd);
+                    i = i + 4;
+                    wfw = data[i] & 0xf;
+                    qfw = data[i] >> 4 & 0xf;
+                    bfw = data[i + 1] & 0xf;
+                    sfw = data[i + 1] >> 4 & 0xf;
+                    gw = data[i + 2] & 0xf;
+                    sw = data[i + 2] >> 4 & 0xf;
+                    bw = data[i + 3] & 0xf;
+                    qw = data[i + 3] >> 4 & 0xf;
+                    var wd = sprintf("%d%d%d%d.%d%d%d%d", qw, bw, sw, gw, sfw, bfw, qfw, wfw);
+//                    console.log(wd);
+                    var o = {id: obj.val, longitude: jd, latitude: wd, l_comaddr: obj.comaddr};
+//                    console.log(o);
+                    $.ajax({async: false, url: "loop.loopForm.editloopjwd.action", type: "get", datatype: "JSON", data: o,
+                        success: function (data) {
+                            layerAler("设置成功");
+                        },
+                        error: function () {
+                            alert("提交失败！");
+                        }
+                    });
+                }
+
+            }
+            function setdefault() {
+                var selects = $('#gravidaTable').bootstrapTable('getSelections');
+                if (selects.length == 0) {
+                    layerAler(langs1[73][lang]); //请勾选表格数据
+                    return;
+                }
+                var ele = selects[0];
+                if (ele.l_deplayment != 1) {
+                    layerAler("请先部署,才能设置");
+                    return;
+                }
+                if (ele.l_worktype == 0) {
+                    //时间
+                    var vv = [];
+                    vv.push(1);
+                    var c = parseInt(ele.l_code);
+                    var h = c >> 8 & 0x00ff;
+                    var l = c & 0x00ff;
+                    vv.push(l);
+                    vv.push(h);
+                    var comaddr = ele.l_comaddr;
+                    var num = randnum(0, 9) + 0x70;
+                    var data = buicode(comaddr, 0x04, 0xAA, num, 0, 320, vv); //01 03 F24    
+                    dealsend2("AA", data, 320, "setdefaultCB", comaddr, 0, 0, ele.id);
+                    $('#panemask').showLoading({
+                        'afterShow': function () {
+                            setTimeout("$('#panemask').hideLoading()", 10000);
+                        }
+                    }
+                    );
+
+                } else if (ele.l_worktype == 1) {
+                    //经纬度
+                    var vv = [];
+                    var comaddr = ele.l_comaddr;
+                    var num = randnum(0, 9) + 0x70;
+                    var data = buicode(comaddr, 0x04, 0xFE, num, 0, 10, vv); //01 03 F24   
+                    dealsend2("FE", data, 10, "setdefaultCB", comaddr, 0, 0, ele.id);
+                }
+            }
+
             function deployloopCB(obj) {
                 $('#panemask').hideLoading();
                 if (obj.status == "success") {
@@ -134,13 +239,13 @@
 
                 var o1 = $("#form1").serializeObject();
                 console.log(o1);
-                addlogon(u_name, "部署", o_pid, "回路部署", "部署回路");
                 var vv = [];
                 var param = [];
                 for (var i = 0; i < selects.length; i++) {
 
                     var ele = selects[i];
                     var comaddr = ele.l_comaddr;
+                    addlogon(u_name, "部署", o_pid, "回路部署", "部署回路", comaddr);
                     if (o1.l_comaddr != comaddr) {
                         layerAler(langs1[376][lang]);  //只能在同一网关下操作
                         return;
@@ -183,12 +288,12 @@
                     return;
                 }
                 var o1 = $("#form1").serializeObject();
-                addlogon(u_name, "移除", o_pid, "回路部署", "移除回路");
                 var vv = [];
                 var param = [];
                 for (var i = 0; i < selects.length; i++) {
                     var ele = selects[i];
                     var comaddr = ele.l_comaddr;
+                    addlogon(u_name, "移除", o_pid, "回路部署", "移除回路", comaddr);
                     if (o1.l_comaddr != comaddr) {
                         layerAler(langs1[376][lang]);  //只能在同一网关下操作
                         return;
@@ -252,7 +357,6 @@
                     layerAler(langs1[73][lang]); //请勾选表格数据
                     return;
                 }
-                addlogon(u_name, "部署", o_pid, "回路部署", "部署回路方案");
                 var obj = $("#form1").serializeObject();
                 console.log(obj);
 
@@ -294,6 +398,7 @@
                 }
 
                 var comaddr = s.l_comaddr;
+                addlogon(u_name, "部署", o_pid, "回路部署", "部署回路方案", comaddr);
                 var param = {p_intime: obj.intime, p_outtime: obj.outtime, p_code: obj.p_plan};
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA4, num, 0, 401, vv); //01 03 F24    
@@ -606,6 +711,11 @@
                                     <button type="button" onclick="removeloop()" class="btn btn-success btn-sm"><span name="xxx" id="381">移除回路</span></button>
                                     &nbsp;
                                 </td>
+
+                                <td>
+                                    <button type="button" onclick="setdefault()" class="btn btn-success btn-sm"><span name="xxxx" id="381">设置此回路默认开灯时间</span></button>
+                                    &nbsp;
+                                </td>          
 
                             </tr>
                         </tbody>

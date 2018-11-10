@@ -18,6 +18,7 @@
         <title>JSP Page</title>
         <script type="text/javascript" src="js/genel.js"></script>
         <script src="echarts/dist/echarts_3.8.5_echarts.min.js"></script>
+        <script src="js/chart/chart.js"></script>
         <style>
 
             @charset "utf-8";
@@ -92,11 +93,11 @@
                 float: left;
                 display: inline;
                 overflow: hidden;
-/*                width: 18%;*/
-               width: 260px;
+                /*                width: 18%;*/
+                width: 260px;
                 margin-left: 3%;
                 height: 90%;
-                
+
             }
             .topLeftOneBox {
                 overflow: visible;
@@ -136,7 +137,7 @@
                 font-size: 16px;
             }
             .topCenter1 {
-                overflow: hidden;
+                /*                overflow: hidden;*/
                 float: left;
                 display: inline;
                 width: 25%;
@@ -159,13 +160,12 @@
             }
             .nenghao {
                 width: 100%;
-                height: 20%;
+                /*                height: 20%;*/
                 line-height: 30px;
                 color: gray;
             }
             .nenghao1 {
                 width: 100%;
-                height: 30%;
                 line-height: 30px;
                 color: gray;
             }
@@ -225,10 +225,10 @@
                 width: 40%;
                 height: 95%;
                 float: left;
-/*                float: right;*/
+                /*                float: right;*/
                 display: inline;
                 margin-top: 20px;
-/*                margin-left: 20px;*/
+                /*                margin-left: 20px;*/
             }
             .bottomRight {
                 float: left;
@@ -259,6 +259,10 @@
                 color: #999;
                 font-size: 14px;
             }
+
+            .info{
+                background-color:  #bdebee;
+            }
             /*# sourceMappingURL=home.css.map */
 
         </style>
@@ -268,7 +272,7 @@
             var echarts;
             var lang = '${param.lang}';
             var langs1 = parent.parent.getLnas();
-           // var pid = parent.parent.getpojectId();
+            // var pid = parent.parent.getpojectId();
             $(function () {
                 var aaa = $("span[name=xxx]");
                 for (var i = 0; i < aaa.length; i++) {
@@ -284,21 +288,21 @@
                 var date = new Date;
                 var year = date.getFullYear();
                 var month = date.getMonth() + 1;
-                
+
                 var wgsum = ${rs[0].num}; //网关总数
                 var wgzx = ${onlineNumber[0].num};  //网关在线数
                 var wglx = wgsum - wgzx;  //网关不在线数
                 var gzdj = ${djgzs[0].num};  //灯具异常数
                 var djzxs = ${djzxs[0].num}; //灯具在线数
-                var lampNumber =  ${lampNumber[0].num};  //灯具总数
-                var djlxs =  lampNumber -gzdj-djzxs;
-                $("#wgms").html("集中器（在线："+wgzx+" 离线："+wglx+"）");
-                $("#djms").html("灯具（在线："+djzxs+" 离线："+djlxs+" 异常："+gzdj+"）");
-                if((${ybsdj[0].num-djgzs[0].num}-djlxs)<=0){
+                var lampNumber = ${lampNumber[0].num};  //灯具总数
+                var djlxs = lampNumber - gzdj - djzxs;
+                $("#wgms").html("集控器（在线：" + wgzx + " 离线：" + wglx + "）");
+                $("#djms").html("灯具（在线：" + djzxs + " 离线：" + djlxs + " 异常：" + gzdj + "）");
+                if ((${ybsdj[0].num-djgzs[0].num} - djlxs) <= 0) {
                     $("#ldl").html("0%");
-                }else{
-                    var ldl =((${(ybsdj[0].num-djgzs[0].num)}-djlxs)/${ybsdj[0].num}) * 100;
-                    $("#ldl").html(ldl.toFixed(2)+"%");
+                } else {
+                    var ldl = ((${(ybsdj[0].num-djgzs[0].num)} - djlxs) /${ybsdj[0].num}) * 100;
+                    $("#ldl").html(ldl.toFixed(2) + "%");
                 }
                 //计划能耗
             <c:if test="${fn:length(rs4)==0}">
@@ -390,7 +394,7 @@
                 var numberY0 = data[0].thisYear1;
                 var numberY1 = data[0].thisYear2;
                 var numberY2 = data[0].thisYear3;
-                echarts3("echarts3", "横向对比分析", dataTitleArray, echarts3DataX, dataTitleArray[0], numberY0, dataTitleArray[1], numberY1, dataTitleArray[2], numberY2, "kW·h");
+//                echarts3("echarts3", "横向对比分析", dataTitleArray, echarts3DataX, dataTitleArray[0], numberY0, dataTitleArray[1], numberY1, dataTitleArray[2], numberY2, "kW·h");
 
 
                 var a4 = new Array();
@@ -404,10 +408,10 @@
 //                console.log(o4);
                 a4.push(o4);
                 var data = a4;
-                var echarts4DataX = [data[0].date1, data[0].date2, data[0].date3];
-                var echarts4DataY = [data[0].thisYear1, data[0].thisYear2, data[0].thisYear3];
+//                var echarts4DataX = [data[0].date1, data[0].date2, data[0].date3];
+//                var echarts4DataY = [data[0].thisYear1, data[0].thisYear2, data[0].thisYear3];
                 //var sjqs = $("#16").html();
-                ech4('echarts4', langs1[16][lang], langs1[302][lang], echarts4DataX, echarts4DataY, 'bar', 'kW·h', "#337dd7"); //数据趋势、能耗
+                // ech4('echarts4', langs1[16][lang], langs1[302][lang], echarts4DataX, echarts4DataY, 'bar', 'kW·h', "#337dd7"); //数据趋势、能耗
 
 
                 var date = new Date();
@@ -437,8 +441,121 @@
                 qiantb = Math.floor(qiantb * 100) / 100;
                 $("#lastYearSameMonth").html(qiantb);
 
-            })
 
+                $('#gayway').on('click-row.bs.table', function (row, element) {
+                    var l_comaddr = element.comaddr;
+                    $("#head").html("集中器[" + l_comaddr + "]信息");
+                    $("#headtime").html("开灯时间: ~ 关灯时间:");
+
+                    var fmobj = $("#forminfo").serializeObject();
+                    for (let attr in fmobj) {
+                        var str = "input[name='" + attr + "']";
+                        $(str).val("");
+                    }
+                    $("#l_comaddr").val(l_comaddr);
+                    if (element.online != 1) {
+                        return;
+                    }
+                    var obj = {};
+                    obj.l_comaddr = l_comaddr;
+                    var vv = [];
+                    var num = randnum(0, 9) + 0x70;
+                    var data = buicode(l_comaddr, 0x04, 0xAC, num, 0, 602, vv); //01 03 F24   
+                    dealsend("AC", data, 602, "collectinfo", l_comaddr, 0, 0, 0, 0);
+                    hittable(l_comaddr);
+
+                });
+
+                setInterval('getcominfo()', 3000);
+            });
+
+            function  hittable(comaddr) {
+                $.ajax({async: false, url: "loop.loopForm.getloopway.action", type: "get", datatype: "JSON", data: {l_comaddr: comaddr},
+                    success: function (data) {
+                        var rs = data.rs;
+                        if (rs.length > 0) {
+                            var info = rs[0];
+                            var worktype = info.l_worktype;
+                            if (worktype == 0) {
+                                $("#headtime").html("开灯时间:" + info.l_intime + "`" + "关灯时间:" + info.l_outtime);
+                            } else if (worktype == 1) {
+                                var o1 = {jd: info.longitude, wd: info.latitude};
+                                if (o1.jd == "" || o1.wd == "") {
+                                    return;
+                                }
+                                $.ajax({async: false, url: "login.rc.r.action", type: "get", datatype: "JSON", data: o1,
+                                    success: function (data) {
+                                        var list = data.cl[0];
+                                        $("#headtime").html("开灯时间:" + list.rc + "`" + "关灯时间:" + list.rl);
+                                    },
+                                    error: function () {
+                                        alert("提交失败！");
+                                    }
+                                });
+                            }
+                        }
+                    },
+                    error: function () {
+                        alert("提交失败！");
+                    }
+                });
+            }
+            function readlooptimeCB(obj) {
+
+                console.log(obj);
+                var data = Str2BytesH(obj.data);
+                var v = "";
+                for (var i = 0; i < data.length; i++) {
+
+                    v = v + sprintf("%02x", data[i]) + " ";
+                }
+                if (obj.status == "success") {
+                    if (obj.fn == 320) {
+                        var m = sprintf("%02x", data[21]);
+                        var h = sprintf("%02x", data[22]);
+                        var m1 = sprintf("%02x", data[23]);
+                        var h1 = sprintf("%02x", data[24]);
+                        var intime1 = sprintf("%s:%s", h, m);
+                        var outtime1 = sprintf("%s:%s", h1, m1);
+                        $("#headtime").html("开灯时间:" + intime1 + "`" + "关灯时间:" + outtime1);
+                    }
+                }
+            }
+            function getcominfo() {
+
+                var obj = $("#forminfo").serializeObject();
+
+                var o1 = {pid: "${param.pid}", comaddr: obj.l_comaddr};
+                $.ajax({async: false, url: "gayway.GaywayForm.info.action", type: "get", datatype: "JSON", data: o1,
+                    success: function (data) {
+                        var rs = data.rs;
+                        if (rs.length == 1) {
+                            var info = rs[0].energyinfo;
+                            if (isJSON(info)) {
+                                var o = eval('(' + info + ')');
+                                var fmobj = $("#forminfo").serializeObject();
+                                for (let attr in fmobj) {
+                                    var str = "input[name='" + attr + "']";
+                                    $(str).val(o[attr]);
+                                }
+                            }
+
+
+                        }
+                    },
+                    error: function () {
+                        alert("提交失败！");
+                    }
+                });
+
+            }
+            window.onresize = function () {
+
+                myChart.resize();
+
+                myChart2.resize();
+
+            };
             function ech(id, title, titleY, signXAxis, signYAxis, type, danwei, bg) {
 
                 myChart = echarts.init(document.getElementById(id));
@@ -504,7 +621,7 @@
 
             //环状图
             function pieChart(id, title, dataY, zongbi) {
-                var vvv = document.getElementById(id);
+                //var vvv = document.getElementById(id);
                 myChart2 = echarts.init(document.getElementById(id));
                 var option = {
                     title: {
@@ -740,22 +857,6 @@
                 };
                 myChart5.setOption(option);
             }
-            function dealsend() {
-
-                var user = new Object();
-                user.count = 0;
-                user.res = 1;
-                user.afn = 0;
-                user.status = "";
-                user.function = "getCount";
-                user.errcode = 0;
-                user.frame = 0;
-                user.msg = "Online";
-                user.res = 1;
-                user.page = 1;
-                parent.sendData(user);
-            }
-
 
             function getCount(obj) {
                 console.log(obj);
@@ -765,19 +866,76 @@
                 $('#online').html(str);
             }
 
+            function  formartcomaddr(value, row, index, field) {
+//                var val = value;
+//                console.log(index);
+                if (index == 0) {
+                    var l_comaddr = row.comaddr;
+                    $("#head").html("集中器[" + l_comaddr + "]信息");
+                    $("#l_comaddr").val(l_comaddr);
+                    if (row.online == 1) {
+                        var vv = [];
+                        var num = randnum(0, 9) + 0x70;
+                        var data = buicode(l_comaddr, 0x04, 0xAC, num, 0, 602, vv); //01 03 F24   
+                        dealsend("AC", data, 602, "collectinfo", l_comaddr, 0, 0, 0, 0);
+                    }
+                    hittable(l_comaddr);
+//                    console.log(l_comaddr);
+
+                }
+                var v1 = row.online == 1 ? "&nbsp;<img src='img/online1.png'>" : "&nbsp;<img src='img/off.png'>";
+                return   v1;
+            }
+
+            function collectinfo(obj) {
+                var data = Str2BytesH(obj.data);
+                var v = "";
+                for (var i = 0; i < data.length; i++) {
+
+                    v = v + sprintf("%02x", data[i]) + " ";
+                }
+                console.log(v);
+            }
+//            function   rowstyle(row,index){
+//              
+//                return row;
+//            }
 
         </script>
 
+        <style type="text/css">
+            table.hovertable {
+                font-family: verdana,arial,sans-serif;
+                font-size:12px;
+                color:#333333;
+                border-width: 1px;
+                border-color: #999999;
+                border-collapse: collapse;
+                margin-top: 5px;
+            }
+            table.hovertable th {
+                background-color:#c3dde0;
+                border-width: 1px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #a9c6c9;
+            }
+            table.hovertable tr {
+                background-color:#d4e3e5;
+            }
+            table.hovertable td {
+                border-width: 1px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #a9c6c9;
 
+            }
+        </style>
     </head>
 
 
     <body>
-
-
-
-        <br>
-        <div class="top" style="width:100%;height:450px;position:relative;">
+        <div class="top" style="width:100%;height:450px;position:relative; margin-top: 10px;">
             <div class="topTitle" style="position:absolute;top:2%;left:2%;color:#000;font-size:20px;font-weight:600;">
                 <span id="5" name="xxx">设备分析</span>
                 <!-- 设备分析-->
@@ -828,7 +986,7 @@
             <div class="topCenter3" id="echarts2"  style="height: 400px;">    
 
             </div>
-            <div class="topCenter3Mess" style="height:400px;">
+            <div class="topCenter3Mess" style="height:400px;" >
 
                 <div class="topCenter3MessMM" style="margin-top:40%;">
                     <div class="first">
@@ -869,84 +1027,268 @@
 
                 </div>
             </div>
-
-            <!--横向对比分析-->
             <div class="topTitle" style="position:absolute;top:2%;left:60%;color:#000;font-size:20px;font-weight:600;">
-<!--                 position:absolute;top:2%;left:61%;color:#000;font-size:20px;font-weight:600;-->
-                <!-- 横向对比分析-->
-                <span id="15" name="xxx">横向对比分析</span>
+                <span >能耗分析</span>
             </div>
-            <div class="echarts3" id="echarts3" style="height: 430px;">
-            </div>
-
-        </div>
-
-
-
-        <div class="bottom1">
-            <!--数据趋势-->
-            <span name="xxx" id="16" style=" display: none" >数据趋势</span>
-            <div class="echarts4" id="echarts4" style="width: 35%; height: 85%; float: left; margin: 20px 0px 20px 30px;">
-
+            <!--
+    <div class="echarts3" id="echarts3" style="height: 430px;">
+    </div>-->
+            <!--            <div class="topTitle" style="position:absolute;top:2%;left:60%;color:#000;font-size:20px;font-weight:600;">
+                            <span id="17" name="xxx">分析</span>-->
+            <div class="topCenter1" id="echarts1" style="width: 27%; height: 85%; float: left;">
 
             </div>
-            <!--能耗分析-->
-            <span name="xxx" id="17" style=" display: none" >能耗分析</span>
-            <div class="topCenter4" style="width:10%;height:85%;float:right;">
+            <div class="topCenter4" style=" width: 9%; height:85%;float:left;margin-left: 1%; font-size: 0.9em;">
                 <div class="topCenter2Mess">	
                     <div class="nenghao">
                         <span class="subPara">
-                            <!--本月耗能-->
                             <span name="xxx" id="18">本月耗能</span>
                             :</span><br>
-                        <span id="benyue" class="paraValue"></span>kW·h</div>
+                        <span id="benyue" class="paraValue"></span>kW</div>
                     <div class="nenghao1">
                         <span class="subPara">
-                            <!--上月耗能-->
                             <span id="19" name="xxx">上月耗能</span>
                             :</span><br>
-                        <span id="shangyue" class="paraValue"></span>kW·h<br>
-                        <span><span id="20" name="xxx"></span>：</span>
-                        <span class="tongbi" id="lastMonth"></span>
-                        kW·h
+                        <span id="shangyue" class="paraValue"></span>kW
+                    </div>
+                    <div class="nenghao1" >
+                        <span><span id="20" name="xxx">环比</span>：</span><br>
+                        <span class="tongbi" id="lastMonth" style=" font-size: 16px;"></span>
+                        kW
                     </div>
                     <div class="nenghao1">
-
                         <span class="subPara">
-                            <!--去年同期-->
                             <span id="21" name="xxx">去年同期</span>
                             :</span><br>
-                        <span id="qunian" class="paraValue"></span>
+                        <span id="qunian" class="paraValue">0</span>kW  
+                    </div>
+                    <div class="nenghao1">
                         <span>
-                            <!--同比-->
                             <span id="22" name="xxx">同比</span>
-                            ：</span>
-                        <span class="tongbi" id="lastYearSameMonth"></span>
+                            ：</span><br>
+                        <span class="tongbi" id="lastYearSameMonth" style=" font-size: 16px;"></span>
                         kW·h
                     </div>
-
                 </div>
             </div> 
+        </div>
 
 
-            <div class="topCenter1" id="echarts1" style="width: 45%; height: 85%; float: left;">
+        <div class="bottom1">
 
+            <div class="row "   >
+                <div class="col-xs-2 "  >
+                    <table id="gayway" style="width:100%;"   data-toggle="table" 
+                           data-height="400"
+                           data-single-select="true"
+                           data-striped="true"
+                           data-click-to-select="true"
+                           data-search="false"
+                           data-checkbox-header="true"
+                           data-show-header='false'
+                           data-search-align='right'
+                           data-silent-sort='true'
+                           data-row-style="rowstyle"
+                           data-url="gayway.GaywayForm.getComaddrList.action?pid=${param.pid}&page=ALL"  >
+                        <thead >
+                            <tr >
+                                <th data-width="5" data-field="online"  data-formatter='formartcomaddr'   >在线状态</th>
+                                <th data-width="60" data-align="center"  data-field="comaddr"   >网关地址</th>
+
+                                <!--<th data-width="25"  data-visible="true"   data-select="false" data-align="center"  data-checkbox="true"  ></th>-->
+                                <!--<th data-width="100" data-field="name" data-align="center"    >网关名称</th>-->
+                            </tr>
+                        </thead>       
+
+                    </table>
+                    <!--                    </div>
+                                    </div>    -->
+
+                </div>
+                <div class="col-xs-10">
+
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <p  >
+                                    <span id="head"></span>
+                                    <span style=" margin-left: 10px;" id="headtime">开灯时间: ~ 关灯时间:</span>
+                                </p>
+
+                                <!--开灯时间:[18:00]  关灯时间:[6:00]-->
+                            </h3>
+                        </div>
+                        <div class="panel-body" style=" height: 360px;" align="center">
+                            <form id="forminfo">
+                                <input type="hidden" id="l_comaddr" name="l_comaddr" />
+                                <table class="hovertable" >
+                                    <tr onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
+                                        <td>A相有功功率</td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="aactpwr"/>(KW)</td>
+                                        <td>A相无功功率</td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="anopwr"/>(KW)</td>
+                                        <td>A相视在功率</td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="aviewpwr"/>(KVA)</td>
+                                    </tr>
+                                    <tr onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
+                                        <td>B相有功功率</td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bactpwr"/>(KW)</td>
+                                        <td>B相无功功率</td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bnopwr"/>(KW)</td>
+                                        <td>B相视在功率</td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bviewpwr"/>(KVA)</td>
+
+                                    </tr>
+                                    <tr onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
+                                        <td>C相有功功率</td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cactpwr"/>(KW)</td>
+                                        <td>C相无功功率</td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cnopwr"/>(KW)</td>
+                                        <td>C相视在功率</td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cviewpwr"/>(KVA)</td>  
+
+                                    </tr>
+
+                                    <tr onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
+                                        <td>总有功功率</td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="sumactpwr"/>(KW)</td>
+                                        <td>总无功功率</td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="sumnopwr"/>(KW)</td>
+                                        <td>总视在功率</td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="sumviewpwr"/>(KVA)</td>  
+
+                                    </tr>             
+
+
+                                    <tr onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
+                                        <td>A相电压</td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="avol"/>(V)</td>
+                                        <td>B相压</td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bvol"/>(V)</td>
+                                        <td>C相电压</td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cvol"/>(V)</td>  
+
+                                    </tr>
+                                    <tr onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
+                                        <td>A相电流</td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="aelectric"/>(A)</td>
+                                        <td>B相流</td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="belectric"/>(A)</td>
+                                        <td>C相电流</td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="celectric"/>(A)</td>  
+
+                                    </tr>
+
+
+                                    <tr onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
+                                        <td>A相电能量</td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="aenergy"/>(kvarh)</td>
+                                        <td>B相电能量</td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="benergy"/>(kvarh)</td>
+                                        <td>C相电能量</td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cenergy"/>(kvarh)</td>        
+
+                                    </tr> 
+                                    <tr onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
+                                        <td>A相功率因数</td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="apwrfactor"/>(%)</td>
+                                        <td>B相功率因数</td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bpwrfactor"/>(%)</td>
+                                        <td>C相功率因数</td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cpwrfactor"/>(%)</td>  
+                                        <td>总功率因数</td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="pwrfactor"/>(%)</td>          
+                                    </tr>
+                                    <tr onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
+                                        <td>正向有功总电能量</td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="actenergy"/>(kWh)</td>
+                                        <td>正向无功总电能量</td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="reactenergy"/>(kvarh)</td>
+                                        <td>反向有功总电能量</td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="diractenergy"/>(kwh)</td>  
+                                        <td>反向无功总电能量</td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="dirreactenergy"/>(kvarh)</td>  
+
+                                    </tr>
+
+                                </table>           
+                                <!--                                                        <span id="info" style=" height: 400px;">
+                                                                                            
+                                                                                        </span>-->
+                            </form>
+                        </div>
+                    </div>              
+
+
+
+
+
+
+
+
+
+                </div>
             </div>
-        </div>			
-        <!--子项分析-->
-        <!--                <div style="width: 100%; overflow: hidden; height: 480px; display: none;" id="sub">
-                            <div class="echarts5" id="echarts5" style="width: 85%; height: 450px; -moz-user-select: none; position: relative; background-color: transparent;" _echarts_instance_="ec_1530234242293"><div style="position: relative; overflow: hidden; width: 85px; height: 450px;">
-                                    <canvas style="position: absolute; left: 0px; top: 0px; width: 85px; height: 450px; -moz-user-select: none;" width="85" height="450" data-zr-dom-id="zr_0">
-                
-                                    </canvas>
+
+
+
+
+
+
+
+
+
+
+
+            <!--            <div style="width: 20%; height: 100%; border: 1px solid red; float: left;">
+            
+                        </div>
+                        <div style="width: 80%; height: 100%; border: 1px solid yellow;float: left;">
+            
+                        </div>-->
+            <!--            <span name="xxx" id="16" style=" display: none" >数据趋势</span>
+                        <div class="echarts4" id="echarts4" style="width: 35%; height: 85%; float: left; margin: 20px 0px 20px 30px;">
+            
+            
+                        </div>-->
+            <!--            <span name="xxx" id="17" style=" display: none" >能耗分析</span>
+                        <div class="topCenter4" style="width:10%;height:85%;float:right;">
+                            <div class="topCenter2Mess">	
+                                <div class="nenghao">
+                                    <span class="subPara">
+                                        <span name="xxx" id="18">本月耗能</span>
+                                        :</span><br>
+                                    <span id="benyue" class="paraValue"></span>kW·h</div>
+                                <div class="nenghao1">
+                                    <span class="subPara">
+                                        <span id="19" name="xxx">上月耗能</span>
+                                        :</span><br>
+                                    <span id="shangyue" class="paraValue"></span>kW·h<br>
+                                    <span><span id="20" name="xxx"></span>：</span>
+                                    <span class="tongbi" id="lastMonth"></span>
+                                    kW·h
                                 </div>
-                                <div>
-                
+                                <div class="nenghao1">
+            
+                                    <span class="subPara">
+                                        <span id="21" name="xxx">去年同期</span>
+                                        :</span><br>
+                                    <span id="qunian" class="paraValue"></span>
+                                    <span>
+                                        <span id="22" name="xxx">同比</span>
+                                        ：</span>
+                                    <span class="tongbi" id="lastYearSameMonth"></span>
+                                    kW·h
                                 </div>
+            
                             </div>
-                        </div>	-->
-
-        <!--<div id="qb-sougou-search" style="display: none; opacity: 0;"><p>搜索</p><p class="last-btn">复制</p><iframe src=""></iframe></div>-->
-
+                        </div> 
+            
+            
+                        <div class="topCenter1" id="echarts1" style="width: 45%; height: 85%; float: left;">
+            
+                        </div>-->
+        </div>			
     </body>
 </html>

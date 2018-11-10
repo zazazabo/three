@@ -1,37 +1,43 @@
 <%-- 
-    Document   : loopmanage
-    Created on : 2018-7-4, 14:39:25
-    Author     : admin
+Document   : loopmanage
+Created on : 2018-7-4, 14:39:25
+Author     : admin
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html xmlns:f="http://java.sun.com/jsf/core">
+<!DOCTYPE html> <html xmlns:f="http://java.sun.com/jsf/core">
     <head>
         <%@include  file="js.jspf" %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script type="text/javascript" src="SheetJS-js-xlsx/dist/xlsx.core.min.js"></script>
         <script type="text/javascript" src="js/genel.js"></script>
         <script type="text/javascript" src="js/getdate.js"></script>
+        <style>
+            .mb{
+                top:-60%;
+/*                left:60%;*/
+                position:absolute;
+                z-index:9999;
+                background-color:#FFFFFF;
+            }
+        </style>
         <script>
-            var lang = '${param.lang}';//'zh_CN';
+            var lang = '${param.lang}'; //'zh_CN';
             var langs1 = parent.parent.getLnas();
             var u_name = parent.parent.getusername();
             var o_pid = parent.parent.getpojectId();
             function excel() {
                 $('#dialog-excel').dialog('open');
-                return false;
-
             }
             //导入excel的添加按钮事件
             function addexcel() {
                 var selects = $('#warningtable').bootstrapTable('getSelections');
                 var num = selects.length;
                 if (num == 0) {
-                    layerAler(langs1[350][lang]);  //请选择您要保存的数据
+                    layerAler(langs1[350][lang]); //请选择您要保存的数据
                     return;
                 }
-                addlogon(u_name, "添加", o_pid, "灯具管理", "导入Excel");
+                addlogon(u_name, "添加", o_pid, "灯具管理", "导入Excel添加灯具");
                 var pid = parent.parent.getpojectId();
                 for (var i = 0; i <= selects.length - 1; i++) {
                     var comaddr = selects[i].网关地址;
@@ -39,8 +45,7 @@
                     var obj = {};
                     obj.pid = pid;
                     obj.comaddr = comaddr;
-                    $.ajax({async: false, url: "login.lampmanage.getpid.action", type: "POST", datatype: "JSON", data: obj,
-                        success: function (data) {
+                    $.ajax({async: false, url: "login.lampmanage.getpid.action", type: "POST", datatype: "JSON", data: obj, success: function (data) {
                             console.log("1");
                             var arrlist = data.rs;
                             if (arrlist.length > 0) {
@@ -49,52 +54,49 @@
                                     success: function (data) {
                                         var arrlist = data.rs;
                                         if (arrlist.length == 0) {
-                                            console.log("d:" + arrlist.length);
-                                            var comname = selects[i].网关名称;
                                             var lampname = selects[i].灯具名称;
                                             var zh = selects[i].组号;
                                             var kzfs = selects[i].控制方式;
-                                            var lng = selects[i].经度;
-                                            var lat = selects[i].纬度;
+                                            var l_lampnumber = selects[i].灯杆编号;
                                             var adobj = {};
                                             adobj.l_name = lampname;
-                                            adobj.l_worktype = kzfs;
+                                            adobj.l_worktype =parseInt(kzfs);
                                             adobj.l_comaddr = comaddr;
                                             adobj.l_deplayment = 0;
                                             adobj.l_factorycode = lampid;
-                                            adobj.l_groupe = zh;
-                                            adobj.lng = lng;
-                                            adobj.lat = lat;
-                                            adobj.wname = comname;
+                                            adobj.l_groupe = parseInt(zh);
+                                            // adobj.lng = lng;
+                                            //  adobj.lat = lat;
+                                            adobj.l_lampnumber = l_lampnumber;
+                                            // adobj.wname = comname;
                                             $.ajax({url: "login.lampmanage.addlamp.action", async: false, type: "get", datatype: "JSON", data: adobj,
                                                 success: function (data) {
                                                     var arrlist = data.rs;
+                                                    console.log("L:"+arrlist.length);
                                                     if (arrlist.length == 1) {
-                                                        var ids = [];//定义一个数组
+                                                        var ids = []; //定义一个数组
                                                         var xh = selects[i].序号;
                                                         console.log("xh:" + xh);
-                                                        ids.push(xh);//将要删除的id存入数组
+                                                        ids.push(xh); //将要删除的id存入数组
                                                         $("#warningtable").bootstrapTable('remove', {field: '序号', values: ids});
                                                     }
                                                 },
                                                 error: function () {
-                                                    alert("提交添加失败！");
+                                                    alert("1提交添加失败！");
                                                 }
                                             });
                                         }
                                     },
                                     error: function () {
-                                        layerAler("提交失败");
+                                        layerAler("2提交失败");
                                     }
                                 });
-
                             }
                         },
                         error: function () {
-                            layerAler("提交失败");
+                            layerAler("3提交失败");
                         }
                     });
-
                 }
             }
             function showDialog() {
@@ -113,26 +115,25 @@
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
                 var num = selects.length;
                 if (num == 0) {
-                    layerAler(langs1[263][lang]);  //请勾选您要删除的数据
+                    layerAler(langs1[263][lang]); //请勾选您要删除的数据
                     return;
                 }
                 var select = selects[0];
                 if (select.l_eplayment == "1") {
-                    layerAler(ladngs1[368][lang]);  //已部署的不能删除
+                    layerAler(ladngs1[368][lang]); //已部署的不能删除
                     return;
                 }
                 layer.confirm(langs1[145][lang], {//确认要删除吗？
                     btn: [langs1[146][lang], langs1[147][lang]] //确定、取消按钮
                 }, function (index) {
-                    addlogon(u_name, "删除", o_pid, "灯具管理", "删除灯具");
+                    addlogon(u_name, "删除", o_pid, "灯具管理", "删除灯具",select.l_comaddr);
                     $.ajax({url: "lamp.lampform.deleteLamp.action", type: "POST", datatype: "JSON", data: {id: select.id},
                         success: function (data) {
                             var arrlist = data.rs;
                             if (arrlist.length == 1) {
                                 search();
-                               // $("#gravidaTable").bootstrapTable('refresh');
-                                layerAler(langs1[342][lang]);   //删除成功
-                                layer.close(index);
+                                // $("#gravidaTable").bootstrapTable('refresh');
+                                layerAler(langs1[342][lang]); //删除成功                     layer.close(index);
                             }
                         },
                         error: function () {
@@ -145,14 +146,14 @@
             }
 
             function  editlamp() {
-                addlogon(u_name, "修改", o_pid, "灯具管理", "修改灯具");
                 var o = $("#form2").serializeObject();
+                addlogon(u_name, "修改", o_pid, "灯具管理", "修改灯具",o.l_comaddr);
                 $.ajax({async: false, url: "lamp.lampform.modifylamp.action", type: "get", datatype: "JSON", data: o,
                     success: function (data) {
                         var a = data.rs;
                         if (a.length == 1) {
                             search();
-                           // $("#gravidaTable").bootstrapTable('refresh');
+                            // $("#gravidaTable").bootstrapTable('refresh');
                         }
                     },
                     error: function () {
@@ -164,7 +165,7 @@
             function editlampInfo() {
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
                 if (selects.length <= 0) {
-                    layerAler(langs1[363][lang]);  //请勾选您要编辑的数据
+                    layerAler(langs1[363][lang]); //请勾选您要编辑的数据
                     return;
                 }
                 var s = selects[0];
@@ -173,11 +174,10 @@
                 $("#l_code").val(s.l_code);
                 $("#l_worktype1").combobox('setValue', s.l_worktype);
                 $("#l_groupe1").combobox('setValue', s.l_groupe);
-
+                $("#l_lampnumber1").val(s.l_lampnumber);
                 if (s.l_deplayment == "1") {    //判断是否部署
                     $("#trlamp").show();
                     $("#trlamp1").show();
-
                     $("#l_groupe1").combobox("readonly", true);
                     $("#l_worktype1").combobox("readonly", true);
                 } else {
@@ -185,48 +185,43 @@
                     $("#trlamp1").hide();
                     $("#l_groupe1").combobox("readonly", false);
                     $("#l_worktype1").combobox("readonly", false);
-
                 }
 
                 $("#l_factorycode1").val(s.l_factorycode);
                 $("#l_comaddr1").val(s.l_comaddr);
-
                 $("#name").val(s.commname);
                 $("#l_name1").val(s.l_name);
                 $("#hide_id").val(s.id);
                 $('#dialog-edit').dialog('open');
                 return false;
-
-
             }
 
             function checkLampAdd() {
 
                 var o = $("#formadd").serializeObject();
                 o.name = o.comaddrname;
-
                 console.log(o);
                 if (o.l_factorycode == "" || o.l_comaddr == "") {
-                    layerAler(langs1[370][lang]);  //灯具编号不能为空,或网关地址不能为空
+                    layerAler(langs1[370][lang]); //灯具编号不能为空,或网关地址不能为空
                     return  false;
                 }
                 var uPattern = /^[a-fA-F0-9]{12}$/;
                 if (uPattern.test(o.l_factorycode) == false) {
-                    layerAler(langs1[371][lang]);   //灯具编号是12位的十进制
+                    layerAler(langs1[371][lang]); //灯具编号是12位的十进制
                     return false;
                 }
-                addlogon(u_name, "添加", o_pid, "灯具管理", "添加灯具");
                 var isflesh = false;
                 $.ajax({url: "lamp.lampform.existlamp.action", async: false, type: "get", datatype: "JSON", data: o,
                     success: function (data) {
                         if (data.total > 0) {
-                            layerAler(langs1[372][lang]);  //灯具编号已存在
+                            layerAler(langs1[372][lang]); //灯具编号已存在
                         } else if (data.total == 0) {
                             $.ajax({url: "lamp.lampform.addlamp.action", async: false, type: "get", datatype: "JSON", data: o,
                                 success: function (data) {
                                     var arrlist = data.rs;
                                     if (arrlist.length == 1) {
                                         isflesh = true;
+                                        addlogon(u_name, "添加", o_pid, "灯具管理", "添加灯具",o.l_comaddr);
                                         $("#gravidaTable").bootstrapTable('refresh');
                                     }
                                 },
@@ -234,7 +229,6 @@
                                     alert("提交添加失败！");
                                 }
                             });
-
                         }
                     },
                     error: function () {
@@ -242,7 +236,6 @@
                     }
                 });
                 return  isflesh;
-
             }
 
             function resetWowktypeCB(obj) {
@@ -253,9 +246,9 @@
                 if (obj.status == "success") {
                     if (obj.type == "1") {
                     } else if (obj.type == "2") {
-                        o.l_groupe = obj.param;  //旧组号
+                        o.l_groupe = obj.param; //旧组号
                     } else if (obj.type == "3") {
-                        o.l_code = obj.param;      //装置序号
+                        o.l_code = obj.param; //装置序号
                     }
                     $.ajax({async: false, url: "lamp.lampform.modifyworktype.action", type: "get", datatype: "JSON", data: o,
                         success: function (data) {
@@ -268,8 +261,7 @@
                             alert("提交失败！");
                         }
                     });
-
-                    layerAler(langs1[143][lang]);   //修改成功
+                    layerAler(langs1[143][lang]); //修改成功
 
                 }
             }
@@ -278,14 +270,14 @@
                 console.log(o);
                 var oldlgroupe = "";
                 var vv = [];
-                vv.push(parseInt(o.type));  //灯控器组号  1 所有灯控器  2 按组   3 个个灯控器
+                vv.push(parseInt(o.type)); //灯控器组号  1 所有灯控器  2 按组   3 个个灯控器
 
                 if (o.type == "3") {
                     var l_code = parseInt(o.l_code);
                     var a = l_code >> 8 & 0x00FF;
                     var b = l_code & 0x00ff;
-                    vv.push(b);//装置序号  2字节            
-                    vv.push(a);//装置序号  2字节      
+                    vv.push(b); //装置序号  2字节            
+                    vv.push(a); //装置序号  2字节      
                     oldlgroupe = o.l_code;
                 } else if (o.type == "2") {
                     vv.push(parseInt(o.l_groupe)); //新组号
@@ -307,9 +299,9 @@
                     if (obj.type == "1") {
                         o.l_groupe = obj.val;
                     } else if (obj.type == "2") {
-                        o.oldlgroupe = obj.param;  //旧组号
+                        o.oldlgroupe = obj.param; //旧组号
                     } else if (obj.type == "3") {
-                        o.l_code = obj.param;      //装置序号
+                        o.l_code = obj.param; //装置序号
                     }
                     $.ajax({async: false, url: "lamp.lampform.modifygroup.action", type: "get", datatype: "JSON", data: o,
                         success: function (data) {
@@ -320,10 +312,8 @@
                         },
                         error: function () {
                             alert("提交失败！");
-                        }
-                    });
-
-                    layerAler(langs1[143][lang]);   //修改成功
+                        }});
+                    layerAler(langs1[143][lang]); //修改成功
 
                 }
             }
@@ -332,8 +322,6 @@
                 var o = $("#form2").serializeObject();
                 o.type = 3;
                 console.log(o);
-
-
                 var vv = [];
                 vv.push(parseInt(o.type));
                 var oldlgroupe = ""
@@ -342,15 +330,14 @@
                     var l_code = parseInt(o.l_code);
                     var a = l_code >> 8 & 0x00FF;
                     var b = l_code & 0x00ff;
-                    vv.push(b);//装置序号  2字节            
-                    vv.push(a);//装置序号  2字节      
+                    vv.push(b); //装置序号  2字节            
+                    vv.push(a); //装置序号  2字节      
                 } else if (o.type == "2") {
                     vv.push(parseInt(o.l_groupe)); //新组号
                     oldlgroupe = o.l_groupe;
                 }
 
-//                vv.push(3);  //灯控器组号  1 所有灯控器  2 按组   3 个个灯控器
-                vv.push(parseInt(o.l_groupe2)); //新组号  1字节            
+                //                vv.push(3);  //灯控器组号  1 所有灯控器  2 按组   3 个个灯控器             vv.push(parseInt(o.l_groupe2)); //新组号  1字节            
                 var comaddr = o.l_comaddr;
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA4, num, 0, 110, vv); //01 03 F24    
@@ -365,10 +352,10 @@
 //                var obj = {};
 //                obj.type = "ALL";
 //                if (l_comaddr != "") {
-//                    //obj.l_name = encodeURI(lampname);
+                //                    //obj.l_name = encodeURI(lampname);
 //                    obj.l_comaddr = l_comaddr;
-//                }
-//                obj.l_deplayment = l_deplayment;
+                //                }
+                //                obj.l_deplayment = l_deplayment;
 //                obj.pid = o_pid;
                 var obj = $("#formsearch").serializeObject();
                 console.log(obj);
@@ -379,7 +366,6 @@
                 };
                 $("#gravidaTable").bootstrapTable('refresh', opt);
             }
-
 
             $(function () {
 
@@ -429,6 +415,12 @@
 
                             }
                         }, {
+                            field: 'l_lampnumber',
+                            title: '灯杆编号', //灯杆编号
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
                             field: 'l_groupe',
                             title: langs1[332][lang], //组号
                             width: 25,
@@ -440,7 +432,7 @@
                                 }
 
                             }
-                        }, 
+                        },
 //                        {
 //                            field: 'l_code',
 //                            title: langs1[315][lang], //装置序号
@@ -503,8 +495,7 @@
                             title: langs1[317][lang], //部署情况
                             width: 25,
                             align: 'center',
-                            valign: 'middle',
-                            formatter: function (value, row, index, field) {
+                            valign: 'middle', formatter: function (value, row, index, field) {
                                 if (row.l_deplayment == "0") {
                                     var str = "<span class='label label-warning'>" + langs1[318][lang] + "</span>";  //未部署
                                     return  str;
@@ -523,7 +514,7 @@
                     pagination: true,
                     sidePagination: 'server',
                     pageNumber: 1,
-                    pageSize: 50,
+                    pageSize: 20,
                     showRefresh: true,
                     showToggle: true,
                     // 设置默认分页为 50
@@ -544,6 +535,108 @@
                          l_comaddr:'';    
                         return temp;  
                     },
+                });
+
+                //导出模板
+                $('#lampmuban').bootstrapTable({
+                    url: 'login.lampmanage.getmb.action',
+                    //showExport: true, //是否显示导出
+                    exportDataType: "basic", //basic', 'a
+                    columns: [
+                        {
+                            title: '序号',
+                            align: "center",
+                            width: 25,
+                            formatter: function (value, row, index) {
+                                return "1";
+                            }
+                        },
+                        {
+                            field: 'l_comaddr',
+                            title: '网关地址', //网关地址
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: 'l_name',
+                            title: '灯具名称', //灯具名称
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: 'l_factorycode',
+                            title: '灯具编号', //灯具编号
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle',
+                            formatter: function (value, row, index, field) {
+                                if (value != null) {
+                                    // value = value.replace(/\b(0+)/gi, "");
+                                    return value.toString();
+                                }
+
+                            }
+                        },
+                        {
+                            field: 'l_groupe',
+                            title: '组号', //组号
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle',
+                            formatter: function (value, row, index, field) {
+                                if (value != null) {
+                                    return value.toString();
+                                }
+
+                            }
+                        },
+                        {
+                            field: 'l_lampnumber',
+                            title: '灯杆编号', //灯杆编号
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        },
+                        {
+                            field: 'l_worktype',
+                            title: '控制方式', //控制方式
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle',
+                            formatter: function (value, row, index, field) {
+                                var str = "0代表时间控制、1代表经纬度、2代表场景;输入0或1或2 即可";
+                                return  str;
+                            }
+                        }
+                    ],
+                    clickToSelect: true,
+                    singleSelect: true,
+                    sortName: 'id',
+                    locale: 'zh-CN', //中文支持,
+                    showColumns: true,
+                    sortOrder: 'desc',
+                    pagination: true,
+                    sidePagination: 'server',
+                    pageNumber: 1,
+                    pageSize: 20,
+                    showRefresh: true,
+                    showToggle: true,
+                    // 设置默认分页为 50
+                    pageList: [50, 100, 200, 300, 400],
+                    onLoadSuccess: function () {  //加载成功时执行  表格加载完成时 获取集中器在线状态
+//                        console.info("加载成功");
+                    },
+
+                    //服务器url
+                    queryParams: function (params)  {   //配置参数     
+                        var temp  =   {    //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的 
+                            search: params.search,
+                            skip: params.offset,
+                            limit: params.limit,
+                            type_id: "1"
+                        };    
+                        return temp;  
+                    }
                 });
 
 
@@ -594,6 +687,7 @@
 ////                        $(this).val(data[0].text);
 //                    }
                 });
+
                 $('#warningtable').bootstrapTable({
                     columns: [
                         {
@@ -607,12 +701,6 @@
                         }, {
                             title: langs1[345][lang], //序号
                             field: '序号',
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
-                            field: '网关名称',
-                            title: langs1[314][lang], //网关名称
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -641,24 +729,32 @@
                             align: 'center',
                             valign: 'middle'
                         }, {
+                            field: '灯杆编号',
+                            title: '灯杆编号', //组号
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        },
+                        {
                             field: '控制方式',
                             title: langs1[316][lang], //控制方式
                             width: 25,
                             align: 'center',
                             valign: 'middle'
-                        }, {
-                            field: '经度',
-                            title: langs1[59][lang], //经度
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
-                            field: '纬度',
-                            title: langs1[60][lang], //纬度
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
                         }
+                        //{
+//                            field: '经度',
+//                            title: langs1[59][lang], //经度
+//                            width: 25,
+//                            align: 'center',
+//                            valign: 'middle'
+//                        }, {
+//                            field: '纬度',
+//                            title: langs1[60][lang], //纬度
+//                            width: 25,
+//                            align: 'center',
+//                            valign: 'middle'
+//                        }
                     ],
                     singleSelect: false,
                     locale: 'zh-CN', //中文支持,
@@ -694,14 +790,13 @@
                                 // break; // 如果只取第一张表，就取消注释这行
                             }
                         }
-                        var headStr = '序号,网关名称,网关地址,灯具名称,灯具编号,组号,控制方式,经度,纬度';
+                        var headStr = '序号,网关地址,灯具名称,灯具编号,组号,灯杆编号,控制方式';
                         for (var i = 0; i < persons.length; i++) {
                             if (Object.keys(persons[i]).join(',') !== headStr) {
                                 alert(langs1[366][lang]);  //导入文件格式不正确
                                 persons = [];
                             }
                         }
-                        console.log("p2:" + persons.length);
                         $("#warningtable").bootstrapTable('load', []);
                         if (persons.length > 0) {
                             $('#warningtable').bootstrapTable('load', persons);
@@ -998,12 +1093,18 @@
             <button type="button" id="btn_download" class="btn btn-primary" onClick ="$('#gravidaTable').tableExport({type: 'excel', escape: 'false'})">
                 <span name="xxx" id="110">导出Excel</span>
             </button>
+            <button type="button" id="btn_download" class="btn btn-success ctrol" onClick ="$('#lampmuban').tableExport({type: 'excel', escape: 'false'})">
+                <span >导出Excel模板</span>
+            </button>
         </div>
 
         <table id="gravidaTable" style="width:100%;" class="text-nowrap table table-hover table-striped">
         </table>
+        <div class="mb">
+            <table id="lampmuban">
 
-
+            </table>
+        </div>
         <!-- 添加 -->
 
         <!--        <div id="dialog_simple" title="Dialog Simple Title">
@@ -1074,7 +1175,14 @@
                                     </select>
                                 </span>
                             </td>
-                        </tr>                  
+                        </tr> 
+                        <tr>
+                            <td>
+                                <span style="margin-left:20px;">灯杆编号</span>&nbsp;
+                                <input id="l_lampnumber" class="form-control"  name="l_lampnumber" style="width:150px;display: inline;" placeholder="请输入灯杆编号" type="text">
+                                </span> 
+                            </td>
+                        </tr>
 
 
                     </tbody>
@@ -1116,9 +1224,9 @@
                             <td></td>
                             <td>
                                 <span style="margin-left:20px;" name="xxx" id="54">灯具名称</span>&nbsp;
-                                <input id="l_name1"  class="form-control"  name="l_name" style="width:150px;display: inline;" placeholder="灯具名称" type="text"></td>
-
+                                <input id="l_name1"  class="form-control"  name="l_name" style="width:150px;display: inline;" placeholder="灯具名称" type="text">
                             </td>
+
                         </tr>                                   
 
 
@@ -1140,9 +1248,6 @@
                                         <option value="2">场景</option>           
                                     </select>
                                 </span>  
-                            </td>
-                            <td>
-
                             </td>
                         </tr>                  
 
@@ -1171,26 +1276,24 @@
                                 <button  onclick="resetWowktype()" style=" margin-left: 2px;" class="btn btn-success btn-xs"><span name="xxx" id="375">在线修改</span></button>
                             </td>
                         </tr> 
+                        <tr>
+                            <td>
+                                <span style="margin-left:20px;">灯杆编号</span>&nbsp;
+                                <input id="l_lampnumber1" class="form-control" name="l_lampnumber" style="width:150px;display: inline;" placeholder="灯具编号" type="text">
+                            </td>
+                        </tr> 
                         <tr id="trlamp1">
                         </tr> 
 
                     </tbody>
                 </table>   
             </form>
-        </div>  
-
+        </div> 
+        
         <div id="dialog-excel"  class="bodycenter"  style=" display: none" title="导入Excel">
             <input type="file" id="excel-file" style=" height: 40px;">
             <table id="warningtable"></table>
 
         </div>
-
-
-
-
-
-
-
-
     </body>
 </html>

@@ -52,6 +52,7 @@
                             var arrlist = data.rs;
                             if (arrlist.length == 1) {
                                 layerAler(langs1[391][lang]);  //更换工作方式成功
+                                addlogon(u_name, "更换工作方式", o_pid, "灯具分组管理", "更换工作方式",obj.comaddr);
                             }
                         },
                         error: function () {
@@ -101,6 +102,8 @@
                                 $("#l_groupe").combobox('clear');
                                 var url = "lamp.GroupeForm.getGroupe.action?l_comaddr=" + o.l_comaddr + "&l_deplayment=1";
                                 $("#l_groupe").combobox('reload', url);
+                                layerAler(langs1[143][lang]);   //修改成功
+                               addlogon(u_name, "修改组号", o_pid, "灯具分组管理", "修改组号",obj.comaddr);
                             }
                         },
                         error: function () {
@@ -108,7 +111,6 @@
                         }
                     });
 
-                    layerAler(langs1[143][lang]);   //修改成功
 
                 }
             }
@@ -253,7 +255,7 @@
                                 if (arrlist.length == 1) {
                                     // $('#p_plan').combobox('reload');
                                     layerAler(langs1[394][lang]);   //部署灯具时间方案成功
-                                    addlogon(u_name, "部署", o_pid, "灯具分组管理", "部署灯具方案");
+                                    addlogon(u_name, "部署", o_pid, "灯具分组管理", "部署灯具方案",obj.comaddr);
                                     // $('#p_plan').combobox('setValue', a.p_code);
                                 }
                             },
