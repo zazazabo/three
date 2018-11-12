@@ -488,7 +488,7 @@
                                 $.ajax({async: false, url: "login.rc.r.action", type: "get", datatype: "JSON", data: o1,
                                     success: function (data) {
                                         var list = data.cl[0];
-                                        $("#headtime").html("开灯时间:" + list.rc + "`" + "关灯时间:" + list.rl);
+                                        $("#headtime").html("开灯时间:" + list.rl + "`" + "关灯时间:" + list.rc);
                                     },
                                     error: function () {
                                         alert("提交失败！2");
