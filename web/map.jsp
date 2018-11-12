@@ -1615,7 +1615,7 @@
                                              <td>&nbsp&nbsp</td>\n\
                                         </tr>\n\ \n\
                                     </table></div>";
-                            var opts = {title: '<span style="font-size:14px;color:#0A8021">' + lans[404][lang] + '</span>', width: 100, height: 170};//设置信息框、信息说明
+                            var opts = {title: '<span style="font-size:14px;color:#0A8021">' + lans[404][lang] + '</span>', width: 250, height: 170};//设置信息框、信息说明
                             var infoWindow = new BMap.InfoWindow(textvalue, opts); // 创建信息窗口对象，引号里可以书写任意的html语句。
                             marker1.addEventListener("mouseover", function () {
                                 this.openInfoWindow(infoWindow);
