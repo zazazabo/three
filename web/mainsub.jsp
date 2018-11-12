@@ -477,7 +477,7 @@
                             var info = rs[0];
                             var worktype = info.l_worktype;
                             if (worktype == 0) {
-                                $("#headtime").html("开灯时间:" + info.l_intime + "`" + "关灯时间:" + info.l_outtime);
+                                $("#headtime").html("开灯时间:" + info.l_outtime + "`" + "关灯时间:" + info.l_intime);
                             } else if (worktype == 1) {
                                 var o1 = {jd: info.longitude, wd: info.latitude};
 
@@ -488,7 +488,7 @@
                                 $.ajax({async: false, url: "login.rc.r.action", type: "get", datatype: "JSON", data: o1,
                                     success: function (data) {
                                         var list = data.cl[0];
-                                        $("#headtime").html("开灯时间:" + list.rc + "`" + "关灯时间:" + list.rl);
+                                        $("#headtime").html("开灯时间:" + list.rl + "`" + "关灯时间:" + list.rc);
                                     },
                                     error: function () {
                                         alert("提交失败！2");
@@ -1095,10 +1095,10 @@
                         <thead >
                             <tr >
                                 <th data-width="5" data-field="online"  data-formatter='formartcomaddr'   >在线状态</th>
-                                <th data-width="60" data-align="center"  data-field="comaddr"   >网关地址</th>
+                                <!-- <th data-width="60" data-align="center"  data-field="comaddr"   >网关地址</th>-->
 
                                 <!--<th data-width="25"  data-visible="true"   data-select="false" data-align="center"  data-checkbox="true"  ></th>-->
-                                <!--<th data-width="100" data-field="name" data-align="center"    >网关名称</th>-->
+                                <th data-width="100" data-field="name" data-align="center"    >网关名称</th>
                             </tr>
                         </thead>       
 
