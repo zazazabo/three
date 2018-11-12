@@ -480,7 +480,9 @@
                                 $("#headtime").html("开灯时间:" + info.l_intime + "`" + "关灯时间:" + info.l_outtime);
                             } else if (worktype == 1) {
                                 var o1 = {jd: info.longitude, wd: info.latitude};
-                                if (o1.jd == "" || o1.wd == "") {
+
+                                console.log(o1);
+                                if (o1.jd == "" || o1.wd == "" || o1.jd == null || o1.wd == null) {
                                     return;
                                 }
                                 $.ajax({async: false, url: "login.rc.r.action", type: "get", datatype: "JSON", data: o1,
@@ -489,14 +491,14 @@
                                         $("#headtime").html("开灯时间:" + list.rc + "`" + "关灯时间:" + list.rl);
                                     },
                                     error: function () {
-                                        alert("提交失败！");
+                                        alert("提交失败！2");
                                     }
                                 });
                             }
                         }
                     },
                     error: function () {
-                        alert("提交失败！");
+                        alert("提交失败！3");
                     }
                 });
             }
@@ -544,7 +546,7 @@
                         }
                     },
                     error: function () {
-                        alert("提交失败！");
+                        alert("提交失败！1");
                     }
                 });
 
