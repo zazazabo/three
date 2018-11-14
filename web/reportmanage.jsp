@@ -514,9 +514,8 @@
                                 var len1 = a.length >= josonp.len ? a.length : josonp.len;
                                 z = 0;
                                 for (var j = 0; j < len1; j++) {
-                                    if (a.length >= j) {
+                                    if (a.length > j) {
                                         a[j].power = powerArrA[j];
-
                                     } else {
                                         var o = new Object();
                                         o.power = powerArrA[j];

@@ -646,7 +646,7 @@
                 }
                 $('#lamptable').on('click-cell.bs.table', function (field, value, row, element)
                 {
-                    if (value == "l_worktype") {
+                    if (value == "l_plan") {
                         if (element.l_deplayment == "1") {
                             if (element.l_worktype == "0") {
                                 var plan = "";
@@ -752,20 +752,23 @@
                                 row.index = index;
                                 return  value;
                             }
-                        },
-                        {
-                            field: 'name',
-                            title: langs1[314][lang], //网关名称
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
-                            field: 'l_comaddr',
-                            title: langs1[25][lang], //网关地址
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        },
+                        }
+//                        ,
+//                        {
+//                            field: 'name',
+//                            title: langs1[314][lang], //网关名称
+//                            width: 25,
+//                            align: 'center',
+//                            valign: 'middle'
+//                        }
+//                        , {
+//                            field: 'l_comaddr',
+//                            title: langs1[25][lang], //网关地址
+//                            width: 25,
+//                            align: 'center',
+//                            valign: 'middle'
+//                        }
+                        ,
                         {
                             field: 'l_name',
                             title: langs1[54][lang], //灯具名称
@@ -802,52 +805,53 @@
 //                            valign: 'middle'
 //
 //                        }, 
-//                        {
-//                            field: 'l_worktype',
-//                            title: langs1[316][lang], //控制方式
-//                            width: 25,
-//                            align: 'center',
-//                            valign: 'middle',
-//                            formatter: function (value, row, index, field) {
-//                                if (value == 0) {
-//                                    value = "时间表";
-//                                    return value;
-//                                } else if (value == 1) {
-//                                    value = "经纬度";
-//                                    return value;
-//                                } else if (value == 2) {
-//                                    value = "场景";
-//                                    return value;
-//                                }
-//                            }
-//                        },
                         {
-                            field: 'l_plan',
-                            title: langs1[373][lang], //控制方案
+                            field: 'l_worktype',
+                            title: langs1[316][lang], //控制方式
                             width: 25,
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
-                                if (row.l_deplayment == 1) {
-                                    if (row.l_worktype == "0") {
-                                        if (isJSON(row.l_plantime)) {
-                                            var obj = eval('(' + row.l_plantime + ')');
-                                            return obj.p_name;
-                                        } else {
-                                            return  row.l_plantime;
-                                        }
-                                    } else if (row.l_worktype == "2") {
-                                        if (isJSON(row.l_planscene)) {
-                                            var obj = eval('(' + row.l_plantime + ')');
-                                            return obj.p_name;
-                                        } else {
-                                            return  row.l_planscene;
-                                        }
-
-                                    }
+                                if (value == 0) {
+                                    value = "时间表";
+                                    return value;
+                                } else if (value == 1) {
+                                    value = "经纬度";
+                                    return value;
+                                } else if (value == 2) {
+                                    value = "场景";
+                                    return value;
                                 }
                             }
                         },
+//                        {
+//                            field: 'l_plan',
+//                            title: langs1[373][lang], //控制方案
+//                            width: 25,
+//                            align: 'center',
+//                            valign: 'middle',
+//                            formatter: function (value, row, index, field) {
+//                                if (row.l_deplayment == 1) {
+//                                    if (row.l_worktype == "0") {
+//                                        if (isJSON(row.l_plantime)) {
+//                                            var obj = eval('(' + row.l_plantime + ')');
+//                                            return obj.p_name;
+//                                        } else {
+//                                            return  row.l_plantime;
+//                                        }
+//                                    } else if (row.l_worktype == "2") {
+//                                        if (isJSON(row.l_planscene)) {
+//                                            var obj = eval('(' + row.l_plantime + ')');
+//                                            return obj.p_name;
+//                                        } else {
+//                                            return  row.l_planscene;
+//                                        }
+//
+//                                    }
+//                                }
+//                            }
+//                        }
+                        
                         {
                             field: 'l_groupe',
                             title: langs1[26][lang], //灯具组号

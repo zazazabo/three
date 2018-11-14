@@ -56,7 +56,7 @@
 
                 var reg = /^(\d{1,3})$/;
                 if (reg.test(obj.power) == false) {
-                     layerAler(langs1[479][lang]);   //倍率为0到256
+                    layerAler(langs1[479][lang]);   //倍率为0到256
                     return;
                 }
                 if (parseInt(obj.power) > 256) {
@@ -156,8 +156,52 @@
                 var data = buicode(comaddr, 0x04, 0xFE, num, 0, 8, vv); //01 03 F24   
                 dealsend2("FE", data, 8, "readPowerCB", comaddr, 0, 0, 0, 0);
             }
+            function gettodaypowerCB(obj) {
+                var data = Str2BytesH(obj.data);
+                var v = "";
+                for (var i = 0; i < data.length; i++) {
 
+                    v = v + sprintf("%02x", data[i]) + " ";
+                }
+                var row = [];
+                var z = 0;
+                for (var i = 18; i < data.length - 2; i += 4)
+                {
+                    var sw = data[i + 3] >> 4 & 0x0f;
+                    var w = data[i + 3] & 0x0f;
+                    var q = data[i + 2] >> 4 & 0x0f;
+                    var b = data[i + 2] & 0x0f;
+                    var s = data[i + 1] >> 4 & 0x0f;
+                    var g = data[i + 1] & 0x0f;
+                    var sfw = data[i + 0] >> 4 & 0x0f;
+                    var bfw = data[i + 0] & 0x0f;
+                    var power = sprintf("%d%d%d%d%d%d.%d%d", sw, w, q, b, s, g, sfw, bfw);
 
+                    var h = z * 15 / 60;
+                    var m = z * 15 % 60;
+                    var time = sprintf("%02d:%02d", h, m);
+                    var ooo = {};
+                    ooo.time = time;
+                    ooo.power = power;
+                    row.push(ooo);
+                    z = z + 1;
+                }
+                var obj = {};
+                obj.total = row.length;
+                obj.row = row;
+                console.log(obj);
+                $("#powertable").bootstrapTable("load", row)
+            }
+            function  gettodaypower() {
+                var o = $("#form1").serializeObject();
+                var obj = $("#form2").serializeObject();
+
+                var vv = [];
+                var comaddr = o.l_comaddr;
+                var num = randnum(0, 9) + 0x70;
+                var data = buicode(comaddr, 0x04, 0xAC, num, 0, 502, vv); //01 03 F24   
+                dealsend2("AC", data, 502, "gettodaypowerCB", comaddr, 0, 0, 0, 0);
+            }
             function StartCheck() {
                 var o = $("#form1").serializeObject();
                 var obj = $("#form2").serializeObject();
@@ -427,7 +471,7 @@
                     return;
                 }
                 if (isNumber(latiarr[0]) == false || isNumber(latiarr[1]) == false) {
-                   layerAler(langs1[482][lang]);  //纬度是4位十进制数字
+                    layerAler(langs1[482][lang]);  //纬度是4位十进制数字
                     return;
                 }
                 if (isNumber(obj.timezone) == false) {
@@ -1082,6 +1126,35 @@
                     }
                 });
 
+
+                $('#powertable').bootstrapTable({
+                    columns: [
+                        {
+                            field: 'time',
+                            title: '时刻', //
+                            width: 100,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: 'power',
+                            title: '能量', //预警参数
+                            width: 100,
+                            align: 'center',
+                            valign: 'middle'
+                        }
+                    ],
+                    paginationDetailHAlign: 'right',
+                    data: [],
+                    singleSelect: false,
+                    locale: 'zh-CN', //中文支持,
+                    pagination: true,
+                    pageNumber: 1,
+                    pageSize: 100,
+                    pageList: [100, 200],
+
+                });
+
+
             })
         </script>
     </head>
@@ -1127,6 +1200,7 @@
                                                         <option value="8">设置经纬度</option> 
                                                         <option value="9">设置巡测任务</option> 
                                                         <option value="10">互感器变比设置</option> 
+                                                        <option value="11">请求今天的电能量</option> 
                                                     </select>
                                                 </span>  
                                             </td>
@@ -1523,7 +1597,29 @@
 
                         </div>      
 
+                        <div class="row" id="row11"  style=" display: none">
+                            <div class="col-xs-12">
 
+
+                                <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629;">
+                                    <tbody>
+                                        <tr>
+
+                                            <td colspan="2" style=" padding-left: 5px;">    
+                                                <button  type="button" onclick="gettodaypower()" class="btn btn-success btn-sm"><span id="49" name="xxxx">获取今天电能量</span></button>&nbsp;
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                                <div style=" width: 300px;">
+
+                                    <table id="powertable" ></table>
+                                </div>
+
+                            </div>
+
+                        </div>      
 
                     </form>
                 </div>
