@@ -182,7 +182,7 @@
                             valign: 'middle'
                         }, {
                             field: 'f_day',
-                            title: '报警时间', //时间
+                            title: langs1[469][lang], //报警时间
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -218,7 +218,7 @@
                         },
                         {
                             field: 'f_detail',
-                            title: '详情', //状态字2
+                            title:langs1[402][lang], //详情
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -257,7 +257,7 @@
                         },
                         {
                             field: 'f_handletime',
-                            title: '处理时间', //异常类型
+                            title: langs1[470][lang], //异常类型
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -280,7 +280,7 @@
                         },
                         {
                             field: 'f_handlep',
-                            title: '处理人', //异常类型
+                            title:langs1[471][lang], //异常类型
                             width: 25,
                             align: 'center',
                             valign: 'middle'

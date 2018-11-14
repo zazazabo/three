@@ -132,7 +132,7 @@
 //                    console.log(o);
                     $.ajax({async: false, url: "loop.loopForm.editloopjwd.action", type: "get", datatype: "JSON", data: o,
                         success: function (data) {
-                            layerAler("设置成功");
+                            layerAler(langs1[377][lang]);  //设置成功
                         },
                         error: function () {
                             alert("提交失败！");
@@ -149,7 +149,7 @@
                 }
                 var ele = selects[0];
                 if (ele.l_deplayment != 1) {
-                    layerAler("请先部署,才能设置");
+                    layerAler(langs1[473][lang]);  //请先部署,才能设置
                     return;
                 }
                 if (ele.l_worktype == 0) {
@@ -433,7 +433,7 @@
                         $('#intime').timespinner('setValue', intime1);
                         $('#outtime').timespinner('setValue', outtime1);
                     }
-                    layerAler("读取成功");
+                    layerAler(langs1[474][lang]);  //读取成功
                 }
             }
             function readLoopPlan() {
@@ -713,7 +713,7 @@
                                 </td>
 
                                 <td>
-                                    <button type="button" onclick="setdefault()" class="btn btn-success btn-sm"><span name="xxxx" id="381">设置此回路默认开灯时间</span></button>
+                                    <button type="button" onclick="setdefault()" class="btn btn-success btn-sm"><span name="xxx" id="475">设置默认开灯时间</span></button>
                                     &nbsp;
                                 </td>          
 

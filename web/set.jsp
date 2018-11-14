@@ -31,7 +31,7 @@
 
             function setPowerCB(obj) {
                 if (obj.status == "success") {
-                    layerAler("设置成功");
+                    layerAler(langs1[377][lang]);   //设置成功
                 }
             }
             function setPower() {
@@ -39,29 +39,29 @@
                 var obj = $("#form2").serializeObject();
                 var reg = /^(\d{3})+(\.\d{1})+$/;
                 if (reg.test(obj.voltage) == false) {
-                    layerAler("电压限值格式为:xxx.x x为数字");
-                    return
+                    layerAler(langs1[476][lang]);  //电压限值格式为:xxx.x x为数字
+                    return;
                 }
                 var reg = /^(\d{3})+(\.\d{3})+$/;
                 if (reg.test(obj.electric) == false) {
-                    layerAler("电流限值格式为:xxx.xxx x为数字");
-                    return
+                    layerAler(langs1[477][lang]);   //电流限值格式为:xxx.xxx
+                    return;
                 }
 
                 var reg = /^(\d{1})+(\.\d{3})+$/;
                 if (reg.test(obj.powerfactor) == false) {
-                    layerAler("功率因数限值格式为:x.xxx x为数字");
-                    return
+                    layerAler(langs1[478][lang]);  //功率因数限值格式为:x.xxx
+                    return;
                 }
 
                 var reg = /^(\d{1,3})$/;
                 if (reg.test(obj.power) == false) {
-                    layerAler("倍率为0到256");
-                    return
+                     layerAler(langs1[479][lang]);   //倍率为0到256
+                    return;
                 }
                 if (parseInt(obj.power) > 256) {
-                    layerAler("倍率为0到256");
-                    return
+                    layerAler(langs1[479][lang]);   //倍率为0到256
+                    return;
                 }
 
                 var vol = obj.voltage
@@ -411,35 +411,35 @@
                 var latiarr = lati.split(".");
                 console.log(longarr.length);
                 if (longarr.length != 2 || latiarr.length != 2) {
-                    layerAler("经纬度错误输入格式");
+                    layerAler(langs1[480][lang]);    //经纬度错误输入格式
                     return;
                 }
                 if (longarr[0].length != 4 || longarr[1].length != 4) {
-                    layerAler("经度4位十进制数字");
+                    layerAler(langs1[481][lang]);   //经度是4位十进制数字
                     return;
                 }
                 if (latiarr[0].length != 4 || latiarr[1].length != 4) {
-                    layerAler("纬度应是4位十进制数字");
+                    layerAler(langs1[482][lang]);  //纬度是4位十进制数字
                     return;
                 }
                 if (isNumber(longarr[0]) == false || isNumber(longarr[1]) == false) {
-                    layerAler("经度应是4位十进制数字");
+                    layerAler(langs1[481][lang]);   //经度是4位十进制数字
                     return;
                 }
                 if (isNumber(latiarr[0]) == false || isNumber(latiarr[1]) == false) {
-                    layerAler("纬度应是4位十进制数字");
+                   layerAler(langs1[482][lang]);  //纬度是4位十进制数字
                     return;
                 }
                 if (isNumber(obj.timezone) == false) {
-                    layerAler("时区应是数字");
+                    layerAler(langs1[483][lang]);  //时区应是数字
                     return;
                 }
                 if (isNumber(obj.outoffset) == false) {
-                    layerAler("日出偏移应是数字");
+                    layerAler(langs1[484][lang]);  //日出偏移应是数字
                     return;
                 }
                 if (isNumber(obj.inoffset) == false) {
-                    layerAler("日落偏移应是数字");
+                    layerAler(langs1[484][lang]);  //日出偏移应是数字
                     return;
                 }
                 var o = $("#form1").serializeObject();
@@ -1315,7 +1315,7 @@
                                                            data-options="editable:true,valueField:'id', textField:'text' " />
                                                 </span> 
                                                 <!-- <button  type="button" onclick="chgLampGroupe()" class="btn btn-success btn-sm">更换所有灯具的组号</button>&nbsp; -->
-                                                <button  onclick="setGroupe()" style=" margin-left: 2px;" class="btn btn-success btn-xs" name="xxx" id="207" >更换</button>
+                                                <button  onclick="setGroupe()" style=" margin-left: 2px;" class="btn btn-success btn-xs" ><span name="xxx" id="207">更换</span></button>
 
                                                 <span style=" margin-left: 10px;" name="xxx" id="208">新工作方式</span>&nbsp;
                                                 <span class="menuBox">
@@ -1325,7 +1325,7 @@
                                                         <option value="2">场景</option>           
                                                     </select>
                                                 </span> 
-                                                <button  onclick="setWowktype()" style=" margin-left: 2px;" class="btn btn-success btn-xs"  name="xxx" id="207">更换</button>
+                                                <button  onclick="setWowktype()" style=" margin-left: 2px;" class="btn btn-success btn-xs" ><span name="xxx" id="207">更换</span></button>
 
                                                 <button  type="button" onclick="delAllLamp()" class="btn btn-success btn-sm"><span id="209" name="xxx">删除全部灯具信息</span></button>
                                                 <button  style="float:right; margin-right: 5px;" type="button" onclick="delAllplan()" class="btn btn-success btn-sm"><span name="xxx" id="210">删除全部灯时间表</span></button>
@@ -1346,7 +1346,7 @@
                                         <tr>
                                             <td>       
                                                 <button  type="button" onclick="delAllLoop()" class="btn btn-success btn-sm"><span id="211" name="xxx">删除全部回路开关信息</span></button>&nbsp;
-                                                <button  type="button" onclick="delAllLoopPlan()" class="btn btn-success btn-sm"><span id="212">删除全部回路时间表</span></button>&nbsp;
+                                                <button  type="button" onclick="delAllLoopPlan()" class="btn btn-success btn-sm"><span id="212" name="xxx">删除全部回路时间表</span></button>&nbsp;
                                             </td>
                                         </tr>
                                     </tbody>
@@ -1360,13 +1360,13 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                <span style=" float: right; " name="xxxx" id="199">经度&nbsp;</span>&nbsp;
+                                                <span style=" float: right; " name="xxx" id="59">经度</span>&nbsp;
                                             </td>
                                             <td>
                                                 <input id="Longitude" name="Longitude"  value="" style="width:100px;" placeholder="经度" type="text">
                                             </td>
                                             <td>
-                                                <span style="float: right; " name="xxxx" id="199">纬度&nbsp;</span>
+                                                <span style="float: right; " name="xxx" id="60">纬度</span>&nbsp;
                                             </td>
                                             <td>
                                                 <input id="latitude" name="latitude"  value="" style="width:100px;" placeholder="纬度" type="text">
@@ -1374,7 +1374,7 @@
 
 
                                             <td>
-                                                <span style="float: right; " name="xxxx" id="199">&nbsp;时区范围:</span>
+                                                <span style="float: right; " name="xxx" id="486">时区范围:</span>&nbsp;
 
 
                                             </td>
@@ -1390,7 +1390,7 @@
 
 
                                             <td>
-                                                <span style="float: right; " name="xxxx" id="199">&nbsp;时区</span>
+                                                <span style="float: right; " name="xxx" id="487">时区</span>&nbsp;
                                             </td>
 
 
@@ -1402,13 +1402,13 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <span style="margin-left:10px; " name="xxxx" id="199">日出偏移</span>&nbsp;
+                                                <span style="margin-left:10px; " name="xxx" id="488">日出偏移</span>&nbsp;
                                             </td>
                                             <td>
                                                 <input id="outoffset" class="form-control" name="outoffset" value="" style="width:100px;" placeholder="日出偏移" type="text">
                                             </td>
                                             <td>
-                                                <span style="margin-left:10px; " name="xxxx" id="199">日落偏移</span>&nbsp;
+                                                <span style="margin-left:10px; " name="xxx" id="489">日落偏移</span>&nbsp;
                                             </td>
                                             <td>
                                                 <input id="inoffset"  name="inoffset" value="" style="width:100px;" placeholder="日落偏移" type="text">
@@ -1417,19 +1417,19 @@
                                                 <button  type="button" onclick="readjwd()" class="btn btn-success btn-sm"><span id="205" name="xxx">读取</span> </button>
                                             </td>
                                             <td>     <button type="button"  onclick="setjwd()" class="btn  btn-success btn-sm" style="margin-left: 10px;"><span id="49" name="xxx">设置</span></button></td>
-                                            <td>     <button type="button"  onclick="jcsj()" class="btn  btn-success btn-sm" style="margin-left: 0px;"><span >检测时间</span></button></td>
+                                            <td>     <button type="button"  onclick="jcsj()" class="btn  btn-success btn-sm" style="margin-left: 0px;"><span id="485" name="xxx">检测时间</span></button></td>
 
                                         </tr>
 
                                         <tr id="sunriseSunset" style=" display: none">
                                             <td>
-                                                <span style="margin-left:10px;">日出时间</span>&nbsp;
+                                                <span style="margin-left:10px;" name="xxx" id="490">日出时间</span>&nbsp;
                                             </td>
                                             <td>
                                                 <input id="sunrise" class="form-control" value="" style="width:100px;" placeholder="日出时间" type="text">
                                             </td>
                                             <td>
-                                                <span style="margin-left:10px; " name="xxxx" id="199">日落时间</span>&nbsp;
+                                                <span style="margin-left:10px; " name="xxx" id="491">日落时间</span>&nbsp;
                                             </td>
                                             <td>
                                                 <input id="sunset"   value="" style="width:100px;" placeholder="日落偏移" type="text">
@@ -1447,7 +1447,7 @@
                                         <tr>
                                             <td>       
                                                 <button  type="button" onclick="StartCheck()" class="btn btn-success btn-sm"><span id="415" name="xxx">启动巡测任务</span></button>&nbsp;
-                                                <button  type="button" onclick="StopCheck()" class="btn btn-success btn-sm"><span id="416">结束巡测任务</span></button>&nbsp;
+                                                <button  type="button" onclick="StopCheck()" class="btn btn-success btn-sm"><span id="416" name="xxx">结束巡测任务</span></button>&nbsp;
                                             </td>
                                         </tr>
 
@@ -1465,26 +1465,26 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                <span style=" float: right; " name="xxxx" id="421">电压超限值&nbsp;</span>&nbsp;
+                                                <span style=" float: right; " name="xxx" id="421">电压超限值</span>&nbsp;
                                             </td>
                                             <td>
                                                 <input id="voltage" name="voltage"  value="" style="width:80px;" placeholder="电压超限值" type="text">
                                             </td>
                                             <td style=" padding-left: 10px;">
-                                                <span style="float: right; " name="xxxx" id="422">电流超限值&nbsp;</span>
+                                                <span style="float: right; " name="xxx" id="422">电流超限值</span>&nbsp;
                                             </td>
                                             <td>
                                                 <input id="electric" name="electric"  value="" style="width:80px;" placeholder="电流超限值" type="text"> &nbsp;
                                             </td>
                                             <td style=" padding-left: 5px;">
-                                                <span style="float: right; " name="xxxx" id="424">功率因数&nbsp;</span>
+                                                <span style="float: right; " name="xxx" id="424">功率因数</span>&nbsp;
                                             </td>
                                             <td>
                                                 <input id="powerfactor" name="powerfactor"  value="" style="width:80px;" placeholder="功率因数限值" type="text">
                                             </td>
 
                                             <td style=" padding-left: 10px;">
-                                                <span style="float: right; " name="xxxx" id="423">互感器变比&nbsp;</span>
+                                                <span style="float: right; " name="xxx" id="423">互感器变比</span>&nbsp;
                                             </td>
                                             <td>
                                                 <input id="power" name="power"  value="" style="width:80px;" placeholder="互感器变比" type="text"> &nbsp;

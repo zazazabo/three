@@ -532,7 +532,7 @@
                             valign: 'middle'
                         }, {
                             field: '控制方式',
-                            title: '控制方式', //控制方式
+                            title: langs1[316][lang], //控制方式
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -839,7 +839,7 @@
                 <span name="xxx" id="110">导出Excel</span>
             </button>
             <button class="btn btn-success ctrol" onclick="$('#loopmb').tableExport({type: 'excel', escape: 'false'})" id="addexcel" >
-                <span>导出Excel模板</span>
+               <span name="xxx" id="472">导出Excel模板</span>
             </button>
         </div>
 
