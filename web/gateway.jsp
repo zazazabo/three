@@ -612,7 +612,7 @@
                 <span name="xxx" id="110">导出Excel</span>
             </button>
             <button class="btn btn-success ctrol" onclick="$('#wgmb').tableExport({type: 'excel', escape: 'false'})" id="addexcel" >
-                <span>导出Excel模板</span>
+                <span name="xxx" id="472">导出Excel模板</span>
             </button>
 
 

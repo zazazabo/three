@@ -59,7 +59,7 @@
             function onlamp(val) {
                 var s2 = $('#gayway').bootstrapTable('getSelections');
                 if (s2.length == 0) {
-                    layerAler("请勾选网关");
+                    layerAler(langs1[219][lang]);  //请勾选网关
                 }
                 var l_comaddr = s2[0].comaddr;
                 val = parseInt(val);
@@ -95,7 +95,7 @@
 
                 var s2 = $('#gayway').bootstrapTable('getSelections');
                 if (s2.length == 0) {
-                    layerAler("请勾选网关");
+                     layerAler(langs1[219][lang]);  //请勾选网关
                 }
                 var l_comaddr = s2[0].comaddr;
                 val = parseInt(val);
@@ -151,7 +151,7 @@
 
                 var s2 = $('#gayway').bootstrapTable('getSelections');
                 if (s2.length == 0) {
-                    layerAler("请勾选网关");
+                    layerAler(langs1[219][lang]);  //请勾选网关
                 }
                 var l_comaddr = s2[0].comaddr;
 
@@ -222,7 +222,7 @@
 
                 var s2 = $('#gayway').bootstrapTable('getSelections');
                 if (s2.length == 0) {
-                    layerAler("请勾选网关");
+                    layerAler(langs1[219][lang]);  //请勾选网关
                 }
                 var l_comaddr = s2[0].comaddr;
 
@@ -257,7 +257,7 @@
 
                 var s2 = $('#gayway').bootstrapTable('getSelections');
                 if (s2.length == 0) {
-                    layerAler("请勾选网关");
+                     layerAler(langs1[219][lang]);  //请勾选网关
                 }
                 var l_comaddr = s2[0].comaddr;
 
@@ -297,7 +297,7 @@
 
                 var s2 = $('#gayway').bootstrapTable('getSelections');
                 if (s2.length == 0) {
-                    layerAler("请勾选网关");
+                    layerAler(langs1[219][lang]);  //请勾选网关
                 }
                 var l_comaddr = s2[0].comaddr;
                 var obj = $("#formsearch").serializeObject();
@@ -372,7 +372,7 @@
                             });
                         }
 
-                        layerAler("调光成功");
+                        layerAler(langs1[412][lang]);   //调光成功
                         // var o = $("#formsearch").serializeObject();
                         var sobj = {};
                         sobj.l_comaddr = obj.comaddr;
@@ -390,7 +390,7 @@
 
                 var s2 = $('#gayway').bootstrapTable('getSelections');
                 if (s2.length == 0) {
-                    layerAler("请勾选网关");
+                    layerAler(langs1[219][lang]);  //请勾选网关
                 }
                 var l_comaddr = s2[0].comaddr;
                 var o = $("#formsearch").serializeObject();
@@ -427,7 +427,7 @@
             function lightgroupe() {
                 var s2 = $('#gayway').bootstrapTable('getSelections');
                 if (s2.length == 0) {
-                    layerAler("请勾选网关");
+                   layerAler(langs1[219][lang]);  //请勾选网关
                 }
                 var l_comaddr = s2[0].comaddr;
 
@@ -774,7 +774,7 @@
                             valign: 'middle'
                         }, {
                             field: 'l_factorycode',
-                            title: '灯控地址', //灯具编号
+                            title: langs1[452][lang] , //灯控地址
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -788,7 +788,7 @@
                         },
                         {
                             field: 'l_lampnumber',
-                            title: '灯杆编号', //装置序号
+                            title: langs1[453][lang], //灯杆编号
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -872,7 +872,7 @@
                             }
                         }, {
                             field: 'presence',
-                            title: '状态', //在线状态
+                            title: langs1[12][lang] , //状态
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -1005,7 +1005,7 @@
                         <tr >
                             <th data-width="25"  data-visible="true"   data-select="false" data-align="center"  data-checkbox="true"  ></th>
                         <!--<th data-width="100" data-align="center" data-field="comaddr"  data-formatter='formartcomaddr'   >网关地址</th>-->
-                            <th data-width="100" data-field="name" data-align="center"    >网关名称</th>
+                        <th data-width="100" data-field="name" data-align="center"    ><span name="xxx" id="314"></span></th>
                         </tr>
                     </thead>       
 

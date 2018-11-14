@@ -15,7 +15,7 @@ Author     : admin
         <style>
             .mb{
                 top:-60%;
-/*                left:60%;*/
+                /*                left:60%;*/
                 position:absolute;
                 z-index:9999;
                 background-color:#FFFFFF;
@@ -60,7 +60,7 @@ Author     : admin
                                             var l_lampnumber = selects[i].灯杆编号;
                                             var adobj = {};
                                             adobj.l_name = lampname;
-                                            adobj.l_worktype =parseInt(kzfs);
+                                            adobj.l_worktype = parseInt(kzfs);
                                             adobj.l_comaddr = comaddr;
                                             adobj.l_deplayment = 0;
                                             adobj.l_factorycode = lampid;
@@ -72,7 +72,7 @@ Author     : admin
                                             $.ajax({url: "login.lampmanage.addlamp.action", async: false, type: "get", datatype: "JSON", data: adobj,
                                                 success: function (data) {
                                                     var arrlist = data.rs;
-                                                    console.log("L:"+arrlist.length);
+                                                    console.log("L:" + arrlist.length);
                                                     if (arrlist.length == 1) {
                                                         var ids = []; //定义一个数组
                                                         var xh = selects[i].序号;
@@ -126,7 +126,7 @@ Author     : admin
                 layer.confirm(langs1[145][lang], {//确认要删除吗？
                     btn: [langs1[146][lang], langs1[147][lang]] //确定、取消按钮
                 }, function (index) {
-                    addlogon(u_name, "删除", o_pid, "灯具管理", "删除灯具",select.l_comaddr);
+                    addlogon(u_name, "删除", o_pid, "灯具管理", "删除灯具", select.l_comaddr);
                     $.ajax({url: "lamp.lampform.deleteLamp.action", type: "POST", datatype: "JSON", data: {id: select.id},
                         success: function (data) {
                             var arrlist = data.rs;
@@ -147,7 +147,7 @@ Author     : admin
 
             function  editlamp() {
                 var o = $("#form2").serializeObject();
-                addlogon(u_name, "修改", o_pid, "灯具管理", "修改灯具",o.l_comaddr);
+                addlogon(u_name, "修改", o_pid, "灯具管理", "修改灯具", o.l_comaddr);
                 $.ajax({async: false, url: "lamp.lampform.modifylamp.action", type: "get", datatype: "JSON", data: o,
                     success: function (data) {
                         var a = data.rs;
@@ -221,7 +221,7 @@ Author     : admin
                                     var arrlist = data.rs;
                                     if (arrlist.length == 1) {
                                         isflesh = true;
-                                        addlogon(u_name, "添加", o_pid, "灯具管理", "添加灯具",o.l_comaddr);
+                                        addlogon(u_name, "添加", o_pid, "灯具管理", "添加灯具", o.l_comaddr);
                                         $("#gravidaTable").bootstrapTable('refresh');
                                     }
                                 },
@@ -406,17 +406,10 @@ Author     : admin
                             title: langs1[292][lang], //灯具编号
                             width: 25,
                             align: 'center',
-                            valign: 'middle',
-                            formatter: function (value, row, index, field) {
-                                if (value != null) {
-                                    value = value.replace(/\b(0+)/gi, "");
-                                    return value.toString();
-                                }
-
-                            }
+                            valign: 'middle'                        
                         }, {
                             field: 'l_lampnumber',
-                            title: '灯杆编号', //灯杆编号
+                            title: langs1[453][lang], //灯杆编号
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -730,7 +723,7 @@ Author     : admin
                             valign: 'middle'
                         }, {
                             field: '灯杆编号',
-                            title: '灯杆编号', //组号
+                            title: langs1[453][lang], //组号
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -1094,7 +1087,7 @@ Author     : admin
                 <span name="xxx" id="110">导出Excel</span>
             </button>
             <button type="button" id="btn_download" class="btn btn-success ctrol" onClick ="$('#lampmuban').tableExport({type: 'excel', escape: 'false'})">
-                <span >导出Excel模板</span>
+                <span name="xxx" id="472" >导出Excel模板</span>
             </button>
         </div>
 
@@ -1178,7 +1171,7 @@ Author     : admin
                         </tr> 
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">灯杆编号</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="453">灯杆编号</span>&nbsp;
                                 <input id="l_lampnumber" class="form-control"  name="l_lampnumber" style="width:150px;display: inline;" placeholder="请输入灯杆编号" type="text">
                                 </span> 
                             </td>
@@ -1278,7 +1271,7 @@ Author     : admin
                         </tr> 
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">灯杆编号</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="453">灯杆编号</span>&nbsp;
                                 <input id="l_lampnumber1" class="form-control" name="l_lampnumber" style="width:150px;display: inline;" placeholder="灯具编号" type="text">
                             </td>
                         </tr> 
@@ -1289,7 +1282,7 @@ Author     : admin
                 </table>   
             </form>
         </div> 
-        
+
         <div id="dialog-excel"  class="bodycenter"  style=" display: none" title="导入Excel">
             <input type="file" id="excel-file" style=" height: 40px;">
             <table id="warningtable"></table>

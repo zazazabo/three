@@ -41,7 +41,7 @@
             }
             #showdiv{
                 width: 100%;
-                
+
 
             }
             #ta tr td{
@@ -70,14 +70,14 @@
     <body>
         <div id="showdiv">
             <input type="text" id="showtext" >
-            <span style=" margin-left: 20px;">网关地址：</span>
+            <span style=" margin-left: 20px;" name="xxx" id="25">网关地址</span>：
             <input id="lampcomaddrlist2" data-options="editable:true,valueField:'id', textField:'text'"  class="easyui-combobox"/>&nbsp;
-            <span>灯杆编号：</span>
+            <span name="xxx" id="453">灯杆编号</span>：
             <input type="text" id="lampNumber">
-            <button onclick="wg()">网关</button>
-            <button onclick="dj()" id="dj">灯具</button>
-            <button onclick="bzzt()">标识状态</button>
-            <button onclick="xcdj()">巡测灯具</button>
+            <button onclick="wg()"><span name="xxx" id="50">网关</span></button>
+            <button onclick="dj()" id="dj"><span name="xxx" id="51">灯具</span></button>
+            <button id="bzzt"><span name="xxx" id="52">标识状态</span></button>
+            <button onclick="xcdj()"><span name="xxx" id="414">巡测灯具</span></button>
         </div>
         <div id="allmap">
 
@@ -87,7 +87,7 @@
                 <tr style=" border-bottom:1px solid green">
                     <th><span id="12" name="xxx">状态</span></th>
                     <th></th>
-                    <th><spn name="xxx" id="283">标识</spn></th>
+                    <th><span name="xxx" id="283">标识</span></th>
                 </tr>
                 <tr>
                     <td><span name="xxx" id="401">灯具亮灯</span>:</td>
@@ -242,7 +242,7 @@
                             </td>
                             <td>
                                 <button  type="button"  name="btnsingle"  onclick="aiming()" class="btn btn-success btn-sm">
-                                    <span>立即调光</span>
+                                    <span name="xxx" id="32">立即调光</span>
                                 </button>  
                             </td>
                         </tr>
@@ -466,87 +466,83 @@
                     }
                 }
             }
-             //网关点击 事件
-                function wg(){
-                    var allOver = map.getOverlays(); //获取全部标注
-                    for (var j = 0; j < allOver.length; j++) {
-                        if (allOver[j].toString() == "[object Marker]") {
-                            //清除所有标记
-                            map.removeOverlay(allOver[j]);
-                        }
-                        if (allOver[j].toString().indexOf("Polyline") > 0) {//删除折线
-                            map.removeOverlay(allOver[j]);
-                        }
+            //网关点击 事件
+            function wg() {
+                var allOver = map.getOverlays(); //获取全部标注
+                for (var j = 0; j < allOver.length; j++) {
+                    if (allOver[j].toString() == "[object Marker]") {
+                        //清除所有标记
+                        map.removeOverlay(allOver[j]);
                     }
-                    var pid = parent.getpojectId();
-                    var objw = {};
-                    objw.pid = pid;
-                    if($("#lampcomaddrlist2").val() !=""){
-                        objw.comaddr = $("#lampcomaddrlist2").val();
-                    }
-                    $.ajax({async: false, url: "login.map.lnglat.action", type: "get", datatype: "JSON", data: objw,
-                        success: function (data) {
-                            var arrlist = data.rs;
-                            wglist(arrlist);
-                        },
-                        error: function () {
-                            alert("提交失败！");
-                        }
-                    });
-                }
-                
-                //灯具点击方法
-                function  dj(){
-                     var allOver = map.getOverlays(); //获取全部标注
-                    for (var j = 0; j < allOver.length; j++) {
-                        if (allOver[j].toString() == "[object Marker]") {
-                            //清除所有标记
-                            map.removeOverlay(allOver[j]);
-                        }
-                        if (allOver[j].toString().indexOf("Polyline") > 0) {//删除折线
-                            map.removeOverlay(allOver[j]);
-                        }
-                    }
-                    var pid = parent.getpojectId();
-                    var d = new Date();
-                    var day = d.toLocaleDateString();
-                    var lobj = {};
-                    lobj.pid = pid;
-                    if($("#lampcomaddrlist2").val() !=""){
-                        lobj.comaddr = $("#lampcomaddrlist2").val();
-                    }
-                    if($("#lampNumber").val() !=""){
-                        lobj.l_lampnumber = $("#lampNumber").val();
-                    }
-                    $.ajax({async: false, url: "login.map.queryLamp.action", type: "get", datatype: "JSON", data: lobj,
-                        success: function (data) {
-                            var arrlist = data.rs;
-                            if(arrlist.length>0){
-                                lamplists(arrlist);
-                            }else{
-                                layerAler("没有匹配的数据");
-                            }
-                        },
-                        error: function () {
-                            alert("提交失败！");
-                        }
-                    });
-                }
-                //标识状态点击事件
-                 var ij = 0;
-                function bzzt(){
-                    if (ij == 0) {
-                        $("#up-map-div").show();
-                        ij = 1;
-                    } else {
-                        $("#up-map-div").hide();
-                        ij = 0;
+                    if (allOver[j].toString().indexOf("Polyline") > 0) {//删除折线
+                        map.removeOverlay(allOver[j]);
                     }
                 }
-                //巡测灯具点击事件
-                function  xcdj(){
-                    dealsend3("CheckLamp", "a", 0, 0, "check", 0, 0, "${param.pid}");
+                var pid = parent.getpojectId();
+                var objw = {};
+                objw.pid = pid;
+                if ($("#lampcomaddrlist2").val() != "") {
+                    objw.comaddr = $("#lampcomaddrlist2").val();
                 }
+                $.ajax({async: false, url: "login.map.lnglat.action", type: "get", datatype: "JSON", data: objw,
+                    success: function (data) {
+                        var arrlist = data.rs;
+                        wglist(arrlist);
+                    },
+                    error: function () {
+                        alert("提交失败！");
+                    }
+                });
+            }
+
+            //灯具点击方法
+            function  dj() {
+                var allOver = map.getOverlays(); //获取全部标注
+                for (var j = 0; j < allOver.length; j++) {
+                    if (allOver[j].toString() == "[object Marker]") {
+                        //清除所有标记
+                        map.removeOverlay(allOver[j]);
+                    }
+                    if (allOver[j].toString().indexOf("Polyline") > 0) {//删除折线
+                        map.removeOverlay(allOver[j]);
+                    }
+                }
+                var pid = parent.getpojectId();
+                var d = new Date();
+                var day = d.toLocaleDateString();
+                var lobj = {};
+                lobj.pid = pid;
+                if ($("#lampcomaddrlist2").val() != "") {
+                    lobj.comaddr = $("#lampcomaddrlist2").val();
+                }
+                if ($("#lampNumber").val() != "") {
+                    lobj.l_lampnumber = $("#lampNumber").val();
+                }
+                $.ajax({async: false, url: "login.map.queryLamp.action", type: "get", datatype: "JSON", data: lobj,
+                    success: function (data) {
+                        var arrlist = data.rs;
+                        if (arrlist.length > 0) {
+                            lamplists(arrlist);
+                        } else {
+                            layerAler("没有匹配的数据");
+                        }
+                    },
+                    error: function () {
+                        alert("提交失败！");
+                    }
+                });
+            }
+            //标识状态点击事件
+            $("#bzzt").mousemove(function () {
+                $("#up-map-div").show();
+            });
+            $("#bzzt").mouseout(function () {
+                $("#up-map-div").hide();
+            });
+            //巡测灯具点击事件
+            function  xcdj() {
+                dealsend3("CheckLamp", "a", 0, 0, "check", 0, 0, "${param.pid}");
+            }
 
             //调用父页面的方法获取用户名
             var u_name = parent.getusername();
@@ -1163,7 +1159,7 @@
                     success: function (data) {
                         var arrlist = data.wgrs;   //网关集合
                         var lamplist = data.lamprs;  //灯具集合
-                        console.log("lamp:"+ lamplist.length);
+                        console.log("lamp:" + lamplist.length);
                         if (arrlist.length > 0) {
                             wglist(arrlist);
                         }
@@ -1480,22 +1476,8 @@
                                     updatelnglat(wgarray[i].x, wgarray[i].y, wgidlist[i]);
                                 }
                                 alert(lans[295][lang]); //配置经纬度成功
-                                var nobj = {};
-                                nobj.name = u_name;
-                                var day = getNowFormatDate2();
-                                nobj.time = day;
-                                nobj.type = "修改";
-                                nobj.pid = porjectId;
-                                nobj.comment = "批量修改网关的经纬度";
-                                nobj.page = "地图导航";
-                                $.ajax({async: false, url: "login.oplog.addoplog.action", type: "get", datatype: "JSON", data: nobj,
-                                    success: function (data) {
-                                        var arrlist = data.rs;
-                                        if (arrlist.length > 0) {
-
-                                        }
-                                    }
-                                });
+                                addlogon(u_name, "修改", porjectId, "地图导航", "批量修改网关的经纬度");
+                               
                                 //刷新，重置
                                 wgarray = [];
                                 wgdraw = false;
@@ -1603,32 +1585,33 @@
                                    \n\
                                     <table style='text-align:center'>\n\
                                         <tr>\n\
-                                            <td>" + "网关地址" + ":</td>\n\
+                                            <td>" + lans[25][lang] + ":</td>\n\
                                             <td>" + obj.comaddr + "</td>\n\
                                             <td></td>\n\
-                                            <td>" + "网关名称" + ":</td>\n\
+                                            <td>" + lans[314][lang] + ":</td>\n\
                                             <td>" + obj.name + "</td>\n\
                                         </tr>\n\
                                         <tr>\n\
-                                            <td>" + "状态" + ":</td>\n\
+                                            <td>" + lans[12][lang] + ":</td>\n\
                                             <td>" + Iszx + "</td>\n\
                                              <td>&nbsp&nbsp</td>\n\
                                         </tr>\n\ \n\
                                     </table></div>";
-                            var opts = {title: '<span style="font-size:14px;color:#0A8021">' + lans[404][lang] + '</span>', width: 250, height: 170};//设置信息框、信息说明
+                            var opts = {title: '<span style="font-size:14px;color:#0A8021">' + lans[404][lang] + '</span>'};//设置信息框、信息说明
                             var infoWindow = new BMap.InfoWindow(textvalue, opts); // 创建信息窗口对象，引号里可以书写任意的html语句。
                             marker1.addEventListener("mouseover", function () {
                                 this.openInfoWindow(infoWindow);
                             });
                             marker1.addEventListener("rightclick", function () {
-                                var textvalue2 = "<ul style='list-style-type:none;width=100px;' class='items'><li id='kdl'>移动</li><li id='yc'>移除</li></ul>";
-                                var opts2 = {title: '<span style="font-size:14px;color:#0A8021">' + lans[405][lang] + '</span>', width: 100, height: 70};//设置信息框、功能操作
+                                //移动、移除
+                                var textvalue2 = "<ul style='list-style-type:none;width=100px;' class='items'><li id='kdl'>"+lans[457][lang]+"</li><li id='yc'>"+lans[458][lang]+"</li></ul>";
+                                var opts2 = {title: '<span style="font-size:14px;color:#0A8021">' + lans[405][lang] + '</span>'};//设置信息框、功能操作
                                 var infoWindow2 = new BMap.InfoWindow(textvalue2, opts2); // 创建信息窗口对象，引号里可以书写任意的html语句。
                                 this.openInfoWindow(infoWindow2);
                                 //移动
                                 $("#kdl").click(function () {
                                     // console.log("ok");
-                                    layer.confirm("确认要移动该网关吗", {//确认要移动该灯具吗？
+                                    layer.confirm(lans[456][lang], {//确定要移动该网关吗？
                                         btn: [lans[146][lang], lans[147][lang]] //确定、取消按钮
                                     }, function (index) {
                                         marker1.enableDragging(); //标注可拖拽
@@ -1644,7 +1627,7 @@
                                                     var arrlist = data.rs;
                                                     if (arrlist.length == 1) {
                                                         alert(lans[143][lang]);  //修改成功
-                                                        addlogon(name, "移动网关", pid, "地图导航", "移动网关",obj.comaddr);
+                                                        addlogon(name, "移动网关", pid, "地图导航", "移动网关", obj.comaddr);
                                                     } else {
                                                         alert(lans[281][lang]);  //修改失败
                                                     }
@@ -1661,7 +1644,7 @@
                                 });
                                 //移除网关
                                 $("#yc").click(function () {
-                                    layer.confirm("确定要移除该网关吗", {//确认要移动该灯具吗？
+                                    layer.confirm(lans[459][lang], {//确定要移除该网关吗？
                                         btn: [lans[146][lang], lans[147][lang]] //确定、取消按钮
                                     }, function (index) {
                                         var allOverlay = map.getOverlays();
@@ -1677,10 +1660,10 @@
                                                         success: function (data) {
                                                             var arrlist = data.rs;
                                                             if (arrlist.length == 1) {
-                                                                alert("移除成功");  //修改成功
-                                                                addlogon(name, "移除网关", pid, "地图导航", "移除网关",obj.comaddr);
+                                                                alert(lans[460][lang]);  //移除成功
+                                                                addlogon(name, "移除网关", pid, "地图导航", "移除网关", obj.comaddr);
                                                             } else {
-                                                                alert("移除失败");  //修改失败
+                                                                alert(lans[461][lang]);  //移除失败
                                                             }
                                                         },
                                                         error: function () {
@@ -1725,7 +1708,7 @@
                         var lampcode = parseInt(arrlist[i].l_factorycode);
                         //lans[][]代表的文字依次是：亮度、名称、灯具编号、网关地址、在线情况、状态、电压、电流
                         var activepower = arrlist[i].activepower * 1000;  //有功功率
-                            activepower = activepower.toFixed(2);
+                        activepower = activepower.toFixed(2);
                         var textvalue = "<div style='line-height:1.8em;font-size:12px;'>\n\
                                    \n\
                                     <table style='text-align:center'>\n\
@@ -1765,10 +1748,10 @@
                                             <td>" + arrlist[i].temperature + "</td>\n\
                                         </tr>\n\
                                         <tr>\n\
-                                            <td>" + "抄读时间" + ":</td>\n\
+                                            <td>" + lans[462][lang] + ":</td>\n\
                                             <td>" + arrlist[i].newlyread + "</td>\n\
                                             <td>&nbsp;&nbsp;</td>\n\
-                                            <td>" + "灯杆编号" + ":</td>\n\
+                                            <td>" + lans[453][lang] + ":</td>\n\
                                             <td>" + arrlist[i].l_lampnumber + "</td>\n\
                                         </tr>\n\
                                     </table></div>";
@@ -1792,7 +1775,7 @@
                                     icon: lhui
                                 });
                             }
-                            var opts = {title: '<span style="font-size:14px;color:#0A8021">' + lans[404][lang] + '</span>', width: 250, height: 220};//设置信息框、信息说明
+                            var opts = {title: '<span style="font-size:14px;color:#0A8021">' + lans[404][lang] + '</span>'};//设置信息框、信息说明
                             var infoWindow = new BMap.InfoWindow(textvalue, opts); // 创建信息窗口对象，引号里可以书写任意的html语句。
                             marker1.addEventListener("mouseover", function () {
                                 this.openInfoWindow(infoWindow);
@@ -1801,24 +1784,21 @@
 
                             marker1.addEventListener("rightclick", function () {
                                 //开灯、关灯、调光值、请输入调光值、调光
-                                var textvalue2 = "<ul class='items' style='list-style-type:none;width=100px;'>\n\
-                                                                <li id='kd'>开灯</li>\n\
-                                                                <li id='gd'>关灯</li>\n\
-                                                                <li id='tg'>立即调光</li>\n\
-                                                                <li id='qhcj'>切换场景</li>\n\
+                                var textvalue2 = "<ul class='items' style='list-style-type:none;'>\n\
+                                                                <li id='kd'>"+lans[35][lang]+"</li>\n\
+                                                                <li id='gd'>"+lans[36][lang]+"</li>\n\
+                                                                <li id='tg'>"+lans[32][lang]+"</li>\n\
+                                                                <li id='qhcj'>"+lans[463][lang]+"</li>\n\
                                                                 <li style='color: blue;cursor:default;'>-------------------------</li>\n\
-                                                                <li>灯控状态</li>\n\
-                                                                <li>安装信息</li>\n\
-                                                                <li id='getlamptime'>读灯控时间表</li>\n\
-                                                                <li id='getcjval'>读场景设置</li>\n\
-                                                                <li>灯控未安装记录</li>\n\
+                                                                <li id='getlamptime'>"+lans[464][lang]+"</li>\n\
+                                                                <li id='getcjval'>"+lans[465][lang]+"</li>\n\
                                                                 <li style='color: blue;cursor:default;'>-------------------------</li>\n\
-                                                                <li>PM2.5传感器</li>\n\
+                                                                <li>"+lans[466][lang]+"</li>\n\
                                                                 <li style='color: blue;cursor:default;'>-------------------------</li>\n\
-                                                                <li id='move'>移动</li>\n\
-                                                                <li id='clean'>清除</li>\n\
+                                                                <li id='move'>"+lans[457][lang]+"</li>\n\
+                                                                <li id='clean'>"+lans[458][lang]+"</li>\n\
                                                                 </ul>";
-                                var opts2 = {title: '<span style="font-size:14px;color:#0A8021">' + lans[405][lang] + '</span>', width: 120, height: 330};//设置信息框、功能操作
+                                var opts2 = {title: '<span style="font-size:14px;color:#0A8021">' + lans[405][lang] + '</span>'};//设置信息框、功能操作
                                 var infoWindow2 = new BMap.InfoWindow(textvalue2, opts2); // 创建信息窗口对象，引号里可以书写任意的html语句。
                                 this.openInfoWindow(infoWindow2);
                                 //开灯
@@ -1897,10 +1877,10 @@
                                 //移动
                                 $("#move").click(function () {
                                     marker1.closeInfoWindow(infoWindow2);
-                                    layer.confirm("确认要移动该灯具吗", {//确认要移动该灯具吗？
+                                    layer.confirm(lans[467][lang], {//确认要移动该灯具吗？
                                         btn: [lans[146][lang], lans[147][lang]] //确定、取消按钮
                                     }, function (index) {
-                                        addlogon(name, "移动灯具", pid, "地图导航", "移动灯具",obj.l_comaddr);
+                                        addlogon(name, "移动灯具", pid, "地图导航", "移动灯具", obj.l_comaddr);
                                         marker1.enableDragging(); //标注可拖拽
                                         marker1.addEventListener("dragend", function (e) {
                                             var x = e.point.lng; //经度
@@ -1931,7 +1911,7 @@
                                 //移除灯具
                                 $("#clean").click(function () {
                                     marker1.closeInfoWindow(infoWindow2);
-                                    layer.confirm("确认要移除该灯具吗", {//确认要移动该灯具吗？
+                                    layer.confirm(lans[468][lang], {//确认要移动该灯具吗？
                                         btn: [lans[146][lang], lans[147][lang]] //确定、取消按钮
                                     }, function (index) {
                                         var allOverlay = map.getOverlays();
@@ -1947,10 +1927,10 @@
                                                         success: function (data) {
                                                             var arrlist = data.rs;
                                                             if (arrlist.length == 1) {
-                                                                alert("移除成功");  //修改成功
-                                                                addlogon(name, "移除灯具", pid, "地图导航", "移除灯具",obj.l_comaddr);
+                                                                 alert(lans[460][lang]);  //移除成功
+                                                                addlogon(name, "移除灯具", pid, "地图导航", "移除灯具", obj.l_comaddr);
                                                             } else {
-                                                                alert("移除失败");  //修改失败
+                                                                 alert(lans[461][lang]);  //移除失败
                                                             }
                                                         },
                                                         error: function () {

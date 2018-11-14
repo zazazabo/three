@@ -27,7 +27,7 @@
         </style>
         <script>
             var o = {};
-            var lang;
+            var lang = getCookie("lang");
             var eventobj = {
                 "ERC44": {
                     "status1": {
@@ -410,6 +410,128 @@
             }
             //点击告警信息
             function imgM() {
+                 lang = getCookie("lang");
+                 $('#fauttable').bootstrapTable({
+                    url: 'login.main.faultInfo.action',
+                    columns: [
+                        {
+                            title: '单选',
+                            field: 'select',
+                            //复选框
+                            checkbox: true,
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: 'f_comaddr',
+                            title: o[120][lang], //设备名称 o[120][lang]
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: 'f_day',
+                            title: o[82][lang], //时间 o[82][lang]
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle',
+                            formatter: function (value) {
+                                var date = new Date(value);
+                                var year = date.getFullYear();
+                                var month = date.getMonth() + 1; //月份是从0开始的 
+                                var day = date.getDate(), hour = date.getHours();
+                                var min = date.getMinutes(), sec = date.getSeconds();
+                                var preArr = Array.apply(null, Array(10)).map(function (elem, index) {
+                                    return '0' + index;
+                                });////开个长度为10的数组 格式为 00 01 02 03 
+                                var newTime = year + '-' + (preArr[month] || month) + '-' + (preArr[day] || day) + ' ' + (preArr[hour] || hour) + ':' + (preArr[min] || min) + ':' + (preArr[sec] || sec);
+                                return newTime;
+                            }
+                        },
+                        {
+                            field: 'f_comment',
+                            title: '异常说明', //异常说明 o[123][lang]
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: 'l_factorycode',
+                            title: '灯具编号', //灯具编号  o[292][lang]
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        },
+                        {
+                            field: 'f_detail',
+                            title: '详情', //状态字2
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle',
+                            formatter: function (value, row, index, field) {
+                                //console.log(row);
+                                var str = "";
+                                var info = eventobj[row.f_type];
+                                if (typeof info == "object") {
+                                    var s1 = info.status1;
+                                    var s2 = info.status2;
+                                    for (var i = 0; i < 8; i++) {
+                                        var temp = Math.pow(2, i);
+                                        if ((row.f_status1 & temp) == temp) {
+                                            if (s1[i] != "") {
+                                                str = str + s1[i] + "|";
+                                            }
+
+                                        }
+                                    }
+
+                                    for (var i = 0; i < 8; i++) {
+                                        var temp = Math.pow(2, i);
+                                        if ((row.f_status2 & temp) == temp) {
+                                            if (s1[i] != "") {
+                                                str = str + s1[i] + "|";
+                                            }
+
+                                        }
+                                    }
+
+                                    return str.substr(0, str.length - 1);
+                                } else {
+                                    return  value;
+                                }
+                            }
+                        }],
+                    clickToSelect: true,
+                    singleSelect: false, //设置单选还是多选，true为单选 false为多选
+                    sortName: 'id',
+                    locale: 'zh-CN', //中文支持,
+                    showColumns: true,
+                    sortOrder: 'desc',
+                    pagination: true,
+                    sidePagination: 'server',
+                    pageNumber: 1,
+                    pageSize: 5,
+                    showRefresh: true,
+                    showToggle: true,
+                    // 设置默认分页为 50
+                    pageList: [5, 10, 15, 20, 25],
+                    onLoadSuccess: function () {  //加载成功时执行  表格加载完成时 获取集中器在线状态
+//                        console.info("加载成功");
+                    },
+
+                    //服务器url
+                    queryParams: function (params)  {   //配置参数     
+                        var temp  =   {    //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的 
+                            search: params.search,
+                            skip: params.offset,
+                            limit: params.limit,
+                            type_id: "1",
+                            pageSize: params.limit,
+                            f_comaddr: "", // = $("#comaddrlist").val();
+                            l_factorycode: "", // = $("#l_factorycode").val();
+                            pid: $("#pojects").val()
+                        };      
+                        return temp;  
+                    }
+                });
                 $('#faultDiv').dialog('open');
                 var pid = $("#pojects").val();
                 var obj = {};
@@ -470,7 +592,6 @@
                 websocket.close();
             }
             $(function () {
-                lang = getCookie("lang");
             <c:forEach items="${lans}" var="t" varStatus="i">
                 var id =${t.id};
                 var zh_CN1 = "${empty t.zh_CN?"":t.zh_CN}";
@@ -571,7 +692,7 @@
                     </div>
                     <ul class="controlMessage animated fadeInRight">
                         <li class="one" style=" margin-right: 30px;">
-                            <button class="btn " style=" background-color:#bdebee;" id="shuaxing">刷新</button>
+                            <button class="btn " style=" background-color:#bdebee; height: 30px; vertical-align:middle;text-align: center;" id="shuaxing"><label name="xxx" id="426">刷新</label></button>
                         </li>
                         <li class="one">
                             <span id="1" name="xxx">项目</span>&nbsp;&nbsp;
@@ -584,7 +705,7 @@
                             <div class="alarmNub alarmLi" id="alarmNumber">0</div>
                         </li>
 
-                        <li class="one" style="width:74px;">
+                        <li class="one" style="width:85px;">
 
                             <i class="layui-icon  indexIcon"></i>   
                             <!--                            <span class="glyphicon glyphicon-tags indexIcon"/>-->
@@ -593,9 +714,12 @@
 
 
                             <ul class="two animated fadeInDown language" style="background: rgb(57, 61, 73) none repeat scroll 0% 0%; color: rgb(255, 255, 255);">
-                                <li language="zh_CN"><label name="xxx" id="268">中文</label></li>
+<!--                                <li language="zh_CN"><label name="xxx" id="268">中文</label></li>
                                 <li language="en_US"><label name="xxx" id="269">英文</label></li>
-                                <li language="e_BY"><label  name="xxx" id="270">俄文</label></li>
+                                <li language="e_BY"><label  name="xxx" id="270">俄文</label></li>-->
+                                <li language="zh_CN">中文</li>
+                                <li language="en_US">English</li>
+                                <li language="e_BY">Русский</li>
                             </ul>
                         </li>
                         <li class="one" style=" margin-right: 10px;">
@@ -779,134 +903,6 @@
                 }
                 //查看警异常信息总数
                 fualtCount();
-                $('#fauttable').bootstrapTable({
-                    url: 'login.main.faultInfo.action',
-                    columns: [
-                        {
-                            title: '单选',
-                            field: 'select',
-                            //复选框
-                            checkbox: true,
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
-                            field: 'f_comaddr',
-                            title: '设备名称', //设备名称 o[120][lang]
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
-                            field: 'f_day',
-                            title: '时间', //时间 o[82][lang]
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle',
-                            formatter: function (value) {
-                                var date = new Date(value);
-                                var year = date.getFullYear();
-                                var month = date.getMonth() + 1; //月份是从0开始的 
-                                var day = date.getDate(), hour = date.getHours();
-                                var min = date.getMinutes(), sec = date.getSeconds();
-                                var preArr = Array.apply(null, Array(10)).map(function (elem, index) {
-                                    return '0' + index;
-                                });////开个长度为10的数组 格式为 00 01 02 03 
-                                var newTime = year + '-' + (preArr[month] || month) + '-' + (preArr[day] || day) + ' ' + (preArr[hour] || hour) + ':' + (preArr[min] || min) + ':' + (preArr[sec] || sec);
-                                return newTime;
-                            }
-                        },
-//                        {
-//                            field: 'f_type',
-//                            title: '异常类型', //异常类型 o[121][lang]
-//                            width: 25,
-//                            align: 'center',
-//                            valign: 'middle'
-//                        },
-                        {
-                            field: 'f_comment',
-                            title: '异常说明', //异常说明 o[123][lang]
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
-                            field: 'l_factorycode',
-                            title: '灯具编号', //灯具编号  o[292][lang]
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        },
-                        {
-                            field: 'f_detail',
-                            title: '详情', //状态字2
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle',
-                            formatter: function (value, row, index, field) {
-                                //console.log(row);
-                                var str = "";
-                                var info = eventobj[row.f_type];
-                                if (typeof info == "object") {
-                                    var s1 = info.status1;
-                                    var s2 = info.status2;
-                                    for (var i = 0; i < 8; i++) {
-                                        var temp = Math.pow(2, i);
-                                        if ((row.f_status1 & temp) == temp) {
-                                            if (s1[i] != "") {
-                                                str = str + s1[i] + "|";
-                                            }
-
-                                        }
-                                    }
-
-                                    for (var i = 0; i < 8; i++) {
-                                        var temp = Math.pow(2, i);
-                                        if ((row.f_status2 & temp) == temp) {
-                                            if (s1[i] != "") {
-                                                str = str + s1[i] + "|";
-                                            }
-
-                                        }
-                                    }
-
-                                    return str.substr(0, str.length - 1);
-                                } else {
-                                    return  value;
-                                }
-                            }
-                        }],
-                    clickToSelect: true,
-                    singleSelect: false, //设置单选还是多选，true为单选 false为多选
-                    sortName: 'id',
-                    locale: 'zh-CN', //中文支持,
-                    showColumns: true,
-                    sortOrder: 'desc',
-                    pagination: true,
-                    sidePagination: 'server',
-                    pageNumber: 1,
-                    pageSize: 5,
-                    showRefresh: true,
-                    showToggle: true,
-                    // 设置默认分页为 50
-                    pageList: [5, 10, 15, 20, 25],
-                    onLoadSuccess: function () {  //加载成功时执行  表格加载完成时 获取集中器在线状态
-//                        console.info("加载成功");
-                    },
-
-                    //服务器url
-                    queryParams: function (params)  {   //配置参数     
-                        var temp  =   {    //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的 
-                            search: params.search,
-                            skip: params.offset,
-                            limit: params.limit,
-                            type_id: "1",
-                            pageSize: params.limit,
-                            f_comaddr: "", // = $("#comaddrlist").val();
-                            l_factorycode: "", // = $("#l_factorycode").val();
-                            pid: $("#pojects").val()
-                        };      
-                        return temp;  
-                    }
-                });
 
                 $("body").delegate(".list", "click", function () {
                     if ($(this).siblings(".secondMenu").length != 0) {
@@ -976,7 +972,6 @@
                 $(".language li:eq(0)").click(function () {
                     var language = $(this).attr("language");
                     changeLanguage(language);
-                    lang = language;
                     $("#1").html(o[1][language]);  //项目
                     $("#2").html(o[2][language]);  //语言
                     var bbb = $("label[name=xxx]");
@@ -989,7 +984,6 @@
                 $(".language li:eq(1)").click(function () {
                     var language = $(this).attr("language");
                     changeLanguage(language);
-                    lang = language;
                     $("#1").html(o[1][language]);  //项目
                     $("#2").html(o[2][language]);  //语言
                     var bbb = $("label[name=xxx]");
@@ -1002,7 +996,6 @@
                 $(".language li:eq(2)").click(function () {
                     var language = $(this).attr("language");
                     changeLanguage(language);
-                    lang = language;
                     $("#1").html(o[1][language]);  //项目
                     $("#2").html(o[2][language]);  //语言
                     var bbb = $("label[name=xxx]");

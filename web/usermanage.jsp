@@ -130,40 +130,71 @@
                         },
                         {
                             field: 'name',
-                            title: langs1[223][lang],  //用户名
+                            title: langs1[223][lang], //用户名
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'department',
-                            title: langs1[224][lang],   //部门
+                            title: langs1[224][lang], //部门
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'phone',
-                            title: langs1[136][lang],  //电话
+                            title: langs1[136][lang], //电话
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'sex',
-                            title:langs1[225][lang] ,    //性别
+                            title: langs1[225][lang], //性别
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'email',
-                            title:langs1[137][lang],//邮箱
+                            title: langs1[137][lang], //邮箱
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'pid',
-                            title: langs1[226][lang],  //管理项目
+                            title: langs1[226][lang], //管理项目
                             width: 25,
                             align: 'center',
-                            valign: 'middle'
+                            valign: 'middle',
+                            formatter: function (value, row, index, field) {
+                                var pids = value.split(",");   //项目编号
+                                // $("#pojects").val(pids[0]);
+                                var pname = "";   //项目名称
+                                for (var i = 0; i < pids.length; i++) {
+                                    var obj = {};
+                                    obj.code = pids[i];
+                                    $.ajax({url: "login.main.getpojcetname.action", async: false, type: "get", datatype: "JSON", data: obj,
+                                        success: function (data) {
+                                            if(i==pids.length-1){
+                                                pname += data.rs[0].name;
+                                            }else{
+                                               pname = pname + data.rs[0].name+"、"; 
+                                            }
+                                        },
+                                        error: function () {
+                                            alert("出现异常！");
+                                        }
+                                    });
+                                }
+                                return pname;
+                            }
+//                            formatter: function (value, row, index, field) {
+//                                if (value != null) {
+//                                    value = value.replace(/\b(0+)/gi, "");
+//                                    return value.toString();
+//                                }
+//
+//                            }
+
+
                         }],
                     clickToSelect: true,
                     singleSelect: true,
@@ -289,7 +320,7 @@
             }
             //修改
             function editaction() {
-              
+
                 var pid = $("#sel_menu1").val(); //项目
                 var pids = "";
                 for (var i = 0; i < pid.length; i++) {
@@ -328,10 +359,10 @@
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
                 var num = selects.length;
                 if (num == 0) {
-                   layerAler(langs1[73][lang]); //请勾选表格数据
+                    layerAler(langs1[73][lang]); //请勾选表格数据
                     return;
                 }
-                layer.confirm(langs1[145][lang], {  //确定要删除吗？
+                layer.confirm(langs1[145][lang], {//确定要删除吗？
                     btn: [langs1[146][lang], langs1[147][lang]]//确定、取消按钮
                 }, function (index) {
                     var select = selects[0];

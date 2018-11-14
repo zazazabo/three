@@ -296,8 +296,8 @@
                 var djzxs = ${djzxs[0].num}; //灯具在线数
                 var lampNumber = ${lampNumber[0].num};  //灯具总数
                 var djlxs = lampNumber - gzdj - djzxs;
-                $("#wgms").html("集控器（在线：" + wgzx + " 离线：" + wglx + "）");
-                $("#djms").html("灯具（在线：" + djzxs + " 离线：" + djlxs + " 异常：" + gzdj + "）");
+                $("#wgms").html(langs1[425][lang] + "（" + langs1[284][lang] + "：" + wgzx + " " + langs1[285][lang] + "：" + wglx + "）");
+                $("#djms").html(langs1[51][lang] + "（" + langs1[284][lang] + "：" + djzxs + " " + langs1[285][lang] + "：" + djlxs + " " + langs1[14][lang] + "：" + gzdj + "）");
                 if ((${ybsdj[0].num-djgzs[0].num} - djlxs) <= 0) {
                     $("#ldl").html("0%");
                 } else {
@@ -419,9 +419,9 @@
                 var year2 = year1 - 1;
 //                var month1 = date.getMonth() + 1;
 //                var month2 = month1 - 1;
-                var thisM = $("#18").html();  //本月耗能
-                var latM = $("#19").html();  //上月耗能
-                var latY = $("#21").html();  //去年同期
+                var thisM = langs1[18][lang];  //本月耗能
+                var latM = langs1[19][lang];  //上月耗能
+                var latY = langs1[21][lang];  //去年同期
                 var dataX = [thisM, latM, latY];
 
                 var nowmonth = yearobj[year.toString()][month - 1]; //Math.floor(yearobj[year.toString()][month - 1] * 100) / 100;  //当月
@@ -429,7 +429,7 @@
 
                 var preyear = yearobj[(year - 1).toString()][month - 1];          //Math.floor(yearobj[year2.toString()][month1 - 1] * 100) / 100;  //去年当月
                 var dataY = [nowmonth, premonth, preyear];
-                var nhfx = $("#17").html();//能耗分析
+                var nhfx = langs1[17][lang];//能耗分析
                 ech('echarts1', nhfx, '能耗', dataX, dataY, 'bar', 'kW·h', "#68b928");
 
                 $("#benyue").html(nowmonth);
@@ -444,8 +444,8 @@
 
                 $('#gayway').on('click-row.bs.table', function (row, element) {
                     var l_comaddr = element.comaddr;
-                    $("#head").html("集中器[" + l_comaddr + "]信息");
-                    $("#headtime").html("开灯时间: ~ 关灯时间:");
+                    $("#head").html(langs1[425][lang] + "[" + element.name + "]" + langs1[427][lang]);
+                    $("#headtime").html(langs1[428][lang] + ": ~ " + langs1[429][lang] + ":");
 
                     var fmobj = $("#forminfo").serializeObject();
                     for (let attr in fmobj) {
@@ -477,7 +477,7 @@
                             var info = rs[0];
                             var worktype = info.l_worktype;
                             if (worktype == 0) {
-                                $("#headtime").html("开灯时间:" + info.l_outtime + "`" + "关灯时间:" + info.l_intime);
+                                $("#headtime").html(langs1[428][lang] + ":" + info.l_outtime + "`" + langs1[429][lang] + ":" + info.l_intime);
                             } else if (worktype == 1) {
                                 var o1 = {jd: info.longitude, wd: info.latitude};
 
@@ -488,7 +488,7 @@
                                 $.ajax({async: false, url: "login.rc.r.action", type: "get", datatype: "JSON", data: o1,
                                     success: function (data) {
                                         var list = data.cl[0];
-                                        $("#headtime").html("开灯时间:" + list.rl + "`" + "关灯时间:" + list.rc);
+                                        $("#headtime").html(langs1[428][lang] + ":" + list.rl + "`" + langs1[429][lang] + ":" + list.rc);
                                     },
                                     error: function () {
                                         alert("提交失败！2");
@@ -519,7 +519,7 @@
                         var h1 = sprintf("%02x", data[24]);
                         var intime1 = sprintf("%s:%s", h, m);
                         var outtime1 = sprintf("%s:%s", h1, m1);
-                        $("#headtime").html("开灯时间:" + intime1 + "`" + "关灯时间:" + outtime1);
+                        $("#headtime").html(langs1[428][lang] + ":" + intime1 + "`" + langs1[429][lang] + ":" + outtime1);
                     }
                 }
             }
@@ -873,7 +873,7 @@
 //                console.log(index);
                 if (index == 0) {
                     var l_comaddr = row.comaddr;
-                    $("#head").html("集中器[" + l_comaddr + "]信息");
+                    $("#head").html(langs1[425][lang] + "[" + row.name + "]" + langs1[427][lang]);
                     $("#l_comaddr").val(l_comaddr);
                     if (row.online == 1) {
                         var vv = [];
@@ -1030,13 +1030,8 @@
                 </div>
             </div>
             <div class="topTitle" style="position:absolute;top:2%;left:60%;color:#000;font-size:20px;font-weight:600;">
-                <span >能耗分析</span>
+                <!--                <span id="17" name="xxx"></span>-->
             </div>
-            <!--
-    <div class="echarts3" id="echarts3" style="height: 430px;">
-    </div>-->
-            <!--            <div class="topTitle" style="position:absolute;top:2%;left:60%;color:#000;font-size:20px;font-weight:600;">
-                            <span id="17" name="xxx">分析</span>-->
             <div class="topCenter1" id="echarts1" style="width: 27%; height: 85%; float: left;">
 
             </div>
@@ -1117,8 +1112,6 @@
                                     <span id="head"></span>
                                     <span style=" margin-left: 10px;" id="headtime">开灯时间: ~ 关灯时间:</span>
                                 </p>
-
-                                <!--开灯时间:[18:00]  关灯时间:[6:00]-->
                             </h3>
                         </div>
                         <div class="panel-body" style=" height: 360px;" align="center">
@@ -1126,90 +1119,90 @@
                                 <input type="hidden" id="l_comaddr" name="l_comaddr" />
                                 <table class="hovertable" >
                                     <tr onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
-                                        <td>A相有功功率</td>
+                                        <td><span name="xxx" id="103">A相有功功率</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="aactpwr"/>(KW)</td>
-                                        <td>A相无功功率</td>
+                                        <td><span name="xxx" id="430">A相无功功率</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="anopwr"/>(KW)</td>
-                                        <td>A相视在功率</td>
+                                        <td><span name="xxx" id="431">A相视在功率</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="aviewpwr"/>(KVA)</td>
                                     </tr>
                                     <tr onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
-                                        <td>B相有功功率</td>
+                                        <td><span name="xxx" id="104">B相有功功率</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bactpwr"/>(KW)</td>
-                                        <td>B相无功功率</td>
+                                        <td><span name="xxx" id="432">B相无功功率</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bnopwr"/>(KW)</td>
-                                        <td>B相视在功率</td>
+                                        <td><span name="xxx" id="433">B相视在功率</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bviewpwr"/>(KVA)</td>
 
                                     </tr>
                                     <tr onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
-                                        <td>C相有功功率</td>
+                                        <td><span name="xxx" id="105">C相有功功率</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cactpwr"/>(KW)</td>
-                                        <td>C相无功功率</td>
+                                        <td><span name="xxx" id="434">C相无功功率</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cnopwr"/>(KW)</td>
-                                        <td>C相视在功率</td>
+                                        <td><span name="xxx" id="435">C相视在功率</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cviewpwr"/>(KVA)</td>  
 
                                     </tr>
 
                                     <tr onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
-                                        <td>总有功功率</td>
+                                        <td><span name="xxx" id="436">总有功功率</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="sumactpwr"/>(KW)</td>
-                                        <td>总无功功率</td>
+                                        <td><span name="xxx" id="437">总无功功率</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="sumnopwr"/>(KW)</td>
-                                        <td>总视在功率</td>
+                                        <td><span name="xxx" id="438">总视在功率</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="sumviewpwr"/>(KVA)</td>  
 
                                     </tr>             
 
 
                                     <tr onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
-                                        <td>A相电压</td>
+                                        <td><span name="xxx" id="439">A相电压</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="avol"/>(V)</td>
-                                        <td>B相压</td>
+                                        <td><span name="xxx" id="440">B相压</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bvol"/>(V)</td>
-                                        <td>C相电压</td>
+                                        <td><span name="xxx" id="441">C相电压</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cvol"/>(V)</td>  
 
                                     </tr>
                                     <tr onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
-                                        <td>A相电流</td>
+                                        <td><span name="xxx" id="442">A相电流</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="aelectric"/>(A)</td>
-                                        <td>B相流</td>
+                                        <td><span name="xxx" id="443">B相电流</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="belectric"/>(A)</td>
-                                        <td>C相电流</td>
+                                        <td><span name="xxx" id="444">C相电流</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="celectric"/>(A)</td>  
 
                                     </tr>
 
 
                                     <tr onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
-                                        <td>A相电能量</td>
+                                        <td><span name="xxx" id="445">A相电能量</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="aenergy"/>(kvarh)</td>
-                                        <td>B相电能量</td>
+                                        <td><span name="xxx" id="446">B相电能量</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="benergy"/>(kvarh)</td>
-                                        <td>C相电能量</td>
+                                        <td><span name="xxx" id="447">C相电能量</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cenergy"/>(kvarh)</td>        
 
                                     </tr> 
                                     <tr onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
-                                        <td>A相功率因数</td>
+                                        <td><span name="xxx" id="106">A相功率因数</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="apwrfactor"/>(%)</td>
-                                        <td>B相功率因数</td>
+                                        <td><span name="xxx" id="107">B相功率因数</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bpwrfactor"/>(%)</td>
-                                        <td>C相功率因数</td>
+                                        <td><span name="xxx" id="108">C相功率因数</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cpwrfactor"/>(%)</td>  
-                                        <td>总功率因数</td>
+                                        <td><span name="xxx" id="109">总功率因数</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="pwrfactor"/>(%)</td>          
                                     </tr>
                                     <tr onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
-                                        <td>正向有功总电能量</td>
+                                        <td><span name="xxx" id="448">正向有功总电能量</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="actenergy"/>(kWh)</td>
-                                        <td>正向无功总电能量</td>
+                                        <td><span name="xxx" id="449">正向无功总电能量</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="reactenergy"/>(kvarh)</td>
-                                        <td>反向有功总电能量</td>
+                                        <td><span name="xxx" id="450">反向有功总电能量</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="diractenergy"/>(kwh)</td>  
-                                        <td>反向无功总电能量</td>
+                                        <td><span name="xxx" id="451">反向无功总电能量</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="dirreactenergy"/>(kvarh)</td>  
 
                                     </tr>
@@ -1232,65 +1225,6 @@
 
                 </div>
             </div>
-
-
-
-
-
-
-
-
-
-
-
-            <!--            <div style="width: 20%; height: 100%; border: 1px solid red; float: left;">
-            
-                        </div>
-                        <div style="width: 80%; height: 100%; border: 1px solid yellow;float: left;">
-            
-                        </div>-->
-            <!--            <span name="xxx" id="16" style=" display: none" >数据趋势</span>
-                        <div class="echarts4" id="echarts4" style="width: 35%; height: 85%; float: left; margin: 20px 0px 20px 30px;">
-            
-            
-                        </div>-->
-            <!--            <span name="xxx" id="17" style=" display: none" >能耗分析</span>
-                        <div class="topCenter4" style="width:10%;height:85%;float:right;">
-                            <div class="topCenter2Mess">	
-                                <div class="nenghao">
-                                    <span class="subPara">
-                                        <span name="xxx" id="18">本月耗能</span>
-                                        :</span><br>
-                                    <span id="benyue" class="paraValue"></span>kW·h</div>
-                                <div class="nenghao1">
-                                    <span class="subPara">
-                                        <span id="19" name="xxx">上月耗能</span>
-                                        :</span><br>
-                                    <span id="shangyue" class="paraValue"></span>kW·h<br>
-                                    <span><span id="20" name="xxx"></span>：</span>
-                                    <span class="tongbi" id="lastMonth"></span>
-                                    kW·h
-                                </div>
-                                <div class="nenghao1">
-            
-                                    <span class="subPara">
-                                        <span id="21" name="xxx">去年同期</span>
-                                        :</span><br>
-                                    <span id="qunian" class="paraValue"></span>
-                                    <span>
-                                        <span id="22" name="xxx">同比</span>
-                                        ：</span>
-                                    <span class="tongbi" id="lastYearSameMonth"></span>
-                                    kW·h
-                                </div>
-            
-                            </div>
-                        </div> 
-            
-            
-                        <div class="topCenter1" id="echarts1" style="width: 45%; height: 85%; float: left;">
-            
-                        </div>-->
         </div>			
     </body>
 </html>

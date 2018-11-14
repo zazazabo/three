@@ -265,18 +265,17 @@
 
 
             $(function () {
+                var lang = "${param.lang}";
                 var aaa = $("span[name=xxx]");
                 for (var i = 0; i < aaa.length; i++) {
                     var d = aaa[i];
                     var e = $(d).attr("id");
-                    console.log(e);
                     $(d).html(langs1[e][lang]);
                 }
                 var obj = {};
                 obj.roletype = ${param.role};
                 var zNodes = [
                 ];
-                var lang = "${param.lang}";
                 $.ajax({async: false, url: "login.rolemanage.queryZtree.action", type: "get", datatype: "JSON", data: obj,
                     success: function (data) {
                         for (var i = 0; i < data.length; i++) {
@@ -285,7 +284,7 @@
 //                            console.log(obj1);
                             data[i].name = obj1[lang];
                         }
-                        var obj2 = {id: "0", pId: 0, name: "菜单目录", open: true};
+                        var obj2 = {id: "0", pId: 0, name: langs1[292][lang], open: true};
                         data.push(obj2);
                         zNodes = data;
                     },
@@ -386,7 +385,7 @@
 
                         </div>
 
-                        <div class="" style=" width: 30%; float: left; margin-top: 2%;">
+                        <div class="" style=" width: 30%; float: left; margin-top: 2%; margin-left: 2%;">
                             <span style=" width: 30%;" name="xxx" id="245">角色列表</span>
                             <input id="role" class="easyui-combobox" name="role" style="width:60%; height: 34px" data-options="editable:true,valueField:'id', textField:'text',url:'login.usermanage.rolemenu.action?parent_id=${param.role}'" />
                         </div>

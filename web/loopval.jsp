@@ -112,7 +112,7 @@
             function switchloop() {
                 var s2 = $('#gayway').bootstrapTable('getSelections');
                 if (s2.length == 0) {
-                    layerAler("请勾选网关");
+                    layerAler(langs1[219][lang]);  //请勾选网关
                 }
                 var l_comaddr = s2[0].comaddr;
                 var o1 = $("#form1").serializeObject();
@@ -165,7 +165,7 @@
             function restoreloop() {
                 var s2 = $('#gayway').bootstrapTable('getSelections');
                 if (s2.length == 0) {
-                    layerAler("请勾选网关");
+                    layerAler(langs1[219][lang]);  //请勾选网关
                 }
                 var l_comaddr = s2[0].comaddr;
 
@@ -286,7 +286,7 @@
                             }
                         }, {
                             field: 'l_switch',
-                            title: '状态', //合闸参数
+                            title: langs1[12][lang], //状态
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -438,7 +438,7 @@
                                 <tr >
                                     <th data-width="25"    data-select="false" data-align="center"  data-checkbox="true"  ></th>
                                     <!-- <th data-width="100" data-field="comaddr" data-align="center" data-formatter='formartcomaddr'   >网关地址</th>-->
-                                    <th data-width="100" data-field="name" data-align="center"    >网关名称</th>
+                                    <th data-width="100" data-field="name" data-align="center"><span name="xxx" id="314">网关名称</span></th>
                                 </tr>
                             </thead>       
 
@@ -499,7 +499,7 @@
 
                                 </td>
                                 <td>
-                                    <button  type="button" onclick="tourloop()" class="btn btn-success btn-sm"><span name="xxxx" id="381">读取回路状态</span></button>
+                                    <button  type="button" onclick="tourloop()" class="btn btn-success btn-sm"><span name="xxx" id="454">读取回路状态</span></button>
                                     &nbsp;
                                 </td>
                             </tr>

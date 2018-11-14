@@ -10,6 +10,9 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>登录系统平台</title>
+        <link type="text/css" href="layer/layui.css" rel="stylesheet">
+        <link type="text/css" href="layer/animate.css" rel="stylesheet">
+        <link type="text/css" href="layer/indexNavigation.css" rel="stylesheet">
         <style>
             *{margin:0;padding:0;}
             html,body{
@@ -272,7 +275,7 @@
                 width:150px;
                 height:40px;
                 position:absolute;
-                top:20px;
+                top:40px;
                 right:4%;
             }
             .Zh{
@@ -454,7 +457,8 @@
                     display: none;
                 }
             } 
-
+            
+            ul li:hover {color: #FC3;};	
         </style>
 
         <%@include  file="js.jspf" %>
@@ -592,18 +596,24 @@
                 }
                 //切换中文
                 $("#chinese").click(function () {
-                    $("#chinese").html("中文");
                     $("#rememberPW").html("记住密码");
                     $("#login").val("登陆");
                     $("#top").html("账号登陆");
                 });
                 //切换英文
                 $("#english").click(function () {
-                    $("#chinese").html("Chinese");
                     $("#rememberPW").html("remember password");
                     $("#login").val("Login");
                     $("#top").html("Account login");
                 });
+                
+                $("#changeLanguage").mousemove(function (){
+                    $("#languages").show();
+                });
+                $("#changeLanguage").mouseout(function (){
+                    $("#languages").hide();
+                });
+
             });
             //回车登录
             document.onkeydown = function mykeyDown(e) {
@@ -622,16 +632,17 @@
 
         <img src="./img/hm2.jpg" style="position:absolute;top:0;left:0;z-index:-1;width:100%;height:100%;">
 
-        <div class="changeLanguage">
-            <div language="zh_CN" class="Zh" id="chinese">中文</div>
-            <div class="line">|</div>
-            <div language="en_US" class="En" id="english">English</div>
+        <div class="changeLanguage" id="changeLanguage">
+            <!--            <div language="zh_CN" class="Zh" id="chinese">中文</div>
+                        <div class="line">|</div>
+                        <div language="en_US" class="En" id="english">English</div>-->
+            <span style=" color: #FC3; font-size: 16px;">Language</span>
+            <ul style="background-color:#ccc; font-size: 16px; text-align: center; width: 100px; display: none;" id="languages" >
+                <li id="chinese">中文</li>
+                <li id="english">English</li>
+                <li>Русский</li>
+            </ul>
         </div>
-
-        <!--
-                <div class="logo-animate animated bounceIn" style="display: block;">
-                    <img src="./img/sz-animate.png">
-                </div>-->
 
         <div class="loginBox animated bounceInUp" style="display: block;">
             <div class="h3" id="top">账号登陆</div>
