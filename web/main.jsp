@@ -410,8 +410,10 @@
             }
             //点击告警信息
             function imgM() {
-                 lang = getCookie("lang");
-                 $('#fauttable').bootstrapTable({
+                $("#fauttable").bootstrapTable('destroy');
+                var lang2 = getCookie("lang");
+                console.log(lang2);
+                $('#fauttable').bootstrapTable({
                     url: 'login.main.faultInfo.action',
                     columns: [
                         {
@@ -424,13 +426,13 @@
                             valign: 'middle'
                         }, {
                             field: 'f_comaddr',
-                            title: o[120][lang], //设备名称 o[120][lang]
+                            title: o[120][lang2], //设备名称 o[120][lang]
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'f_day',
-                            title: o[82][lang], //时间 o[82][lang]
+                            title: o[82][lang2], //时间 o[82][lang]
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -449,20 +451,20 @@
                         },
                         {
                             field: 'f_comment',
-                            title: '异常说明', //异常说明 o[123][lang]
+                            title:o[123][lang2], //异常说明 o[123][lang]
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_factorycode',
-                            title: '灯具编号', //灯具编号  o[292][lang]
+                            title: o[292][lang2], //灯具编号  o[292][lang]
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         },
                         {
                             field: 'f_detail',
-                            title: '详情', //状态字2
+                            title: o[402][lang2], //详情
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -795,18 +797,18 @@
                     <tr>
                         <td>
                             <span style="margin-left:10px;">                                     
-                                <span id="25" name="xxx">网关地址</span>
+                                <label id="25" name="xxx">网关地址</label>
                                 &nbsp;</span>
                             <input id="comaddrlist" data-options='editable:true,valueField:"id", textField:"text"' class="easyui-combobox"/>
                         </td>
                         <td>
-                            <span style="margin-left:20px;" id="292" name="xxx">
+                            <label style="margin-left:20px;" id="292" name="xxx">
                                 灯具编号
-                            </span>&nbsp;
+                            </label>&nbsp;
                             <input type="text" id ="l_factorycode" style="width:150px; height: 30px;">
                         </td>
                         <td>
-                            <button class="btn btn-sm btn-success" onclick="select()" style="margin-left:10px;"><span id="34" name="xxx">搜索</span></button>
+                            <button class="btn btn-sm btn-success" onclick="select()" style="margin-left:10px;"><label id="34" name="xxx">搜索</label></button>
                         </td>
                     </tr>
                 </tbody>
@@ -947,7 +949,7 @@
                 size();
                 window.onresize = function () {
                     size();
-                }
+                };
 
                 /*  登录注销   */
                 /*	CCIOT
@@ -967,7 +969,7 @@
                             function (error) {
                                 alert(error.message);
                             });
-                })
+                });
 
                 $(".language li:eq(0)").click(function () {
                     var language = $(this).attr("language");
