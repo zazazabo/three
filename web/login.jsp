@@ -606,6 +606,13 @@
                     $("#login").val("Login");
                     $("#top").html("Account login");
                 });
+                //切换俄文
+                $("#ew").click(function () {
+                    $("#rememberPW").html("запомни пароль");
+                    $("#login").val("высадка на землю");
+                    $("#top").html("высадка на счет счета");
+                });
+                
                 
                 $("#changeLanguage").mousemove(function (){
                     $("#languages").show();
@@ -640,7 +647,7 @@
             <ul style="background-color:#ccc; font-size: 16px; text-align: center; width: 100px; display: none;" id="languages" >
                 <li id="chinese">中文</li>
                 <li id="english">English</li>
-                <li>Русский</li>
+                <li id="ew">Русский</li>
             </ul>
         </div>
 

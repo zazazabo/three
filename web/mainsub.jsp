@@ -105,6 +105,12 @@
                 height: 24%;
                 margin-top: 1%;
             }
+            .topLeftOneBox2 {
+                overflow: visible;
+                width: 100%;
+                height: 25%;
+                margin-top: 1%;
+            }
             .redius {
                 display: block;
                 border-radius: 50%;
@@ -131,7 +137,31 @@
                 width: 180px;
                 padding-top: 8%;
             }
+            .Mess1 {
+                float: left;
+                display: inline;
+                height: 100%;
+                width: 180px;
+                padding-top: 4%;
+            }
+            .Mess2 {
+                float: left;
+                display: inline;
+                height: 100%;
+                width: 180px;
+                padding-top: 0;
+            }
             .Mess span {
+                display: block;
+                color: #666666;
+                font-size: 16px;
+            }
+            .Mess1 span {
+                display: block;
+                color: #666666;
+                font-size: 16px;
+            }
+            .Mess2 span {
                 display: block;
                 color: #666666;
                 font-size: 16px;
@@ -295,9 +325,14 @@
                 var gzdj = ${djgzs[0].num};  //灯具异常数
                 var djzxs = ${djzxs[0].num}; //灯具在线数
                 var lampNumber = ${lampNumber[0].num};  //灯具总数
-                var djlxs = lampNumber - gzdj - djzxs;
-                $("#wgms").html(langs1[425][lang] + "（" + langs1[284][lang] + "：" + wgzx + " " + langs1[285][lang] + "：" + wglx + "）");
-                $("#djms").html(langs1[51][lang] + "（" + langs1[284][lang] + "：" + djzxs + " " + langs1[285][lang] + "：" + djlxs + " " + langs1[14][lang] + "：" + gzdj + "）");
+                var djlxs = lampNumber - gzdj - djzxs;  //灯具离线数
+                $("#wsum").html(langs1[494][lang] + ":" + wgsum);  //网关总数
+                $("#wonlin").html(langs1[284][lang] + ":" + wgzx);  //网关在线
+                $("#wlin").html(langs1[285][lang] + ":" + wglx);   //网关离线
+                $("#lampNumber").html(langs1[493][lang] + ":" + lampNumber);   //灯具总数
+                $("#lonlin").html(langs1[284][lang] + ":" + djzxs);//灯具在线数
+                $("#llin").html(langs1[285][lang] + ":" + djlxs);  //灯具离线
+                $("#lyc").html(langs1[286][lang] + ":" + gzdj);  //异常灯具
                 if ((${ybsdj[0].num-djgzs[0].num} - djlxs) <= 0) {
                     $("#ldl").html("0%");
                 } else {
@@ -538,7 +573,13 @@
                                 var fmobj = $("#forminfo").serializeObject();
                                 for (let attr in fmobj) {
                                     var str = "input[name='" + attr + "']";
-                                    $(str).val(o[attr]);
+                                    if(attr.charAt(attr.length-1)=="*"){
+                                         var temp=attr.replace("*","");
+                                       var p = (o[temp]*1000).toFixed(2);
+                                       $(str).val(p);
+                                    }else{
+                                        $(str).val(o[attr]);
+                                    }
                                 }
                             }
 
@@ -923,7 +964,7 @@
                 border-color: #a9c6c9;
             }
             table.hovertable tr {
-                background-color:#d4e3e5;
+                background-color:#ffff66;
             }
             table.hovertable td {
                 border-width: 1px;
@@ -931,6 +972,18 @@
                 border-style: solid;
                 border-color: #a9c6c9;
 
+            }
+            table.hovertable tr:hover{
+                background-color: #d4e3e5;
+            }
+
+            table.hovertable tr td span{
+                font-size: 14px;
+            }
+            table.hovertable tr th{
+                font-size: 16px;
+                vertical-align: middle;
+                text-align: center; 
             }
         </style>
     </head>
@@ -942,7 +995,7 @@
                 <span id="5" name="xxx">设备分析</span>
                 <!-- 设备分析-->
             </div>
-            <div class="topLeft" style="height:400px;padding-top:40px;">
+            <div class="topLeft" style="height:400px;padding-top:0px; margin-top: 40px;">
                 <div class="topLeftOneBox">
                     <span class="redius" style="background:#fdd237;">
                         <img src="img/dp.png"></span>
@@ -960,16 +1013,21 @@
                 </div>
                 <div class="topLeftOneBox">
                     <span class="redius" style="background:#42bcec;"><img src="img/jien.png"></span>
-                    <div class="Mess energySavingRate">
-                        <span>${rs[0].num}</span>
-                        <span style="font-size: 14px;" id="wgms"></span>
+                    <div class="Mess1 energySavingRate">
+                        <span id="wsum">集控器数量：0</span>
+                        <!--                        <span style="font-size: 14px;" id="wgms"></span>-->
+                        <span id="wonlin">在线：0</span>
+                        <span id="wlin">离线：0</span>
                     </div>
                 </div>
-                <div class="topLeftOneBox">
+                <div class="topLeftOneBox2">
                     <span class="redius" style="background: #bdebee;"><img src="img/dp.png"></span>
-                    <div class="Mess energySavingRate">
-                        <span>${lampNumber[0].num}</span>
-                        <span style="font-size: 14px;" id="djms"></span>
+                    <div class="Mess2 energySavingRate">
+                        <span id="lampNumber">灯具数量：0</span>
+                        <!--                        <span style="font-size: 14px;" id="djms"></span>-->
+                        <span id="lonlin">在线：0</span>
+                        <span id="llin">离线：0</span>
+                        <span id="lyc">异常：0</span>
                     </div>
                 </div>
             </div>
@@ -1118,99 +1176,166 @@
                             <form id="forminfo">
                                 <input type="hidden" id="l_comaddr" name="l_comaddr" />
                                 <table class="hovertable" >
-                                    <tr onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
-                                        <td><span name="xxx" id="103">A相有功功率</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="aactpwr"/>(KW)</td>
-                                        <td><span name="xxx" id="430">A相无功功率</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="anopwr"/>(KW)</td>
-                                        <td><span name="xxx" id="431">A相视在功率</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="aviewpwr"/>(KVA)</td>
+                                    <tr>
+                                        <th colspan="2">有功功率(W)</th>
+                                        <th colspan="2">无功功率(W)</th>
+                                        <th colspan="2">视在功率(KVA)</th>
+                                        <th colspan="2">功率因数(%)</th>
+                                        <th colspan="2">电压(V)</th>
                                     </tr>
-                                    <tr onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
-                                        <td><span name="xxx" id="104">B相有功功率</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bactpwr"/>(KW)</td>
-                                        <td><span name="xxx" id="432">B相无功功率</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bnopwr"/>(KW)</td>
-                                        <td><span name="xxx" id="433">B相视在功率</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bviewpwr"/>(KVA)</td>
-
+                                    <tr>
+                                        <td><span name="xxxx" id="103">A相</span></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="aactpwr*"/></td>
+                                        <td><span name="xxxx" id="430">A相</span></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="anopwr*"/></td>
+                                        <td><span name="xxxx" id="431">A相</span></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="aviewpwr"/></td>
+                                        <td><span name="xxxx" id="106">A相</span></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="apwrfactor"/></td>
+                                        <td><span name="xxxx" id="439">A相</span></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="avol"/></td>
                                     </tr>
-                                    <tr onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
-                                        <td><span name="xxx" id="105">C相有功功率</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cactpwr"/>(KW)</td>
-                                        <td><span name="xxx" id="434">C相无功功率</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cnopwr"/>(KW)</td>
-                                        <td><span name="xxx" id="435">C相视在功率</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cviewpwr"/>(KVA)</td>  
-
+                                    <tr>
+                                        <td><span name="xxxx" id="104">B相</span></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bactpwr*"/></td>
+                                        <td><span name="xxxx" id="432">B相</span></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bnopwr*"/></td>
+                                        <td><span name="xxxx" id="433">B相</span></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bviewpwr"/></td>
+                                        <td><span name="xxxx" id="107">B相</span></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bpwrfactor"/></td>
+                                        <td><span name="xxxx" id="440">B相</span></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bvol"/></td>
                                     </tr>
-
-                                    <tr onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
-                                        <td><span name="xxx" id="436">总有功功率</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="sumactpwr"/>(KW)</td>
-                                        <td><span name="xxx" id="437">总无功功率</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="sumnopwr"/>(KW)</td>
-                                        <td><span name="xxx" id="438">总视在功率</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="sumviewpwr"/>(KVA)</td>  
-
-                                    </tr>             
-
-
-                                    <tr onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
-                                        <td><span name="xxx" id="439">A相电压</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="avol"/>(V)</td>
-                                        <td><span name="xxx" id="440">B相压</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bvol"/>(V)</td>
-                                        <td><span name="xxx" id="441">C相电压</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cvol"/>(V)</td>  
-
+                                    <tr>
+                                        <td><span name="xxxx" id="105">C相</span></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cactpwr*"/></td>
+                                        <td><span name="xxxx" id="434">C相</span></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cnopwr*"/></td>
+                                        <td><span name="xxxx" id="435">C相</span></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cviewpwr"/></td>  
+                                        <td><span name="xxxx" id="108">C相</span></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cpwrfactor"/></td>
+                                        <td><span name="xxxx" id="441">C相</span></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cvol"/></td> 
                                     </tr>
-                                    <tr onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
-                                        <td><span name="xxx" id="442">A相电流</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="aelectric"/>(A)</td>
-                                        <td><span name="xxx" id="443">B相电流</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="belectric"/>(A)</td>
-                                        <td><span name="xxx" id="444">C相电流</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="celectric"/>(A)</td>  
-
+                                    <tr>
+                                        <td><span name="xxxx" id="436">总有功功率</span></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="sumactpwr*"/></td>
+                                        <td><span name="xxxx" id="437">总无功功率</span></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="sumnopwr*"/></td>
+                                        <td><span name="xxxx" id="438">总视在功率</span></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="sumviewpwr"/></td>
+                                        <td><span name="xxxx" id="109">总功率因数</span></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="pwrfactor"/></td> 
                                     </tr>
-
-
-                                    <tr onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
-                                        <td><span name="xxx" id="445">A相电能量</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="aenergy"/>(kvarh)</td>
-                                        <td><span name="xxx" id="446">B相电能量</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="benergy"/>(kvarh)</td>
-                                        <td><span name="xxx" id="447">C相电能量</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cenergy"/>(kvarh)</td>        
-
-                                    </tr> 
-                                    <tr onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
-                                        <td><span name="xxx" id="106">A相功率因数</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="apwrfactor"/>(%)</td>
-                                        <td><span name="xxx" id="107">B相功率因数</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bpwrfactor"/>(%)</td>
-                                        <td><span name="xxx" id="108">C相功率因数</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cpwrfactor"/>(%)</td>  
-                                        <td><span name="xxx" id="109">总功率因数</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="pwrfactor"/>(%)</td>          
+                                    <tr>
+                                        <th colspan="2">有功电能量(kWh)</th>
+                                        <th colspan="2">无功电能量(kvarh)</th>
                                     </tr>
-                                    <tr onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
-                                        <td><span name="xxx" id="448">正向有功总电能量</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="actenergy"/>(kWh)</td>
-                                        <td><span name="xxx" id="449">正向无功总电能量</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="reactenergy"/>(kvarh)</td>
-                                        <td><span name="xxx" id="450">反向有功总电能量</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="diractenergy"/>(kwh)</td>  
-                                        <td><span name="xxx" id="451">反向无功总电能量</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="dirreactenergy"/>(kvarh)</td>  
-
+                                    <tr>
+                                        <td><span name="xxxx" id="448">正向有功总电能量</span></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="actenergy"/></td>
+                                        <td><span name="xxxx" id="449">正向无功总电能量</span></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="reactenergy"/></td>  
                                     </tr>
+                                    <tr>
+                                        <td><span name="xxxx" id="450">反向有功总电能量</span></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="diractenergy"/></td>  
+                                        <td><span name="xxxx" id="451">反向无功总电能量</span></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="dirreactenergy"/></td>  
+                                    </tr>
+                                    <!--                                    <tr>
+                                                                            <td><span name="xxx" id="103">A相有功功率</span></td>
+                                                                            <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="aactpwr"/>(KW)</td>
+                                                                            <td><span name="xxx" id="430">A相无功功率</span></td>
+                                                                            <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="anopwr"/>(KW)</td>
+                                                                            <td><span name="xxx" id="431">A相视在功率</span></td>
+                                                                            <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="aviewpwr"/>(KVA)</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><span name="xxx" id="104">B相有功功率</span></td>
+                                                                            <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bactpwr"/>(KW)</td>
+                                                                            <td><span name="xxx" id="432">B相无功功率</span></td>
+                                                                            <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bnopwr"/>(KW)</td>
+                                                                            <td><span name="xxx" id="433">B相视在功率</span></td>
+                                                                            <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bviewpwr"/>(KVA)</td>
+                                    
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><span name="xxx" id="105">C相有功功率</span></td>
+                                                                            <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cactpwr"/>(KW)</td>
+                                                                            <td><span name="xxx" id="434">C相无功功率</span></td>
+                                                                            <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cnopwr"/>(KW)</td>
+                                                                            <td><span name="xxx" id="435">C相视在功率</span></td>
+                                                                            <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cviewpwr"/>(KVA)</td>  
+                                    
+                                                                        </tr>
+                                    
+                                                                        <tr>
+                                                                            <td><span name="xxx" id="436">总有功功率</span></td>
+                                                                            <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="sumactpwr"/>(KW)</td>
+                                                                            <td><span name="xxx" id="437">总无功功率</span></td>
+                                                                            <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="sumnopwr"/>(KW)</td>
+                                                                            <td><span name="xxx" id="438">总视在功率</span></td>
+                                                                            <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="sumviewpwr"/>(KVA)</td>  
+                                    
+                                                                        </tr>             
+                                    
+                                    
+                                                                        <tr>
+                                                                            <td><span name="xxx" id="439">A相电压</span></td>
+                                                                            <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="avol"/>(V)</td>
+                                                                            <td><span name="xxx" id="440">B相压</span></td>
+                                                                            <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bvol"/>(V)</td>
+                                                                            <td><span name="xxx" id="441">C相电压</span></td>
+                                                                            <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cvol"/>(V)</td>  
+                                    
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><span name="xxx" id="442">A相电流</span></td>
+                                                                            <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="aelectric"/>(A)</td>
+                                                                            <td><span name="xxx" id="443">B相电流</span></td>
+                                                                            <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="belectric"/>(A)</td>
+                                                                            <td><span name="xxx" id="444">C相电流</span></td>
+                                                                            <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="celectric"/>(A)</td>  
+                                    
+                                                                        </tr>
+                                    
+                                    
+                                                                        <tr>
+                                                                            <td><span name="xxx" id="445">A相电能量</span></td>
+                                                                            <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="aenergy"/>(kvarh)</td>
+                                                                            <td><span name="xxx" id="446">B相电能量</span></td>
+                                                                            <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="benergy"/>(kvarh)</td>
+                                                                            <td><span name="xxx" id="447">C相电能量</span></td>
+                                                                            <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cenergy"/>(kvarh)</td>        
+                                    
+                                                                        </tr> 
+                                                                        <tr>
+                                                                            <td><span name="xxx" id="106">A相功率因数</span></td>
+                                                                            <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="apwrfactor"/>(%)</td>
+                                                                            <td><span name="xxx" id="107">B相功率因数</span></td>
+                                                                            <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bpwrfactor"/>(%)</td>
+                                                                            <td><span name="xxx" id="108">C相功率因数</span></td>
+                                                                            <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cpwrfactor"/>(%)</td>  
+                                                                            <td><span name="xxx" id="109">总功率因数</span></td>
+                                                                            <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="pwrfactor"/>(%)</td>          
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><span name="xxx" id="448">正向有功总电能量</span></td>
+                                                                            <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="actenergy"/>(kWh)</td>
+                                                                            <td><span name="xxx" id="449">正向无功总电能量</span></td>
+                                                                            <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="reactenergy"/>(kvarh)</td>
+                                                                            <td><span name="xxx" id="450">反向有功总电能量</span></td>
+                                                                            <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="diractenergy"/>(kwh)</td>  
+                                                                            <td><span name="xxx" id="451">反向无功总电能量</span></td>
+                                                                            <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="dirreactenergy"/>(kvarh)</td>  
+                                    
+                                                                        </tr>-->
 
-                                </table>           
-                                <!--                                                        <span id="info" style=" height: 400px;">
-                                                                                            
-                                                                                        </span>-->
+                                </table>   
+
                             </form>
                         </div>
                     </div>              
