@@ -361,7 +361,7 @@
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 301, vv); //01 03
                 //dealsend(sss, o1);
-                dealsend3("A5", data, 301, "lightCB3", l_comaddr, 0, l_code, lampval);
+                dealsend("A5", data, 301, "lightCB3", l_comaddr, 0, l_code, lampval);
                 $('#ddljtg').dialog("close");
 
             }
@@ -413,7 +413,7 @@
 
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 304, vv); //01 03
-                dealsend3("A5", data, 304, "sceneCB", l_comaddr, 0, 0, scenenum);
+                dealsend("A5", data, 304, "sceneCB", l_comaddr, 0, 0, scenenum);
                 addlogon(name, "单灯切换场景", pid, "地图导航", "切换场景", l_comaddr);
                 $('#switchCj').dialog("close");
             }
@@ -541,7 +541,7 @@
             });
             //巡测灯具点击事件
             function  xcdj() {
-                dealsend3("CheckLamp", "a", 0, 0, "check", 0, 0, "${param.pid}");
+                dealsend("CheckLamp", "", 0, 0, "check", 0, 0, "${param.pid}", 0);
             }
 
             //调用父页面的方法获取用户名
@@ -961,7 +961,7 @@
 //                };
 //
 //                button6.onclick = function (e) {
-//                    dealsend3("CheckLamp", "a", 0, 0, "check", 0, 0, "${param.pid}");
+//                    dealsend("CheckLamp", "a", 0, 0, "check", 0, 0, "${param.pid}");
 //                }
 //                // 添加DOM元素到地图中
 //                map.getContainer().appendChild(div);
@@ -1477,7 +1477,7 @@
                                 }
                                 alert(lans[295][lang]); //配置经纬度成功
                                 addlogon(u_name, "修改", porjectId, "地图导航", "批量修改网关的经纬度");
-                               
+
                                 //刷新，重置
                                 wgarray = [];
                                 wgdraw = false;
@@ -1604,7 +1604,7 @@
                             });
                             marker1.addEventListener("rightclick", function () {
                                 //移动、移除
-                                var textvalue2 = "<ul style='list-style-type:none;width=100px;' class='items'><li id='kdl'>"+lans[457][lang]+"</li><li id='yc'>"+lans[458][lang]+"</li></ul>";
+                                var textvalue2 = "<ul style='list-style-type:none;width=100px;' class='items'><li id='kdl'>" + lans[457][lang] + "</li><li id='yc'>" + lans[458][lang] + "</li></ul>";
                                 var opts2 = {title: '<span style="font-size:14px;color:#0A8021">' + lans[405][lang] + '</span>'};//设置信息框、功能操作
                                 var infoWindow2 = new BMap.InfoWindow(textvalue2, opts2); // 创建信息窗口对象，引号里可以书写任意的html语句。
                                 this.openInfoWindow(infoWindow2);
@@ -1785,18 +1785,18 @@
                             marker1.addEventListener("rightclick", function () {
                                 //开灯、关灯、调光值、请输入调光值、调光
                                 var textvalue2 = "<ul class='items' style='list-style-type:none;'>\n\
-                                                                <li id='kd'>"+lans[35][lang]+"</li>\n\
-                                                                <li id='gd'>"+lans[36][lang]+"</li>\n\
-                                                                <li id='tg'>"+lans[32][lang]+"</li>\n\
-                                                                <li id='qhcj'>"+lans[463][lang]+"</li>\n\
+                                                                <li id='kd'>" + lans[35][lang] + "</li>\n\
+                                                                <li id='gd'>" + lans[36][lang] + "</li>\n\
+                                                                <li id='tg'>" + lans[32][lang] + "</li>\n\
+                                                                <li id='qhcj'>" + lans[463][lang] + "</li>\n\
                                                                 <li style='color: blue;cursor:default;'>-------------------------</li>\n\
-                                                                <li id='getlamptime'>"+lans[464][lang]+"</li>\n\
-                                                                <li id='getcjval'>"+lans[465][lang]+"</li>\n\
+                                                                <li id='getlamptime'>" + lans[464][lang] + "</li>\n\
+                                                                <li id='getcjval'>" + lans[465][lang] + "</li>\n\
                                                                 <li style='color: blue;cursor:default;'>-------------------------</li>\n\
-                                                                <li>"+lans[466][lang]+"</li>\n\
+                                                                <li>" + lans[466][lang] + "</li>\n\
                                                                 <li style='color: blue;cursor:default;'>-------------------------</li>\n\
-                                                                <li id='move'>"+lans[457][lang]+"</li>\n\
-                                                                <li id='clean'>"+lans[458][lang]+"</li>\n\
+                                                                <li id='move'>" + lans[457][lang] + "</li>\n\
+                                                                <li id='clean'>" + lans[458][lang] + "</li>\n\
                                                                 </ul>";
                                 var opts2 = {title: '<span style="font-size:14px;color:#0A8021">' + lans[405][lang] + '</span>'};//设置信息框、功能操作
                                 var infoWindow2 = new BMap.InfoWindow(textvalue2, opts2); // 创建信息窗口对象，引号里可以书写任意的html语句。
@@ -1824,7 +1824,7 @@
                                     var num = randnum(0, 9) + 0x70;
                                     var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 301, vv); //01 03
                                     //dealsend(sss, o1);
-                                    dealsend3("A5", data, 301, "lightCB1", l_comaddr, 0, l_code, lampval);
+                                    dealsend("A5", data, 301, "lightCB1", l_comaddr, 0, l_code, lampval);
 
                                 });
                                 //关灯
@@ -1850,7 +1850,7 @@
                                     var num = randnum(0, 9) + 0x70;
                                     var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 301, vv); //01 03
                                     //dealsend(sss, o1);
-                                    dealsend3("A5", data, 301, "lightCB2", l_comaddr, 0, l_code, lampval);
+                                    dealsend("A5", data, 301, "lightCB2", l_comaddr, 0, l_code, lampval);
                                 });
                                 //调光
                                 $("#tg").click(function () {
@@ -1927,10 +1927,10 @@
                                                         success: function (data) {
                                                             var arrlist = data.rs;
                                                             if (arrlist.length == 1) {
-                                                                 alert(lans[460][lang]);  //移除成功
+                                                                alert(lans[460][lang]);  //移除成功
                                                                 addlogon(name, "移除灯具", pid, "地图导航", "移除灯具", obj.l_comaddr);
                                                             } else {
-                                                                 alert(lans[461][lang]);  //移除失败
+                                                                alert(lans[461][lang]);  //移除失败
                                                             }
                                                         },
                                                         error: function () {
@@ -1957,7 +1957,7 @@
                                     var comaddr = obj.l_comaddr;
                                     var num = randnum(0, 9) + 0x70;
                                     var data = buicode(comaddr, 0x04, 0xAA, num, 0, 401, vv); //01 03 F24    
-                                    dealsend3("AA", data, 401, "readLampPlanCB", comaddr, 0, obj.p_type, 0, 0);
+                                    dealsend("AA", data, 401, "readLampPlanCB", comaddr, 0, obj.p_type, 0, 0);
                                     marker1.closeInfoWindow(infoWindow2);
                                 });
 
@@ -1969,7 +1969,7 @@
                                     var comaddr = obj.l_comaddr;
                                     var num = randnum(0, 9) + 0x70;
                                     var data = buicode(comaddr, 0x04, 0xAA, num, 0, 402, vv); //01 03 F24    
-                                    dealsend3("AA", data, 402, "readLampPlanCB", comaddr, 0, obj.p_type, 0, 0);
+                                    dealsend("AA", data, 402, "readLampPlanCB", comaddr, 0, obj.p_type, 0, 0);
                                     marker1.closeInfoWindow(infoWindow2);
                                 });
                             });
