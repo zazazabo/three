@@ -155,7 +155,7 @@
                     var e = $(d).attr("id");
                     $(d).html(langs1[e][lang]);
                 }
-                
+
                 var curr_time = new Date();
                 $("#dd").datebox("setValue", myformatter(curr_time));
                 var val = $("#dd").datebox("getValue");
@@ -207,14 +207,14 @@
                                 rowspan: 2
                             }, {
                                 field: 'time',
-                                title: langs1[94][lang],  //时间点
+                                title: langs1[94][lang], //时间点
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
                                 rowspan: 2
                             }, {
                                 field: 'voltage',
-                                title: langs1[95][lang]+'(V)',  //电压
+                                title: langs1[95][lang] + '(V)', //电压
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -222,7 +222,7 @@
                                 rowspan: 1
                             }, {
                                 field: 'electric',
-                                title: langs1[96][lang]+'(A)',  //电流
+                                title: langs1[96][lang] + '(A)', //电流
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -230,7 +230,7 @@
                                 rowspan: 1
                             }, {
                                 field: 'activepower',
-                                title: langs1[97][lang]+'(KW)', //有功功率
+                                title: langs1[97][lang] + '(KW)', //有功功率
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -238,7 +238,7 @@
                                 rowspan: 1
                             }, {
                                 field: 'powerfactor',
-                                title: langs1[98][lang],  //功率因数
+                                title: langs1[98][lang], //功率因数
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -246,7 +246,7 @@
                                 rowspan: 1
                             }, {
                                 field: 'power',
-                                title: langs1[99][lang]+'(KW.h)', //正向有功电能量
+                                title: langs1[99][lang] + '(KW.h)', //正向有功电能量
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -257,55 +257,55 @@
 
                             {
                                 field: 'VAField',
-                                title: langs1[100][lang],  //A相
+                                title: langs1[100][lang], //A相
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle'
                             }, {
                                 field: 'VBField',
-                                title: langs1[101][lang],  //B相
+                                title: langs1[101][lang], //B相
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle'
                             }, {
                                 field: 'VCField',
-                                title: langs1[102][lang],  //C相
+                                title: langs1[102][lang], //C相
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle'
                             }, {
                                 field: 'EAField',
-                                title: langs1[100][lang],  //A相
+                                title: langs1[100][lang], //A相
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle'
                             }, {
                                 field: 'EBField',
-                                title: langs1[101][lang],  //B相
+                                title: langs1[101][lang], //B相
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle'
                             }, {
                                 field: 'ECField',
-                                title: langs1[102][lang],  //C相
+                                title: langs1[102][lang], //C相
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle'
                             }, {
                                 field: 'ACTIVEAField',
-                                title: langs1[103][lang],  //A相有功功率
+                                title: langs1[103][lang], //A相有功功率
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle'
                             }, {
                                 field: 'ACTIVEBField',
-                                title: langs1[104][lang],  //B相有功功率
+                                title: langs1[104][lang], //B相有功功率
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle'
                             }, {
                                 field: 'ACTIVECField',
-                                title: langs1[105][lang],  //C相有功功率
+                                title: langs1[105][lang], //C相有功功率
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle'
@@ -317,7 +317,7 @@
                                 valign: 'middle'
                             }, {
                                 field: 'FACTORBField',
-                                title:  langs1[107][lang], //B相功率因数
+                                title: langs1[107][lang], //B相功率因数
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle'
@@ -574,7 +574,7 @@
 
     </head>
 
-    <body>
+    <body style=" width:100%;">
 
 
         <div class="row" style=" padding-bottom: 5px;" >
@@ -632,48 +632,7 @@
                 </form>
             </div>
         </div>
-
-        <%-- 
-
-            <span style="margin-left:20px;">&nbsp;
-                <label class="label label-lg label-success ">日&nbsp;&nbsp;期</label>
-            </span>
-            <span >
-                <!--<input id="dd" type="text" class="easyui-datebox" >-->
-
-                <input id="dd" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser"></input>
-                <script type="text/javascript">
-                    function myformatter(date) {
-                        var y = date.getFullYear();
-                        var m = date.getMonth() + 1;
-                        var d = date.getDate();
-                        return y + '-' + (m < 10 ? ('0' + m) : m) + '-' + (d < 10 ? ('0' + d) : d);
-                    }
-                    function myparser(s) {
-                        if (!s)
-                            return new Date();
-                        var ss = (s.split('-'));
-                        var y = parseInt(ss[0], 10);
-                        var m = parseInt(ss[1], 10);
-                        var d = parseInt(ss[2], 10);
-                        if (!isNaN(y) && !isNaN(m) && !isNaN(d)) {
-                            return new Date(y, m - 1, d);
-                        } else {
-                            return new Date();
-                        }
-                    }
-                </script>
-
-            </span> 
-            <span style="margin-left:20px;">
-                <button type="button" class="btn btn-sm btn-success" onclick="search()" >查找</button>
-            </span> --%>
-
-
-        <%-- <div style="width:100%;" id="div1"> --%>
-
-        <table id="gravidaTable" style="width:100%;" class="text-nowrap table table-hover table-striped">
-        </table>
-        <%-- </div> --%>
+        <table id="gravidaTable" style="width:100%; overflow:auto;" class="text-nowrap table table-hover table-striped">
+        </table> 
     </body>
 </html>

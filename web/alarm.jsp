@@ -345,6 +345,15 @@
                         success: function (data) {
                         }
                     });
+                    if (checks[i].l_factorycode != "" && checks[i].l_factorycode != null) {
+                        var lobj = {};
+                        lobj.l_comaddr = checks[i].f_comaddr;
+                        lobj.l_factorycode = checks[i].l_factorycode;
+                        $.ajax({async: false, url: "login.main.updlampfualt.action", type: "get", datatype: "JSON", data: lobj,
+                            success: function (data) {
+                            }
+                        });
+                    }
 
                 }
 

@@ -203,7 +203,7 @@
                         console.log(timestamp, timestamptemp);
                         if ((timestamptemp - timestamp) / 1000 < 1) {
                             //layerAler("请不要连续发送");
-                            if (obj.val=="cansend") {
+                            if (obj.val == "cansend") {
                                 timestamp = timestamptemp;
                                 console.log(obj);
                                 var datajson = JSON.stringify(obj);
@@ -274,7 +274,15 @@
                         success: function (data) {
                         }
                     });
-
+                    if (checks[i].l_factorycode != "" && checks[i].l_factorycode != null) {
+                        var lobj = {};
+                        lobj.l_comaddr = checks[i].f_comaddr;
+                        lobj.l_factorycode = checks[i].l_factorycode;
+                        $.ajax({async: false, url: "login.main.updlampfualt.action", type: "get", datatype: "JSON", data: lobj,
+                            success: function (data) {
+                            }
+                        });
+                    }
                 }
 
                 var pid = $("#pojects").val();
@@ -412,7 +420,6 @@
             function imgM() {
                 $("#fauttable").bootstrapTable('destroy');
                 var lang2 = getCookie("lang");
-                console.log(lang2);
                 $('#fauttable').bootstrapTable({
                     url: 'login.main.faultInfo.action',
                     columns: [
@@ -451,7 +458,7 @@
                         },
                         {
                             field: 'f_comment',
-                            title:o[123][lang2], //异常说明 o[123][lang]
+                            title: o[123][lang2], //异常说明 o[123][lang]
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -514,7 +521,7 @@
                     showRefresh: true,
                     showToggle: true,
                     // 设置默认分页为 50
-                    pageList: [5, 10, 15, 20, 25],
+                    pageList: [5, 10],
                     onLoadSuccess: function () {  //加载成功时执行  表格加载完成时 获取集中器在线状态
 //                        console.info("加载成功");
                     },
@@ -646,7 +653,7 @@
         <div class="wraper"> 
             <div class="bodyLeft" style="background: rgb(14, 98, 199) none repeat scroll 0% 0%;">
                 <div class="bodyLeftTop listdisplayNone" style="background:#5cb75c ">
-                    <span  style="width:80px;margin-left:30px; font-size: 24px;"><label name="xxx" id="275">智慧城市照明管理系统</label></span>
+                    <span  style="width:80px;margin-left:0px; font-size: 24px;"><img src="img/hm.jpg" style=" width: 150px;"><label name="xxx" id="275">智慧城市照明管理系统</label></span>
                 </div>
 
                 <ul class="layui-nav layui-nav-tree  MenuBox " id="alist">
@@ -689,7 +696,7 @@
 
             <div class="bodyRight" style="padding-left: 140px;">
                 <div id="navTop" style="width: 100%; height: 60px; border-bottom: 0px solid rgb(204, 204, 204); background: rgb(92, 183, 92) none repeat scroll 0% 0%">
-                    <div class="CCIOT-logo" style="display:none;height:60px;float:left;padding-top:7px;padding-left:15px;box-sizing:border-box;">
+                    <div class="CCIOT-logo" style="display:none;height:60px;float:left;padding-top:7px;padding-left:15px;box-sizing:border-box; border: 1px solid red;">
                         <img src="abc.action_files/sz-tit.png" style="min-width:50px;height:50px;float:left;" id="logoImg">
                     </div>
                     <ul class="controlMessage animated fadeInRight">
@@ -703,8 +710,8 @@
                             </select>
                         </li>
                         <li class="one imgM" id ="imgM" onclick="imgM()" title="告警信息">
-                            <img src="img/xx.png" class="alarmLi">
-                            <div class="alarmNub alarmLi" id="alarmNumber">0</div>
+                            <img src="img/xx.png" class="alarmLi" style="">
+                            <div class="alarmNub alarmLi" id="alarmNumber" style=" width: 25px; height: 25px; font-size: 16px;">0</div>
                         </li>
 
                         <li class="one" style="width:85px;">
@@ -716,9 +723,9 @@
 
 
                             <ul class="two animated fadeInDown language" style="background: rgb(57, 61, 73) none repeat scroll 0% 0%; color: rgb(255, 255, 255);">
-<!--                                <li language="zh_CN"><label name="xxx" id="268">中文</label></li>
-                                <li language="en_US"><label name="xxx" id="269">英文</label></li>
-                                <li language="e_BY"><label  name="xxx" id="270">俄文</label></li>-->
+                                <!--                                <li language="zh_CN"><label name="xxx" id="268">中文</label></li>
+                                                                <li language="en_US"><label name="xxx" id="269">英文</label></li>
+                                                                <li language="e_BY"><label  name="xxx" id="270">俄文</label></li>-->
                                 <li language="zh_CN">中文</li>
                                 <li language="en_US">English</li>
                                 <li language="e_BY">Русский</li>
