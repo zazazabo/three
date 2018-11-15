@@ -47,6 +47,7 @@
             }
 
             function search() {
+
                 var o = $("#formsearch").serializeObject();
                 var opt = {
                     url: "lamp.lampform.getlampList.action",
@@ -95,7 +96,7 @@
 
                 var s2 = $('#gayway').bootstrapTable('getSelections');
                 if (s2.length == 0) {
-                     layerAler(langs1[219][lang]);  //请勾选网关
+                    layerAler(langs1[219][lang]);  //请勾选网关
                 }
                 var l_comaddr = s2[0].comaddr;
                 val = parseInt(val);
@@ -257,7 +258,7 @@
 
                 var s2 = $('#gayway').bootstrapTable('getSelections');
                 if (s2.length == 0) {
-                     layerAler(langs1[219][lang]);  //请勾选网关
+                    layerAler(langs1[219][lang]);  //请勾选网关
                 }
                 var l_comaddr = s2[0].comaddr;
 
@@ -427,7 +428,7 @@
             function lightgroupe() {
                 var s2 = $('#gayway').bootstrapTable('getSelections');
                 if (s2.length == 0) {
-                   layerAler(langs1[219][lang]);  //请勾选网关
+                    layerAler(langs1[219][lang]);  //请勾选网关
                 }
                 var l_comaddr = s2[0].comaddr;
 
@@ -475,38 +476,7 @@
                 }
             }
             function  tourControllamp() {
-
-                dealsend2("CheckLamp", "a", 0, 0, "check", 0, 0, "${param.pid}");
-//                var selects = $('#lamptable').bootstrapTable('getSelections');
-//                // var o = $("#form1").serializeObject();
-//                var vv = new Array();
-//                if (selects.length == 0) {
-//                    layerAler(langs1[73][lang]);   //请勾选表格数据
-//                    return;
-//                }
-//                var vv = [];
-//                vv.push(3);
-//                vv.push(1);
-//                vv.push(0);
-//                var ele = selects[0];
-//                var setcode = ele.l_code;
-//                var l_code = parseInt(setcode);
-//                var a = l_code >> 8 & 0x00FF;
-//                var b = l_code & 0x00ff;
-//                vv.push(b);//装置序号  2字节            
-//                vv.push(a);//装置序号  2字节 
-//                var comaddr = selects[0].l_comaddr;
-//                var num = randnum(0, 9) + 0x70;
-//                var data = buicode(comaddr, 0x04, 0xA5, num, 0, 1, vv);
-//                dealsend2("A5", data, 40, "tourControllampCB", comaddr, 0, 0, l_code);
-//                $('#panemask').showLoading({
-//                    'afterShow': function () {
-//                        setTimeout("$('#panemask').hideLoading()", 10000);
-//                    }
-//                }
-//                );
-
-
+                dealsend2("CheckLamp", "", 0, 0, "check", 0, 0, "${param.pid}", 0);
             }
 
             //巡测灯具状态
@@ -734,6 +704,7 @@
                 });
 
 
+
                 $('#lamptable').bootstrapTable({
                     showExport: true, //是否显示导出
                     exportDataType: "basic", //basic', 'a
@@ -777,7 +748,7 @@
                             valign: 'middle'
                         }, {
                             field: 'l_factorycode',
-                            title: langs1[452][lang] , //灯控地址
+                            title: langs1[452][lang], //灯控地址
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -851,7 +822,7 @@
 //                                }
 //                            }
 //                        }
-                        
+
                         {
                             field: 'l_groupe',
                             title: langs1[26][lang], //灯具组号
@@ -876,7 +847,7 @@
                             }
                         }, {
                             field: 'presence',
-                            title: langs1[12][lang] , //状态
+                            title: langs1[12][lang], //状态
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -927,7 +898,6 @@
                         return temp;  
                     },
                 });
-
 
 // 组号方式
                 $('#groupetype').combobox({
@@ -981,10 +951,37 @@
                 });
             })
 
+
+
+            function formartcomaddr1(value, row, index) {
+                if (index == 0) {
+                    var l_comaddr = row.comaddr;
+                    var url = "lamp.GroupeForm.getGroupe.action?l_comaddr=" + l_comaddr + "&l_deplayment=1";
+                    $("#l_groupe").combobox("clear");
+                    $("#l_groupe").combobox("reload", url);
+                    var o = {l_comaddr: l_comaddr, pid: "${param.pid}"};
+                    var opt = {
+                        url: "lamp.lampform.getlampList.action",
+                        query: o
+                    };
+                    $('#lamptable').bootstrapTable('refresh', opt);
+
+                    return {disabled: false, //设置是否可用
+                        checked: true//设置选中
+                    };
+
+                } else {
+                    return {checked: false//设置选中
+                    };
+
+                }
+            }
             function  formartcomaddr(value, row, index, field) {
-                console.log(row);
                 var val = value;
-                var v1 = row.online == 1 ? "&nbsp;<img src='img/online1.png'>" : "&nbsp;<img src='img/off.png'>";
+                if (index == 0) {
+
+                }
+                var v1 = row.online == 1 ? "&nbsp;<img style='float:right' src='img/online1.png'>" : "&nbsp;<img style='float:right' src='img/off.png'>";
                 return  val + v1;
             }
 
@@ -1007,15 +1004,13 @@
                        data-url="gayway.GaywayForm.getComaddrList.action?pid=${param.pid}&page=ALL" style="width:200px;" >
                     <thead >
                         <tr >
-                            <th data-width="25"  data-visible="true"   data-select="false" data-align="center"  data-checkbox="true"  ></th>
-                        <!--<th data-width="100" data-align="center" data-field="comaddr"  data-formatter='formartcomaddr'   >网关地址</th>-->
-                        <th data-width="100" data-field="name" data-align="center"    ><span name="xxx" id="314"></span></th>
+                            <th data-width="25"   data-visible="true" data-formatter='formartcomaddr1'   data-select="false" data-align="center"  data-checkbox="true"  ></th>
+                            <!--<th data-width="100" data-align="center" data-field="comaddr"  data-formatter='formartcomaddr'   >网关地址</th>-->
+                            <th data-width="100"  data-formatter='formartcomaddr'   data-field="name" data-align="center"    ><span name="xxx" id="314"></span></th>
                         </tr>
                     </thead>       
 
                 </table>
-                <!--                    </div>
-                                </div>    -->
 
             </div>
             <div class="col-xs-10">
@@ -1027,16 +1022,6 @@
                             <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; margin-top: 10px; align-content:  center">
                                 <tbody>
                                     <tr>
-
-                                        <!--                                        <td style=" padding-left: 5px;">
-                                                                                    <span  id="25" name="xxx" >
-                                                                                        网关地址&nbsp;
-                                                                                    </span>
-                                                                                </td>
-                                                                                <td  style=" padding-left: 5px;">
-                                                                                    <input id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 
-                                                                                           data-options="editable:true,valueField:'id', textField:'text' " />
-                                                                                </td>-->
                                         <td style=" padding-left: 10px;">
                                             <span id="26" name="xxx">
                                                 灯具组号
@@ -1071,12 +1056,6 @@
                                                 <option value="1" name="xxx" id="33">场景调光</option>           
                                             </select>
                                         </td>
-
-                                        <!--                                        <td>
-                                                                                    <button  type="button"id="34" name="xxx"  onclick="search()" class="btn btn-success btn-sm">
-                                                                                        <span id="34" name="xxx">搜索</span>
-                                                                                    </button>&nbsp;
-                                                                                </td>-->
                                         <td>
                                             <button  type="button" style="margin-left:20px;" onclick="onlamp(100)" class="btn btn-success btn-sm">
                                                 <span id="35" name="xxx">开灯</span>
@@ -1197,11 +1176,6 @@
                                 </tbody>
                             </table> 
                         </div>
-                        <!--                        <div class="col-xs-2" style=" margin-top: 10px; margin-left: 25px; "  >
-                        
-                                                    <button   type="button" onclick="tourControllamp()" class="btn btn-success btn-sm"><span name="xxxx" id="403">巡测所有灯具状态</span></button>
-                        
-                                                </div>-->
                     </div>
 
 
@@ -1212,205 +1186,6 @@
             </div>
         </div>
 
-        <!--
-        
-                <form id="formsearch">
-                    <input type="hidden" name="pid" value="${param.pid}">
-        
-        
-                    <div class="row"  >
-                        <div class="col-xs-12">
-                            <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; margin-left: 20px; margin-top: 10px; align-content:  center">
-                                <tbody>
-                                    <tr>
-        
-                                        <td style=" padding-left: 5px;">
-                                            <span  id="25" name="xxx" >
-                                                网关地址
-                                                网关地址&nbsp;
-                                            </span>
-                                        </td>
-                                        <td  style=" padding-left: 5px;">
-                                            <input id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 
-                                                   data-options="editable:true,valueField:'id', textField:'text' " />
-                                        </td>
-                                        <td style=" padding-left: 10px;">
-                                            <span id="26" name="xxx">
-                                                灯具组号
-                                                &nbsp;</span>
-                                        </td>
-                                        <td style=" padding-left: 5px;">
-        
-                                            <input id="l_groupe" class="easyui-combobox" name="l_groupe" style="width:100px; height: 30px" 
-                                                   data-options="editable:false,valueField:'id', textField:'text' " />
-                                        </td>
-                                        <td style=" padding-left: 10px;">
-                                            <span id="28" name="xxx" >
-                                                分组方式&nbsp;</span>
-                                        </td>
-                                        <td style=" padding-left: 5px;">
-                                            <select class="easyui-combobox" id="groupetype" name="groupetype" style="width:120px; height: 30px">
-                                                <option value="0" name="xxx" id="29">单灯调光</option>
-                                                <option value="1" name="xxx" id="30">组号调光</option>           
-                                                <option value="2" name="xxx" id="336">全部调光</option>           
-                                            </select>
-        
-                                        </td>
-        
-                                        <td style=" padding-left: 10px;">
-                                            <span id="31" name="xxx" >
-                                                  调光模式
-                                                调光模式
-                                                &nbsp;</span>
-                                        </td>
-                                        <td style=" padding-left: 10px;">
-                                            <select class="easyui-combobox" id="scenetype" name="scenetype" style="width:150px; height: 30px">
-                                                <option value="0" name="xxx" id="32">立即调光</option>
-                                                <option value="1" name="xxx" id="33">场景调光</option>           
-                                            </select>
-                                        </td>
-        
-                                        <td>
-                                            <button  type="button"id="34" name="xxx"  onclick="search()" class="btn btn-success btn-sm">
-                                                <span id="34" name="xxx">搜索</span>
-                                            </button>&nbsp;
-                                        </td>
-                                        <td>
-                                            <button  type="button" style="margin-left:20px;" onclick="onlamp(100)" class="btn btn-success btn-sm">
-                                                <span id="35" name="xxx">开灯</span>
-                                            </button>&nbsp;                                    
-                                        </td>            
-                                        <td>
-                                            <button  type="button" style="margin-left:20px;" onclick="offlamp(0)" class="btn btn-success btn-sm">
-                                                <span id="36" name="xxx">关灯</span>
-                                            </button>&nbsp;
-                                        </td>
-        
-                                                                        <td>
-                                                                            <button style="margin-left:10px;"  type="button" onclick="tourlamp()" class="btn btn-success btn-xm"><span name="xxxx" id="403">巡测灯具状态</span></button>
-                                                                        </td>
-        
-                                    </tr>
-        
-        
-                                </tbody>
-                            </table> 
-                        </div>
-                    </div>
-        
-                    <div class="row" style="  margin-top: 10px;">
-        
-                        <div class="col-xs-3">
-                            <table  style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; width: 350px;margin-left: 20px;">
-                                <tr>
-                                    <td style=" padding-left: 5px;">
-                                        <span id="37" name="xxx" >
-                                            恢复模式
-                                            &nbsp;</span>
-                                    </td>
-                                    <td>
-                                        <select class="easyui-combobox" id="type" name="type" style="width:120px; height: 30px">
-                                            <option value="1" name="xxx" id="38">单灯恢复</option>
-                                            <option value="2" name="xxx" id="39">按组恢复</option>    
-                                            <option value="3" name="xxx" id="40">全部恢复</option>  
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <button  type="button" onclick="restore()" class="btn btn-success btn-sm">
-                                            恢复自动运行
-                                            <span id="41" name="xxx">恢复自动运行</span>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="col-xs-5"  style=" margin-left: 80px;"  id="light0">
-                            <table   style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; width: 350px;margin-left: 30px;">
-                                <tr>
-                                    <td >
-                                        <span id="42" name="xxx">
-                                            调光值
-                                            &nbsp;</span>
-                                        <input id="val" value="0" class="form-control" readonly="true" name="val" style="width:50px;display: inline; height: 30px; " placeholder="调光值" type="text">
-        
-                                    </td>
-                                    <td>
-                                        <div  id="slide_lamp_val"  class="easyui-slider"     data-options="showTip:true,min:0,max:100,step:1" style="width:100px;    "></div>
-        
-                                    </td>
-                                    <td>
-                                        <button  type="button"  name="btnsingle"  onclick="lightsingle()" class="btn btn-success btn-sm">
-                                            <span id="43" name="xxx">单灯立即调光</span>
-                                        </button>
-                                        <button  type="button" name="btngroupe"  style="display: none"  onclick="lightgroupe()" class="btn btn-success btn-sm">
-                                            <span id="44" name="xxx">按组立即调光</span>
-                                        </button>
-        
-                                        <button  type="button" name="btnall"  style="display: none"  onclick='onlamp($("#val").val())' class="btn btn-success btn-sm">
-                                            <span id="336" name="xxx">全网调光</span>
-                                        </button>
-        
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-        
-        
-                        <div class="col-xs-5"  id="light1" style="margin-left: 80px;display: none;">
-                            <table   style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; width: 350px; margin-left: 30px;">
-                                <tbody>
-                                    <tr>
-                                        <td>
-        
-                                            <span style="margin-left:10px;">
-                                                场景号
-                                                <span id="47" name="xxx">场景号</span>
-                                                &nbsp;</span>
-                                            <input id="scennum" class="form-control" name="scennum" style="width:50px;display: inline;" placeholder="场景号" type="text">&nbsp;
-                                            <select class="easyui-combobox" id="scennum" name="scennum" style="width:150px; height: 30px">
-                                                <option value="1" name="xxx" id="320">场景1</option>
-                                                <option value="2" name="xxx" id="321">场景2</option>    
-                                                <option value="3" name="xxx" id="322">场景3</option> 
-                                                <option value="4" name="xxx" id="323">场景4</option> 
-                                                <option value="5" name="xxx" id="324">场景5</option> 
-                                                <option value="6" name="xxx" id="325">场景6</option> 
-                                                <option value="7" name="xxx" id="326">场景7</option> 
-                                                <option value="8" name="xxx" id="327">场景8</option> 
-                                            </select>
-                                            <button  type="button"  name="btnsingle" style="margin-left:20px;" onclick="scenesingle()" class="btn btn-success btn-sm">
-                                                单灯场景调光
-                                                <span id="45" name="xxx">单灯场景调光</span>
-                                            </button>
-                                            <button  type="button" name="btngroupe" style="margin-left:20px; display: none" onclick="scenegroupe()" class="btn btn-success btn-sm">
-                                                按组场景调光
-                                                <span id="46" name="xxx">按组场景调光</span>
-                                            </button>
-        
-                                            <button  type="button" name="btnall" style="margin-left:20px; display: none" onclick="sceneAll()" class="btn btn-success btn-sm">
-                                                全网场景调光
-                                                <span id="337" name="xxx">全网场景调光</span>
-                                            </button>
-        
-                                        </td>
-        
-                                    </tr>
-        
-                                </tbody>
-                            </table> 
-                        </div>
-                        <div class="col-xs-2" style=" margin-top: 10px; margin-left: -30px; "  >
-        
-                            <button   type="button" onclick="tourControllamp()" class="btn btn-success btn-xm"><span name="xxxx" id="403">巡测所有灯具状态</span></button>
-        
-                        </div>
-                    </div>
-        
-        
-                </form>
-        
-        
-                <table id="lamptable" style="width:100%;"  class="text-nowrap table table-hover table-striped">
-                </table>-->
 
 
     </body>

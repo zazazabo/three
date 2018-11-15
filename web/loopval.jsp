@@ -194,7 +194,7 @@
                     }
                     );
                 } else if (o1.type == "1") {
-       
+
                     var vv = new Array();
                     var switchval = o1.switch;
                     vv.push(parseInt(switchval));
@@ -254,7 +254,7 @@
                             width: 25,
                             align: 'center',
                             valign: 'middle'
-                        }, 
+                        },
 //                        {
 //                            field: 'l_comaddr',
 //                            title: langs1[25][lang], //网关地址
@@ -346,42 +346,6 @@
                     },
                 });
 
-//                $('#l_comaddr').combobox({
-//                    url: "gayway.GaywayForm.getComaddr.action?pid=${param.pid}",
-//                    formatter: function (row) {
-//                        var v1 = row.online == 1 ? "&nbsp;<img src='img/online1.png'>" : "&nbsp;<img src='img/off.png'>";
-//                        var v = row.text + v1;
-//                        row.id = row.id;
-//                        row.text = v;
-//                        var opts = $(this).combobox('options');
-//                        console.log(row[opts.textField]);
-//                        return row[opts.textField];
-//                    },
-//                    onLoadSuccess: function (data) {
-//                        if (Array.isArray(data) && data.length > 0) {
-//                            for (var i = 0; i < data.length; i++) {
-//                                data[i].text = data[i].id;
-//                            }
-//
-//                            $(this).combobox('select', data[0].id);
-//
-//                        }
-//                    },
-//                    onSelect: function (record) {
-//                        var obj = {};
-//                        obj.l_comaddr = record.id;
-//
-//                        obj.pid = "${param.pid}";
-//                        console.log(obj);
-//                        var opt = {
-//                            url: "loop.loopForm.getLoopList.action",
-//                            silent: true,
-//                            query: obj
-//                        };
-//                        $("#gravidaTable").bootstrapTable('refresh', opt);
-//                    }
-//                });
-//
 
 
                 $('#gayway').on('check.bs.table', function (row, element) {
@@ -389,7 +353,6 @@
                     var obj = {};
                     obj.l_comaddr = l_comaddr;
                     obj.pid = "${param.pid}";
-                    console.log(obj);
                     var opt = {
                         url: "loop.loopForm.getLoopList.action",
                         silent: true,
@@ -405,10 +368,34 @@
 
 
             })
+
+
+            function formartcomaddr1(value, row, index) {
+                if (index == 0) {
+                    var l_comaddr = row.comaddr;
+                    var l_comaddr = row.comaddr;
+                    var obj = {};
+                    obj.l_comaddr = l_comaddr;
+                    obj.pid = "${param.pid}";
+                    var opt = {
+                        url: "loop.loopForm.getLoopList.action",
+                        silent: true,
+                        query: obj
+                    };
+                    $("#gravidaTable").bootstrapTable('refresh', opt);
+
+                    return {disabled: false, //设置是否可用
+                        checked: true//设置选中
+                    };
+                } else {
+                    return {checked: false//设置选中
+                    };
+
+                }
+            }
             function  formartcomaddr(value, row, index, field) {
-                console.log(row);
                 var val = value;
-                var v1 = row.online == 1 ? "&nbsp;<img src='img/online1.png'>" : "&nbsp;<img src='img/off.png'>";
+                var v1 = row.online == 1 ? "&nbsp;<img style='float:right' src='img/online1.png'>" : "&nbsp;<img style='float:right' src='img/off.png'>";
                 return  val + v1;
             }
 
@@ -419,33 +406,30 @@
         <div class="row "   >
             <div class="col-xs-2 " >
 
-<!--                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 align='center' class="panel-title">
-                            网关列表
-                        </h3>
-                    </div>
-                    <div class="panel-body">-->
-                        <table id="gayway" style="width:100%;"    data-toggle="table" 
-                               data-height="800"
-                               data-single-select="true"
-                               data-striped="true"
-                               data-click-to-select="true"
-                               data-search="true"
-                               data-checkbox-header="true"
-                               data-url="gayway.GaywayForm.getComaddrList.action?pid=${param.pid}&page=ALL" style="width:200px;" >
-                            <thead >
-                                <tr >
-                                    <th data-width="25"    data-select="false" data-align="center"  data-checkbox="true"  ></th>
-                                    <!-- <th data-width="100" data-field="comaddr" data-align="center" data-formatter='formartcomaddr'   >网关地址</th>-->
-                                    <th data-width="100" data-field="name" data-align="center"><span name="xxx" id="314">网关名称</span></th>
-                                </tr>
-                            </thead>       
+                <!--                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 align='center' class="panel-title">
+                                            网关列表
+                                        </h3>
+                                    </div>
+                                    <div class="panel-body">-->
+                <table id="gayway" style="width:100%;"    data-toggle="table" 
+                       data-height="800"
+                       data-single-select="true"
+                       data-striped="true"
+                       data-click-to-select="true"
+                       data-search="true"
+                       data-checkbox-header="true"
+                       data-url="gayway.GaywayForm.getComaddrList.action?pid=${param.pid}&page=ALL" style="width:200px;" >
+                    <thead >
+                        <tr >
+                            <th data-width="25" data-formatter='formartcomaddr1'    data-select="false" data-align="center"  data-checkbox="true"  ></th>
+                            <!-- <th data-width="100" data-field="comaddr" data-align="center" data-formatter='formartcomaddr'   >网关地址</th>-->
+                            <th data-width="100" data-formatter='formartcomaddr' data-field="name" data-align="center"><span name="xxx" id="314">网关名称</span></th>
+                        </tr>
+                    </thead>       
 
-                        </table>
-<!--                    </div>
-                </div>    -->
-
+                </table>
             </div>   
             <div class="col-xs-10">
                 <form id="form1">

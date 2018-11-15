@@ -1032,7 +1032,7 @@
                     user.status = "";
                     user.msg = "CheckLamp";
                     user.val = getpojectId();
-                    user.data = "aa";
+                    user.data = "";
                     user.end = '6A';
                     console.log(user);
                     sendData(user);

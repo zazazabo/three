@@ -421,10 +421,10 @@ function dealsend2(msg, data, fn, func, comaddr, type, param, val, res = 1) {
 
 
 
-function dealsend(msg, data, fn, func, comaddr, type, param, val) {
+function dealsend(msg, data, fn, func, comaddr, type, param, val,res = 1) {
     var user = new Object();
     user.begin = '6A';
-    user.res = 0;
+    user.res = res;
     user.status = "";
     user.comaddr = comaddr;
     user.fn = fn;
