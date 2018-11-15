@@ -573,11 +573,11 @@
                                 var fmobj = $("#forminfo").serializeObject();
                                 for (let attr in fmobj) {
                                     var str = "input[name='" + attr + "']";
-                                    if(attr.charAt(attr.length-1)=="*"){
-                                         var temp=attr.replace("*","");
-                                       var p = (o[temp]*1000).toFixed(2);
-                                       $(str).val(p);
-                                    }else{
+                                    if (attr.charAt(attr.length - 1) == "*") {
+                                        var temp = attr.replace("*", "");
+                                        var p = (o[temp] * 1000).toFixed(2);
+                                        $(str).val(p);
+                                    } else {
                                         $(str).val(o[attr]);
                                     }
                                 }
@@ -1181,7 +1181,6 @@
                                         <th colspan="2">无功功率(W)</th>
                                         <th colspan="2">视在功率(KVA)</th>
                                         <th colspan="2">功率因数(%)</th>
-                                        <th colspan="2">电压(V)</th>
                                     </tr>
                                     <tr>
                                         <td><span name="xxxx" id="103">A相</span></td>
@@ -1192,8 +1191,7 @@
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="aviewpwr"/></td>
                                         <td><span name="xxxx" id="106">A相</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="apwrfactor"/></td>
-                                        <td><span name="xxxx" id="439">A相</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="avol"/></td>
+
                                     </tr>
                                     <tr>
                                         <td><span name="xxxx" id="104">B相</span></td>
@@ -1204,8 +1202,6 @@
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bviewpwr"/></td>
                                         <td><span name="xxxx" id="107">B相</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bpwrfactor"/></td>
-                                        <td><span name="xxxx" id="440">B相</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bvol"/></td>
                                     </tr>
                                     <tr>
                                         <td><span name="xxxx" id="105">C相</span></td>
@@ -1216,8 +1212,6 @@
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cviewpwr"/></td>  
                                         <td><span name="xxxx" id="108">C相</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cpwrfactor"/></td>
-                                        <td><span name="xxxx" id="441">C相</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cvol"/></td> 
                                     </tr>
                                     <tr>
                                         <td><span name="xxxx" id="436">总有功功率</span></td>
@@ -1230,20 +1224,36 @@
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="pwrfactor"/></td> 
                                     </tr>
                                     <tr>
+                                        <th colspan="2">电压(V)</th>
+                                        <th colspan="2">电流(A)</th>
                                         <th colspan="2">有功电能量(kWh)</th>
                                         <th colspan="2">无功电能量(kvarh)</th>
                                     </tr>
                                     <tr>
+                                        <td><span name="xxxx" id="439">A相</span></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="avol"/></td>
+                                        <td><span name="xxx" id="442">A相电流</span></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="aelectric"/>(A)</td>
                                         <td><span name="xxxx" id="448">正向有功总电能量</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="actenergy"/></td>
                                         <td><span name="xxxx" id="449">正向无功总电能量</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="reactenergy"/></td>  
                                     </tr>
                                     <tr>
+                                        <td><span name="xxxx" id="440">B相</span></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bvol"/></td>
+                                        <td><span name="xxx" id="443">B相电流</span></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="belectric"/>(A)</td>
                                         <td><span name="xxxx" id="450">反向有功总电能量</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="diractenergy"/></td>  
                                         <td><span name="xxxx" id="451">反向无功总电能量</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="dirreactenergy"/></td>  
+                                    </tr>
+                                    <tr>
+                                        <td><span name="xxxx" id="441">C相</span></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cvol"/></td> 
+                                        <td><span name="xxx" id="444">C相电流</span></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="celectric"/>(A)</td> 
                                     </tr>
                                     <!--                                    <tr>
                                                                             <td><span name="xxx" id="103">A相有功功率</span></td>
