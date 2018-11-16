@@ -1167,8 +1167,8 @@
                         <div class="panel-heading">
                             <h3 class="panel-title">
                                 <p  >
-                                    <span id="head"></span>
-                                    <span style=" margin-left: 10px;" id="headtime">开灯时间: ~ 关灯时间:</span>
+                                    <span id="head" style="font-size: 18px;"></span>
+                                    <span style=" margin-left: 10px; font-size: 18px;" id="headtime">开灯时间: ~ 关灯时间:</span>
                                 </p>
                             </h3>
                         </div>
@@ -1177,83 +1177,87 @@
                                 <input type="hidden" id="l_comaddr" name="l_comaddr" />
                                 <table class="hovertable" >
                                     <tr>
-                                        <th colspan="2">有功功率(W)</th>
-                                        <th colspan="2">无功功率(W)</th>
-                                        <th colspan="2">视在功率(KVA)</th>
-                                        <th colspan="2">功率因数(%)</th>
+                                        <th colspan="2"><span name="xxx" id="495">有功功率</span>(W)</th>
+                                        <th colspan="2"><span name="xxx" id="496">无功功率</span>(W)</th>
+                                        <th colspan="2"><span name="xxx" id="497">视在功率</span>(KVA)</th>
+                                        <th colspan="2"><span name="xxx" id="498">功率因数</span>(%)</th>
                                     </tr>
                                     <tr>
-                                        <td><span name="xxxx" id="103">A相</span></td>
+                                        <td><span name="xxx" id="499">A相</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="aactpwr*"/></td>
-                                        <td><span name="xxxx" id="430">A相</span></td>
+                                        <td><span name="xxx" id="499">A相</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="anopwr*"/></td>
-                                        <td><span name="xxxx" id="431">A相</span></td>
+                                        <td><span name="xxx" id="499">A相</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="aviewpwr"/></td>
-                                        <td><span name="xxxx" id="106">A相</span></td>
+                                        <td><span name="xxx" id="499">A相</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="apwrfactor"/></td>
 
                                     </tr>
                                     <tr>
-                                        <td><span name="xxxx" id="104">B相</span></td>
+                                        <td><span name="xxx" id="500">B相</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bactpwr*"/></td>
-                                        <td><span name="xxxx" id="432">B相</span></td>
+                                        <td><span name="xxx" id="500">B相</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bnopwr*"/></td>
-                                        <td><span name="xxxx" id="433">B相</span></td>
+                                        <td><span name="xxx" id="500">B相</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bviewpwr"/></td>
-                                        <td><span name="xxxx" id="107">B相</span></td>
+                                        <td><span name="xxx" id="500">B相</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bpwrfactor"/></td>
                                     </tr>
                                     <tr>
-                                        <td><span name="xxxx" id="105">C相</span></td>
+                                        <td><span name="xxx" id="501">C相</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cactpwr*"/></td>
-                                        <td><span name="xxxx" id="434">C相</span></td>
+                                        <td><span name="xxx" id="501">C相</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cnopwr*"/></td>
-                                        <td><span name="xxxx" id="435">C相</span></td>
+                                        <td><span name="xxx" id="501">C相</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cviewpwr"/></td>  
-                                        <td><span name="xxxx" id="108">C相</span></td>
+                                        <td><span name="xxx" id="501">C相</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cpwrfactor"/></td>
                                     </tr>
                                     <tr>
-                                        <td><span name="xxxx" id="436">总有功功率</span></td>
+                                        <td><span name="xxx" id="436">总有功功率</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="sumactpwr*"/></td>
-                                        <td><span name="xxxx" id="437">总无功功率</span></td>
+                                        <td><span name="xxx" id="437">总无功功率</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="sumnopwr*"/></td>
-                                        <td><span name="xxxx" id="438">总视在功率</span></td>
+                                        <td><span name="xxx" id="438">总视在功率</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="sumviewpwr"/></td>
-                                        <td><span name="xxxx" id="109">总功率因数</span></td>
+                                        <td><span name="xxx" id="109">总功率因数</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="pwrfactor"/></td> 
                                     </tr>
                                     <tr>
-                                        <th colspan="2">电压(V)</th>
-                                        <th colspan="2">电流(A)</th>
-                                        <th colspan="2">有功电能量(kWh)</th>
-                                        <th colspan="2">无功电能量(kvarh)</th>
+                                        <th colspan="2"><span name="xxx" id="95">电压</span>(V)</th>
+                                        <th colspan="2"><span name="xxx" id="96">电流</span>(A)</th>
+                                        <th colspan="2"><span name="xxx" id="502">有功电能量</span>(kWh)</th>
+                                        <th colspan="2"><span name="xxx" id="503">无功电能量</span>(kvarh)</th>
                                     </tr>
                                     <tr>
-                                        <td><span name="xxxx" id="439">A相</span></td>
+                                        <td><span name="xxx" id="499">A相</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="avol"/></td>
-                                        <td><span name="xxx" id="442">A相电流</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="aelectric"/>(A)</td>
-                                        <td><span name="xxxx" id="448">正向有功总电能量</span></td>
+                                        <td><span name="xxx" id="499">A相</span></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="aelectric"/></td>
+                                        <td><span name="xxx" id="448">正向有功总电能量</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="actenergy"/></td>
-                                        <td><span name="xxxx" id="449">正向无功总电能量</span></td>
+                                        <td><span name="xxx" id="449">正向无功总电能量</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="reactenergy"/></td>  
                                     </tr>
                                     <tr>
-                                        <td><span name="xxxx" id="440">B相</span></td>
+                                        <td><span name="xxx" id="500">B相</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bvol"/></td>
-                                        <td><span name="xxx" id="443">B相电流</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="belectric"/>(A)</td>
-                                        <td><span name="xxxx" id="450">反向有功总电能量</span></td>
+                                        <td><span name="xxx" id="500">B相</span></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="belectric"/></td>
+                                        <td><span name="xxx" id="450">反向有功总电能量</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="diractenergy"/></td>  
-                                        <td><span name="xxxx" id="451">反向无功总电能量</span></td>
+                                        <td><span name="xxx" id="451">反向无功总电能量</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="dirreactenergy"/></td>  
                                     </tr>
                                     <tr>
-                                        <td><span name="xxxx" id="441">C相</span></td>
+                                        <td><span name="xxx" id="501">C相</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cvol"/></td> 
-                                        <td><span name="xxx" id="444">C相电流</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="celectric"/>(A)</td> 
+                                        <td><span name="xxx" id="501">C相</span></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="celectric"/></td> 
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
                                     </tr>
                                     <!--                                    <tr>
                                                                             <td><span name="xxx" id="103">A相有功功率</span></td>

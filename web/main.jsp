@@ -653,7 +653,7 @@
         <div class="wraper"> 
             <div class="bodyLeft" style="background: rgb(14, 98, 199) none repeat scroll 0% 0%;">
                 <div class="bodyLeftTop listdisplayNone" style="background:#5cb75c ">
-                    <span  style="width:80px;margin-left:0px; font-size: 24px;"><img src="img/hm.jpg" style=" width: 150px;"><label name="xxx" id="275">智慧城市照明管理系统</label></span>
+                    <span  style="width:80px;margin-left:0px; font-size: 24px;"><img src="img/hmlog.jpg" style=" width: 100px; marquee-loop: 2px;"><label name="xxx" id="275">智慧城市照明管理系统</label></span>
                 </div>
 
                 <ul class="layui-nav layui-nav-tree  MenuBox " id="alist">
