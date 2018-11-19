@@ -480,7 +480,7 @@
                 $('#gayway').on('click-row.bs.table', function (row, element) {
                     var l_comaddr = element.comaddr;
                     $("#head").html(langs1[425][lang] + "[" + element.name + "]" + langs1[427][lang]);
-                    $("#headtime").html(langs1[428][lang] + ": ~ " + langs1[429][lang] + ":");
+                    $("#headtime").html(langs1[428][lang] + ":xx:xx &nbsp;" + langs1[429][lang] + ":xx:xx");
 
                     var fmobj = $("#forminfo").serializeObject();
                     for (let attr in fmobj) {
@@ -512,7 +512,7 @@
                             var info = rs[0];
                             var worktype = info.l_worktype;
                             if (worktype == 0) {
-                                $("#headtime").html(langs1[428][lang] + ":" + info.l_outtime + "`" + langs1[429][lang] + ":" + info.l_intime);
+                                $("#headtime").html(langs1[428][lang] + ":" + info.l_outtime + "&nbsp;" + langs1[429][lang] + ":" + info.l_intime);
                             } else if (worktype == 1) {
                                 var o1 = {jd: info.longitude, wd: info.latitude};
 
@@ -523,7 +523,7 @@
                                 $.ajax({async: false, url: "login.rc.r.action", type: "get", datatype: "JSON", data: o1,
                                     success: function (data) {
                                         var list = data.cl[0];
-                                        $("#headtime").html(langs1[428][lang] + ":" + list.rl + "`" + langs1[429][lang] + ":" + list.rc);
+                                        $("#headtime").html(langs1[428][lang] + ":" + list.rl + "&nbsp;" + langs1[429][lang] + ":" + list.rc);
                                     },
                                     error: function () {
                                         alert("提交失败！2");
@@ -554,7 +554,7 @@
                         var h1 = sprintf("%02x", data[24]);
                         var intime1 = sprintf("%s:%s", h, m);
                         var outtime1 = sprintf("%s:%s", h1, m1);
-                        $("#headtime").html(langs1[428][lang] + ":" + intime1 + "`" + langs1[429][lang] + ":" + outtime1);
+                        $("#headtime").html(langs1[428][lang] + ":" + intime1 + "&nbsp;" + langs1[429][lang] + ":" + outtime1);
                     }
                 }
             }
@@ -1168,7 +1168,7 @@
                             <h3 class="panel-title">
                                 <p  >
                                     <span id="head" style="font-size: 18px;"></span>
-                                    <span style=" margin-left: 10px; font-size: 18px;" id="headtime">开灯时间: ~ 关灯时间:</span>
+                                    <span style=" margin-left: 10px; font-size: 18px;" id="headtime">开灯时间:-:- &nbsp; 关灯时间:-:-</span>
                                 </p>
                             </h3>
                         </div>
