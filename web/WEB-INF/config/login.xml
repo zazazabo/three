@@ -61,7 +61,7 @@
         </xhandle>
         
         <xhandle desc="修改灯具故障状态" id="updlampfualt" rtnype="JSON">
-            <xsql id="a1" para="" tpe="DDL" tpl="update t_lamp set l_fault=0 where @CONDITION " var="rs">
+            <xsql id="a1" para="" tpe="DDL" tpl="update t_lamp set l_fault=0,l_faultdesc='' where @CONDITION " var="rs">
                 <xflt id="CONDITION" nrp="" tpl="@l_comaddr AND @l_factorycode">
                     <xfltpara id="l_comaddr" nrp="1=1" para="l_comaddr" sql="l_comaddr=':l_comaddr'">
                     </xfltpara>
