@@ -106,6 +106,7 @@
                     });
 
                 }
+                $("#gravidaTable").bootstrapTable('refresh');
             }
 
             function showDialog() {

@@ -5,7 +5,7 @@
         <xhandle desc="登陆" id="loginhand" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_user WHERE   @CONDITION " var="rs">
                 <xflt id="CONDITION" nrp="" tpl="@name AND @password ">
-                    <xfltpara id="name" nrp="1=1" para="name" sql="name = ':name'">
+                    <xfltpara id="name" nrp="1=1" para="name" sql="name = ':name' collate Chinese_PRC_CS_AI_WS">
                     </xfltpara>
                     <xfltpara id="password" nrp="1=1" para="password" sql="password = ':password'">
                     </xfltpara>            
@@ -260,7 +260,7 @@
         <xhandle desc="查看用户名是否存在" id="isusername" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select name from t_user where @CONDITION " var="rs">
                 <xflt id="CONDITION" nrp="" tpl="@name">
-                    <xfltpara id="name" nrp="1=1" para="name" sql="name = ':name'"> 
+                    <xfltpara id="name" nrp="1=1" para="name" sql="name = ':name'collate Chinese_PRC_CS_AI_WS"> 
                     </xfltpara>           
                 </xflt>
             </xsql>
@@ -618,8 +618,10 @@
         </xhandle> 
         <xhandle desc="查看灯具编码是否唯一" id="getfactorycode" rtn="rs" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select l_factorycode from t_lamp where @CONDITION " var="rs">
-                <xflt id="CONDITION" nrp="" tpl="@l_factorycode">
+                <xflt id="CONDITION" nrp="" tpl="@l_factorycode AND @l_comaddr">
                     <xfltpara id="l_factorycode" nrp="1=1" para="l_factorycode" sql="l_factorycode=':l_factorycode'">
+                    </xfltpara>
+                    <xfltpara id="l_comaddr" nrp="1=1" para="l_comaddr" sql="l_comaddr=':l_comaddr'">
                     </xfltpara>
                 </xflt>
             </xsql> 
@@ -637,7 +639,6 @@
                 <xflt id="CONDITION" nrp="" tpl="@comaddr">
                     <xfltpara id="comaddr" nrp="1=1" para="comaddr" sql="comaddr=':comaddr'">
                     </xfltpara>
-                   
                 </xflt>
             </xsql> 
         </xhandle> 

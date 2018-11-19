@@ -339,7 +339,7 @@
                             $(this).combobox('select', data[0].id)
                         }
                     }
-                })
+                });
 
                 $("#add").attr("disabled", true);
                 $("#xiugai").attr("disabled", true);
@@ -451,7 +451,7 @@
                     pagination: true,
                     sidePagination: 'server',
                     pageNumber: 1,
-                    pageSize: 5,
+                    pageSize: 10,
                     showRefresh: true,
                     showToggle: true,
                     // 设置默认分页为 50
@@ -528,6 +528,7 @@
                     });
 
                 }
+                $("#gravidaTable").bootstrapTable('refresh'); 
             }
 
 

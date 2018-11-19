@@ -50,7 +50,10 @@ Author     : admin
                             var arrlist = data.rs;
                             if (arrlist.length > 0) {
                                 console.log("w:" + arrlist.length);
-                                $.ajax({async: false, url: "login.lampmanage.getfactorycode.action", type: "POST", datatype: "JSON", data: {l_factorycode: lampid},
+                                var codeobj = {};
+                                codeobj.l_factorycode= lampid;
+                                codeobj.l_comaddr = comaddr;
+                                $.ajax({async: false, url: "login.lampmanage.getfactorycode.action", type: "POST", datatype: "JSON", data:codeobj,
                                     success: function (data) {
                                         var arrlist = data.rs;
                                         if (arrlist.length == 0) {
@@ -98,6 +101,7 @@ Author     : admin
                         }
                     });
                 }
+                $("#gravidaTable").bootstrapTable('refresh');
             }
             function showDialog() {
 
