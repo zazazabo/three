@@ -304,6 +304,7 @@
             var langs1 = parent.parent.getLnas();
             // var pid = parent.parent.getpojectId();
             $(function () {
+                
                 var aaa = $("span[name=xxx]");
                 for (var i = 0; i < aaa.length; i++) {
                     var d = aaa[i];
@@ -1168,7 +1169,7 @@
                             <h3 class="panel-title">
                                 <p  >
                                     <span id="head" style="font-size: 18px;"></span>
-                                    <span style=" margin-left: 10px; font-size: 18px;" id="headtime">开灯时间:-:- &nbsp; 关灯时间:-:-</span>
+                                    <span style=" margin-left: 10px; font-size: 18px;" id="headtime">开灯时间:xx:xx &nbsp; 关灯时间:xx:xx</span>
                                 </p>
                             </h3>
                         </div>
