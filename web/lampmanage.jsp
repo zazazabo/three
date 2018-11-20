@@ -52,7 +52,7 @@ Author     : admin
                                 console.log("w:" + arrlist.length);
                                 var codeobj = {};
                                 codeobj.l_factorycode= lampid;
-                                codeobj.l_comaddr = comaddr;
+                                codeobj.pid = pid;
                                 $.ajax({async: false, url: "login.lampmanage.getfactorycode.action", type: "POST", datatype: "JSON", data:codeobj,
                                     success: function (data) {
                                         var arrlist = data.rs;
