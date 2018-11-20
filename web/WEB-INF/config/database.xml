@@ -2,8 +2,11 @@
 <xdatabases>
 
 
-  <xinfo class="com.microsoft.jdbc.sqlserver.SQLServerDriver" url="jdbc:microsoft:sqlserver://192.168.1.107:1433;databaseName=data" psw="123" uname="sa">
+  <xinfo class="com.microsoft.jdbc.sqlserver.SQLServerDriver" url="jdbc:microsoft:sqlserver://192.168.1.107:1433;databaseName=lampdata" psw="123" uname="sa">
 
   </xinfo>  
+<!--   <xinfo class="com.microsoft.jdbc.sqlserver.SQLServerDriver" url="jdbc:microsoft:sqlserver://ZZZ-72PGHTE1LOJ;databaseName=lampdata" psw="663218" uname="sa">
 
+   </xinfo> -->
+ 
 </xdatabases>
