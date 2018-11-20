@@ -203,6 +203,7 @@ Author     : admin
             function checkLampAdd() {
 
                 var o = $("#formadd").serializeObject();
+                o.pid=${param.pid};
                 o.name = o.comaddrname;
                 console.log(o);
                 if (o.l_factorycode == "" || o.l_comaddr == "") {
