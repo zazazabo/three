@@ -228,6 +228,9 @@
 
             function getpojectId() {
                 var pojectid = $("#pojects").val();
+//                if (pojectid == "" || pojectid == null) {
+//                    pojectid = "*";
+//                }
                 return  pojectid;
             }
 
@@ -242,7 +245,7 @@
             }
             //查询
             function select() {
-                var pid = $("#pojects").val();
+                var pid = getpojectId();
                 var obj2 = {};
                 obj2.pid = pid;
                 obj2.f_comaddr = $("#comaddrlist").val();
@@ -285,7 +288,7 @@
                     }
                 }
 
-                var pid = $("#pojects").val();
+                var pid = getpojectId();
                 var obj2 = {};
                 obj2.pid = pid;
                 var opt = {
@@ -385,25 +388,28 @@
 
             //查看警异常信息总数
             function fualtCount() {
-                var pid = $("#pojects").val();
-                var obj = {};
-                obj.pid = pid;
-                //obj.f_day = d.toLocaleDateString();
-                $.ajax({url: "login.main.fualtCount.action", async: false, type: "get", datatype: "JSON", data: obj,
-                    success: function (data) {
-                        if (data.rs[0].number == 0) {
-                            $("#alarmNumber").html("0");
-                            $("#alarmNumber").css("color", "white");
-                        } else {
-                            $("#alarmNumber").html(data.rs[0].number);
-                            $("#alarmNumber").css("color", "red");
+                var pid = getpojectId();
+                if (pid != "" && pid != null) {
+                    var obj = {};
+                    obj.pid = pid;
+                    //obj.f_day = d.toLocaleDateString();
+                    $.ajax({url: "login.main.fualtCount.action", async: false, type: "get", datatype: "JSON", data: obj,
+                        success: function (data) {
+                            if (data.rs[0].number == 0) {
+                                $("#alarmNumber").html("0");
+                                $("#alarmNumber").css("color", "white");
+                            } else {
+                                $("#alarmNumber").html(data.rs[0].number);
+                                $("#alarmNumber").css("color", "red");
 
+                            }
+                        },
+                        error: function () {
+                            alert("出现异常！");
                         }
-                    },
-                    error: function () {
-                        alert("出现异常！");
-                    }
-                });
+                    });
+                }
+
             }
 
             function callback() {
@@ -536,13 +542,13 @@
                             pageSize: params.limit,
                             f_comaddr: "", // = $("#comaddrlist").val();
                             l_factorycode: "", // = $("#l_factorycode").val();
-                            pid: $("#pojects").val()
+                            pid: getpojectId()
                         };      
                         return temp;  
                     }
                 });
                 $('#faultDiv').dialog('open');
-                var pid = $("#pojects").val();
+                var pid = getpojectId();
                 var obj = {};
                 obj.pid = pid;
                 var opt = {
@@ -645,6 +651,8 @@
                 websocket.onerror = onerror;
                 //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
                 window.onbeforeunload = onbeforeunload;
+//                var pid  = getpojectId();
+//                $('#iframe').attr('src','formuser.mainsub.home.action?pid='+pid+'&lang=${empty cookie.lang.value?"zh_CN":cookie.lang.value}');
             });
         </script>
     </head>
@@ -887,22 +895,25 @@
             </c:forEach>
                 $(".MenuBox .list:eq(0)").click();
             }
-            $(function () {
-                var pid = '${rs[0].pid}';
-                var pids = pid.split(",");   //项目编号
-                // $("#pojects").val(pids[0]);
-                var pname = [];   //项目名称
-                for (var i = 0; i < pids.length; i++) {
-                    var obj = {};
-                    obj.code = pids[i];
-                    $.ajax({url: "login.main.getpojcetname.action", async: false, type: "get", datatype: "JSON", data: obj,
-                        success: function (data) {
-                            pname.push(data.rs[0].name);
-                        },
-                        error: function () {
-                            alert("出现异常！");
-                        }
-                    });
+            //获取项目
+            function  porject(pid) {
+                var pids = {};
+                if (pid != "" && pid != null) {
+                    pids = pid.split(",");   //项目编号
+                    // $("#pojects").val(pids[0]);
+                    var pname = [];   //项目名称
+                    for (var i = 0; i < pids.length; i++) {
+                        var obj = {};
+                        obj.code = pids[i];
+                        $.ajax({url: "login.main.getpojcetname.action", async: false, type: "get", datatype: "JSON", data: obj,
+                            success: function (data) {
+                                pname.push(data.rs[0].name);
+                            },
+                            error: function () {
+                                alert("出现异常！");
+                            }
+                        });
+                    }
                 }
 
                 for (var i = 0; i < pids.length; i++) {
@@ -910,6 +921,13 @@
                     options += "<option value=\"" + pids[i] + "\">" + pname[i] + "</option>";
                     $("#pojects").html(options);
                 }
+            }
+
+            $(function () {
+                var pid = '${rs[0].pid}';
+                porject(pid);
+                var pid2  = getpojectId();
+               // $('#iframe').attr('src','formuser.mainsub.home.action?pid='+pid2+'&lang=${empty cookie.lang.value?"zh_CN":cookie.lang.value}');
                 //查看警异常信息总数
                 fualtCount();
 

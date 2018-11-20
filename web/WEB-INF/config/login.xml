@@ -44,7 +44,7 @@
         <xhandle desc="查看故障信息数量" id="fualtCount" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select count(id) as number from t_fault where f_Isfault is null AND @CONDITION" var="rs">
                 <xflt id="CONDITION" nrp="" tpl="@pid">
-                    <xfltpara id="pid" nrp="1=1" para="pid" sql="f_comaddr in (select comaddr from t_baseinfo where pid=':pid')">
+                    <xfltpara id="pid" nrp="1=2" para="pid" sql="f_comaddr in (select comaddr from t_baseinfo where pid=':pid')">
                     </xfltpara>
                 </xflt>
             </xsql>
@@ -54,7 +54,7 @@
         <xhandle desc="修改故障信息为已读" id="updfualt" rtnype="JSON">
             <xsql id="a1" para="f_handletime,f_handlep" tpe="DDL" tpl="update t_fault set f_Isfault = 0,f_handletime=':f_handletime',f_handlep=':f_handlep'  where  @CONDITION " var="rs">
                 <xflt id="CONDITION" nrp="" tpl="@id">
-                    <xfltpara id="id" nrp="1=1" para="id" sql="id=:id">
+                    <xfltpara id="id" nrp="1=2" para="id" sql="id=:id">
                     </xfltpara>
                 </xflt>
             </xsql>
@@ -74,7 +74,7 @@
         <xhandle desc="查询所有故障信息" id="faultInfo" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select *  from t_fault where f_Isfault is null AND @CONDITION order by f_day desc" var="bootstrap">
                 <xflt id="CONDITION" nrp="" tpl="@pid AND @f_comaddr AND @l_factorycode">
-                    <xfltpara id="pid" nrp="1=1" para="pid" sql="f_comaddr in (select comaddr from t_baseinfo where pid=':pid')">
+                    <xfltpara id="pid" nrp="1=2" para="pid" sql="f_comaddr in (select comaddr from t_baseinfo where pid=':pid')">
                     </xfltpara>
                     <xfltpara id="f_comaddr" nrp="1=1" para="f_comaddr" sql="f_comaddr=':f_comaddr'">
                     </xfltpara>
@@ -111,7 +111,7 @@
                     </xfltpara>
                     <xfltpara id="area" nrp="1=1" para="area" sql="area = ':area'">
                     </xfltpara>
-                    <xfltpara id="pid" nrp="1=1" para="pid" sql="pid = ':pid'">
+                    <xfltpara id="pid" nrp="1=2" para="pid" sql="pid = ':pid'">
                     </xfltpara>
                 </xflt>
             </xsql>
@@ -123,7 +123,7 @@
                     </xfltpara>
                     <xfltpara id="l_name" nrp="1=1" para="l_name" sql="l_name = ':l_name'">
                     </xfltpara>
-                    <xfltpara id="pid" nrp="1=1" para="pid" sql="l_comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE  pid = ':pid')">
+                    <xfltpara id="pid" nrp="1=2" para="pid" sql="l_comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE  pid = ':pid')">
                     </xfltpara>
                 </xflt>
             </xsql>
@@ -131,7 +131,7 @@
         <xhandle desc="查询所有网关经纬度" id="lnglat" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_baseinfo where @CONDITION" var="rs">
                 <xflt id="CONDITION" nrp="" tpl="@pid AND @comaddr">
-                    <xfltpara id="pid" nrp="1=1" para="pid" sql="pid = ':pid'">
+                    <xfltpara id="pid" nrp="1=2" para="pid" sql="pid = ':pid'">
                     </xfltpara>
                     <xfltpara id="comaddr" nrp="1=1" para="comaddr" sql="comaddr = ':comaddr'">
                     </xfltpara>
@@ -158,7 +158,7 @@
         <xhandle desc="修改灯具经纬度" id="updateLamplnglat" rtn="rs" rtnype="JSON">
             <xsql id="a1" para="Longitude,latitude"  tpe="DDL" tpl="update t_lamp set Longitude=':Longitude',latitude=':latitude' where @CONDITION " var="rs">
                 <xflt id="CONDITION" nrp="" tpl="@id">
-                    <xfltpara id="id" nrp="1=1" para="id" sql="id=:id">
+                    <xfltpara id="id" nrp="1=2" para="id" sql="id=:id">
                     </xfltpara>
                 </xflt>
             </xsql>
@@ -170,7 +170,7 @@
                     </xfltpara>
                     <xfltpara id="l_lampnumber" nrp="1=1" para="l_lampnumber" sql="l_lampnumber = ':l_lampnumber'">
                     </xfltpara>
-                    <xfltpara id="pid" nrp="1=1" para="pid" sql="l_comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE  pid = ':pid')">
+                    <xfltpara id="pid" nrp="1=2" para="pid" sql="l_comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE  pid = ':pid')">
                     </xfltpara>
                 </xflt>      
             </xsql>             
@@ -193,13 +193,13 @@
         <xhandle desc="查询项目下所有网关和灯具" id="getAllinfo" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT *  FROM t_lamp where @CONDITION " var="lamprs">
                 <xflt id="CONDITION" nrp="" tpl="@pid">
-                    <xfltpara id="pid" nrp="1=1" para="pid" sql="l_comaddr IN (SELECT comaddr  FROM t_baseinfo  WHERE  pid = ':pid')">
+                    <xfltpara id="pid" nrp="1=2" para="pid" sql="l_comaddr IN (SELECT comaddr  FROM t_baseinfo  WHERE  pid = ':pid')">
                     </xfltpara>
                 </xflt>      
             </xsql>
             <xsql id="a2" list="true" page="true" tpe="SQL" tpl="SELECT * FROM t_baseinfo where @CONDITION" var="wgrs">
                 <xflt id="CONDITION" nrp="" tpl="@pid">
-                    <xfltpara id="pid" nrp="1=1" para="pid" sql="pid = ':pid'">
+                    <xfltpara id="pid" nrp="1=2" para="pid" sql="pid = ':pid'">
                     </xfltpara>
                 </xflt>
             </xsql>             
@@ -219,7 +219,7 @@
                     </xfltpara> 
                     <xfltpara id="end" nrp="1=1" para="end" sql="day &lt;= ':end'"> 
                     </xfltpara> 
-                    <xfltpara id="pid" nrp="1=1" para="pid" sql="comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE  pid = ':pid')">
+                    <xfltpara id="pid" nrp="1=2" para="pid" sql="comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE  pid = ':pid')">
                     </xfltpara>          
                 </xflt>
             </xsql>
@@ -234,7 +234,7 @@
                     </xfltpara> 
                     <xfltpara id="end" nrp="1=1" para="end" sql="CONVERT(varchar(7), day, 120) &lt;= ':end'"> 
                     </xfltpara> 
-                    <xfltpara id="pid" nrp="1=1" para="pid" sql="comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE  pid = ':pid')">
+                    <xfltpara id="pid" nrp="1=2" para="pid" sql="comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE  pid = ':pid')">
                     </xfltpara>          
                 </xflt>
             </xsql>
@@ -249,7 +249,7 @@
                     </xfltpara> 
                     <xfltpara id="end" nrp="1=1" para="end" sql="datename(yyyy,day) &lt;= ':end'"> 
                     </xfltpara> 
-                    <xfltpara id="pid" nrp="1=1" para="pid" sql="comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE  pid = ':pid')">
+                    <xfltpara id="pid" nrp="1=2" para="pid" sql="comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE  pid = ':pid')">
                     </xfltpara>          
                 </xflt>
             </xsql>
@@ -338,7 +338,7 @@
         <xhandle desc="删除用户表" id="deleteUser" rtn="rs" rtnype="JSON">
             <xsql id="a1" tpe="DDL" tpl="delete from t_user where @CONDITION " var="rs">
                 <xflt id="CONDITION" tpl="@id ">
-                    <xfltpara id="id" nrp="1=1" para="id" sql="id =  :id ">
+                    <xfltpara id="id" nrp="1=2" para="id" sql="id =  :id ">
                     </xfltpara>
                 </xflt>
             </xsql>
@@ -351,7 +351,7 @@
                 <xflt id="CONDITION" nrp="" tpl="@code AND @roletype">
                     <xfltpara id="code" nrp="1=1" para="code" sql="code=:code">
                     </xfltpara>
-                    <xfltpara id="roletype" nrp="1=1" para="roletype" sql="roletype=:roletype">
+                    <xfltpara id="roletype" nrp="1=2" para="roletype" sql="roletype=:roletype">
                     </xfltpara>
                 </xflt>
                 
@@ -361,6 +361,22 @@
             <xsql id="a1" para="name,roletype,code,enable,parent_id" tpe="DDL" tpl="insert into t_role(name,roletype,code,enable,parent_id) values(':name',:roletype,':code',':enable',':parent_id') " var="rs">
             </xsql>
         </xhandle> 
+        <xhandle desc="查看角色是否已分配用户" id="lookrole" rtn="rs" rtnype="JSON">
+            <xsql desc="" id="a1" list="true" page="true" tpe="SQL" tpl=" select * from t_user where @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@m_code">
+                    <xfltpara id="m_code" nrp="1=1" para="m_code" sql="m_code = :m_code">
+                    </xfltpara>                              
+                </xflt>        
+            </xsql>
+        </xhandle> 
+        <xhandle desc="删除角色" id="deleterole" rtn="rs" rtnype="JSON">
+            <xsql id="a1" tpe="DDL" tpl="delete from t_role where @CONDITION " var="rs">
+                <xflt id="CONDITION" tpl="@roletype">
+                    <xfltpara id="roletype" nrp="1=2" para="roletype" sql="roletype = :roletype">
+                    </xfltpara>
+                </xflt>
+            </xsql>
+        </xhandle>
         <xhandle desc="获取角色" id="getrole" rtnype="JSON">
             <xsql desc="获取当前登陆用户的权限" id="a1" list="true" page="true" tpe="SQL" tpl=" SELECT * FROM t_role AS tr where @CONDITION " var="rs">
                 <xflt id="CONDITION" nrp="" tpl="@roletype AND @enable">
@@ -468,7 +484,7 @@
                     
                     <xfltpara id="f_day2" nrp="1=1" para="end" sql="f_day &lt;= ':end'">
                     </xfltpara>
-                    <xfltpara id="pid" nrp="1=1" para="pid" sql="f_comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE  pid = ':pid')">
+                    <xfltpara id="pid" nrp="1=2" para="pid" sql="f_comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE  pid = ':pid')">
                     </xfltpara>
                 </xflt>
             </xsql> 
@@ -483,7 +499,7 @@
                     </xfltpara>
                     <xfltpara id="end" nrp="1=1" para="end" sql="o_time &lt;=  ':end 23:59:59' ">
                     </xfltpara>
-                    <xfltpara id="o_pid" nrp="1=1" para="pid" sql="o_pid like  '%:pid%' ">
+                    <xfltpara id="o_pid" nrp="1=2" para="pid" sql="o_pid like  '%:pid%' ">
                     </xfltpara>
                 </xflt>
             </xsql> 
@@ -528,6 +544,14 @@
         
         <xhandle desc="添加项目到当前用户的管理权限下" id="addpid" rtn="rs" rtnype="JSON">
             <xsql id="a1" para="npid" tpe="DDL" tpl="update t_user set pid = pid+':npid' where  @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@id ">
+                    <xfltpara id="id" nrp="1=1" para="id" sql="id=:id">
+                    </xfltpara>
+                </xflt>
+            </xsql>
+        </xhandle>
+        <xhandle desc="添加项目到当前用户的管理权限下" id="addpid1" rtn="rs" rtnype="JSON">
+            <xsql id="a1" para="npid" tpe="DDL" tpl="update t_user set pid =':npid' where  @CONDITION " var="rs">
                 <xflt id="CONDITION" nrp="" tpl="@id ">
                     <xfltpara id="id" nrp="1=1" para="id" sql="id=:id">
                     </xfltpara>
@@ -606,7 +630,7 @@
                 <xflt id="CONDITION" nrp="" tpl="@comaddr AND  @pid ">
                     <xfltpara id="comaddr" nrp="1=1" para="comaddr" sql="comaddr=':comaddr'">
                     </xfltpara>
-                    <xfltpara id="pid" nrp="1=1" para="pid" sql="pid=  ':pid' ">
+                    <xfltpara id="pid" nrp="1=2" para="pid" sql="pid=  ':pid' ">
                     </xfltpara>
                 </xflt>
             </xsql> 
