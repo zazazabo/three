@@ -51,9 +51,9 @@ Author     : admin
                             if (arrlist.length > 0) {
                                 console.log("w:" + arrlist.length);
                                 var codeobj = {};
-                                codeobj.l_factorycode= lampid;
+                                codeobj.l_factorycode = lampid;
                                 codeobj.pid = pid;
-                                $.ajax({async: false, url: "login.lampmanage.getfactorycode.action", type: "POST", datatype: "JSON", data:codeobj,
+                                $.ajax({async: false, url: "login.lampmanage.getfactorycode.action", type: "POST", datatype: "JSON", data: codeobj,
                                     success: function (data) {
                                         var arrlist = data.rs;
                                         if (arrlist.length == 0) {
@@ -203,18 +203,18 @@ Author     : admin
             function checkLampAdd() {
 
                 var o = $("#formadd").serializeObject();
-                o.pid=${param.pid};
+                o.pid = "${param.pid}";
                 o.name = o.comaddrname;
                 console.log(o);
                 if (o.l_factorycode == "" || o.l_comaddr == "") {
                     layerAler(langs1[370][lang]); //灯具编号不能为空,或网关地址不能为空
                     return  false;
                 }
-                var uPattern = /^[a-fA-F0-9]{12}$/;
-                if (uPattern.test(o.l_factorycode) == false) {
+                if (isNumber(o.l_factorycode) == false) {
                     layerAler(langs1[371][lang]); //灯具编号是12位的十进制
                     return false;
                 }
+
                 var isflesh = false;
                 $.ajax({url: "lamp.lampform.existlamp.action", async: false, type: "get", datatype: "JSON", data: o,
                     success: function (data) {
@@ -411,7 +411,7 @@ Author     : admin
                             title: langs1[292][lang], //灯具编号
                             width: 25,
                             align: 'center',
-                            valign: 'middle'                        
+                            valign: 'middle'
                         }, {
                             field: 'l_lampnumber',
                             title: langs1[453][lang], //灯杆编号

@@ -211,15 +211,15 @@
                         var err = data[20];
                         console.log(err);
                         var set1 = data[19] * 256 + data[18];
-                        if (err == 2 || err == 4) {
-                            var o = {l_code: set1, l_comaddr: obj.comaddr, l_deplayment: obj.val};
-                            $.ajax({async: false, url: "loop.loopForm.modifyDepaymentByCode.action", type: "get", datatype: "JSON", data: o,
-                                success: function (data) {
-                                },
-                                error: function () {
-                                    alert("提交失败！");
-                                }});
-                        }
+//                        if (err == 2 || err == 4) {
+//                            var o = {l_code: set1, l_comaddr: obj.comaddr, l_deplayment: obj.val};
+//                            $.ajax({async: false, url: "loop.loopForm.modifyDepaymentByCode.action", type: "get", datatype: "JSON", data: o,
+//                                success: function (data) {
+//                                },
+//                                error: function () {
+//                                    alert("提交失败！");
+//                                }});
+//                        }
 
                         //layerAler("装置号:" + set1.toString() + "重复");
 

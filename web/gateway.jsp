@@ -249,8 +249,7 @@
                     var fileReader = new FileReader();
                     fileReader.onload = function (ev) {
                         try {
-                            var data = ev.target.result;
-                            console.log(data);
+                            var data = ev.target.result,
                                     workbook = XLSX.read(data, {
                                         type: 'binary'
                                     }), // 以二进制流方式读取得到整份excel表格对象
