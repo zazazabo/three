@@ -199,9 +199,34 @@
                 var vv = [];
                 var comaddr = o.l_comaddr;
                 var num = randnum(0, 9) + 0x70;
-                var data = buicode(comaddr, 0x04, 0xAC, num, 0, 502, vv); //01 03 F24   
+                var data = buicode(comaddr, 0x04, 0x01, num, 0, 502, vv); //01 03 F24   
                 dealsend2("AC", data, 502, "gettodaypowerCB", comaddr, 0, 0, 0, 0);
             }
+            function  resetCB(obj) {
+                console.log(obj);
+            }
+            function reset() {
+                var o = $("#form1").serializeObject();
+                var obj = $("#form2").serializeObject();
+                var vv = [];
+                var comaddr = o.l_comaddr;
+                var num = randnum(0, 9) + 0x70;
+                var data = buicode(comaddr, 0x01, 0x02, num, 0, 2, vv); //01 03 F24   
+                dealsend2("01", data, 2, "resetCB", comaddr, 0, 0, 0, 0);
+            }
+            function initdataCB(obj) {
+                  console.log(obj);
+            }
+            function  initdata() {
+                var o = $("#form1").serializeObject();
+                var obj = $("#form2").serializeObject();
+                var vv = [];
+                var comaddr = o.l_comaddr;
+                var num = randnum(0, 9) + 0x70;
+                var data = buicode(comaddr, 0x04, 0x01, num, 0, 1, vv); //01 03 F24   
+                dealsend2("01", data, 1, "initdataCB", comaddr, 0, 0, 0, 0);
+            }
+
             function StartCheck() {
                 var o = $("#form1").serializeObject();
                 var obj = $("#form2").serializeObject();
@@ -1195,12 +1220,14 @@
                                                         <!--<option value="3">设置通信巡检次数</option>--> 
                                                         <option value="4">读取网关时间</option> 
                                                         <option value="5">网关行政区划码</option> 
-                                                        <option value="6">设置灯具</option> 
-                                                        <option value="7">设置回路</option> 
+                                                        <option value="6">网关灯具管理</option> 
+                                                        <option value="7">网关回路管理</option> 
                                                         <option value="8">设置经纬度</option> 
                                                         <option value="9">设置巡测任务</option> 
                                                         <option value="10">互感器变比设置</option> 
                                                         <option value="11">请求今天的电能量</option> 
+                                                        <option value="12">网关复位</option> 
+                                                        <option value="13">数据区初始化</option> 
                                                     </select>
                                                 </span>  
                                             </td>
@@ -1620,6 +1647,36 @@
                             </div>
 
                         </div>      
+
+                        <div class="row" id="row12"  style=" display: none">
+                            <div class="col-xs-12">
+                                <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629;">
+                                    <tbody>
+                                        <tr>
+                                            <td>       
+                                                <button  type="button" onclick="reset()" class="btn btn-success btn-sm"><span id="508" name="xxx">网关复位</span></button>&nbsp;
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>                   
+
+                        <div class="row" id="row13"  style=" display: none">
+                            <div class="col-xs-12">
+                                <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629;">
+                                    <tbody>
+                                        <tr>
+                                            <td>       
+                                                <button  type="button" onclick="initdata()" class="btn btn-success btn-sm"><span id="509" name="xxx">数据初始化</span></button>&nbsp;
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>  
 
                     </form>
                 </div>
