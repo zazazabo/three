@@ -71,6 +71,7 @@
 
                             }
                             alert(langs1[144][lang]); //添加成功
+                            getcombox();
                             addlogon(u_name, "添加", o_pid, "角色权限管理", "添加角色");
                         }
                     },
@@ -265,7 +266,7 @@
             //删除角色
             function delrole() {
                 if ($("#role").val() == "") {
-                    layerAler(langs1[505][lang]);   //请选择要分配权限的角色
+                    layerAler(langs1[505][lang]);   //请选择要删除的角色
                     return;
                 }
                 var obj = {};
@@ -287,7 +288,8 @@
                                     success: function (data) {
                                         var list = data.rs;
                                         if(list.length>0){
-                                            layerAler("删除成功请刷新");  //删除成功！
+                                            getcombox();
+                                            layerAler("删除成功");  //删除成功！
                                         }
                                     },
                                     error: function () {
@@ -360,9 +362,19 @@
                     offset: 'center'
                 });
             }
-
+            //获取角色
+            function  getcombox(){
+                  $("#role").combobox({
+                    url: "login.usermanage.rolemenu.action?parent_id=${param.role}"
+//                    onLoadSuccess: function (data) {
+//                        $(this).combobox("select", data[0].id);
+//                        $(this).val(data[0].text);
+//                    }
+                });
+            }
 
             $(function () {
+                getcombox();
                 $('#role').combobox({
                     onSelect: function (record) {
                         var objrole = {role: record.id};
@@ -430,7 +442,8 @@
 
                         <div class="" style=" width: 35%; float: left; margin-top: 2%; margin-left: 2%;">
                             <span style=" width: 20%;" name="xxx" id="245">角色列表</span>
-                            <input id="role" class="easyui-combobox" name="role" style="width:40%; height: 34px;" data-options="editable:true,valueField:'id', textField:'text',url:'login.usermanage.rolemenu.action?parent_id=${param.role}'" />
+<!--                            <input id="role" class="easyui-combobox" name="role" style="width:40%; height: 34px;" data-options="editable:true,valueField:'id', textField:'text',url:'login.usermanage.rolemenu.action?parent_id=${param.role}'" />-->
+                            <input id="role" data-options='editable:false,valueField:"id", textField:"text"' style="width:40%; height: 34px;" class="easyui-combobox"/>
                             <button class="btn btn-success" style=" width:23%;" onclick="delrole()" ><span name="xxx" id="504">删除角色</span></button>
                         </div>
                         <div class="" style=" width: 25%; margin-left: 5%; float: left; margin-top: 2%;">

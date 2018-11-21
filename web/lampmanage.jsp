@@ -122,28 +122,29 @@ Author     : admin
                     layerAler(langs1[263][lang]); //请勾选您要删除的数据
                     return;
                 }
-                var select = selects[0];
-                if (select.l_eplayment == "1") {
-                    layerAler(ladngs1[368][lang]); //已部署的不能删除
-                    return;
-                }
                 layer.confirm(langs1[145][lang], {//确认要删除吗？
                     btn: [langs1[146][lang], langs1[147][lang]] //确定、取消按钮
                 }, function (index) {
-                    addlogon(u_name, "删除", o_pid, "灯具管理", "删除灯具", select.l_comaddr);
-                    $.ajax({url: "lamp.lampform.deleteLamp.action", type: "POST", datatype: "JSON", data: {id: select.id},
-                        success: function (data) {
-                            var arrlist = data.rs;
-                            if (arrlist.length == 1) {
-                                search();
-                                // $("#gravidaTable").bootstrapTable('refresh');
-                                layerAler(langs1[342][lang]); //删除成功                     layer.close(index);
-                            }
-                        },
-                        error: function () {
-                            layerAler("提交失败");
+                    for (var i = 0; i < selects.length; i++) {
+                        if (selects[i].l_deplayment == "1") {
+                            layerAler(langs1[368][lang]); //已部署的不能删除
+                            return;
                         }
-                    });
+                    }
+                    for (var i = 0; i < selects.length; i++) {
+                        addlogon(u_name, "删除", o_pid, "灯具管理", "删除灯具", selects[i].l_comaddr);
+                        $.ajax({url: "lamp.lampform.deleteLamp.action", type: "POST", datatype: "JSON", data: {id: selects[i].id},
+                            success: function (data) {
+
+                            },
+                            error: function () {
+                                layerAler("提交失败");
+                            }
+                        });
+                    }
+                    search();
+                    //$("#gravidaTable").bootstrapTable('refresh');
+                    layerAler(langs1[342][lang]); //删除成功   
                     layer.close(index);
                     //此处请求后台程序，下方是成功后的前台处理……
                 });
@@ -504,7 +505,7 @@ Author     : admin
                             }
                         }],
                     clickToSelect: true,
-                    singleSelect: true,
+                    singleSelect: false,
                     sortName: 'id',
                     locale: 'zh-CN', //中文支持,
                     showColumns: true,
@@ -534,111 +535,6 @@ Author     : admin
                         return temp;  
                     },
                 });
-
-                //导出模板
-                $('#lampmuban').bootstrapTable({
-                    url: 'login.lampmanage.getmb.action',
-                    //showExport: true, //是否显示导出
-                    exportDataType: "basic", //basic', 'a
-                    columns: [
-                        {
-                            title: '序号',
-                            align: "center",
-                            width: 25,
-                            formatter: function (value, row, index) {
-                                return "1";
-                            }
-                        },
-                        {
-                            field: 'l_comaddr',
-                            title: '网关地址', //网关地址
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
-                            field: 'l_name',
-                            title: '灯具名称', //灯具名称
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
-                            field: 'l_factorycode',
-                            title: '灯具编号', //灯具编号
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle',
-                            formatter: function (value, row, index, field) {
-                                if (value != null) {
-                                    // value = value.replace(/\b(0+)/gi, "");
-                                    return value.toString();
-                                }
-
-                            }
-                        },
-                        {
-                            field: 'l_groupe',
-                            title: '组号', //组号
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle',
-                            formatter: function (value, row, index, field) {
-                                if (value != null) {
-                                    return value.toString();
-                                }
-
-                            }
-                        },
-                        {
-                            field: 'l_lampnumber',
-                            title: '灯杆编号', //灯杆编号
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        },
-                        {
-                            field: 'l_worktype',
-                            title: '控制方式', //控制方式
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle',
-                            formatter: function (value, row, index, field) {
-                                var str = "0代表时间控制、1代表经纬度、2代表场景;输入0或1或2 即可";
-                                return  str;
-                            }
-                        }
-                    ],
-                    clickToSelect: true,
-                    singleSelect: true,
-                    sortName: 'id',
-                    locale: 'zh-CN', //中文支持,
-                    showColumns: true,
-                    sortOrder: 'desc',
-                    pagination: true,
-                    sidePagination: 'server',
-                    pageNumber: 1,
-                    pageSize: 20,
-                    showRefresh: true,
-                    showToggle: true,
-                    // 设置默认分页为 50
-                    pageList: [50, 100, 200, 300, 400],
-                    onLoadSuccess: function () {  //加载成功时执行  表格加载完成时 获取集中器在线状态
-//                        console.info("加载成功");
-                    },
-
-                    //服务器url
-                    queryParams: function (params)  {   //配置参数     
-                        var temp  =   {    //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的 
-                            search: params.search,
-                            skip: params.offset,
-                            limit: params.limit,
-                            type_id: "1"
-                        };    
-                        return temp;  
-                    }
-                });
-
-
-
                 var aaa = $("span[name=xxx]");
                 for (var i = 0; i < aaa.length; i++) {
                     var d = aaa[i];
@@ -1081,7 +977,7 @@ Author     : admin
             <button class="btn btn-primary ctrol" onclick="editlampInfo()"   id="xiugai1">
                 <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span name="xxx" id="66">编辑</span>
             </button>
-            <button class="btn btn-danger ctrol" onclick="deleteLamp();" id="shanchu">
+            <button class="btn btn-danger ctrol" onclick="deleteLamp()" id="shanchu">
                 <span class="glyphicon glyphicon-trash"></span>&nbsp;<span name="xxx" id="67">删除</span>
             </button>
             <button class="btn btn-success ctrol" onclick="excel()" id="addexcel" >
@@ -1100,7 +996,24 @@ Author     : admin
         </table>
         <div class="mb">
             <table id="lampmuban">
-
+                <tr>
+                    <td>序号</td>
+                    <td>网关地址</td>
+                    <td>灯具名称</td>
+                    <td>灯具编号</td>
+                    <td>组号</td>
+                    <td>灯杆编号</td>
+                    <td>控制方式</td>
+                </tr>
+                <tr>
+                    <td>如1、2、3</td>
+                    <td>网关地址必须是项目存在的</td>
+                    <td>灯具名称</td>
+                    <td>灯具编号是项目下唯一</td>
+                    <td>组号</td>
+                    <td>灯杆编号</td>
+                    <td>0代表时间控制、1代表经纬度、2代表场景;输入0或1或2 即可</td>
+                </tr>
             </table>
         </div>
         <!-- 添加 -->
