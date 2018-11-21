@@ -19,9 +19,14 @@
             .a-upload:hover { color: #444; background: #eee; border-color: #ccc; text-decoration: none } 
 
             .bodycenter { text-align: -webkit-center; text-align: -moz-center; width: 600px; margin: auto; } 
-
+            .mb{
+                top:-60%;
+                position:absolute;
+                z-index:9999;
+                background-color:#FFFFFF;
+            }
         </style>
-
+        <script type="text/javascript" src="SheetJS-js-xlsx/dist/xlsx.core.min.js"></script>
         <script type="text/javascript" src="js/genel.js"></script>
         <script type="text/javascript" src="js/getdate.js"></script>
         <script>
@@ -182,6 +187,49 @@
 //                return ret;
             }
 
+            function excel() {
+                $('#dialog-excel').dialog('open');
+                return false;
+
+            }
+            //excel添加回路策略
+            function  addexcel() {
+                var selects = $('#warningtable').bootstrapTable('getSelections');
+                var num = selects.length;
+                if (num == 0) {
+                    layerAler(langs1[350][lang]);  //请选择您要保存的数据
+                    return;
+                }
+                addlogon(u_name, "添加", o_pid, "回路策略", "Excel添加回路方案");
+                var pid = parent.parent.getpojectId();
+                //pid,p_outtime,p_intime,p_name,p_type
+                for (var i = 0; i <= selects.length - 1; i++) {
+                    var obj = {};
+                    obj.pid = pid;
+                    obj.p_outtime = selects[i].断开时间;
+                    obj.p_intime = selects[i].闭合时间;
+                    obj.p_name = selects[i].方案名称;
+                    obj.p_type = 0;
+                    $.ajax({async: false, url: "loop.planForm.addlooptime.action", type: "get", datatype: "JSON", data: obj,
+                        success: function (data) {
+                            var arrlist = data.rs;
+                            if (arrlist.length == 1) {
+                                var ids = [];//定义一个数组
+                                var xh = selects[i].序号;
+                                ids.push(xh);//将要删除的id存入数组
+                                $("#warningtable").bootstrapTable('remove', {field: '序号', values: ids});
+                            }
+                        },
+                        error: function () {
+                            alert("提交失败！");
+                        }
+                    });
+
+                }
+                $("#table_loop").bootstrapTable('refresh');
+
+            }
+
             $(function () {
                 var aaa = $("span[name=xxx]");
                 for (var i = 0; i < aaa.length; i++) {
@@ -192,6 +240,7 @@
                 $("#add").attr("disabled", true);
                 $("#update").attr("disabled", true);
                 $("#del").attr("disabled", true);
+                $("#addexcel").attr("disabled", true);
                 var obj = {};
                 obj.code = ${param.m_parent};
                 obj.roletype = ${param.role};
@@ -202,6 +251,7 @@
                             for (var i = 0; i < rs.length; i++) {
                                 if (rs[i].code == "400101" && rs[i].enable != 0) {
                                     $("#add").attr("disabled", false);
+                                    $("#addexcel").attr("disabled", false);
                                     continue;
                                 }
                                 if (rs[i].code == "400102" && rs[i].enable != 0) {
@@ -253,6 +303,106 @@
                     }
                 });
 
+                $("#dialog-excel").dialog({
+                    autoOpen: false,
+                    modal: true,
+                    width: 750,
+                    height: 500,
+                    position: "top",
+                    buttons: {
+                        保存: function () {
+                            addexcel();
+                        }, 关闭: function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
+
+                $('#warningtable').bootstrapTable({
+                    columns: [
+                        {
+                            title: '单选',
+                            field: 'select',
+                            //复选框
+                            checkbox: true,
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            title: langs1[345][lang], //序号
+                            field: '序号',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            title: langs1[69][lang], //方案名称
+                            field: '方案名称',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            title: langs1[71][lang], //闭合时间
+                            field: '闭合时间',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            title: langs1[72][lang], //断开时间
+                            field: '断开时间',
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }
+                    ],
+                    singleSelect: false,
+                    locale: 'zh-CN', //中文支持,
+                    pagination: true,
+                    pageNumber: 1,
+                    pageSize: 40,
+                    pageList: [20, 40, 80, 160]
+
+                });
+
+                $('#excel-file').change(function (e) {
+                    var files = e.target.files;
+                    var fileReader = new FileReader();
+                    fileReader.onload = function (ev) {
+                        try {
+                            var data = ev.target.result;
+                            workbook = XLSX.read(data, {
+                                type: 'binary'
+                            }), // 以二进制流方式读取得到整份excel表格对象
+                                    persons = []; // 存储获取到的数据
+                        } catch (e) {
+                            alert(langs1[348][lang]);  //文件类型不正确
+                            return;
+                        }
+                        // 表格的表格范围，可用于判断表头是否数量是否正确
+                        var fromTo = '';
+                        // 遍历每张表读取
+                        for (var sheet in workbook.Sheets) {
+                            if (workbook.Sheets.hasOwnProperty(sheet)) {
+                                fromTo = workbook.Sheets[sheet]['!ref'];
+                                persons = persons.concat(XLSX.utils.sheet_to_json(workbook.Sheets[sheet]));
+                                // break; // 如果只取第一张表，就取消注释这行
+                            }
+                        }
+                        var headStr = '序号,方案名称,闭合时间,断开时间';
+                        for (var i = 0; i < persons.length; i++) {
+                            if (Object.keys(persons[i]).join(',') !== headStr) {
+                                alert(langs1[366][lang]); //导入文件格式不正确
+                                persons = [];
+                            }
+                        }
+                        $("#warningtable").bootstrapTable('load', []);
+                        if (persons.length > 0) {
+                            $('#warningtable').bootstrapTable('load', persons);
+
+                        }
+                    };
+                    // 以二进制方式打开文件
+                    fileReader.readAsBinaryString(files[0]);
+                });
 
 
 
@@ -292,23 +442,6 @@
                         };
 
                         $("#table_loop").bootstrapTable('refresh', opt);
-
-
-//                        if (record.value == "0") {
-//                            $("#table_loop").bootstrapTable('hideColumn', 'p_Longitude');
-//                            $("#table_loop").bootstrapTable('hideColumn', 'p_latitude');
-//                            $("#table_loop").bootstrapTable('showColumn', 'p_outtime');
-//                            $("#table_loop").bootstrapTable('showColumn', 'p_intime');
-//                        }
-//                        if (record.value == "1")
-//                        {
-//                            $("#table_loop").bootstrapTable('hideColumn', 'p_outtime');
-//                            $("#table_loop").bootstrapTable('hideColumn', 'p_intime');
-//
-//                            $("#table_loop").bootstrapTable('showColumn', 'p_Longitude');
-//                            $("#table_loop").bootstrapTable('showColumn', 'p_latitude');
-//                        }
-//                        console.log(record);
                     }
                 })
                 $("#p_type_query").combobox('select', '0');
@@ -329,7 +462,7 @@
                             valign: 'middle'
                         }, {
                             field: 'p_name',
-                            title: langs1[69][lang],//方案名称
+                            title: langs1[69][lang], //方案名称
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -341,13 +474,13 @@
                             valign: 'middle'
                         }, {
                             field: 'p_intime',
-                            title: langs1[71][lang],    //闭合时间
+                            title: langs1[71][lang], //闭合时间
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'p_outtime',
-                            title: langs1[72][lang],  //断开时间
+                            title: langs1[72][lang], //断开时间
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -367,7 +500,7 @@
 //                        }
                         {
                             field: 'p_attr',
-                            title: langs1[68][lang],  //方案类型
+                            title: langs1[68][lang], //方案类型
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -434,6 +567,15 @@
                 <span class="glyphicon glyphicon-trash"></span>&nbsp;
                 <!--删除-->
                 <span id="67" name="xxx">删除</span>
+            </button>
+            <button class="btn btn-success ctrol" onclick="excel()" id="addexcel" >
+                <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;<span name="xxx" id="353">导入Excel</span>
+            </button>
+            <button type="button" id="download" id="btn_download" class="btn btn-primary" onClick ="$('#table_loop').tableExport({type: 'excel', escape: 'false'})">
+                <span name="xxx" id="110">导出Excel</span>
+            </button>
+            <button class="btn btn-success ctrol" onclick="$('#hlclmb').tableExport({type: 'excel', escape: 'false'})" id="addexcel" >
+                <span name="xxx" id="472">导出Excel模板</span>
             </button>
 
             <span style="margin-left:20px;">
@@ -609,7 +751,27 @@
 
             </form>
         </div>
+        <div id="dialog-excel"  class="bodycenter"  style=" display: none" title="导入Excel">
+            <input type="file" id="excel-file" style=" height: 40px;">
+            <table id="warningtable"></table>
 
+        </div>
+        <div class="mb">
+            <table id="hlclmb" style=" border: 1px">
+                <tr>
+                    <td>序号</td>
+                    <td>方案名称</td>
+                    <td>闭合时间</td>
+                    <td>断开时间</td>
+                </tr>
+                <tr>
+                    <td>如1、2、3</td>
+                    <td>方案名称</td>
+                    <td>"xx:xx"格式,不能为空</td>
+                    <td>"xx:xx"格式,不能为空</td>
+                </tr>
+            </table>
+        </div>
 
 
 

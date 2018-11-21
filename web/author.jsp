@@ -82,7 +82,7 @@
 
             function getIdSelections() {
                 return $.map($("#gravidaTable").bootstrapTable('getSelections'), function (row) {
-                    return row.id
+                    return row.id;
                 });
             }
 // 在ztree上的右击事件
@@ -352,7 +352,7 @@
 
 
 
-            })
+            });
 
             function layerAler(str) {
                 layer.alert(str, {
@@ -382,7 +382,9 @@
                         });
                     }
                 });
-            })
+                
+                
+            });
             //修改权限后刷新权限树形图
             function  freshenTree(roleid) {
                 var objrole = {role: roleid};

@@ -605,11 +605,10 @@
                             valign: 'middle',
                             formatter: function (value, row, index) {
                                 if (value == 1) {
-                                    return "<img  src='img/online1.png'/>";
+                                    return "<img  src='img/online1.png'/>";  //onclick='hello()'
                                 } else {
-                                    return "<img  src='img/off.png'/>";
+                                    return "<img  src='img/off.png'/>";  //onclick='hello()'
                                 }
-
                             }
                         }],
                     method: "post",
@@ -688,7 +687,7 @@
                             align: 'center',
                             valign: 'middle'
                         }, {
-                            field: 'presence',
+                            field: 'online',
                             title: lans[61][lang], //在线状态
                             width: 25,
                             align: 'center',

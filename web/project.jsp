@@ -175,10 +175,10 @@
                                                     newcode = code[0].code;
                                                     var s = getuserporject(uid);
                                                     if (s == null || s == "") {
-                                                        var pidobj = {};
-                                                        pidobj.id = uid;
-                                                        pidobj.npid = newcode;
-                                                        $.ajax({async: false, url: "login.project.addpid1.action", type: "get", datatype: "JSON", data: pidobj,
+                                                        var pidobj1 = {};
+                                                        pidobj1.id = uid;
+                                                        pidobj1.npid = newcode;
+                                                        $.ajax({async: false, url: "login.project.addpid1.action", type: "get", datatype: "JSON", data: pidobj1,
                                                             success: function (data) {
 
                                                             },
@@ -210,17 +210,33 @@
                                                                 var parentid = data.ups;
                                                                 parentid = parentid[0].u_parent_id;
                                                                 if (parentid != 0) {
-                                                                    var ppobj = {};
-                                                                    ppobj.id = parentid;
-                                                                    ppobj.npid = "," + newcode;
-                                                                    $.ajax({async: false, url: "login.project.addpid.action", type: "get", datatype: "JSON", data: ppobj,
-                                                                        success: function (data) {
+                                                                    var pid = getuserporject(parentid);
+                                                                    if (pid == null || pid == "") {
+                                                                        var ppobj = {};
+                                                                        ppobj.id = parentid;
+                                                                        ppobj.npid = newcode;
+                                                                        $.ajax({async: false, url: "login.project.addpid1.action", type: "get", datatype: "JSON", data: ppobj,
+                                                                            success: function (data) {
 
-                                                                        },
-                                                                        error: function () {
-                                                                            alert("提交失败！");
-                                                                        }
-                                                                    });
+                                                                            },
+                                                                            error: function () {
+                                                                                alert("提交失败！");
+                                                                            }
+                                                                        });
+                                                                    } else {
+                                                                        var ppobj2 = {};
+                                                                        ppobj2.id = parentid;
+                                                                        ppobj2.npid = "," + newcode;
+                                                                        $.ajax({async: false, url: "login.project.addpid.action", type: "get", datatype: "JSON", data: ppobj2,
+                                                                            success: function (data) {
+
+                                                                            },
+                                                                            error: function () {
+                                                                                alert("提交失败！");
+                                                                            }
+                                                                        });
+                                                                    }
+
                                                                 }
                                                             }
                                                         });

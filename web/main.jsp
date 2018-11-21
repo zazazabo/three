@@ -308,7 +308,7 @@
 
             //退出
             function getout() {
-                layer.confirm(o[282][lang], {//确认要删除吗？
+                layer.confirm(o[282][lang], {//确认要退出吗？
                     btn: [o[146][lang], o[147][lang]]//确定、取消按钮
                 }, function (index) {
                     window.location = "${pageContext.request.contextPath }/login.jsp";
@@ -1007,6 +1007,7 @@
                         var e = $(d).attr("id");
                         $(d).html(o[e][language]);
                     }
+                    lang = getCookie("lang");
                 });
                 $(".language li:eq(1)").click(function () {
                     var language = $(this).attr("language");
@@ -1019,6 +1020,7 @@
                         var e = $(d).attr("id");
                         $(d).html(o[e][language]);
                     }
+                    lang = getCookie("lang");
                 });
                 $(".language li:eq(2)").click(function () {
                     var language = $(this).attr("language");
@@ -1031,6 +1033,7 @@
                         var e = $(d).attr("id");
                         $(d).html(o[e][language]);
                     }
+                    lang = getCookie("lang");
                 });
 
                 //语言切换

@@ -915,7 +915,7 @@
 //                console.log(index);
                 if (index == 0) {
                     var l_comaddr = row.comaddr;
-                    $("#head").html(langs1[425][lang] + "[" + row.name + "]" + langs1[427][lang]);
+                    $("#head").html("[" + row.name + "]");
                     $("#l_comaddr").val(l_comaddr);
                     if (row.online == 1) {
                         var vv = [];

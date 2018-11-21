@@ -69,7 +69,10 @@
                 .logo-animate img{  
 
                     height:410px;  
-                }  
+                } 
+                .loginBox{
+                    border: 1px solid red;
+                }
             } 
             @media screen and (min-width:1366px) and (max-width:1440px){  
                 .logo-animate{
@@ -333,8 +336,8 @@
                     -o-border-radius:15px;
                     /*                    background:rgba(2,8,25,0.49);*/
                     /*                    margin: 50px auto 0 auto; */
-                    margin-left: 50%;
-                    margin-top: 70%;
+                    margin-left: 20%;
+                    margin-top: 30%;
 
                     display:none;  
                 }
@@ -382,6 +385,7 @@
                 }
             }
             @media screen and (min-width:736px) and (max-width:1024px){  
+                
                 .logo-animate{
                     top:30%;
                 }
@@ -408,10 +412,10 @@
                     -moz-border-radius:15px; 
                     -ms-border-radius:15px;  
                     -o-border-radius:15px;
-                    background:rgba(2,8,25,0.49);                  
+/*                    background:rgba(2,8,25,0.49);                  */
                     /*                    margin: 50px auto 0 auto;*/
-                    margin-left: 50%;
-                    margin-top: 60%;
+                    margin-left: 30%;
+                    margin-top: 30%;
                     display:none;  
                 }
                 .logion{
