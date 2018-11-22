@@ -220,7 +220,14 @@
 
                 }
             }
-
+//            function getCookie(name)//取cookies函數       
+//            {
+//                var arr = document.cookie.match(new RegExp("(^| )" + name + "=([^;]*)(;|$)"));
+//                if (arr != null)
+//                    return unescape(arr[2]);
+//                return null;
+//
+//            }
             function  getuserId() {
                 var userid = $("#userid").val();
                 return  userid;

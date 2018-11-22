@@ -23,7 +23,7 @@ function getNowFormatDate2() {
 }
 
 
-function  addlogon(name, type, pid, page, comment, l_comaddr = "") {
+function  addlogon(name, type, pid, page, comment, l_comaddr="") {
     var nobj = {};
     nobj.name = name;
     nobj.type = type;
