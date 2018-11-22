@@ -74,7 +74,7 @@
             <input id="lampcomaddrlist2" data-options="editable:true,valueField:'id', textField:'text'"  class="easyui-combobox"/>&nbsp;
             <span name="xxx" id="453">灯杆编号</span>：
             <input type="text" id="lampNumber">
-            <button onclick="wg()"><span name="xxx" id="50">网关</span></button>
+            <button onclick="wg()"><span name="xxx" id="50">集控器</span></button>
             <button onclick="dj()" id="dj"><span name="xxx" id="51">灯具</span></button>
             <button id="bzzt"><span name="xxx" id="52">标识状态</span></button>
             <button onclick="xcdj()"><span name="xxx" id="414">巡测灯具</span></button>
@@ -136,7 +136,7 @@
                                 </td>
                                 <td>
                                     <span style="margin-left:30px;">                                     
-                                        <span id="25" name="xxx">网关地址</span>
+                                        <span id="25" name="xxx">集控器地址</span>
                                         &nbsp;</span>
                                     <input id="comaddrlist" data-options='editable:false,valueField:"id", textField:"text"' class="easyui-combobox"/>
                                 </td>
@@ -1010,7 +1010,7 @@
                     }
                 },
                 {
-                    text: lans[58][lang], //添加网关
+                    text: lans[58][lang], //添加集控器
                     callback: function () {
 
                         var allOver = map.getOverlays(); //获取全部标注

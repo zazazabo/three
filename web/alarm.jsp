@@ -379,7 +379,7 @@
                     <tr>
                         <td>
                             <span style="margin-left:10px;">                                     
-                                <span id="25" name="xxx">网关地址</span>
+                                <span id="25" name="xxx">集控器地址</span>
                                 &nbsp;</span>
                             <input id="comaddrlist" data-options='editable:true,valueField:"id", textField:"text"' class="easyui-combobox"/>
                         </td>
