@@ -110,14 +110,14 @@
                 var obj = $("#form2").serializeObject();
 
                 var y = sprintf("%d", myDate.getFullYear()).substring(2, 4);
-                
-                
+
+
                 var m = sprintf("%d", myDate.getMonth() + 1);
                 var d = sprintf("%d", myDate.getDate());
                 var h = sprintf("%d", myDate.getHours());
                 var mm = sprintf("%d", myDate.getMinutes());
                 var s = sprintf("%d", myDate.getSeconds());
-                
+
                 console.log(m);
                 var vv = [];
                 vv.push(parseInt(s, 16));
@@ -326,8 +326,8 @@
                 var vv = [];
                 var l_comaddr = "17020101";
                 var num = randnum(0, 9) + 0x70;
-                var data = "0"
-                dealsend2("ALL", data, 1, "ALL", l_comaddr, 0, 0, 0);
+                var data = ""
+                dealsend2("CheckOnline", data, 1, "CheckOnline", l_comaddr, 0, 0, 0);
             }
 
             function readTrueTimeCB(obj) {
@@ -1352,10 +1352,10 @@
                                                         <option value="1" >主站域名或IP设置</option>
                                                         <option value="2">设置换日冻结时间参数</option>    
                                                         <!--<option value="3">设置通信巡检次数</option>--> 
-                                                        <option value="4">读取集控器时间</option> 
+                                                        <!--<option value="4">读取集控器时间</option>--> 
                                                         <option value="5">集控器行政区划码</option> 
-                                                        <option value="6">集控器灯具管理</option> 
-                                                        <option value="7">集控器回路管理</option> 
+                                                        <!--                                                        <option value="6">集控器灯具管理</option> 
+                                                                                                                <option value="7">集控器回路管理</option> -->
                                                         <option value="8">设置经纬度</option> 
                                                         <option value="9">设置巡测任务</option> 
                                                         <option value="10">互感器变比设置</option> 
@@ -1365,9 +1365,9 @@
                                                     </select>
                                                 </span>  
                                             </td>
-                                            <!--                                            <td>
-                                                                                            <button type="button"  onclick="refleshgayway()" class="btn  btn-success btn-sm" style="margin-left: 2px;">刷新网关在线列表</button>
-                                                                                        </td>-->
+                                            <td>
+                                                <button type="button"  onclick="refleshgayway()" class="btn  btn-success btn-sm" style="margin-left: 2px;">刷新网关在线列表</button>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table> 
