@@ -164,7 +164,7 @@
 
             });
 
-            var str1 = "<button   type='button'  onclick='setWarning()' class='btn btn-success btn-sm'>" + langs1[215][lang] + "</button>" + "&nbsp;&nbsp;&nbsp; <button   type='button'  onclick='readWarning()' class='btn btn-success btn-sm'>" + langs1[417][lang] + "</button>";  //设置灯具报警参数
+            var str1 = "<button   type='button'  onclick='setWarning()' class='btn btn-success btn-sm'>" + langs1[215][lang] + "</button>" + "&nbsp;&nbsp;&nbsp;"  //设置灯具报警参数
 //            &nbsp;&nbsp;&nbsp; <button   type='button'  onclick='readWarning()' class='btn btn-success btn-sm'>" + langs1[417][lang] + "</button>"
             $('#warningtable').bootstrapTable({
                 columns: [[{

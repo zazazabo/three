@@ -96,6 +96,44 @@
 
             }
 
+
+            function  setTimeNowCB(obj) {
+                if (obj.status == "success") {
+                    layerAler(langs1[377][lang]);   //设置成功
+                }
+            }
+            function setTimeNow() {
+                var time = $('#nowtime').datetimebox('getValue');
+                var myDate = new Date(time);
+
+                var o = $("#form1").serializeObject();
+                var obj = $("#form2").serializeObject();
+
+                var y = sprintf("%d", myDate.getFullYear()).substring(2, 4);
+                
+                
+                var m = sprintf("%d", myDate.getMonth() + 1);
+                var d = sprintf("%d", myDate.getDate());
+                var h = sprintf("%d", myDate.getHours());
+                var mm = sprintf("%d", myDate.getMinutes());
+                var s = sprintf("%d", myDate.getSeconds());
+                
+                console.log(m);
+                var vv = [];
+                vv.push(parseInt(s, 16));
+                vv.push(parseInt(mm, 16));
+                vv.push(parseInt(h, 16));
+                vv.push(parseInt(d, 16));
+                vv.push(parseInt(m, 16));
+                vv.push(parseInt(y, 16));
+
+                var comaddr = o.l_comaddr;
+                var num = randnum(0, 9) + 0x70;
+                var data = buicode(comaddr, 0x04, 0xA5, num, 0, 340, vv); //01 03 F24   
+                dealsend2("A5", data, 340, "setTimeNowCB", comaddr, 0, 0, 0, 0);
+
+                console.log(myDate);
+            }
             function  readPowerCB(obj) {
                 if (obj.status == "success") {
                     if (obj.msg == "FE" && obj.fn == 8) {
@@ -143,7 +181,20 @@
                 }
 
             }
+            function setNowtime() {
+                var myDate = new Date();//获取系统当前时
+                var y = myDate.getFullYear();
+                var m = myDate.getMonth() + 1;
+                var d = myDate.getDate();
+                var h = myDate.getHours();
+                var mm = myDate.getMinutes();
+                var s = myDate.getSeconds();
 
+                var str = y + "-" + m + "-" + d + " " + h + ":" + mm + ":" + s;
+                console.log(str);
+                $('#nowtime').datetimebox('setValue', str);
+
+            }
             function readpower() {
                 var o = $("#form1").serializeObject();
                 var obj = $("#form2").serializeObject();
@@ -199,23 +250,38 @@
                 var vv = [];
                 var comaddr = o.l_comaddr;
                 var num = randnum(0, 9) + 0x70;
-                var data = buicode(comaddr, 0x04, 0x01, num, 0, 502, vv); //01 03 F24   
+                var data = buicode(comaddr, 0x04, 0xAC, num, 0, 502, vv); //01 03 F24   
                 dealsend2("AC", data, 502, "gettodaypowerCB", comaddr, 0, 0, 0, 0);
             }
             function  resetCB(obj) {
                 console.log(obj);
+                if (obj.status = "success") {
+                    layerAler("复位成功");
+                }
             }
-            function reset() {
+            function resetGayway() {
                 var o = $("#form1").serializeObject();
                 var obj = $("#form2").serializeObject();
                 var vv = [];
                 var comaddr = o.l_comaddr;
                 var num = randnum(0, 9) + 0x70;
-                var data = buicode(comaddr, 0x01, 0x02, num, 0, 2, vv); //01 03 F24   
-                dealsend2("01", data, 2, "resetCB", comaddr, 0, 0, 0, 0);
+                var data = buicode(comaddr, 0x4, 0x01, num, 0, 1, vv); //01 03 F24   
+                console.log(data);
+                dealsend2("01", data, 1, "resetCB", comaddr, 0, 0, 0, 0);
             }
             function initdataCB(obj) {
-                  console.log(obj);
+                if (obj.status == "success") {
+                    $.ajax({async: false, url: "gayway.GaywayForm.ClearData.action", type: "get", datatype: "JSON", data: {},
+                        success: function (data) {
+
+                        },
+                        error: function () {
+                            alert("提交失败！");
+                        }
+                    });
+                    layerAler("初始化成功");
+                }
+
             }
             function  initdata() {
                 var o = $("#form1").serializeObject();
@@ -223,8 +289,8 @@
                 var vv = [];
                 var comaddr = o.l_comaddr;
                 var num = randnum(0, 9) + 0x70;
-                var data = buicode(comaddr, 0x04, 0x01, num, 0, 1, vv); //01 03 F24   
-                dealsend2("01", data, 1, "initdataCB", comaddr, 0, 0, 0, 0);
+                var data = buicode(comaddr, 0x04, 0x01, num, 0, 2, vv); //01 03 F24   
+                dealsend2("01", data, 2, "initdataCB", comaddr, 0, 0, 0, 0);
             }
 
             function StartCheck() {
@@ -275,7 +341,7 @@
 
                     var yh = data[23] >> 4 & 0x0F;
                     var yl = data[23] & 0x0F;
-                    var mh = data[22] >> 4 & 0x03;
+                    var mh = data[22] >> 4 & 0x01;
                     var ml = data[22] & 0x0F;
                     var dh = data[21] >> 4 & 0x0F;
                     var dl = data[21] & 0x0F;
@@ -628,6 +694,19 @@
 
                 $('#time4').timespinner('setValue', '00:00');
                 $('#time3').timespinner('setValue', '00:00');
+
+                var myDate = new Date();//获取系统当前时
+                var y = myDate.getFullYear();
+                var m = myDate.getMonth() + 1;
+                var d = myDate.getDate();
+                var h = myDate.getHours();
+                var mm = myDate.getMinutes();
+                var s = myDate.getSeconds();
+
+                var str = y + "-" + m + "-" + d + " " + h + ":" + mm + ":" + s;
+                console.log(str);
+                $('#nowtime').datetimebox('setValue', str);
+
 
             })
 
@@ -1181,6 +1260,61 @@
 
 
             })
+
+
+            function dateFormatter(value) {
+                var date = new Date(value);
+                var year = date.getFullYear().toString();
+                var month = (date.getMonth() + 1);
+                var day = date.getDate().toString();
+                var hour = date.getHours().toString();
+                var minutes = date.getMinutes().toString();
+                var seconds = date.getSeconds().toString();
+                if (month < 10) {
+                    month = "0" + month;
+                }
+                if (day < 10) {
+                    day = "0" + day;
+                }
+                if (hour < 10) {
+                    hour = "0" + hour;
+                }
+                if (minutes < 10) {
+                    minutes = "0" + minutes;
+                }
+                if (seconds < 10) {
+                    seconds = "0" + seconds;
+                }
+                return year + "-" + month + "-" + day + " " + hour + ":" + minutes + ":" + seconds;
+            }
+
+//            function dateParser(s) {
+//                var date = new Date(s);
+//                var year = date.getFullYear().toString();
+//                var month = (date.getMonth() + 1);
+//                var day = date.getDate().toString();
+//                var hour = date.getHours().toString();
+//                var minutes = date.getMinutes().toString();
+//                var seconds = date.getSeconds().toString();
+//                if (month < 10) {
+//                    month = "0" + month;
+//                }
+//                if (day < 10) {
+//                    day = "0" + day;
+//                }
+//                if (hour < 10) {
+//                    hour = "0" + hour;
+//                }
+//                if (minutes < 10) {
+//                    minutes = "0" + minutes;
+//                }
+//                if (seconds < 10) {
+//                    seconds = "0" + seconds;
+//                }
+//                var str = year + "-" + month + "-" + day + " " + hour + ":" + minutes + ":" + seconds;
+//                return str;
+//            }
+
         </script>
     </head>
     <body>
@@ -1218,10 +1352,10 @@
                                                         <option value="1" >主站域名或IP设置</option>
                                                         <option value="2">设置换日冻结时间参数</option>    
                                                         <!--<option value="3">设置通信巡检次数</option>--> 
-                                                        <option value="4">读取网关时间</option> 
+                                                        <!--<option value="4">读取网关时间</option>--> 
                                                         <option value="5">网关行政区划码</option> 
-                                                        <option value="6">网关灯具管理</option> 
-                                                        <option value="7">网关回路管理</option> 
+                                                        <option value="6"> 网关时间校时 </option> 
+                                                        <!--<option value="7">网关回路管理</option>--> 
                                                         <option value="8">设置经纬度</option> 
                                                         <option value="9">设置巡测任务</option> 
                                                         <option value="10">互感器变比设置</option> 
@@ -1351,17 +1485,17 @@
 
                         <div class="row" id="row4"  style=" display: none">
                             <div class="col-xs-12">
-                                <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629;">
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <span style="margin-left:10px; " name="xxx" id="202">网关终端时间</span>&nbsp;
-                                                <input id="gaytime" readonly="true" class="form-control" name="gaytime" value="" style="width:150px;" placeholder="网关终端时间" type="text">
-                                                <button  type="button" onclick="readTrueTime()" class="btn btn-success btn-sm"><span name="xxx" id="203">读取时间</span></button>&nbsp;
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <!--                                <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629;">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <span style="margin-left:10px; " name="xxx" id="202">网关终端时间</span>&nbsp;
+                                                                                <input id="gaytime" readonly="true" class="form-control" name="gaytime" value="" style="width:150px;" placeholder="网关终端时间" type="text">
+                                                                                <button  type="button" onclick="readTrueTime()" class="btn btn-success btn-sm"><span name="xxx" id="203">读取时间</span></button>&nbsp;
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>-->
                             </div>
                         </div>
 
@@ -1410,30 +1544,24 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                <span style="margin-left:10px;" name="xxx" id="206">新组号</span>
+                                                <span style="margin-left:10px;" name="xxx" id="511">当前时间</span>
                                                 <span class="menuBox">
-                                                    <input id="l_groupe" class="easyui-combobox" name="l_groupe" style="width:100px; height: 30px" 
-                                                           data-options="editable:true,valueField:'id', textField:'text' " />
+                                                    <input class="easyui-datetimebox" name="nowtime" id="nowtime"
+                                                           data-options="formatter:dateFormatter,showSeconds:true" value="" style="width:180px">
                                                 </span> 
-                                                <!-- <button  type="button" onclick="chgLampGroupe()" class="btn btn-success btn-sm">更换所有灯具的组号</button>&nbsp; -->
-                                                <button  onclick="setGroupe()" style=" margin-left: 2px;" class="btn btn-success btn-xs" ><span name="xxx" id="207">更换</span></button>
+                                                <button  type="button" onclick="setNowtime()" class="btn btn-success btn-sm">获取当前时间</button>&nbsp; 
 
-                                                <span style=" margin-left: 10px;" name="xxx" id="208">新工作方式</span>&nbsp;
-                                                <span class="menuBox">
-                                                    <select class="easyui-combobox" id="l_worktype" name="l_worktype" data-options='editable:false' style="width:100px; height: 30px">
-                                                        <option value="0" >时间</option>
-                                                        <option value="1">经纬度</option>
-                                                        <option value="2">场景</option>           
-                                                    </select>
-                                                </span> 
-                                                <button  onclick="setWowktype()" style=" margin-left: 2px;" class="btn btn-success btn-xs" ><span name="xxx" id="207">更换</span></button>
-
-                                                <button  type="button" onclick="delAllLamp()" class="btn btn-success btn-sm"><span id="209" name="xxx">删除全部灯具信息</span></button>
-                                                <button  style="float:right; margin-right: 5px;" type="button" onclick="delAllplan()" class="btn btn-success btn-sm"><span name="xxx" id="210">删除全部灯时间表</span></button>
+                                                <button  style="float:right; margin-right: 5px;" type="button" onclick="setTimeNow()" class="btn btn-success btn-sm"><span name="xxx" id="510">校时当前时间</sspan></button>
                                             </td>
                                         </tr>
 
-
+                                        <tr>
+                                            <td>
+                                                <span style="margin-left:10px; " name="xxx" id="202">网关终端时间</span>&nbsp;
+                                                <input id="gaytime" readonly="true" class="form-control" name="gaytime" value="" style="width:150px;" placeholder="网关终端时间" type="text">
+                                                <button  type="button" onclick="readTrueTime()" class="btn btn-success btn-sm"><span name="xxx" id="203">读取时间</span></button>&nbsp;
+                                            </td>
+                                        </tr>
 
                                     </tbody>
                                 </table>
@@ -1609,25 +1737,12 @@
                                     </tbody>
                                 </table>
 
-
-
-
-
-
-
-
-
-
-
-
                             </div>
 
                         </div>      
 
                         <div class="row" id="row11"  style=" display: none">
                             <div class="col-xs-12">
-
-
                                 <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629;">
                                     <tbody>
                                         <tr>
@@ -1645,7 +1760,6 @@
                                 </div>
 
                             </div>
-
                         </div>      
 
                         <div class="row" id="row12"  style=" display: none">
@@ -1654,7 +1768,7 @@
                                     <tbody>
                                         <tr>
                                             <td>       
-                                                <button  type="button" onclick="reset()" class="btn btn-success btn-sm"><span id="508" name="xxx">网关复位</span></button>&nbsp;
+                                                <button  type="button" onclick="resetGayway()" class="btn btn-success btn-sm"><span id="508" name="xxx">网关复位</span></button>&nbsp;
                                             </td>
                                         </tr>
 
@@ -1668,6 +1782,41 @@
                                 <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629;">
                                     <tbody>
                                         <tr>
+                                            <td>
+                                                <span style="margin-left:10px;" name="xxx" id="206">灯具新组号</span>
+                                                <span class="menuBox">
+                                                    <input id="l_groupe" class="easyui-combobox" name="l_groupe" style="width:100px; height: 30px" 
+                                                           data-options="editable:true,valueField:'id', textField:'text' " />
+                                                </span> 
+                                                <!-- <button  type="button" onclick="chgLampGroupe()" class="btn btn-success btn-sm">更换所有灯具的组号</button>&nbsp; -->
+                                                <button  onclick="setGroupe()" style=" margin-left: 2px;" class="btn btn-success btn-sm" ><span name="xxx" id="207">更换</span></button>
+
+                                                <span style=" margin-left: 10px;" name="xxx" id="208">灯具新工作方式</span>&nbsp;
+                                                <span class="menuBox">
+                                                    <select class="easyui-combobox" id="l_worktype" name="l_worktype" data-options='editable:false' style="width:100px; height: 30px">
+                                                        <option value="0" >时间</option>
+                                                        <option value="1">经纬度</option>
+                                                        <option value="2">场景</option>           
+                                                    </select>
+                                                </span> 
+                                                <button  onclick="setWowktype()" style=" margin-left: 2px;" class="btn btn-success btn-sm" ><span name="xxx" id="207">更换</span></button>
+                                                &nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <button  type="button" onclick="delAllLamp()" class="btn btn-success btn-sm"><span id="209" name="xxx">删除全部灯具信息</span></button>
+                                                <button  style="float:right; margin-right: 5px;" type="button" onclick="delAllplan()" class="btn btn-success btn-sm"><span name="xxx" id="210">删除全部灯具时间表</span></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>       
+                                                <button  type="button" onclick="delAllLoop()" class="btn btn-success btn-sm"><span id="211" name="xxx">删除全部回路开关信息</span></button>&nbsp;
+                                                <button style="float:right; margin-right: 5px;"   type="button" onclick="delAllLoopPlan()" class="btn btn-success btn-sm"><span id="212" name="xxx">删除全部回路时间表</span></button>&nbsp;
+                                            </td>
+                                        </tr>
+
+                                        <tr>
                                             <td>       
                                                 <button  type="button" onclick="initdata()" class="btn btn-success btn-sm"><span id="509" name="xxx">数据初始化</span></button>&nbsp;
                                             </td>
@@ -1677,7 +1826,6 @@
                                 </table>
                             </div>
                         </div>  
-
                     </form>
                 </div>
 
