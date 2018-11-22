@@ -1352,10 +1352,10 @@
                                                         <option value="1" >主站域名或IP设置</option>
                                                         <option value="2">设置换日冻结时间参数</option>    
                                                         <!--<option value="3">设置通信巡检次数</option>--> 
-                                                        <!--<option value="4">读取网关时间</option>--> 
-                                                        <option value="5">网关行政区划码</option> 
-                                                        <option value="6"> 网关时间校时 </option> 
-                                                        <!--<option value="7">网关回路管理</option>--> 
+                                                        <option value="4">读取集控器时间</option> 
+                                                        <option value="5">集控器行政区划码</option> 
+                                                        <option value="6">集控器灯具管理</option> 
+                                                        <option value="7">集控器回路管理</option> 
                                                         <option value="8">设置经纬度</option> 
                                                         <option value="9">设置巡测任务</option> 
                                                         <option value="10">互感器变比设置</option> 

@@ -430,7 +430,7 @@
                                 <td>
                                     <select class="easyui-combobox" id="project" name="project" data-options="editable:true,valueField:'id', textField:'text' " style="width:150px; height: 30px">
                                         <option value="0">项目</option>
-                                        <option value="1">网关</option>           
+                                        <option value="1">集控器</option>           
                                     </select>
                                     &nbsp;
                                 </td>

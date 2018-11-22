@@ -44,9 +44,9 @@
             function excel() {
                 $('#dialog-excel').dialog('open');
                 return false;
-
+                
             }
-
+            
             function layerAler(str) {
                 layer.alert(str, {
                     icon: 6,
@@ -65,7 +65,7 @@
                         offset: 'center',
                         title: langs1[174][lang]  //提示
                     }, function (index) {
-                        addlogon(u_name, "删除", o_pid, "网关管理", "删除网关",selects[0].comaddr);
+                        addlogon(u_name, "删除", o_pid, "网关管理", "删除网关", selects[0].comaddr);
                         var o = {l_comaddr: selects[0].comaddr, id: selects[0].id};
                         $.ajax({url: "gayway.GaywayForm.existcomaddr.action", async: false, type: "POST", datatype: "JSON", data: o,
                             success: function (data) {
@@ -84,7 +84,7 @@
                                                     }
                                                 });
                                             }
-
+                                            
                                             //                                    
                                         },
                                         error: function () {
@@ -93,24 +93,24 @@
                                     });
                                 }
                             }
-
+                            
                         });
                         layer.close(index);
-
+                        
                     });
                 }
             }
-
-
-
+            
+            
+            
             function showDialog() {
-
+                
                 $('#dialog-add').dialog('open');
                 return false;
             }
-
+            
             function modifyModal() {
-
+                
                 var selectRow1 = $("#gravidaTable").bootstrapTable("getSelections");
                 if (selectRow1.length > 1) {
                     //只能选择一行进行修改
@@ -127,42 +127,42 @@
                 } else {
                     var s = $("#gravidaTable").bootstrapTable("getSelections")[0];
                     console.log(s);
-
+                    
                     $("#name_").val(s.name);
-
+                    
                     $("#model_").combobox('setValue', s.model);
                     $("#connecttype_").combobox('setValue', s.connecttype);
                     $("#setupaddr_").val(s.setupaddr);
-
+                    
                     $("#id_").val(s.id);
                     $("#comaddr_").val(s.comaddr);
 //                    $("#multpower_").val(s.multpower);
-
+                    
                     var arrlatitude = s.latitude.split(".");
                     var arrLongitude = s.Longitude.split(".");
                     $("#longitudem26d_").val(arrLongitude[0]);
                     $("#longitudem26m_").val(arrLongitude[1]);
                     $("#longitudem26s_").val(arrLongitude[2]);
-
-
-
+                    
+                    
+                    
                     $("#latitudem26d_").val(arrlatitude[0]);
                     $("#latitudem26m_").val(arrlatitude[1]);
                     $("#latitudem26s_").val(arrlatitude[2]);
-
+                    
                     $('#dialog-edit').dialog('open');
                     return false;
                 }
             }
-
-
+            
+            
             function  editComplete() {
                 var obj = $("#form2").serializeObject();
                 var latitudemstr = obj.latitudem26d + "." + obj.latitudem26m + "." + obj.latitudem26s;
                 obj.latitude = latitudemstr;
                 var longitudemstr = obj.longitudem26d + "." + obj.longitudem26m + "." + obj.longitudem26s;
                 obj.longitude = longitudemstr;
-                addlogon(u_name, "修改", o_pid, "网关管理", "修改网关",obj.comaddr);
+                addlogon(u_name, "修改", o_pid, "网关管理", "修改网关", obj.comaddr);
                 $.ajax({async: false, cache: false, url: "gayway.GaywayForm.modifyGateway.action", type: "GET", data: obj,
                     success: function (data) {
                         // namesss = true;
@@ -175,10 +175,10 @@
                         });
                     }
                 })
-
+                
                 return false;
             }
-
+            
             $(function () {
                 var aaa = $("span[name=xxx]");
                 for (var i = 0; i < aaa.length; i++) {
@@ -186,7 +186,7 @@
                     var e = $(d).attr("id");
                     $(d).html(langs1[e][lang]);
                 }
-
+                
                 $('#warningtable').bootstrapTable({
                     columns: [
                         {
@@ -241,9 +241,9 @@
                     pageNumber: 1,
                     pageSize: 40,
                     pageList: [20, 40, 80, 160]
-
+                            
                 });
-
+                
                 $('#excel-file').change(function (e) {
                     var files = e.target.files;
                     var fileReader = new FileReader();
@@ -271,7 +271,7 @@
                         var headStr = '序号,名称,网关地址,经度,纬度,安装位置';
                         var headStr2 = '序号,名称,网关地址,安装位置';
                         for (var i = 0; i < persons.length; i++) {
-                            if (Object.keys(persons[i]).join(',') !== headStr &&Object.keys(persons[i]).join(',') !== headStr2) {
+                            if (Object.keys(persons[i]).join(',') !== headStr && Object.keys(persons[i]).join(',') !== headStr2) {
                                 alert(langs1[366][lang]); //导入文件格式不正确
                                 persons = [];
                             }
@@ -279,13 +279,13 @@
                         $("#warningtable").bootstrapTable('load', []);
                         if (persons.length > 0) {
                             $('#warningtable').bootstrapTable('load', persons);
-
+                            
                         }
                     };
                     // 以二进制方式打开文件
                     fileReader.readAsBinaryString(files[0]);
                 });
-
+                
                 $("#dialog-add").dialog({
                     autoOpen: false,
                     modal: true,
@@ -315,7 +315,7 @@
                         }
                     }
                 });
-
+                
                 $("#dialog-excel").dialog({
                     autoOpen: false,
                     modal: true,
@@ -330,8 +330,8 @@
                         }
                     }
                 });
-
-
+                
+                
                 $('#pid').combobox({
                     url: "gayway.GaywayForm.getProject.action?code=${param.pid}",
                     onLoadSuccess: function (data) {
@@ -340,7 +340,7 @@
                         }
                     }
                 });
-
+                
                 $("#add").attr("disabled", true);
                 $("#xiugai").attr("disabled", true);
                 $("#shanchu").attr("disabled", true);
@@ -353,7 +353,7 @@
                         var rs = data.rs;
                         if (rs.length > 0) {
                             for (var i = 0; i < rs.length; i++) {
-
+                                
                                 if (rs[i].code == "600101" && rs[i].enable != 0) {
                                     $("#add").attr("disabled", false);
                                     $("#addexcel").attr("disabled", false);
@@ -368,14 +368,14 @@
                                     continue;
                                 }
                             }
-
+                            
                         }
                     },
                     error: function () {
                         alert("提交失败！");
                     }
                 });
-
+                
                 var bb = $(window).height() - 20;
                 $('#gravidaTable').bootstrapTable({
                     columns: [
@@ -434,11 +434,11 @@
                             formatter: function (value, row, index) {
                                 if (value == 1) {
                                     return "<img  src='img/online1.png'/>";  //onclick='hello()'
-
+                                    
                                 } else {
                                     return "<img  src='img/off.png'/>";  //onclick='hello()'
                                 }
-
+                                
                             },
                         }],
                     showExport: true, //是否显示导出
@@ -471,10 +471,10 @@
                         return temp;  
                     },
                 });
-
-
+                
+                
             });
-
+            
             //导入excel的添加按钮事件
             function addexcel() {
                 var selects = $('#warningtable').bootstrapTable('getSelections');
@@ -518,23 +518,23 @@
                                         alert("提交添加失败！");
                                     }
                                 });
-
-
+                                
+                                
                             }
                         },
                         error: function () {
                             layerAler("提交失败");
                         }
                     });
-
+                    
                 }
                 $("#gravidaTable").bootstrapTable('refresh'); 
             }
-
-
+            
+            
             function checkAdd() {
-
-
+                
+                
                 if (/^[0-9A-F]{8}$/.test($("#comaddr").val().trim()) == false) {
                     //网关地址应为八位有效十六进制字符
                     layer.alert(langs1[351][lang], {
@@ -544,7 +544,10 @@
                     return false;
                 }
                 var obj = $("#formadd").serializeObject();
-
+                if (obj.pid == "") {
+                    layerAler("项目不能为空");
+                    return false;
+                }
                 var namesss = false;
                 $.ajax({async: false, cache: false, url: "gayway.GaywayForm.queryGateway.action", type: "GET", data: obj,
                     success: function (data) {
@@ -569,7 +572,7 @@
                             $.ajax({async: false, cache: false, url: "gayway.GaywayForm.addGateway.action", type: "GET", data: obj,
                                 success: function (data) {
                                     namesss = true;
-                                    addlogon(u_name, "添加", o_pid, "网关管理", "添加网关",$("#comaddr").val().trim());
+                                    addlogon(u_name, "添加", o_pid, "网关管理", "添加网关", $("#comaddr").val().trim());
                                     $("#gravidaTable").bootstrapTable('refresh');
                                 },
                                 error: function () {
@@ -580,7 +583,7 @@
                                 }
                             })
                         }
-
+                        
                     },
                     error: function () {
                         layer.alert('系统错误，刷新后重试', {
@@ -589,7 +592,7 @@
                         });
                     }
                 });
-
+                
                 return namesss;
             }
         </script>
@@ -637,7 +640,7 @@
                             </td>
                             <td>
                             </td>
-                             <td>
+                            <td>
                                 <span style="margin-left:10px;" name="xxx" id="357">通信方式</span>&nbsp;
 
 
@@ -758,9 +761,9 @@
                             </td>
 
                             <td></td>
-<!--                            <td>
-                                <span style="margin-left:35px;" nane="xxx" id="346">倍率</span>&nbsp;
-                                <input id="multpower_" class="form-control" name="multpower" style="width:150px;display: inline;" placeholder="请输入倍率" type="text"></td>-->
+                            <!--                            <td>
+                                                            <span style="margin-left:35px;" nane="xxx" id="346">倍率</span>&nbsp;
+                                                            <input id="multpower_" class="form-control" name="multpower" style="width:150px;display: inline;" placeholder="请输入倍率" type="text"></td>-->
                         </tr>
                         <tr>
                             <td>

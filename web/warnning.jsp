@@ -42,15 +42,15 @@
                         var rs = data.rs;
                         if (rs.length > 0) {
                             for (var i = 0; i < rs.length; i++) {
-                                if (rs[i].code == "700101" && rs[i].enable != 0) {
+                                if (rs[i].code == "700301" && rs[i].enable != 0) {
                                     $("#add").attr("disabled", false);
                                     continue;
                                 }
-                                if (rs[i].code == "700102" && rs[i].enable != 0) {
+                                if (rs[i].code == "700302" && rs[i].enable != 0) {
                                     $("#update").attr("disabled", false);
                                     continue;
                                 }
-                                if (rs[i].code == "700103" && rs[i].enable != 0) {
+                                if (rs[i].code == "700303" && rs[i].enable != 0) {
                                     $("#del").attr("disabled", false);
                                     continue;
                                 }

@@ -7,9 +7,12 @@
 <%@page contentType="text/html;charset=utf-8" pageEncoding="UTF-8" language="java"%>
 <!DOCTYPE html>
 <html>
-    <head>
+    <head> 
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>登录系统平台</title>
+        <link type="text/css" href="layer/layui.css" rel="stylesheet">
+        <link type="text/css" href="layer/animate.css" rel="stylesheet">
+        <link type="text/css" href="layer/indexNavigation.css" rel="stylesheet">
         <style>
             *{margin:0;padding:0;}
             html,body{
@@ -66,7 +69,10 @@
                 .logo-animate img{  
 
                     height:410px;  
-                }  
+                } 
+                .loginBox{
+                    border: 1px solid red;
+                }
             } 
             @media screen and (min-width:1366px) and (max-width:1440px){  
                 .logo-animate{
@@ -272,7 +278,7 @@
                 width:150px;
                 height:40px;
                 position:absolute;
-                top:20px;
+                top:40px;
                 right:4%;
             }
             .Zh{
@@ -301,7 +307,7 @@
                 color:#BFD4F8;
             }
 
-            @media screen and (min-width:0px) and (max-width:736px){  
+            @media screen and (min-width:450px) and (max-width:736px){  
                 .logo-animate{
                     top:30%;
                 }
@@ -330,8 +336,8 @@
                     -o-border-radius:15px;
                     /*                    background:rgba(2,8,25,0.49);*/
                     /*                    margin: 50px auto 0 auto; */
-                    margin-left: 50%;
-                    margin-top: 70%;
+                    margin-left: 20%;
+                    margin-top: 30%;
 
                     display:none;  
                 }
@@ -378,7 +384,86 @@
                     display: none;
                 }
             }
+            
+            @media screen and (min-width:0px) and (max-width:450px){  
+                .logo-animate{
+                    top:30%;
+                }
+                .logo-animate img{  
+                    display:none;
+                }  
+                .phoneTit{
+                    height:37px;
+                }
+                .loginBox{
+                    width: 305px;
+                    height: 325px;
+                    position: inherit;
+                    right: 12%;
+                    top: 28%;
+                    transform: translate(-50%,-50%);  	 			
+                    border-style:none;
+                    border:1px solid #022D7D;
+                    box-shadow:0 5px 15px rgba(0,0,0,.5);
+                    -moz-box-shadow:0 5px 15px rgba(0,0,0,.5);
+                    -webkit-box-shadow:0 5px 15px rgba(0,0,0,.5);
+                    border-radius:15px;
+                    -webkit-border-radius:15px;
+                    -moz-border-radius:15px; 
+                    -ms-border-radius:15px;  
+                    -o-border-radius:15px;
+                    /*                    background:rgba(2,8,25,0.49);*/
+                    /*                    margin: 50px auto 0 auto; */
+                    margin-left: 5%;
+                    margin-top: 30%;
+                    display:none;  
+                }
+                .inputText{
+                    width: 186px;
+                    height: 37px;
+                    padding-left:15px;
+                    box-sizing: border-box;
+                }
+                .register form {
+                    width: 249px;
+                    height: 215px;
+                    position: absolute;
+                    left: 50%;
+                    top: 114px;
+                    transform: translate(-50%,-50%);
+                }
+                .logion{
+                    width: 190px;
+                    height: 40px;
+                }
+                .loginBox .h3 {
+                    height: 40px;
+                    line-height: 40px;
+                    text-align: center;
+                    font-size: 24px;
+                    color: #BFD4F8;
+                }
+                .register {
+                    width: 100%;
+                    height: 224px;
+                    text-align: center;
+                    position: relative;
+                }		
+                .logo {
+                    padding-top: 125px;
+                    padding-left: 0;
+                    width: 300px;
+                    margin: 0 auto;
+                    text-align: center;
+                    position: relative;
+                }
+                #large-header{
+                    display: none;
+                }
+            }
+            
             @media screen and (min-width:736px) and (max-width:1024px){  
+                
                 .logo-animate{
                     top:30%;
                 }
@@ -405,10 +490,10 @@
                     -moz-border-radius:15px; 
                     -ms-border-radius:15px;  
                     -o-border-radius:15px;
-                    background:rgba(2,8,25,0.49);                  
+/*                    background:rgba(2,8,25,0.49);                  */
                     /*                    margin: 50px auto 0 auto;*/
-                    margin-left: 50%;
-                    margin-top: 60%;
+                    margin-left: 30%;
+                    margin-top: 30%;
                     display:none;  
                 }
                 .logion{
@@ -454,7 +539,8 @@
                     display: none;
                 }
             } 
-
+            
+            ul li:hover {color: #FC3;};	
         </style>
 
         <%@include  file="js.jspf" %>
@@ -506,7 +592,7 @@
                     var pass = $("#password").val();
                     var name = $("#username").val();
                     var password = hex_md5(pass);
-                    var obj = $("#myfrom").serializeObject();
+                    var obj = {};
                     obj.password = password;
                     obj.name = name;
                     $.ajax({async: false, url: "login.loginform.loginhand.action", type: "POST", datatype: "JSON", data: obj,
@@ -514,26 +600,11 @@
                             // console.log(data);
                             var arrlist1 = data.rs;
                             if (arrlist1.length == 1) {
-                                var id = arrlist1[0].id;
-//                                window.location = "login.main.home.action?id=" + id;
-                                var nobj = {};
-                                nobj.name = name;
-                                var day = getNowFormatDate2();
-                                nobj.time = day;
-                                nobj.type = "登陆";
-                                nobj.pid = arrlist1[0].pid;
-                                $.ajax({async: false, url: "login.oplog.addoplog.action", type: "get", datatype: "JSON", data: nobj,
-                                    success: function (data) {
-                                        var arrlist = data.rs;
-                                        if (arrlist.length > 0) {
-
-                                        }
-                                    }
-                                });
+                                addlogon(name, "登陆", arrlist1[0].pid, "登陆", "登陆");
 
                                 var o1 = arrlist1[0];
                                 o1.role = arrlist1[0].m_code;
-                                 console.log(o1);
+                                console.log(o1);
                                 $.PostSubmitForm('login.main.home.action', arrlist1[0]);
 
 
@@ -607,20 +678,40 @@
                 }
                 //切换中文
                 $("#chinese").click(function () {
-                    $("#chinese").html("中文");
                     $("#rememberPW").html("记住密码");
                     $("#login").val("登陆");
                     $("#top").html("账号登陆");
                 });
                 //切换英文
                 $("#english").click(function () {
-                    $("#chinese").html("Chinese");
                     $("#rememberPW").html("remember password");
                     $("#login").val("Login");
                     $("#top").html("Account login");
                 });
+                //切换俄文
+                $("#ew").click(function () {
+                    $("#rememberPW").html("запомни пароль");
+                    $("#login").val("высадка на землю");
+                    $("#top").html("высадка на счет счета");
+                });
+                
+                
+                $("#changeLanguage").mousemove(function (){
+                    $("#languages").show();
+                });
+                $("#changeLanguage").mouseout(function (){
+                    $("#languages").hide();
+                });
 
             });
+            //回车登录
+            document.onkeydown = function mykeyDown(e) {
+                //compatible IE and firefox because there is not event in firefox
+                e = e || event;
+                if (e.keyCode == 13) {
+                    document.getElementById("login").click(); //调用登录按钮的登录事件
+                }
+            };
         </script>
     </head>
     <body>
@@ -630,16 +721,17 @@
 
         <img src="./img/hm2.jpg" style="position:absolute;top:0;left:0;z-index:-1;width:100%;height:100%;">
 
-        <div class="changeLanguage">
-            <div language="zh_CN" class="Zh" id="chinese">中文</div>
-            <div class="line">|</div>
-            <div language="en_US" class="En" id="english">English</div>
+        <div class="changeLanguage" id="changeLanguage">
+            <!--            <div language="zh_CN" class="Zh" id="chinese">中文</div>
+                        <div class="line">|</div>
+                        <div language="en_US" class="En" id="english">English</div>-->
+            <span style=" color: #FC3; font-size: 16px;">Language</span>
+            <ul style="background-color:#ccc; font-size: 16px; text-align: center; width: 100px; display: none;" id="languages" >
+                <li id="chinese">中文</li>
+                <li id="english">English</li>
+                <li id="ew">Русский</li>
+            </ul>
         </div>
-
-        <!--
-                <div class="logo-animate animated bounceIn" style="display: block;">
-                    <img src="./img/sz-animate.png">
-                </div>-->
 
         <div class="loginBox animated bounceInUp" style="display: block;">
             <div class="h3" id="top">账号登陆</div>

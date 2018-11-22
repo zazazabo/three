@@ -589,6 +589,7 @@
                 }
                 //登陆
                 $("#login").click(function () {
+                    
                     var pass = $("#password").val();
                     var name = $("#username").val();
                     var password = hex_md5(pass);

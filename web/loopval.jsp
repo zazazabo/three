@@ -425,7 +425,7 @@
                         <tr >
                             <th data-width="25" data-formatter='formartcomaddr1'    data-select="false" data-align="center"  data-checkbox="true"  ></th>
                             <!-- <th data-width="100" data-field="comaddr" data-align="center" data-formatter='formartcomaddr'   >网关地址</th>-->
-                            <th data-width="100" data-formatter='formartcomaddr' data-field="name" data-align="center"><span name="xxx" id="314">网关名称</span></th>
+                            <th data-width="100" data-formatter='formartcomaddr' data-field="name" data-align="center"><span name="xxx" id="314">集控器名称</span></th>
                         </tr>
                     </thead>       
 
