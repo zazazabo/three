@@ -992,16 +992,6 @@
                     changeColor("#071519");
                 });
 
-                /* 登录注销 */
-                $(".twoL li:eq(0)").click(function () {
-                    doPostRequest({}, "user/userLogout.action", function (retult) {
-                        layer.alert('注销成功!', {icon: 4, offset: 'center'});
-                        window.top.location.href = "forward.jsp";
-                    },
-                            function (error) {
-                                alert(error.message);
-                            });
-                });
 
                 $(".language li:eq(0)").click(function () {
                     var language = $(this).attr("language");

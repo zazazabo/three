@@ -59,7 +59,10 @@
             } 
             .items li:hover {color: #FF00FF}
         </style>
-        <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=Uppxai1CT7jTHF9bjKFx0WGTs7nCyHMr"></script>
+        <!--<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=Uppxai1CT7jTHF9bjKFx0WGTs7nCyHMr"></script>-->
+        
+                <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=SFnIXQgXqMFnE4f9KaM6UQA16ra8l9Z2"></script>
+                
         <script type="text/javascript" src="js/genel.js"></script>
         <script type="text/javascript" src="js/getdate.js"></script>
         <script type="text/javascript" src="bootstrap-table/dist/bootstrap-table.js"></script>
