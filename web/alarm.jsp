@@ -178,7 +178,7 @@
                             valign: 'middle'
                         }, {
                             field: 'f_comaddr',
-                            title: langs1[120][lang], //设备名称 o[120][lang]
+                            title: langs1[25][lang], //网关地址 
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -391,6 +391,11 @@
                         </td>
                         <td>
                             <button class="btn btn-sm btn-success" onclick="select()" style="margin-left:10px;"><span id="34" name="xxx">搜索</span></button>
+                        </td>
+                         <td>
+                            <button style=" height: 30px; margin-left: 5px;" type="button" id="btn_download" class="btn btn-primary" onClick ="$('#fauttable').tableExport({type: 'excel', escape: 'false'})">
+                                <span id="110" name="xxx">导出Excel</span>
+                            </button>
                         </td>
                     </tr>
                 </tbody>

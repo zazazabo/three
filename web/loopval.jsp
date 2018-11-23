@@ -255,13 +255,13 @@
                             align: 'center',
                             valign: 'middle'
                         },
-//                        {
-//                            field: 'l_comaddr',
-//                            title: langs1[25][lang], //网关地址
-//                            width: 25,
-//                            align: 'center',
-//                            valign: 'middle'
-//                        }, 
+                        {
+                            field: 'l_comaddr',
+                            title: langs1[25][lang], //网关地址
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, 
                         {
                             field: 'l_name',
                             title: langs1[331][lang], //回路名称

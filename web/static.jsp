@@ -183,7 +183,7 @@
                 url: "login.reportmanage.getyear.action?pid=${param.pid}",
                 columns: [[{
                             field: '',
-                            title: langs1[111][lang], //年消耗量
+                            title: langs1[111][lang], //年用电量
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -197,7 +197,7 @@
                             valign: 'middle'
                         }, {
                             field: 'val',
-                            title: langs1[112][lang]+'(KW·h)', //消耗量
+                            title: langs1[112][lang]+'(KW·h)', //用电量
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -238,7 +238,7 @@
             $('#getMotherTable').bootstrapTable({
                 columns: [[{
                             field: '',
-                            title: langs1[114][lang],  //月消耗量
+                            title: langs1[114][lang],  //月用电量
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -253,7 +253,7 @@
 
                         }, {
                             field: 'val',
-                            title: langs1[112][lang]+'(KW·h)', //消耗量
+                            title: langs1[112][lang]+'(KW·h)', //用电量
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -292,7 +292,7 @@
             $('#getdayTable').bootstrapTable({
                 columns: [[{
                             field: '',
-                            title: langs1[116][lang],  //日消耗量
+                            title: langs1[116][lang],  //日用电量
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -306,7 +306,7 @@
                             valign: 'middle'
                         }, {
                             field: 'val',
-                            title: langs1[112][lang]+'(KW·h)', //消耗量
+                            title: langs1[112][lang]+'(KW·h)', //用电量
                             width: 25,
                             align: 'center',
                             valign: 'middle'

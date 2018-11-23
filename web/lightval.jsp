@@ -723,7 +723,7 @@
                                 row.index = index;
                                 return  value;
                             }
-                        }
+                        },
 //                        ,
 //                        {
 //                            field: 'name',
@@ -732,14 +732,13 @@
 //                            align: 'center',
 //                            valign: 'middle'
 //                        }
-//                        , {
-//                            field: 'l_comaddr',
-//                            title: langs1[25][lang], //网关地址
-//                            width: 25,
-//                            align: 'center',
-//                            valign: 'middle'
-//                        }
-                        ,
+                        {
+                            field: 'l_comaddr',
+                            title: langs1[25][lang], //网关地址
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        },
                         {
                             field: 'l_name',
                             title: langs1[54][lang], //灯具名称
@@ -1004,7 +1003,7 @@
                        data-url="gayway.GaywayForm.getComaddrList.action?pid=${param.pid}&page=ALL" style="width:200px;" >
                     <thead >
                         <tr >
-                            <th data-width="25"   data-visible="true" data-formatter='formartcomaddr1'   data-select="false" data-align="center"  data-checkbox="true"  ></th>
+                            <th data-width="10"   data-visible="true" data-formatter='formartcomaddr1'   data-select="false" data-align="center"  data-checkbox="true"  ></th>
                             <!--<th data-width="100" data-align="center" data-field="comaddr"  data-formatter='formartcomaddr'   >网关地址</th>-->
                             <th data-width="100"  data-formatter='formartcomaddr'   data-field="name" data-align="center"    ><span name="xxx" id="314"></span></th>
                         </tr>

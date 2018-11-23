@@ -176,7 +176,7 @@
                     columns: [
                         {
                             field: 'f_comaddr',
-                            title: langs1[120][lang], //设备名称
+                            title: langs1[25][lang], //集控器地址
                             width: 25,
                             align: 'center',
                             valign: 'middle'

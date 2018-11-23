@@ -915,7 +915,7 @@
 //                console.log(index);
                 if (index == 0) {
                     var l_comaddr = row.comaddr;
-                    $("#head").html("[" + row.name + "]");
+                    $("#head").html("[" + row.name +":"+row.comaddr+ "]");
                     $("#l_comaddr").val(l_comaddr);
                     if (row.online == 1) {
                         var vv = [];
@@ -1028,7 +1028,7 @@
                         <!--                        <span style="font-size: 14px;" id="djms"></span>-->
                         <span id="lonlin">在线：0</span>
                         <span id="llin">离线：0</span>
-                        <span id="lyc">异常：0</span>
+                        <span id="lyc" style=" color: red;">异常：0</span>
                     </div>
                 </div>
             </div>

@@ -27,7 +27,7 @@
         </style>
         <script>
 
-            function getCookie1(name) {          
+            function getCookie1(name) {
                 var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
                 if (arr = document.cookie.match(reg))
                     return unescape(arr[2]);
@@ -168,7 +168,7 @@
 
                 }
             };
-            
+
             var websocket = null;
             var conectstr = "ws://47.99.78.186:24228/";
             var timestamp = 0;
@@ -624,10 +624,10 @@
                 websocket.close();
             }
             $(function () {
-             if(lang=="" || lang==null){
-                 lang = "zh_CN";
-                changeLanguage(lang);
-             }
+                if (lang == "" || lang == null) {
+                    lang = "zh_CN";
+                    changeLanguage(lang);
+                }
             <c:forEach items="${lans}" var="t" varStatus="i">
                 var id =${t.id};
                 var zh_CN1 = "${empty t.zh_CN?"":t.zh_CN}";
@@ -842,7 +842,12 @@
                             <input type="text" id ="l_factorycode" style="width:150px; height: 30px;">
                         </td>
                         <td>
-                            <button class="btn btn-sm btn-success" onclick="select()" style="margin-left:10px;"><label id="34" name="xxx">搜索</label></button>
+                            <button style=" height: 30px;" class="btn btn-sm btn-success" onclick="select()" style="margin-left:10px;"><label id="34" name="xxx">搜索</label></button>
+                        </td>
+                        <td>
+                            <button style=" height: 30px; margin-left: 5px;" type="button" id="btn_download" class="btn btn-primary" onClick ="$('#fauttable').tableExport({type: 'excel', escape: 'false'})">
+                                <label id="110" name="xxx">导出Excel</label>
+                            </button>
                         </td>
                     </tr>
                 </tbody>
@@ -867,9 +872,7 @@
 
             function changeLanguage(language) {
                 setCookie("lang", language);
-                var lang= getCookie1("lang");
-                layerAler(lang);
-                
+                var lang = getCookie1("lang");
                 $(".MenuBox").children().remove();
                 var lang = language;
             <c:forEach items="${menulist}" var="t" varStatus="i">
@@ -998,7 +1001,7 @@
                     size();
                 };
 
-   
+
 
 
                 $(".language li:eq(0)").click(function () {
