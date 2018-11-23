@@ -26,8 +26,17 @@
             }
         </style>
         <script>
+
+            function getCookie1(name) {          
+                var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+                if (arr = document.cookie.match(reg))
+                    return unescape(arr[2]);
+                else
+                    return null;
+            }
+
             var o = {};
-            var lang = getCookie("lang");
+            var lang = getCookie1("lang");
             var eventobj = {
                 "ERC44": {
                     "status1": {
@@ -159,6 +168,7 @@
 
                 }
             };
+            
             var websocket = null;
             var conectstr = "ws://47.99.78.186:24228/";
             var timestamp = 0;
@@ -570,8 +580,8 @@
                 $("#comaddrlist").combobox({
                     url: "login.map.getallcomaddr.action?pid=" + pid,
                     onLoadSuccess: function (data) {
-                        $(this).combobox("select", data[0].id);
-                        $(this).val(data[0].text);
+                        $(this).combobox("select", data.id);
+                        $(this).val(data.text);
                     }
                 });
             }
@@ -614,6 +624,10 @@
                 websocket.close();
             }
             $(function () {
+             if(lang=="" || lang==null){
+                 lang = "zh_CN";
+                changeLanguage(lang);
+             }
             <c:forEach items="${lans}" var="t" varStatus="i">
                 var id =${t.id};
                 var zh_CN1 = "${empty t.zh_CN?"":t.zh_CN}";
@@ -658,8 +672,6 @@
                 websocket.onerror = onerror;
                 //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
                 window.onbeforeunload = onbeforeunload;
-//                var pid  = getpojectId();
-//                $('#iframe').attr('src','formuser.mainsub.home.action?pid='+pid+'&lang=${empty cookie.lang.value?"zh_CN":cookie.lang.value}');
             });
         </script>
     </head>
@@ -855,6 +867,9 @@
 
             function changeLanguage(language) {
                 setCookie("lang", language);
+                var lang= getCookie1("lang");
+                layerAler(lang);
+                
                 $(".MenuBox").children().remove();
                 var lang = language;
             <c:forEach items="${menulist}" var="t" varStatus="i">
@@ -933,8 +948,8 @@
             $(function () {
                 var pid = '${rs[0].pid}';
                 porject(pid);
-                var pid2  = getpojectId();
-               // $('#iframe').attr('src','formuser.mainsub.home.action?pid='+pid2+'&lang=${empty cookie.lang.value?"zh_CN":cookie.lang.value}');
+                var pid2 = getpojectId();
+                // $('#iframe').attr('src','formuser.mainsub.home.action?pid='+pid2+'&lang=${empty cookie.lang.value?"zh_CN":cookie.lang.value}');
                 //查看警异常信息总数
                 fualtCount();
 
@@ -983,14 +998,7 @@
                     size();
                 };
 
-                /*  登录注销   */
-                /*	CCIOT
-                 **针对于地球仪首页点击返回的逻辑
-                 */
-                $(".Home").click(function () {
-                    $("#iframe").attr("src", "abc/homeIntelligent.action");
-                    changeColor("#071519");
-                });
+   
 
 
                 $(".language li:eq(0)").click(function () {

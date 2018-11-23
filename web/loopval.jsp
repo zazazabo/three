@@ -464,9 +464,7 @@
                                     </button>
 
 
-                                    <span style="margin-left:10px;" id="48" name="xxx">
-                                        <!--回路-->
-                                    </span>
+                                    <span style="margin-left:10px;" id="48" name="xxx">回路</span>
                                     <select class="easyui-combobox" id="type" name="type" style="width:100px; height: 30px">
                                         <option value="0">单个回路</option>
                                         <option value="1">所有回路</option>           

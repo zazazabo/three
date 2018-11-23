@@ -619,7 +619,7 @@
                             alert("提交失败！");
                         }
                     });
-                })
+                });
 
                 //打勾记住密码
                 $("#cc").click(function () {
@@ -642,7 +642,7 @@
                         addCookie("username", "", -1);
                         addCookie("password", "", -1);
                     }
-                })
+                });
                 //添加ckooie 记住密码
                 function addCookie(username, value, days) {
                     var username = escape(username).trim();
