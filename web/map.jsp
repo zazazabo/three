@@ -61,9 +61,9 @@
             .items li:hover {color: #FF00FF}
         </style>
         <!--<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=Uppxai1CT7jTHF9bjKFx0WGTs7nCyHMr"></script>-->
-        
-                <!--<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=SFnIXQgXqMFnE4f9KaM6UQA16ra8l9Z2"></script>-->
-                
+
+        <!--<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=SFnIXQgXqMFnE4f9KaM6UQA16ra8l9Z2"></script>-->
+
         <script type="text/javascript" src="js/genel.js"></script>
         <script type="text/javascript" src="js/getdate.js"></script>
         <script type="text/javascript" src="bootstrap-table/dist/bootstrap-table.js"></script>
@@ -1761,7 +1761,26 @@
                         if ((Longitude != "" && latitude != "") && (Longitude != null && latitude != null)) {
                             var point = new BMap.Point(Longitude, latitude);
                             var marker1;
+                            var lxfault = 0;  //是否离线故障
+                            var obj2 = {};
+                            obj2.f_comaddr = obj.l_comaddr;
+                            obj2.l_factorycode = obj.l_factorycode;
+                            $.ajax({async: false, url: "login.lightval.isfault.action", type: "get", datatype: "JSON", data: obj2,
+                                success: function (data) {
+                                    var list = data.rs;
+                                    if (list.length > 0) {
+                                        lxfault = 1;
+                                    }
+                                },
+                                error: function () {
+                                    alert("提交失败！");
+                                }
+                            });
                             if (isfault2 == 1) {
+                                marker1 = new BMap.Marker(point, {
+                                    icon: lred
+                                });
+                            }else if(lxfault==1){
                                 marker1 = new BMap.Marker(point, {
                                     icon: lred
                                 });

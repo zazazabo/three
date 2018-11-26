@@ -738,4 +738,27 @@
         </xhandle> 
     </xform>
     
+    <xform desc="灯具调光判断灯具是否离线异常" id="lightval">
+        <xhandle desc="是否离线异常" id="isfault" rtn="rs" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_fault where f_Isfault is null AND @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@f_comaddr AND @l_factorycode">
+                    <xfltpara id="f_comaddr" nrp="1=1" para="f_comaddr" sql="f_comaddr=':f_comaddr'">
+                    </xfltpara>
+                    <xfltpara id="l_factorycode" nrp="1=1" para="l_factorycode" sql="l_factorycode=':l_factorycode'">
+                    </xfltpara>                
+                </xflt>
+            </xsql> 
+        </xhandle>   
+    </xform>
+    <xform desc="首页" id="mainsub">
+        <xhandle desc="是否离线异常" id="alllamp" rtn="rs" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_lamp where @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@pid">
+                   <xfltpara id="pid" nrp="1=2" para="pid" sql="l_comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE  pid = ':pid')">
+                    </xfltpara>               
+                </xflt>
+            </xsql> 
+        </xhandle>   
+    </xform>
+    
 </xforms>

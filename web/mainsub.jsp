@@ -302,7 +302,7 @@
             var echarts;
             var lang = '${param.lang}';
             var langs1 = parent.parent.getLnas();
-            // var pid = parent.parent.getpojectId();
+            var pid = parent.parent.getpojectId();
             $(function () {
 
                 var aaa = $("span[name=xxx]");
@@ -312,6 +312,39 @@
                     $(d).html(langs1[e][lang]);
 
                 }
+                var gzdj = 0;   //异常灯具数
+                $.ajax({async: false, url: "login.mainsub.alllamp.action", type: "get", datatype: "JSON", data: {pid: pid},
+                    success: function (data) {
+                        var list = data.rs;
+                        if (list.length > 0) {
+                            for (var i = 0; i < list.length; i++) {
+                                var obj = list[i];
+                                if (obj.f_Isfault == 1) {
+                                    gzdj = gzdj + 1;
+                                } else {
+                                    var obj2 = {};
+                                    obj2.f_comaddr = obj.l_comaddr;
+                                    obj2.l_factorycode = obj.l_factorycode;
+                                    $.ajax({async: false, url: "login.lightval.isfault.action", type: "get", datatype: "JSON", data: obj2,
+                                        success: function (data) {
+                                            var list = data.rs;
+                                            if (list.length > 0) {
+                                                gzdj = gzdj + 1;
+                                            }
+                                        },
+                                        error: function () {
+                                            alert("提交失败！");
+                                        }
+                                    });
+
+                                }
+                            }
+                        }
+                    },
+                    error: function () {
+                        alert("提交失败！");
+                    }
+                });
                 var truevalmap = "";
                 var status1 = "";
                 var planvalue = "";
@@ -323,7 +356,7 @@
                 var wgsum = ${rs[0].num}; //网关总数
                 var wgzx = ${onlineNumber[0].num};  //网关在线数
                 var wglx = wgsum - wgzx;  //网关不在线数
-                var gzdj = ${djgzs[0].num};  //灯具异常数
+                // var gzdj = ${djgzs[0].num};  //灯具异常数
                 var djzxs = ${djzxs[0].num}; //灯具在线数
                 var lampNumber = ${lampNumber[0].num};  //灯具总数
                 var djlxs = lampNumber - gzdj - djzxs;  //灯具离线数
@@ -337,7 +370,7 @@
                 if ((${ybsdj[0].num-djgzs[0].num} - djlxs) <= 0) {
                     $("#ldl").html("0%");
                 } else {
-                    var ldl = ((${(ybsdj[0].num-djgzs[0].num)} - djlxs) /${ybsdj[0].num}) * 100;
+                    var ldl = ((${ybsdj[0].num} - djlxs-gzdj) /${ybsdj[0].num}) * 100;
                     $("#ldl").html(ldl.toFixed(2) + "%");
                 }
                 //计划能耗
@@ -503,7 +536,7 @@
 
                 });
 
-                 setInterval('getcominfo()', 3000);
+                setInterval('getcominfo()', 3000);
             });
 
             function  hittable(comaddr) {

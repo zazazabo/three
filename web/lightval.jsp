@@ -851,9 +851,28 @@
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
-                                console.log(row);
+                                var lxfault = 0;  //是否离线故障
+                                var obj = {};
+                                obj.f_comaddr = row.l_comaddr;
+                                obj.l_factorycode = row.l_factorycode;
+                                $.ajax({async: false, url: "login.lightval.isfault.action", type: "get", datatype: "JSON", data: obj,
+                                    success: function (data) {
+                                          var list = data.rs;
+                                          console.log(list);
+                                          if(list.length>0){
+                                              lxfault = 1;
+                                              console.log(lxfault);
+                                          }
+                                    },
+                                    error: function () {
+                                        alert("提交失败！");
+                                    }
+                                });
                                 if (row.l_fault == 1) {
                                     var str = '<img data-toggle="tooltip"  src="img/lred3.png" onclick="tourlamp(' + row.l_comaddr + ',' + row.l_code + ')" />';
+                                    return  str;
+                                }else if(lxfault==1){
+                                     var str = '<img data-toggle="tooltip"  src="img/lred3.png" onclick="tourlamp(' + row.l_comaddr + ',' + row.l_code + ')" />';
                                     return  str;
                                 } else if (value == 1 && row.l_value > 0) {
                                     var str = '<img data-toggle="tooltip"  src="img/lyello.png" onclick="tourlamp(' + row.l_comaddr + ',' + row.l_code + ')" />';
