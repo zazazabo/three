@@ -1214,6 +1214,20 @@
                             $(this).combobox("select", data[0].id);
                         }
                     },
+                    formatter: function (row) {
+                        console.log(row.id);
+
+
+
+//                        var v1 = row.online == 1 ? "&nbsp;<img src='img/online1.png'>" : "&nbsp;<img src='img/off.png'>";
+                        //var v = row.text + v1;
+                        //row.id = row.id;
+                        //var id1=   row.id+514-1;
+                        var langid = row.id - 1 + 514
+                        row.text = langs1[langid][lang];
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
+                    },
                     onSelect: function (record) {
                         var rowdiv = $(".row");
                         for (var i = 0; i < rowdiv.length; i++) {
@@ -1225,6 +1239,7 @@
                         }
 
                         var v = parseInt(record.id);
+                        console.log(v);
                         $(rowdiv[v]).show();
 
                     }
@@ -1348,21 +1363,17 @@
                                                 <span style="margin-left:10px;" name="xxx" id="187">功能选择</span>&nbsp;
 
                                                 <span class="menuBox">
-                                                    <select class="easyui-combobox" id="type" name="type" data-options="editable:false,valueField:'id', textField:'text' onLoadSuccess:function(){
-                                                            } " style="width:200px; height: 30px">
-                                                        <option value="1" >主站域名或IP设置</option>
+                                                    <select class="easyui-combobox" id="type" name="type" data-options="editable:false,valueField:'id', textField:'text' " style="width:200px; height: 30px">
+                                                        <option value="1" >主站域名或IP设置</option>     
                                                         <option value="2">设置换日冻结时间参数</option>    
-                                                        <!--<option value="3">设置通信巡检次数</option>--> 
-                                                        <!--<option value="4">读取集控器时间</option>--> 
-                                                        <option value="5">集控器行政区划码</option> 
-                                                        <option value="6">集控器时间设置</option> 
-                                                        <!--              <option value="7">集控器回路管理</option> -->
-                                                        <option value="8">设置经纬度</option> 
-                                                        <option value="9">设置巡测任务</option> 
-                                                        <option value="10">互感器变比设置</option> 
-                                                        <option value="11">请求今天的电能量</option> 
-                                                        <option value="12">网关复位</option> 
-                                                        <option value="13">数据区初始化</option> 
+                                                        <option value="3">集控器行政区划码</option> 
+                                                        <option value="4">集控器时间设置</option> 
+                                                        <option value="5">设置经纬度</option>
+                                                        <option value="6">设置巡测任务</option>
+                                                        <option value="7">互感器变比设置</option>
+                                                        <option value="8">请求今天的电能量</option> 
+                                                        <option value="9">网关复位</option>
+                                                        <option value="10">数据区初始化</option> 
                                                     </select>
                                                 </span>  
                                             </td>
@@ -1462,45 +1473,10 @@
                             </div>
                         </div>
 
-                        <div class="row" id="row3"  style=" display: none">
-                            <div class="col-xs-12">
-                                <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629;">
-                                    <tbody>
-                                        <tr>
-                                            <td>
 
 
-                                                <span style="margin-left:10px; " name="xxx" id="199">通信巡检次数</span>&nbsp;
-                                                <input id="inspect" class="form-control" name="inspect" value="" style="width:100px;" placeholder="灯具通信失联巡检次数" type="text">
-                                                <button  type="button" onclick="setInspect()" class="btn btn-success btn-sm"><span name="xxx" id="200">设置通信失联巡检次数</span></button>
-                                                <button  type="button"  onclick="readInspect()" class="btn btn-success btn-sm"><span name="xxx" id="201">读取通信失联巡检次数</span></button>
-                                            </td>
 
-                                        </tr>
-
-
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <div class="row" id="row4"  style=" display: none">
-                            <div class="col-xs-12">
-                                <!--                                <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629;">
-                                                                    <tbody>
-                                                                        <tr>
-                                                                            <td>
-                                                                                <span style="margin-left:10px; " name="xxx" id="202">网关终端时间</span>&nbsp;
-                                                                                <input id="gaytime" readonly="true" class="form-control" name="gaytime" value="" style="width:150px;" placeholder="网关终端时间" type="text">
-                                                                                <button  type="button" onclick="readTrueTime()" class="btn btn-success btn-sm"><span name="xxx" id="203">读取时间</span></button>&nbsp;
-                                                                            </td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>-->
-                            </div>
-                        </div>
-
-                        <div class="row" id="row5" style=" display: none">
+                        <div class="row" id="row3" style=" display: none">
                             <div class="col-xs-12" >
 
                                 <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629; ">
@@ -1539,7 +1515,7 @@
                             </div>
                         </div>
 
-                        <div class="row" id="row6"  style=" display: none">
+                        <div class="row" id="row4"  style=" display: none">
                             <div class="col-xs-12">
                                 <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629;">
                                     <tbody>
@@ -1570,22 +1546,7 @@
                             </div>
                         </div>
 
-                        <div class="row" id="row7"  style=" display: none">
-                            <div class="col-xs-12">
-                                <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629;">
-                                    <tbody>
-                                        <tr>
-                                            <td>       
-                                                <button  type="button" onclick="delAllLoop()" class="btn btn-success btn-sm"><span id="211" name="xxx">删除全部回路开关信息</span></button>&nbsp;
-                                                <button  type="button" onclick="delAllLoopPlan()" class="btn btn-success btn-sm"><span id="212" name="xxx">删除全部回路时间表</span></button>&nbsp;
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <div class="row" id="row8"  style=" display: none">
+                        <div class="row" id="row5"  style=" display: none">
                             <div class="col-xs-12">
                                 <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629;">
                                     <tbody>
@@ -1671,7 +1632,7 @@
                             </div>
                         </div>
 
-                        <div class="row" id="row9"  style=" display: none">
+                        <div class="row" id="row6"  style=" display: none">
                             <div class="col-xs-12">
                                 <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629;">
                                     <tbody>
@@ -1688,10 +1649,8 @@
                         </div>                   
 
 
-                        <div class="row" id="row10"  style=" display: none">
+                        <div class="row" id="row7"  style=" display: none">
                             <div class="col-xs-12">
-
-
                                 <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629;">
                                     <tbody>
                                         <tr>
@@ -1743,14 +1702,14 @@
 
                         </div>      
 
-                        <div class="row" id="row11"  style=" display: none">
+                        <div class="row" id="row8"  style=" display: none">
                             <div class="col-xs-12">
                                 <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629;">
                                     <tbody>
                                         <tr>
 
                                             <td colspan="2" style=" padding-left: 5px;">    
-                                                <button  type="button" onclick="gettodaypower()" class="btn btn-success btn-sm"><span id="49" name="xxxx">获取今天电能量</span></button>&nbsp;
+                                                <button  type="button" onclick="gettodaypower()" class="btn btn-success btn-sm"><span id="524" name="xxx">获取今天电能量</span></button>&nbsp;
                                             </td>
                                         </tr>
 
@@ -1764,7 +1723,7 @@
                             </div>
                         </div>      
 
-                        <div class="row" id="row12"  style=" display: none">
+                        <div class="row" id="row9"  style=" display: none">
                             <div class="col-xs-12">
                                 <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629;">
                                     <tbody>
@@ -1779,7 +1738,7 @@
                             </div>
                         </div>                   
 
-                        <div class="row" id="row13"  style=" display: none">
+                        <div class="row" id="row10"  style=" display: none">
                             <div class="col-xs-12">
                                 <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629;">
                                     <tbody>
