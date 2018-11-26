@@ -2,6 +2,7 @@
 <xdatabases>
 
   <xinfo class="com.microsoft.jdbc.sqlserver.SQLServerDriver" url="jdbc:microsoft:sqlserver://192.168.1.107:1433;databaseName=data" psw="123" uname="sa">
+
    
   </xinfo>  
 
