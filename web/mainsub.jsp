@@ -1206,7 +1206,11 @@
                             <h3 class="panel-title">
                                 <p  >
                                     <span id="head" style="font-size: 18px;"></span>
-                                    <span style=" margin-left: 10px; font-size: 18px;" id="headtime">开灯时间:xx:xx &nbsp; 关灯时间:xx:xx</span>
+                                    <span style=" margin-left: 10px; font-size: 18px;" id="headtime">
+                                        <span name="xxx" id="428"   >开灯时间</span>
+                                        :xx:xx &nbsp; 
+                                        <span name="xxx" id="429"   >关灯时间</span>
+                                        :xx:xx</span>
                                 </p>
                             </h3>
                         </div>
@@ -1303,15 +1307,6 @@
                             </form>
                         </div>
                     </div>              
-
-
-
-
-
-
-
-
-
                 </div>
             </div>
         </div>			

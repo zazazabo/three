@@ -119,11 +119,26 @@
 
             $('#time4').timespinner('setValue', '00:00');
             $('#time3').timespinner('setValue', '00:00');
+            var data1 = [];
+            var data2 = [];
+            for (var i = 0, max = 8; i < max; i++) {
+                var eid = i + 537;
 
-            var data1 = [{"name": "灯杆倾斜预警开关"}, {"name": "温度预警故障开关"}, {"name": "漏电流预警故障开关"}, {"name": "相位不符预警故障开关"}, {"name": "线路不符预警故障开关"}, {"name": "台区不符预警故障开关"}, {"name": "使用寿命到期预警"}, {"name": "灯具状态改变上报"}];
+                var oo = {"name": langs1[eid][lang]};
+                data1.push(oo);
+            }
+
+            for (var i = 0, max = 8; i < max; i++) {
+                var eid = i + 545;
+
+                var oo = {"name": langs1[eid][lang]};
+                data2.push(oo);
+            }
+
+            // var data1 = [{"name": "灯杆倾斜预警开关"}, {"name": "温度预警故障开关"}, {"name": "漏电流预警故障开关"}, {"name": "相位不符预警故障开关"}, {"name": "线路不符预警故障开关"}, {"name": "台区不符预警故障开关"}, {"name": "使用寿命到期预警"}, {"name": "灯具状态改变上报"}];
 
 
-            var data2 = [{"name": "灯控器故障开关"}, {"name": "温度故障开关"}, {"name": "超负荷故障开关"}, {"name": "功率因数过低故障开关"}, {"name": "时钟故障开关"}, {"name": "集中器与灯控器通信中断"}, {"name": "灯珠故障"}, {"name": "电源故障"}];
+            //  var data2 = [{"name": "灯控器故障开关"}, {"name": "温度故障开关"}, {"name": "超负荷故障开关"}, {"name": "功率因数过低故障开关"}, {"name": "时钟故障开关"}, {"name": "集中器与灯控器通信中断"}, {"name": "灯珠故障"}, {"name": "电源故障"}];
 
 //&nbsp;&nbsp;<button  type='button'  onclick='readPreWarning()' class='btn btn-success btn-sm'>" + langs1[418][lang] + "</button>
             var str = "<button  type='button'  onclick='setPreWarning()' class='btn btn-success btn-sm'>" + langs1[214][lang] + "</button> ";  //设置灯具预警参数

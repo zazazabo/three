@@ -1215,16 +1215,9 @@
                         }
                     },
                     formatter: function (row) {
-                        console.log(row.id);
-
-
-
-//                        var v1 = row.online == 1 ? "&nbsp;<img src='img/online1.png'>" : "&nbsp;<img src='img/off.png'>";
-                        //var v = row.text + v1;
-                        //row.id = row.id;
-                        //var id1=   row.id+514-1;
-                        var langid = row.id - 1 + 514
-                        row.text = langs1[langid][lang];
+                        var lan = "${param.lang}";
+                        var langid = row.id - 1 + 514;
+                        row.text = langs1[langid][lan];
                         var opts = $(this).combobox('options');
                         return row[opts.textField];
                     },
@@ -1245,18 +1238,19 @@
                     }
                 });
 
+                var lang = "${param.lang}";
 
                 $('#powertable').bootstrapTable({
                     columns: [
                         {
                             field: 'time',
-                            title: '时刻', //
+                            title: langs1[526][lang], //时刻
                             width: 100,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'power',
-                            title: '能量', //预警参数
+                            title: langs1[527][lang], //能量
                             width: 100,
                             align: 'center',
                             valign: 'middle'
@@ -1271,6 +1265,39 @@
                     pageSize: 100,
                     pageList: [100, 200],
 
+                });
+
+
+                $('#areazone').combobox({
+                    formatter: function (row) {
+//                        console.log(row);
+
+                        var lan = "${param.lang}";
+                        var langid = parseInt(row.id) + 529;
+                        row.text = langs1[langid][lan];
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
+                    }
+                });
+
+                $('#sitetype').combobox({
+                    formatter: function (row) {
+                        var lan = "${param.lang}";
+                        var langid = parseInt(row.id) + 532;
+                        row.text = langs1[langid][lan];
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
+                    }
+                });
+
+                $('#l_worktype').combobox({
+                    formatter: function (row) {
+                        var lan = "${param.lang}";
+                        var langid = parseInt(row.id) + 534;
+                        row.text = langs1[langid][lan];
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
+                    }
                 });
 
 
@@ -1378,7 +1405,9 @@
                                                 </span>  
                                             </td>
                                             <td>
-                                                <button type="button"  onclick="refleshgayway()" class="btn  btn-success btn-sm" style="margin-left: 2px;">刷新网关在线列表</button>
+                                                <button type="button"  onclick="refleshgayway()" class="btn  btn-success btn-sm" style="margin-left: 2px;">
+                                                    <span   name="xxx" id="531">刷新集控器在线列表</span>
+                                                </button>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -1399,7 +1428,7 @@
                                             </td>
                                             <td>
 
-                                                <select class="easyui-combobox" id="sitetype" name="sitetype" style="width:150px; height: 30px">
+                                                <select class="easyui-combobox" id="sitetype" name="sitetype" data-options="editable:true,valueField:'id', textField:'text' " style="width:150px; height: 30px">
                                                     <option value="0">域名</option>
                                                     <option value="1">ip</option>            
                                                 </select>   
@@ -1729,7 +1758,7 @@
                                     <tbody>
                                         <tr>
                                             <td>       
-                                                <button  type="button" onclick="resetGayway()" class="btn btn-success btn-sm"><span id="508" name="xxx">网关复位</span></button>&nbsp;
+                                                <button  type="button" onclick="resetGayway()" class="btn btn-success btn-sm"><span id="522" name="xxx">集控器复位</span></button>&nbsp;
                                             </td>
                                         </tr>
 
@@ -1754,7 +1783,7 @@
 
                                                 <span style=" margin-left: 10px;" name="xxx" id="208">灯具新工作方式</span>&nbsp;
                                                 <span class="menuBox">
-                                                    <select class="easyui-combobox" id="l_worktype" name="l_worktype" data-options='editable:false' style="width:100px; height: 30px">
+                                                    <select class="easyui-combobox" id="l_worktype" name="l_worktype" data-options="editable:false,valueField:'id', textField:'text'" style="width:100px; height: 30px">
                                                         <option value="0" >时间</option>
                                                         <option value="1">经纬度</option>
                                                         <option value="2">场景</option>           
