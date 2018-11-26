@@ -614,6 +614,40 @@
                     var e = $(d).attr("id");
                     $(d).html(langs1[e][lang]);
                 }
+                
+                 $('#groupetype').combobox({
+                    formatter: function (row) {
+                        var langid = parseInt(row.value);
+                        if(langid !=2){
+                            langid = langid +29;
+                        }else{
+                            langid = langid +334;
+                        }
+                        row.text = langs1[langid][lang];
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
+                    }
+                });
+                
+                 $('#scenetype').combobox({
+                    formatter: function (row) {
+                        var langid = parseInt(row.value)+32;
+                        row.text = langs1[langid][lang];
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
+                    }
+                });
+                
+                 $('#type').combobox({
+                    formatter: function (row) {
+                        var langid = parseInt(row.value)+37;
+                        row.text = langs1[langid][lang];
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
+                    }
+                });
+                
+                
                 $('#lamptable').on('click-cell.bs.table', function (field, value, row, element)
                 {
                     if (value == "l_plan") {
@@ -858,10 +892,8 @@
                                 $.ajax({async: false, url: "login.lightval.isfault.action", type: "get", datatype: "JSON", data: obj,
                                     success: function (data) {
                                           var list = data.rs;
-                                          console.log(list);
                                           if(list.length>0){
                                               lxfault = 1;
-                                              console.log(lxfault);
                                           }
                                     },
                                     error: function () {

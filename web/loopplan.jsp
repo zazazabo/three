@@ -237,6 +237,29 @@
                     var e = $(d).attr("id");
                     $(d).html(langs1[e][lang]);
                 }
+                
+                 $('#p_type_').combobox({
+                    formatter: function (row) {
+                        var langid = parseInt(row.value);
+                        if(langid ==0){
+                            langid = langid +82;
+                        }else{
+                            langid = langid +534;
+                        }
+                        row.text = langs1[langid][lang];
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
+                    }
+                });
+                 $('#p_type_query').combobox({
+                    formatter: function (row) {
+                        var langid = parseInt(row.value)+82;
+                        row.text = langs1[langid][lang];
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
+                    }
+                });
+                
                 $("#add").attr("disabled", true);
                 $("#update").attr("disabled", true);
                 $("#del").attr("disabled", true);

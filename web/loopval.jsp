@@ -225,6 +225,30 @@
                     var e = $(d).attr("id");
                     $(d).html(langs1[e][lang]);
                 }
+                
+                $('#switch').combobox({
+                    formatter: function (row) {
+                        var langid = parseInt(row.value);
+                        if(langid==170){
+                            langid=langid+164;
+                        }else if(langid==85){
+                            langid = langid+250;
+                        }
+                        row.text = langs1[langid][lang];
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
+                    }
+                });
+                
+                $('#type').combobox({
+                    formatter: function (row) {
+                        var langid = parseInt(row.value)+567;
+                        row.text = langs1[langid][lang];
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
+                    }
+                });
+                
                 $('#gravidaTable').on("check.bs.table", function (field, value, row, element) {
                     var index = row.data('index');
                     value.index = index;

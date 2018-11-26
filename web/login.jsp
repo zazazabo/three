@@ -13,6 +13,7 @@
         <link type="text/css" href="layer/layui.css" rel="stylesheet">
         <link type="text/css" href="layer/animate.css" rel="stylesheet">
         <link type="text/css" href="layer/indexNavigation.css" rel="stylesheet">
+        <script type="text/javascript" src="js/genel.js"></script>
         <style>
             *{margin:0;padding:0;}
             html,body{
@@ -682,18 +683,21 @@
                     $("#rememberPW").html("记住密码");
                     $("#login").val("登陆");
                     $("#top").html("账号登陆");
+                    setCookie("lang", "zh_CN");
                 });
                 //切换英文
                 $("#english").click(function () {
                     $("#rememberPW").html("remember password");
                     $("#login").val("Login");
                     $("#top").html("Account login");
+                    setCookie("lang", "en_US");
                 });
                 //切换俄文
                 $("#ew").click(function () {
                     $("#rememberPW").html("запомни пароль");
                     $("#login").val("высадка на землю");
                     $("#top").html("высадка на счет счета");
+                    setCookie("lang", "e_BY");
                 });
                 
                 

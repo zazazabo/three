@@ -36,9 +36,20 @@
                         $("#g1").hide();
                     }
 
-                }
+                },
+                formatter: function (row) {
+                        var langid = parseInt(row.id);
+                        if(langid==0){
+                            langid = 1;
+                        }else if(langid == 1){
+                           langid = 50; 
+                        }
+                        row.text = langs1[langid][lang];
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
+                    }
             });
-
+          
             $('#comaddr').combobox({
                 url: "gayway.GaywayForm.getComaddr.action?pid=${param.pid}",
                 onLoadSuccess: function (data) {
@@ -68,7 +79,13 @@
                     var v = parseInt(record.id);
                     switchDate(v);
 
-                }
+                },
+                 formatter: function (row) {
+                        var langid = parseInt(row.id)+568;
+                        row.text = langs1[langid][lang];
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
+                    }
             });
 
             $("#div1").hide();

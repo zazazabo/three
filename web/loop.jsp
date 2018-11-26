@@ -432,6 +432,15 @@
                     var e = $(d).attr("id");
                     $(d).html(langs1[e][lang]);
                 }
+                 $('#busu').combobox({
+                    formatter: function (row) {
+                        var langid = parseInt(row.value)+318;
+                        console.log(langid);
+                        row.text = langs1[langid][lang];
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
+                    }
+                });
 
 
                 $('#comaddr').combobox({

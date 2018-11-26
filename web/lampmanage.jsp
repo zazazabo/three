@@ -541,6 +541,48 @@ Author     : admin
                     var e = $(d).attr("id");
                     $(d).html(langs1[e][lang]);
                 }
+                 $('#busu').combobox({
+                    formatter: function (row) {
+                        var langid = parseInt(row.value)+318;
+                        console.log(langid);
+                        row.text = langs1[langid][lang];
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
+                    }
+                });
+                
+                 $('#l_worktype1').combobox({
+                    formatter: function (row) {
+                        var langid = parseInt(row.value);
+                        if(langid ==0){
+                            langid =82;
+                        }else if(langid ==1){
+                            langid = 535;
+                        }else if(langid == 2){
+                            langid = 536;
+                        }
+                        console.log(langid);
+                        row.text = langs1[langid][lang];
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
+                    }
+                });
+                
+                 $('#l_worktype').combobox({
+                    formatter: function (row) {
+                        var langid = parseInt(row.value);
+                        if(langid ==0){
+                            langid =82;
+                        }else if(langid ==1){
+                            langid = 535;
+                        }else if(langid == 2){
+                            langid = 536;
+                        }
+                        row.text = langs1[langid][lang];
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
+                    }
+                });
                 $("#l_comaddr2").combobox({
                     url: "gayway.GaywayForm.getComaddr.action?pid=${param.pid}",
                     formatter: function (row) {

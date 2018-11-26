@@ -428,6 +428,22 @@
                     var e = $(d).attr("id");
                     $(d).html(langs1[e][lang]);
                 }
+                $('#l_worktype').combobox({
+                    formatter: function (row) {
+                        var langid = parseInt(row.value);
+                        if(langid ==0){
+                            langid =82;
+                        }else if(langid ==1){
+                            langid = 535;
+                        }else if(langid == 2){
+                            langid = 536;
+                        }
+                        console.log(langid);
+                        row.text = langs1[langid][lang];
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
+                    }
+                });
                 $('#type').combobox({
                     onLoadSuccess: function (data) {
                         if (Array.isArray(data) && data.length > 0) {
@@ -447,6 +463,11 @@
                         var v = parseInt(record.id);
                         $(rowdiv[v]).show();
 
+                    }, formatter: function (row) {
+                        var langid = parseInt(row.id)+571;
+                        row.text = langs1[langid][lang];
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
                     }
                 });
 
