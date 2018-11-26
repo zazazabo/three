@@ -67,7 +67,7 @@
                     url: 'login.warnning.queryData.action?pid=' + o_pid,
                     columns: [[{
                                 field: '',
-                                title: langs1[134][lang],  //告警配置
+                                title: langs1[134][lang], //告警配置
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -84,7 +84,7 @@
                             },
                             {
                                 field: 'u_name',
-                                title: langs1[135][lang],  //姓名
+                                title: langs1[135][lang], //姓名
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle'
@@ -96,16 +96,30 @@
                                 valign: 'middle'
                             }, {
                                 field: 'u_email',
-                                title: langs1[137][lang],  //邮箱
+                                title: langs1[137][lang], //邮箱
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle'
                             }, {
                                 field: 'u_content',
-                                title:langs1[149][lang],  //告警类型
+                                title: langs1[149][lang], //告警类型
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle'
+                            }, {
+                                field: 'u_lang',
+                                title: langs1[566][lang], //接收邮件的语言
+                                width: 25,
+                                align: 'center',
+                                valign: 'middle',
+                                formatter: function (value, row, index, field) {
+                                    if (value == 1) {
+                                        return "中文"
+                                    } else if (value == 2) {
+                                        return "英文"
+                                    }
+
+                                }
                             }
                         ]
                     ],
@@ -143,7 +157,7 @@
                     var uphone = $("#updphone").val();
                     var uid = $("#updid").val();
                     var uemail = $("#updemail").val();
-                   // var uwarntype = $("#upd_warntype").val();
+                    // var uwarntype = $("#upd_warntype").val();
                     var u_content = $("#u_content").val();
                     if (uname == "") {
                         alert(langs1[139][lang]);  //姓名不能为空
@@ -157,7 +171,7 @@
                         alert(langs1[141][lang]); //邮箱不能为空
                         return;
                     }
-                   
+
 
                     var obj = {};
                     obj.u_name = uname;
@@ -202,7 +216,7 @@
                 var phone = $("#adphone").val();
                 var name = $("#adname").val();
                 var email = $("#ademail").val();
-               // var warntype = $("#adu_warntype").val();
+                // var warntype = $("#adu_warntype").val();
                 var content = $("#adu_content").val();
                 var pid = o_pid;
                 if (name == "") {
@@ -248,7 +262,7 @@
                     alert(langs1[73][lang]);  //请勾选数据
                     return;
                 }
-                layer.confirm(langs1[145][lang], {    //确定要删除吗？
+                layer.confirm(langs1[145][lang], {//确定要删除吗？
                     btn: [langs1[146][lang], langs1[147][lang]]//按钮
                 }, function (index) {
                     addlogon(u_name, "删除", o_pid, "报警设置", "删除报警管理人员");
@@ -280,11 +294,11 @@
             </button>
             <button class="btn btn-primary ctrol"   onclick="updatepeople()" id="update" >
                 <span class="glyphicon glyphicon-pencil"></span>&nbsp;
-                 <span name="xxx" id="66">编辑</span>
+                <span name="xxx" id="66">编辑</span>
             </button>
             <button class="btn btn-danger ctrol" onclick="deletepeople();"  id="del">
                 <span class="glyphicon glyphicon-trash"></span>&nbsp;
-                 <span name="xxx" id="67">删除</span>
+                <span name="xxx" id="67">删除</span>
             </button> 
 
         </div>
