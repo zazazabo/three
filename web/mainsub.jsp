@@ -16,9 +16,9 @@
         <%@include  file="js.jspf" %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
-        <script type="text/javascript" src="js/genel.js"></script>
         <script src="echarts/dist/echarts_3.8.5_echarts.min.js"></script>
         <script src="js/chart/chart.js"></script>
+        <script type="text/javascript" src="js/genel.js"></script>
         <style>
 
             @charset "utf-8";
@@ -304,7 +304,7 @@
             var langs1 = parent.parent.getLnas();
             // var pid = parent.parent.getpojectId();
             $(function () {
-                
+
                 var aaa = $("span[name=xxx]");
                 for (var i = 0; i < aaa.length; i++) {
                     var d = aaa[i];
@@ -479,8 +479,9 @@
 
                 $("#qunian").html(preyear);
                 $('#gayway').on('click-row.bs.table', function (row, element) {
+
                     var l_comaddr = element.comaddr;
-                    $("#head").html("[" + element.name +":"+element.comaddr+ "]");
+                    $("#head").html("[" + element.name + ":" + element.comaddr + "]");
                     $("#headtime").html(langs1[428][lang] + ":xx:xx &nbsp;" + langs1[429][lang] + ":xx:xx");
 
                     var fmobj = $("#forminfo").serializeObject();
@@ -502,7 +503,7 @@
 
                 });
 
-                setInterval('getcominfo()', 3000);
+                 setInterval('getcominfo()', 3000);
             });
 
             function  hittable(comaddr) {
@@ -911,21 +912,24 @@
             }
 
             function  formartcomaddr(value, row, index, field) {
-//                var val = value;
-//                console.log(index);
+                var val = value;
+                console.log(index);
                 if (index == 0) {
                     var l_comaddr = row.comaddr;
-                    $("#head").html("[" + row.name +":"+row.comaddr+ "]");
+
+                    $("#head").html("[" + row.name + ":" + row.comaddr + "]");
                     $("#l_comaddr").val(l_comaddr);
                     if (row.online == 1) {
                         var vv = [];
-                        var num = randnum(0, 9) + 0x70;
-                        var data = buicode(l_comaddr, 0x04, 0xAC, num, 0, 602, vv); //01 03 F24   
-                        dealsend("AC", data, 602, "collectinfo", l_comaddr, 0, 0, 0, 0);
+                        // var num = randnum1(0, 9) + 0x70;
+                        var num = 0;
+                        // aaa();
+//                        var data = buicode(l_comaddr, 0x04, 0xAC, num, 0, 602, vv); //01 03 F24   
+//                        dealsend("AC", data, 602, "collectinfo", l_comaddr, 0, 0, 0);
                     }
-                    hittable(l_comaddr);
-//                    console.log(l_comaddr);
-
+                    //hittable(l_comaddr);
+////                    console.log(l_comaddr);
+//
                 }
                 var v1 = row.online == 1 ? "&nbsp;<img src='img/online1.png'>" : "&nbsp;<img src='img/off.png'>";
                 return   v1;
@@ -1260,7 +1264,7 @@
                                         <td></td>
                                         <td></td>
                                     </tr>
-               
+
                                 </table>   
 
                             </form>

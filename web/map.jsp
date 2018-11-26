@@ -9,6 +9,7 @@
 <html>
     <head>
         <%@include  file="js.jspf" %>
+        <%@include  file="jsmap.jspf" %>
         <script src="layer/layer.js"></script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
@@ -61,7 +62,7 @@
         </style>
         <!--<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=Uppxai1CT7jTHF9bjKFx0WGTs7nCyHMr"></script>-->
         
-                <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=SFnIXQgXqMFnE4f9KaM6UQA16ra8l9Z2"></script>
+                <!--<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=SFnIXQgXqMFnE4f9KaM6UQA16ra8l9Z2"></script>-->
                 
         <script type="text/javascript" src="js/genel.js"></script>
         <script type="text/javascript" src="js/getdate.js"></script>
