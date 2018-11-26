@@ -826,7 +826,7 @@
                             <span style="margin-left:10px;">                                     
                                 <label id="50" name="xxx">集控器</label>
                                 &nbsp;</span>
-                            <input id="comaddrlist" data-options='editable:true,valueField:"id", textField:"text"' class="easyui-combobox"/>
+                            <input id="comaddrlist" data-options='editable:true,valueField:"id",textField:"text" ' class="easyui-combobox"/>
                         </td>
                         <td>
                             <label style="margin-left:20px;" id="292" name="xxx">

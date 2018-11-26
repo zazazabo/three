@@ -74,7 +74,7 @@
     <body>
         <div id="showdiv">
             <input type="text" id="showtext" >
-            <span style=" margin-left: 20px;" name="xxx" id="25">网关地址</span>：
+            <span style=" margin-left: 20px;" name="xxx" id="50">集控器</span>：
             <input id="lampcomaddrlist2" data-options="editable:true,valueField:'id', textField:'text'"  class="easyui-combobox"/>&nbsp;
             <span name="xxx" id="453">灯杆编号</span>：
             <input type="text" id="lampNumber">
