@@ -1348,14 +1348,15 @@
                                                 <span style="margin-left:10px;" name="xxx" id="187">功能选择</span>&nbsp;
 
                                                 <span class="menuBox">
-                                                    <select class="easyui-combobox" id="type" name="type" data-options="editable:false,valueField:'id', textField:'text' " style="width:200px; height: 30px">
+                                                    <select class="easyui-combobox" id="type" name="type" data-options="editable:false,valueField:'id', textField:'text' onLoadSuccess:function(){
+                                                            } " style="width:200px; height: 30px">
                                                         <option value="1" >主站域名或IP设置</option>
                                                         <option value="2">设置换日冻结时间参数</option>    
                                                         <!--<option value="3">设置通信巡检次数</option>--> 
                                                         <!--<option value="4">读取集控器时间</option>--> 
                                                         <option value="5">集控器行政区划码</option> 
-                                                        <!--                                                        <option value="6">集控器灯具管理</option> 
-                                                                                                                <option value="7">集控器回路管理</option> -->
+                                                        <option value="6">集控器时间设置</option> 
+                                                        <!--              <option value="7">集控器回路管理</option> -->
                                                         <option value="8">设置经纬度</option> 
                                                         <option value="9">设置巡测任务</option> 
                                                         <option value="10">互感器变比设置</option> 
@@ -1549,9 +1550,10 @@
                                                     <input class="easyui-datetimebox" name="nowtime" id="nowtime"
                                                            data-options="formatter:dateFormatter,showSeconds:true" value="" style="width:180px">
                                                 </span> 
-                                                <button  type="button" onclick="setNowtime()" class="btn btn-success btn-sm">获取当前时间</button>&nbsp; 
+                                                <button  type="button" onclick="setNowtime()"  class="btn btn-success btn-sm"><span name="xxx" id="513">获取当前时间</sspan>
+                                                </button>&nbsp; 
 
-                                                <button  style="float:right; margin-right: 5px;" type="button" onclick="setTimeNow()" class="btn btn-success btn-sm"><span name="xxx" id="510">校时当前时间</sspan></button>
+                                                <button  style="float:right; margin-right: 5px;" type="button" onclick="setTimeNow()" class="btn btn-success btn-sm"><span name="xxx" id="49">设置</sspan></button>
                                             </td>
                                         </tr>
 
@@ -1559,7 +1561,7 @@
                                             <td>
                                                 <span style="margin-left:10px; " name="xxx" id="202">网关终端时间</span>&nbsp;
                                                 <input id="gaytime" readonly="true" class="form-control" name="gaytime" value="" style="width:150px;" placeholder="网关终端时间" type="text">
-                                                <button  type="button" onclick="readTrueTime()" class="btn btn-success btn-sm"><span name="xxx" id="203">读取时间</span></button>&nbsp;
+                                                <button  type="button" onclick="readTrueTime()" class="btn btn-success btn-sm"><span name="xxx" id="205">读取</span></button>&nbsp;
                                             </td>
                                         </tr>
 
