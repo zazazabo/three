@@ -102,7 +102,7 @@
                                 valign: 'middle'
                             }, {
                                 field: 'u_content',
-                                title:'备注',  //告警类型
+                                title:langs1[149][lang],  //告警类型
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle'

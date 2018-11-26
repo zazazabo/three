@@ -18,10 +18,10 @@
             table thead{
                 background-color:  #ddd
             }
-/*            table.table-bordered > tr >td {
-                height: 80px;
-                max-height: 80px;
-            }*/
+            /*            table.table-bordered > tr >td {
+                            height: 80px;
+                            max-height: 80px;
+                        }*/
         </style>
     </head>
 
@@ -61,9 +61,15 @@
             $('#time4').timespinner('setValue', '00:00');
             $('#time3').timespinner('setValue', '00:00');
 
-            var data2 = [{"name": "A相电压超限"}, {"name": "B相电压超限"}, {"name": "C相电压超限"},
-                {"name": "A相过载"}, {"name": "A相欠载"}, {"name": "B相过载"}, {"name": "B相欠载"},
-                {"name": "C相过载"}, {"name": "C相欠载"}, {"name": "A相功率因数过低"}, {"name": "B相功率因数过低"}, {"name": "C相功率因数过低"}, {"name": "交流接触电故障"}];
+            var data2 = []
+            for (var i = 0, max = 8; i < max; i++) {
+                var eid = i + 553;
+                var oo = {"name": langs1[eid][lang]};
+                data2.push(oo);
+            }
+//            var data2 = [{"name": "A相电压超限"}, {"name": "B相电压超限"}, {"name": "C相电压超限"},
+//                {"name": "A相过载"}, {"name": "A相欠载"}, {"name": "B相过载"}, {"name": "B相欠载"},
+//                {"name": "C相过载"}, {"name": "C相欠载"}, {"name": "A相功率因数过低"}, {"name": "B相功率因数过低"}, {"name": "C相功率因数过低"}, {"name": "交流接触电故障"}];
 
             $('#warningtable').bootstrapTable({
                 columns: [
@@ -77,7 +83,7 @@
                         valign: 'middle'
                     }, {
                         field: 'name',
-                        title: langs1[216][lang],   //报警参数
+                        title: langs1[216][lang], //报警参数
                         width: 25,
                         align: 'center',
                         valign: 'middle'
