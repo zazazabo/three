@@ -480,7 +480,7 @@
                 $("#qunian").html(preyear);
                 $('#gayway').on('click-row.bs.table', function (row, element) {
                     var l_comaddr = element.comaddr;
-                    $("#head").html("[" + element.name + "]");
+                    $("#head").html("[" + element.name +":"+element.comaddr+ "]");
                     $("#headtime").html(langs1[428][lang] + ":xx:xx &nbsp;" + langs1[429][lang] + ":xx:xx");
 
                     var fmobj = $("#forminfo").serializeObject();
