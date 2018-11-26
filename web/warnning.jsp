@@ -114,9 +114,11 @@
                                 valign: 'middle',
                                 formatter: function (value, row, index, field) {
                                     if (value == 1) {
-                                        return "中文"
+                                        return "中文";
                                     } else if (value == 2) {
-                                        return "英文"
+                                        return "英文";
+                                    }else if(value ==3){
+                                        return "俄文";
                                     }
 
                                 }
