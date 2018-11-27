@@ -174,13 +174,27 @@
                 $('#reordtabel').bootstrapTable({
                     url: 'login.policereord.reordInfo.action?pid=' + pid,
                     columns: [
-                        {
+                       {
                             field: 'f_comaddr',
-                            title: langs1[25][lang], //集控器地址
+                            title: langs1[50][lang], //集控器
                             width: 25,
                             align: 'center',
-                            valign: 'middle'
-                        }, {
+                            valign: 'middle',
+                            formatter: function (value) {
+                                if (value != "" && value != null) {
+                                    var wgobj = {};
+                                    wgobj.comaddr = value;
+                                    var name = "";
+                                    $.ajax({url:"login.main.selectwgname.action", async: false, type: "get", datatype: "JSON", data:wgobj,
+                                        success: function (data) {
+                                            name = data.rs[0].name;
+                                            
+                                        }
+                                    });
+                                    return  name;
+                                }
+                            }
+                        },{
                             field: 'f_day',
                             title: langs1[469][lang], //报警时间
                             width: 25,
@@ -189,29 +203,35 @@
                             formatter: function (value, row, index, field) {
                                 return  value.replace(".0", "");
                             }
-                        }, {
-                            field: 'f_type',
-                            title: langs1[121][lang], //异常类型
-                            width: 25,
-                            align: 'center',
-                            valign: 'middle'
-                        }, {
+                        },
+//                        {
+//                            field: 'f_type',
+//                            title: langs1[121][lang], //异常类型
+//                            width: 25,
+//                            align: 'center',
+//                            valign: 'middle'
+//                        },
+                        {
                             field: 'f_comment',
                             title: langs1[123][lang], //异常说明
                             width: 25,
                             align: 'center',
                             valign: 'middle'
-                        }
-//                        {
-//                            field: 'f_setcode',
-//                            title: langs1[236][lang], //装置号
-//                            width: 25,
-//                            align: 'center',
-//                            valign: 'middle'
-//                        }
-                        , {
+                        },{
+                            field: 'f_name',
+                            title:langs1[54][lang], //灯具名称  o[292][lang]
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        } ,{
                             field: 'l_factorycode',
                             title: langs1[292][lang], //灯具编号
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        },{
+                            field: 'f_Lamppost',
+                            title:langs1[453][lang], //灯杆编号  o[292][lang]
                             width: 25,
                             align: 'center',
                             valign: 'middle'

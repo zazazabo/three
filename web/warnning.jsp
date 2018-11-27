@@ -31,6 +31,22 @@
                     var e = $(d).attr("id");
                     $(d).html(langs1[e][lang]);
                 }
+                $('#u_lang').combobox({
+                    formatter: function (row) {
+                        var langid = parseInt(row.value) + 267;
+                        row.text = langs1[langid][lang];
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
+                    }
+                });
+                $('#u_lang1').combobox({
+                    formatter: function (row) {
+                        var langid = parseInt(row.value) + 267;
+                        row.text = langs1[langid][lang];
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
+                    }
+                });
                 $("#add").attr("disabled", true);
                 $("#update").attr("disabled", true);
                 $("#del").attr("disabled", true);
@@ -117,7 +133,7 @@
                                         return "中文";
                                     } else if (value == 2) {
                                         return "英文";
-                                    }else if(value ==3){
+                                    } else if (value == 3) {
                                         return "俄文";
                                     }
 
@@ -181,6 +197,7 @@
                     obj.u_email = uemail;
                     obj.u_content = u_content;
                     obj.u_id = uid;
+                    obj.u_lang = $("#u_lang1").val();
                     $.ajax({url: "login.warnning.update.action", async: false, type: "get", datatype: "JSON", data: obj,
                         success: function (data) {
                             var arrlist = data.rs;
@@ -212,6 +229,7 @@
                 $("#updid").val(select.u_id);
                 $("#u_content").val(select.u_content);
                 $("#updatetable").modal();
+                $("##u_lang1").combobox('setValue', select.u_lang);
             }
             //添加警告配置
             function  add() {
@@ -240,6 +258,7 @@
                 obj.u_email = email;
                 obj.u_content = content;
                 obj.u_pid = pid;
+                obj.u_lang = $("#u_lang").val();
                 $.ajax({url: "login.warnning.addpeople.action", async: false, type: "get", datatype: "JSON", data: obj,
                     success: function (data) {
                         var arrlist = data.rs;
@@ -338,13 +357,24 @@
                                     <tr>
                                         <td>
                                             <span style="margin-left:20px;" name="xxx" id="136">电话</span>&nbsp;
-                                            <input id="adphone" class="form-control"  name="phone" style="width:150px;display: inline;" placeholder="请输入电话" type="text"></td>
+                                            <input id="adphone" class="form-control"  name="phone" style="width:150px;display: inline;" placeholder="请输入电话" type="text">
+                                        </td>
                                         <td></td>
                                         <td>
                                             <span style="margin-left:50px;" name="xxx" id="137">邮箱</span>&nbsp;
                                             <input id="ademail" class="form-control" name="email" style="width:150px;display: inline;" placeholder="请输入邮箱" type="text">
                                         </td>
                                     </tr> 
+                                    <tr>
+                                        <td>
+                                            <span style="margin-left:20px;" name="xxx" id="2">语言</span>&nbsp;
+                                            <select class="easyui-combobox" name="u_lang"  id="u_lang" style="width:150px; height: 30px">
+                                                <option value="1">中文</option>
+                                                <option value="2">英文</option>           
+                                                <option value="3">俄文</option>
+                                            </select>
+                                        </td>
+                                    </tr>
 
                                 </tbody>
                             </table>
@@ -357,7 +387,7 @@
                             </button>
                             <!-- 关闭按钮 -->
                             <button type="button" class="btn btn-default" data-dismiss="modal">
-                                <sapn name="xxx" id="57">关闭</sapn> 
+                                <span name="xxx" id="57">关闭</span> 
                             </button></div>
                     </form>
                 </div>
@@ -397,7 +427,17 @@
                                         <span style="margin-left:48px;" name="xxx" id="137">邮箱</span>&nbsp;
                                         <input id="updemail" class="form-control"  style="width:175px;display: inline;" placeholder="请输入邮箱" type="text">
                                     </td>
-                                </tr>   
+                                </tr>  
+                                <tr>
+                                    <td>
+                                        <span style="margin-left:20px;" name="xxx" id="2">语言</span>&nbsp;
+                                        <select class="easyui-combobox" name="u_lang"  id="u_lang1" style="width:150px; height: 30px">
+                                            <option value="1">中文</option>
+                                            <option value="2">英文</option>           
+                                            <option value="3">俄文</option>
+                                        </select>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

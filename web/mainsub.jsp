@@ -596,7 +596,6 @@
             function getcominfo() {
 
                 var obj = $("#forminfo").serializeObject();
-
                 var o1 = {pid: "${param.pid}", comaddr: obj.l_comaddr};
                 $.ajax({async: false, url: "gayway.GaywayForm.info.action", type: "get", datatype: "JSON", data: o1,
                     success: function (data) {
@@ -611,6 +610,23 @@
                                     if (attr.charAt(attr.length - 1) == "*") {
                                         var temp = attr.replace("*", "");
                                         var p = (o[temp] * 1000).toFixed(2);
+                                        $(str).val(p);
+                                    }else if(attr.charAt(attr.length - 1) == "#"){
+                                        //计算有功功率和无功功率
+                                        var multpower = rs[0].multpower;
+                                        if(multpower =="" || multpower == null || multpower ==0){
+                                            multpower = 1;
+                                        }
+                                        var temp = attr.replace("#", "");
+                                        var p = (o[temp] * 1000 * multpower).toFixed(2);
+                                        $(str).val(p);
+                                    }else if(attr.charAt(attr.length - 1) == "@"){
+                                        var multpower = rs[0].multpower;
+                                        if(multpower =="" || multpower == null || multpower ==0){
+                                            multpower = 1;
+                                        }
+                                        var temp = attr.replace("@", "");
+                                        var p = (o[temp] * multpower).toFixed(2);
                                         $(str).val(p);
                                     } else {
                                         $(str).val(o[attr]);
@@ -1226,42 +1242,42 @@
                                     </tr>
                                     <tr>
                                         <td><span name="xxx" id="499">A相</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="aactpwr*"/></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="aactpwr#"/></td>
                                         <td><span name="xxx" id="499">A相</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="anopwr*"/></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="anopwr#"/></td>
                                         <td><span name="xxx" id="499">A相</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="aviewpwr"/></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="aviewpwr@"/></td>
                                         <td><span name="xxx" id="499">A相</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="apwrfactor"/></td>
 
                                     </tr>
                                     <tr>
                                         <td><span name="xxx" id="500">B相</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bactpwr*"/></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bactpwr#"/></td>
                                         <td><span name="xxx" id="500">B相</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bnopwr*"/></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bnopwr#"/></td>
                                         <td><span name="xxx" id="500">B相</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bviewpwr"/></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bviewpwr@"/></td>
                                         <td><span name="xxx" id="500">B相</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bpwrfactor"/></td>
                                     </tr>
                                     <tr>
                                         <td><span name="xxx" id="501">C相</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cactpwr*"/></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cactpwr#"/></td>
                                         <td><span name="xxx" id="501">C相</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cnopwr*"/></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cnopwr#"/></td>
                                         <td><span name="xxx" id="501">C相</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cviewpwr"/></td>  
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cviewpwr@"/></td>  
                                         <td><span name="xxx" id="501">C相</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cpwrfactor"/></td>
                                     </tr>
                                     <tr>
                                         <td><span name="xxx" id="436">总有功功率</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="sumactpwr*"/></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="sumactpwr#"/></td>
                                         <td><span name="xxx" id="437">总无功功率</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="sumnopwr*"/></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="sumnopwr#"/></td>
                                         <td><span name="xxx" id="438">总视在功率</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="sumviewpwr"/></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="sumviewpwr@"/></td>
                                         <td><span name="xxx" id="109">总功率因数</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="pwrfactor"/></td> 
                                     </tr>
@@ -1275,27 +1291,27 @@
                                         <td><span name="xxx" id="499">A相</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="avol"/></td>
                                         <td><span name="xxx" id="499">A相</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="aelectric"/></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="aelectric@"/></td>
                                         <td><span name="xxx" id="448">正向有功总电能量</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="actenergy"/></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="actenergy@"/></td>
                                         <td><span name="xxx" id="449">正向无功总电能量</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="reactenergy"/></td>  
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="reactenergy@"/></td>  
                                     </tr>
                                     <tr>
                                         <td><span name="xxx" id="500">B相</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bvol"/></td>
                                         <td><span name="xxx" id="500">B相</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="belectric"/></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="belectric@"/></td>
                                         <td><span name="xxx" id="450">反向有功总电能量</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="diractenergy"/></td>  
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="diractenergy@"/></td>  
                                         <td><span name="xxx" id="451">反向无功总电能量</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="dirreactenergy"/></td>  
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="dirreactenergy@"/></td>  
                                     </tr>
                                     <tr>
                                         <td><span name="xxx" id="501">C相</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cvol"/></td> 
                                         <td><span name="xxx" id="501">C相</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="celectric"/></td> 
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="celectric@"/></td> 
                                         <td></td>
                                         <td></td>
                                         <td></td>

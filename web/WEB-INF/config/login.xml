@@ -35,6 +35,7 @@
             <xsql id="a2" list="true" page="true" tpe="SQL" tpl="select * from t_lan " var="lans">     
             </xsql>                 
         </xhand>
+        
         <xhand id="lan" desc="语言" rtnype="JSON">
             <xsql id="a2" list="true" page="true" tpe="SQL" tpl="select * from t_lan " var="lans">     
             </xsql> 
@@ -100,6 +101,16 @@
                     </xfltpara>
                 </xflt>
             </xsql>
+        </xhandle>
+        
+         <xhandle desc="根据网关地址查询网关名称" id="selectwgname" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_baseinfo where @CONDITION" var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@comaddr">
+                    <xfltpara id="comaddr" nrp="1=2" para="comaddr" sql="comaddr=':comaddr'">
+                    </xfltpara>
+                </xflt>
+            </xsql>
+            
         </xhandle>
     </xform>
     
@@ -454,11 +465,11 @@
             </xsql>               
         </xhandle>
         <xhandle desc="添加警告人员信息" id="addpeople" rtn="rs" rtnype="JSON">
-            <xsql id="a1" para="u_phone,u_name,u_email,u_content,u_pid" tpe="DDL" tpl="insert into t_people (u_phone,u_name,u_email,u_content,u_pid) values (':u_phone',':u_name',':u_email',':u_content',':u_pid')" var="rs">
+            <xsql id="a1" para="u_phone,u_name,u_email,u_content,u_pid,u_lang" tpe="DDL" tpl="insert into t_people (u_phone,u_name,u_email,u_content,u_pid,u_lang) values (':u_phone',':u_name',':u_email',':u_content',':u_pid',':u_lang')" var="rs">
             </xsql>
         </xhandle>
         <xhandle desc="修改警告人员信息" id="update" rtn="rs" rtnype="JSON">
-            <xsql id="a1" para="u_name,u_phone,u_email,u_content" tpe="DDL" tpl="update t_people set u_name =':u_name' ,u_phone =':u_phone' ,u_email =':u_email',u_content=':u_content' where  @CONDITION " var="rs">
+            <xsql id="a1" para="u_name,u_phone,u_email,u_content,u_lang" tpe="DDL" tpl="update t_people set u_name =':u_name' ,u_phone =':u_phone' ,u_email =':u_email',u_content=':u_content',u_lang=':u_lang' where  @CONDITION " var="rs">
                 <xflt id="CONDITION" nrp="" tpl="@u_id ">
                     <xfltpara id="u_id" nrp="1=1" para="u_id" sql="u_id=:u_id">
                     </xfltpara>

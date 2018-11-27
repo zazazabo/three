@@ -174,7 +174,6 @@ Author     : admin
                     return;
                 }
                 var s = selects[0];
-                console.log(s);
                 $("#l_deployment1").val(s.l_deplayment);
                 $("#l_code").val(s.l_code);
                 $("#l_worktype1").combobox('setValue', s.l_worktype);

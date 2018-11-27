@@ -441,6 +441,13 @@
             }
             //点击告警信息
             function imgM() {
+                $("#comaddrlist").combobox({
+                    url: "login.map.getallcomaddr.action?pid=" + getpojectId(),
+                    onLoadSuccess: function (data) {
+                        $(this).combobox("select", data[0].id);
+                        $(this).val(data[0].text);
+                    }
+                });
                 $("#fauttable").bootstrapTable('destroy');
                 var lang2 = getCookie("lang");
                 $('#fauttable').bootstrapTable({
@@ -456,10 +463,24 @@
                             valign: 'middle'
                         }, {
                             field: 'f_comaddr',
-                            title: o[120][lang2], //设备名称 o[120][lang]
+                            title: o[50][lang2], //集控器
                             width: 25,
                             align: 'center',
-                            valign: 'middle'
+                            valign: 'middle',
+                            formatter: function (value) {
+                                if (value != "" && value != null) {
+                                    var wgobj = {};
+                                    wgobj.comaddr = value;
+                                    var name = "";
+                                    $.ajax({url:"login.main.selectwgname.action", async: false, type: "get", datatype: "JSON", data:wgobj,
+                                        success: function (data) {
+                                            name = data.rs[0].name;
+                                            
+                                        }
+                                    });
+                                    return  name;
+                                }
+                            }
                         }, {
                             field: 'f_day',
                             title: o[82][lang2], //时间 o[82][lang]
@@ -478,9 +499,21 @@
                             width: 25,
                             align: 'center',
                             valign: 'middle'
-                        }, {
+                        },{
+                            field: 'f_name',
+                            title: o[54][lang2], //灯具名称  o[292][lang]
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        },{
                             field: 'l_factorycode',
                             title: o[292][lang2], //灯具编号  o[292][lang]
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: 'f_Lamppost',
+                            title: o[453][lang2], //灯杆编号  o[292][lang]
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -558,9 +591,8 @@
                     }
                 });
                 $('#faultDiv').dialog('open');
-                var pid = getpojectId();
                 var obj = {};
-                obj.pid = pid;
+                obj.pid = getpojectId();
                 var opt = {
                     method: "post",
                     contentType: "application/x-www-form-urlencoded",
@@ -570,13 +602,6 @@
                 };
                 $("#fauttable").bootstrapTable('refresh', opt);
 
-                $("#comaddrlist").combobox({
-                    url: "login.map.getallcomaddr.action?pid=" + pid,
-                    onLoadSuccess: function (data) {
-                        $(this).combobox("select", data.id);
-                        $(this).val(data.text);
-                    }
-                });
             }
 
             //获取语言
@@ -826,7 +851,7 @@
                             <span style="margin-left:10px;">                                     
                                 <label id="50" name="xxx">集控器</label>
                                 &nbsp;</span>
-                            <input id="comaddrlist" data-options='editable:true,valueField:"id",textField:"text" ' class="easyui-combobox"/>
+                            <input id="comaddrlist" data-options='editable:true,valueField:"id", textField:"text"' class="easyui-combobox" style=" width: 140px;"/>
                         </td>
                         <td>
                             <label style="margin-left:20px;" id="292" name="xxx">
@@ -944,7 +969,6 @@
             $(function () {
                 var pid = '${rs[0].pid}';
                 porject(pid);
-                var pid2 = getpojectId();
                 // $('#iframe').attr('src','formuser.mainsub.home.action?pid='+pid2+'&lang=${empty cookie.lang.value?"zh_CN":cookie.lang.value}');
                 //查看警异常信息总数
                 fualtCount();

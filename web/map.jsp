@@ -142,7 +142,7 @@
                                     <span style="margin-left:30px;">                                     
                                         <span id="25" name="xxx">集控器地址</span>
                                         &nbsp;</span>
-                                    <input id="comaddrlist" data-options='editable:false,valueField:"id", textField:"text"' class="easyui-combobox"/>
+                                    <input id="comaddrlist" data-options='editable:false,valueField:"id", textField:"text"' class="easyui-combobox"  style=" width: 140px;"/>
                                 </td>
                                 <td>
                                     <!-- <input type="button" class="btn btn-sm btn-success" onclick="selectlamp()" value="搜索" style="margin-left:10px;">-->
@@ -171,12 +171,12 @@
                                         <span style="margin-left:30px;" id="54" name="xxx">
                                             灯具名称
                                         </span>&nbsp;
-                                        <input type='text' id='lampname'>
+                                        <input type='text' id='lampname' style="width:150px; height: 30px;">
                                     <td>
                                         <span style="margin-left:50px;">
                                             <span id="55" name="xxx">所属网关</span>
                                             &nbsp;</span>
-                                        <input id="lampcomaddrlist" data-options='editable:false,valueField:"id", textField:"text"' class="easyui-combobox"/>
+                                        <input id="lampcomaddrlist" data-options='editable:false,valueField:"id", textField:"text"' class="easyui-combobox" style=" width: 140px;"/>
                                     </td>
                                     <td>
                                         <!-- <input type="button" class="btn btn-sm btn-success" onclick="selectlamp()" value="搜索" style="margin-left:10px;">-->
