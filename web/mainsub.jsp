@@ -20,8 +20,8 @@
         <script src="js/chart/chart.js"></script>
         <script type="text/javascript" src="js/genel.js"></script>
         <style>
-
             @charset "utf-8";
+            .yc{ color: red;}
             .clear {
                 clear: both;
             }
@@ -367,6 +367,9 @@
                 $("#lonlin").html(langs1[284][lang] + ":" + djzxs);//灯具在线数
                 $("#llin").html(langs1[285][lang] + ":" + djlxs);  //灯具离线
                 $("#lyc").html(langs1[286][lang] + ":" + gzdj);  //异常灯具
+                if(gzdj>0){
+                   $("#lyc").css("color","red");
+                }
                 if ((${ybsdj[0].num-djgzs[0].num} - djlxs) <= 0) {
                     $("#ldl").html("0%");
                 } else {
@@ -1081,7 +1084,7 @@
                         <!--                        <span style="font-size: 14px;" id="djms"></span>-->
                         <span id="lonlin">在线：0</span>
                         <span id="llin">离线：0</span>
-                        <span id="lyc" style=" color: red;">异常：0</span>
+                        <span id="lyc">异常：0</span>
                     </div>
                 </div>
             </div>
@@ -1237,8 +1240,8 @@
                                     <tr>
                                         <th colspan="2"><span name="xxx" id="495">有功功率</span>(W)</th>
                                         <th colspan="2"><span name="xxx" id="496">无功功率</span>(W)</th>
-                                        <th colspan="2"><span name="xxx" id="497">视在功率</span>(KVA)</th>
-                                        <th colspan="2"><span name="xxx" id="498">功率因数</span>(%)</th>
+                                        <th colspan="2"><span name="xxx" id="497">视在功率</span>(VA)</th>
+                                        <th colspan="2"><span name="xxx" id="498">功率因数</span></th>
                                     </tr>
                                     <tr>
                                         <td><span name="xxx" id="499">A相</span></td>
@@ -1246,7 +1249,7 @@
                                         <td><span name="xxx" id="499">A相</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="anopwr#"/></td>
                                         <td><span name="xxx" id="499">A相</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="aviewpwr@"/></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="aviewpwr#"/></td>
                                         <td><span name="xxx" id="499">A相</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="apwrfactor"/></td>
 
@@ -1257,7 +1260,7 @@
                                         <td><span name="xxx" id="500">B相</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bnopwr#"/></td>
                                         <td><span name="xxx" id="500">B相</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bviewpwr@"/></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bviewpwr#"/></td>
                                         <td><span name="xxx" id="500">B相</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="bpwrfactor"/></td>
                                     </tr>
@@ -1267,7 +1270,7 @@
                                         <td><span name="xxx" id="501">C相</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cnopwr#"/></td>
                                         <td><span name="xxx" id="501">C相</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cviewpwr@"/></td>  
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cviewpwr#"/></td>  
                                         <td><span name="xxx" id="501">C相</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="cpwrfactor"/></td>
                                     </tr>
@@ -1277,7 +1280,7 @@
                                         <td><span name="xxx" id="437">总无功功率</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="sumnopwr#"/></td>
                                         <td><span name="xxx" id="438">总视在功率</span></td>
-                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="sumviewpwr@"/></td>
+                                        <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="sumviewpwr#"/></td>
                                         <td><span name="xxx" id="109">总功率因数</span></td>
                                         <td><input type="text" readonly="true" class="form-control" style="width:100px; height: 22px "  name="pwrfactor"/></td> 
                                     </tr>
