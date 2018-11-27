@@ -31,6 +31,22 @@
                     var e = $(d).attr("id");
                     $(d).html(langs1[e][lang]);
                 }
+                $('#lang').combobox({
+                    formatter: function (row) {
+                        var langid = parseInt(row.value) + 267;
+                        row.text = langs1[langid][lang];
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
+                    }
+                });
+                $('#lang2').combobox({
+                    formatter: function (row) {
+                        var langid = parseInt(row.value) + 267;
+                        row.text = langs1[langid][lang];
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
+                    }
+                });
                 //var pinfo = [];
                 $("#add").attr("disabled", true);
                 $("#del").attr("disabled", true);
@@ -94,6 +110,23 @@
                             width: 25,
                             align: 'center',
                             valign: 'middle'
+                        }, {
+                            field: 'lang',
+                            title: langs1[575][lang], //项目语言
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle',
+                            formatter: function (value) {
+                                if (value == 1) {
+                                    return  langs1[268][lang];
+                                } else if (value == 2) {
+                                    return  langs1[269][lang];
+                                } else if (value == 3) {
+                                    return  langs1[270][lang];
+                                } else {
+                                    return  langs1[268][lang];
+                                }
+                            }
                         }],
                     singleSelect: false,
                     locale: 'zh-CN', //中文支持,
@@ -286,6 +319,7 @@
                 $("#parea").val(selects[0].area);
                 $("#code").val(selects[0].code);
                 $("#p_id").val(selects[0].id);
+                $("#lang2").combobox('setValue',selects[0].lang);
                 $("#pjj2").modal();
             }
 
@@ -300,6 +334,7 @@
                 obj.area = $("#parea").val();
                 obj.name = pname;
                 obj.id = $("#p_id").val();
+                obj.lang = $("#lang2").val();
                 $.ajax({async: false, url: "login.project.updProject.action", type: "get", datatype: "JSON", data: obj,
                     success: function (data) {
                         var arrlist = data.rs;
@@ -478,6 +513,20 @@
 
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>
+                                        <span style="margin-left:20px;" name="xxx" id="575">项目语言</span>&nbsp;
+                                        <select class="easyui-combobox" id="lang" name="lang" data-options='editable:false' style="width:150px; height: 30px">
+                                            <option value="1" >中文</option>
+                                            <option value="2" >英文</option>
+                                            <option value="3">俄文</option>           
+                                        </select>
+                                    </td>
+                                    <td></td>
+                                    <td>
+
+                                    </td>
+                                </tr>
 
                             </tbody>
                         </table>
@@ -534,6 +583,20 @@
                                 </td>
                             </tr>
 
+                            <tr>
+                                <td>
+                                    <span style="margin-left:20px;" name="xxx" id="575">项目语言</span>&nbsp;
+                                    <select class="easyui-combobox" id="lang2" data-options='editable:false' style="width:150px; height: 30px">
+                                        <option value="1" >中文</option>
+                                        <option value="2" >英文</option>
+                                        <option value="3">俄文</option>           
+                                    </select>
+                                </td>
+                                <td></td>
+                                <td>
+
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

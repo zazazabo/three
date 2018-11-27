@@ -561,14 +561,14 @@
                                         $("#headtime").html(langs1[428][lang] + ":" + list.rl + "&nbsp;" + langs1[429][lang] + ":" + list.rc);
                                     },
                                     error: function () {
-                                        alert("提交失败！2");
+                                      //  alert("提交失败！2");
                                     }
                                 });
                             }
                         }
                     },
                     error: function () {
-                        alert("提交失败！3");
+                      //  alert("提交失败！3");
                     }
                 });
             }
@@ -638,7 +638,7 @@
                         }
                     },
                     error: function () {
-                        alert("提交失败！1");
+                        //alert("提交失败！1");
                     }
                 });
 

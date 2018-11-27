@@ -111,6 +111,7 @@
                 showMeridian: 1,
                 autoclose: 1//选择后自动关闭
             });
+            
             $(".form_datetime3").datetimepicker({
                 language: 'zh-CN',
                 format: 'yyyy', //显示格式

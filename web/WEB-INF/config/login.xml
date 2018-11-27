@@ -465,11 +465,11 @@
             </xsql>               
         </xhandle>
         <xhandle desc="添加警告人员信息" id="addpeople" rtn="rs" rtnype="JSON">
-            <xsql id="a1" para="u_phone,u_name,u_email,u_content,u_pid,u_lang" tpe="DDL" tpl="insert into t_people (u_phone,u_name,u_email,u_content,u_pid,u_lang) values (':u_phone',':u_name',':u_email',':u_content',':u_pid',':u_lang')" var="rs">
+            <xsql id="a1" para="u_phone,u_name,u_email,u_content,u_pid" tpe="DDL" tpl="insert into t_people (u_phone,u_name,u_email,u_content,u_pid) values (':u_phone',':u_name',':u_email',':u_content',':u_pid')" var="rs">
             </xsql>
         </xhandle>
         <xhandle desc="修改警告人员信息" id="update" rtn="rs" rtnype="JSON">
-            <xsql id="a1" para="u_name,u_phone,u_email,u_content,u_lang" tpe="DDL" tpl="update t_people set u_name =':u_name' ,u_phone =':u_phone' ,u_email =':u_email',u_content=':u_content',u_lang=':u_lang' where  @CONDITION " var="rs">
+            <xsql id="a1" para="u_name,u_phone,u_email,u_content" tpe="DDL" tpl="update t_people set u_name =':u_name' ,u_phone =':u_phone' ,u_email =':u_email',u_content=':u_content' where  @CONDITION " var="rs">
                 <xflt id="CONDITION" nrp="" tpl="@u_id ">
                     <xfltpara id="u_id" nrp="1=1" para="u_id" sql="u_id=:u_id">
                     </xfltpara>
@@ -535,7 +535,7 @@
             </xsql>   
         </xhandle>  
         <xhandle desc="添加项目" id="addProject" rtnype="JSON">
-            <xsql id="a1" para="name,area" tpe="DDL" tpl="insert into t_project(name,area) values(':name',':area') " var="rs">
+            <xsql id="a1" para="name,area,lang" tpe="DDL" tpl="insert into t_project(name,area,lang) values(':name',':area',':lang') " var="rs">
             </xsql>
         </xhandle>    
         <xhandle desc="查找最后一个项目编码" id="selectlatcode" rtnype="JSON">
@@ -589,7 +589,7 @@
         </xhandle> 
         
         <xhandle desc="修改项目表" id="updProject" rtn="rs" rtnype="JSON">
-            <xsql id="a1" para="area,name" tpe="DDL" tpl="update t_project set area = ':area',name=':name' where  @CONDITION " var="rs">
+            <xsql id="a1" para="area,name,lang" tpe="DDL" tpl="update t_project set area = ':area',name=':name',lang = ':lang' where  @CONDITION " var="rs">
                 <xflt id="CONDITION" nrp="" tpl="@id ">
                     <xfltpara id="id" nrp="1=1" para="id" sql="id=:id">
                     </xfltpara>

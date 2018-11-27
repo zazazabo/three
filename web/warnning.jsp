@@ -24,6 +24,12 @@
             var o_pid = parent.parent.getpojectId();
             var lang = '${param.lang}';//'zh_CN';
             var langs1 = parent.parent.getLnas();
+            function layerAler(str) {
+                layer.alert(str, {
+                    icon: 6,
+                    offset: 'center'
+                });
+            }
             $(function () {
                 var aaa = $("span[name=xxx]");
                 for (var i = 0; i < aaa.length; i++) {
@@ -31,22 +37,6 @@
                     var e = $(d).attr("id");
                     $(d).html(langs1[e][lang]);
                 }
-                $('#u_lang').combobox({
-                    formatter: function (row) {
-                        var langid = parseInt(row.value) + 267;
-                        row.text = langs1[langid][lang];
-                        var opts = $(this).combobox('options');
-                        return row[opts.textField];
-                    }
-                });
-                $('#u_lang1').combobox({
-                    formatter: function (row) {
-                        var langid = parseInt(row.value) + 267;
-                        row.text = langs1[langid][lang];
-                        var opts = $(this).combobox('options');
-                        return row[opts.textField];
-                    }
-                });
                 $("#add").attr("disabled", true);
                 $("#update").attr("disabled", true);
                 $("#del").attr("disabled", true);
@@ -122,22 +112,6 @@
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle'
-                            }, {
-                                field: 'u_lang',
-                                title: langs1[566][lang], //接收邮件的语言
-                                width: 25,
-                                align: 'center',
-                                valign: 'middle',
-                                formatter: function (value, row, index, field) {
-                                    if (value == 1) {
-                                        return "中文";
-                                    } else if (value == 2) {
-                                        return "英文";
-                                    } else if (value == 3) {
-                                        return "俄文";
-                                    }
-
-                                }
                             }
                         ]
                     ],
@@ -178,15 +152,15 @@
                     // var uwarntype = $("#upd_warntype").val();
                     var u_content = $("#u_content").val();
                     if (uname == "") {
-                        alert(langs1[139][lang]);  //姓名不能为空
+                        layerAler(langs1[139][lang]);  //姓名不能为空
                         return;
                     }
                     if (uphone == "") {
-                        alert(langs1[140][lang]);  //电话不能为空
+                        layerAler(langs1[140][lang]);  //电话不能为空
                         return;
                     }
                     if (uemail == "") {
-                        alert(langs1[141][lang]); //邮箱不能为空
+                        layerAler(langs1[141][lang]); //邮箱不能为空
                         return;
                     }
 
@@ -197,12 +171,11 @@
                     obj.u_email = uemail;
                     obj.u_content = u_content;
                     obj.u_id = uid;
-                    obj.u_lang = $("#u_lang1").val();
                     $.ajax({url: "login.warnning.update.action", async: false, type: "get", datatype: "JSON", data: obj,
                         success: function (data) {
                             var arrlist = data.rs;
                             if (arrlist.length == 1) {
-                                alert(langs1[143][lang]);  //修改成功
+                                layerAler(langs1[143][lang]);  //修改成功
                                 $("#gravidaTable").bootstrapTable('refresh');
                                 $("#updatetable").modal('hide');  //手动关闭
                                 addlogon(u_name, "修改", o_pid, "报警设置", "修改报警管理人员");
@@ -219,7 +192,7 @@
             function updatepeople() {
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
                 if (selects.length < 1) {
-                    alert(langs1[73][lang]); //请勾选表格数据
+                    layerAler(langs1[73][lang]); //请勾选表格数据
                     return;
                 }
                 var select = selects[0];
@@ -229,7 +202,6 @@
                 $("#updid").val(select.u_id);
                 $("#u_content").val(select.u_content);
                 $("#updatetable").modal();
-                $("##u_lang1").combobox('setValue', select.u_lang);
             }
             //添加警告配置
             function  add() {
@@ -240,15 +212,15 @@
                 var content = $("#adu_content").val();
                 var pid = o_pid;
                 if (name == "") {
-                    alert(langs1[139][lang]);  //姓名不能为空
+                    layerAler(langs1[139][lang]);  //姓名不能为空
                     return;
                 }
                 if (phone == "") {
-                    alert(langs1[140][lang]);  //电话不能为空
+                    layerAler(langs1[140][lang]);  //电话不能为空
                     return;
                 }
                 if (email == "") {
-                    alert(langs1[141][lang]);  //邮箱不能为空
+                    layerAler(langs1[141][lang]);  //邮箱不能为空
                     return;
                 }
 
@@ -258,12 +230,11 @@
                 obj.u_email = email;
                 obj.u_content = content;
                 obj.u_pid = pid;
-                obj.u_lang = $("#u_lang").val();
                 $.ajax({url: "login.warnning.addpeople.action", async: false, type: "get", datatype: "JSON", data: obj,
                     success: function (data) {
                         var arrlist = data.rs;
                         if (arrlist.length == 1) {
-                            alert(langs1[144][lang]);//添加成功
+                            layerAler(langs1[144][lang]);//添加成功
                             $("#gravidaTable").bootstrapTable('refresh');
                             $("#addtable").modal('hide');  //自动关闭
                             addlogon(u_name, "添加", o_pid, "报警设置", "添加报警管理人员");
@@ -280,7 +251,7 @@
             function deletepeople() {
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
                 if (selects.length < 1) {
-                    alert(langs1[73][lang]);  //请勾选数据
+                    layerAler(langs1[73][lang]);  //请勾选数据
                     return;
                 }
                 layer.confirm(langs1[145][lang], {//确定要删除吗？
@@ -365,16 +336,6 @@
                                             <input id="ademail" class="form-control" name="email" style="width:150px;display: inline;" placeholder="请输入邮箱" type="text">
                                         </td>
                                     </tr> 
-                                    <tr>
-                                        <td>
-                                            <span style="margin-left:20px;" name="xxx" id="2">语言</span>&nbsp;
-                                            <select class="easyui-combobox" name="u_lang"  id="u_lang" style="width:150px; height: 30px">
-                                                <option value="1">中文</option>
-                                                <option value="2">英文</option>           
-                                                <option value="3">俄文</option>
-                                            </select>
-                                        </td>
-                                    </tr>
 
                                 </tbody>
                             </table>
@@ -428,16 +389,6 @@
                                         <input id="updemail" class="form-control"  style="width:175px;display: inline;" placeholder="请输入邮箱" type="text">
                                     </td>
                                 </tr>  
-                                <tr>
-                                    <td>
-                                        <span style="margin-left:20px;" name="xxx" id="2">语言</span>&nbsp;
-                                        <select class="easyui-combobox" name="u_lang"  id="u_lang1" style="width:150px; height: 30px">
-                                            <option value="1">中文</option>
-                                            <option value="2">英文</option>           
-                                            <option value="3">俄文</option>
-                                        </select>
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
