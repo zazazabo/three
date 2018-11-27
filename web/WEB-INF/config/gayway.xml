@@ -2,15 +2,24 @@
 <xforms>
     <xform desc="网关" id="GaywayForm">
         <xhandle desc="" id="getProject" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT   tl.code as id,tl.name as text FROM t_project tl where @CONDITION  " var="list">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT   tl.code as id,tl.name as text FROM t_project tl where @CONDITION   " var="list">
                 <xflt id="CONDITION" nrp="" tpl="@code ">
                     <xfltpara id="code" nrp="1=2" para="code" sql="code = ':code' ">
                     </xfltpara>
                 </xflt>
             </xsql>
         </xhandle>
+        
+        <xhandle desc="" id="ClearData" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="update t_lamp set l_deplayment=0" var="list">
+            </xsql>
+            <xsql id="a2" list="true" page="true" tpe="SQL" tpl="update t_loop set l_deplayment=0" var="list">
+            </xsql>
+        </xhandle>    
+        
+        
         <xhandle desc="" id="List" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_baseinfo where @CONDITION " var="bootstrap">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_baseinfo where @CONDITION order by online desc" var="bootstrap">
                 <xflt id="CONDITION" nrp="" tpl="@id AND @comaddr AND @pid">
                     <xfltpara id="id" nrp="1=1" para="id" sql="id = ':id'">
                     </xfltpara>
@@ -31,8 +40,8 @@
                 </xflt>
             </xsql>
         </xhandle>
-            <xhandle desc="" id="getComaddrList" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_baseinfo where @CONDITION " var="list">
+        <xhandle desc="" id="getComaddrList" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_baseinfo where @CONDITION ORDER BY online desc" var="list">
                 <xflt id="CONDITION" nrp="" tpl="@id AND @comaddr AND @pid">
                     <xfltpara id="id" nrp="1=1" para="id" sql="id = ':id'">
                     </xfltpara>

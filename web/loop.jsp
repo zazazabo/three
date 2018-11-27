@@ -50,7 +50,7 @@
                 addlogon(u_name, "添加", o_pid, "回路管理", "导入Excel文件添加回路");
                 var pid = parent.parent.getpojectId();
                 for (var i = 0; i <= selects.length - 1; i++) {
-                    var comaddr = selects[i].网关地址;
+                    var comaddr = selects[i].集控器地址;
                     var l_code = selects[i].回路编号;
                     var obj = {};
                     obj.pid = pid;
@@ -63,7 +63,7 @@
                                     success: function (data) {
                                         var arrlist = data.rs;
                                         if (arrlist.length == 0) {
-                                            //var cmdname = selects[i].网关名称;
+                                            //var cmdname = selects[i].集控器名称;
                                             var lname = selects[i].回路名称;
                                             var groupe = selects[i].回路组号;
                                             var l_worktype = selects[i].控制方式;
@@ -106,6 +106,7 @@
                     });
 
                 }
+                $("#gravidaTable").bootstrapTable('refresh');
             }
 
             function showDialog() {
@@ -117,10 +118,15 @@
             function checkLoopAdd() {
                 var o = $("#formadd").serializeObject();
                 if (o.l_comaddr == "") {
-                    layerAler(langs1[172][lang]);  //网关不能为空
+                    layerAler(langs1[172][lang]);  //集控器不能为空
                     return  false;
                 }
                 if (isNumber(o.l_factorycode) == false) {
+                    layerAler(langs1[358][lang]);  //回路编号必须数字
+                    return false;
+                }
+
+                if (parseInt(o.l_factorycode) > 54 || parseInt(o.l_factorycode) == 0) {
                     layerAler(langs1[358][lang]);  //回路编号必须数字
                     return false;
                 }
@@ -129,6 +135,7 @@
                     return false;
                 }
                 o.name = o.comaddrname;
+                o.l_code = o.l_factorycode;
 
                 var namesss = false;
 
@@ -229,7 +236,7 @@
 
             function modifyLoopName() {
                 var o = $("#form2").serializeObject();
-                o.id = o.hide_id;
+                o.l_code = o.l_factorycode;
                 addlogon(u_name, "修改", o_pid, "回路管理", "修改回路", $("#l_comaddr1").val());
                 $.ajax({async: false, url: "loop.loopForm.modifyname.action", type: "get", datatype: "JSON", data: o,
                     success: function (data) {
@@ -249,6 +256,7 @@
                         alert("提交失败！");
                     }
                 });
+
                 return  false;
             }
 
@@ -272,19 +280,23 @@
                 $("#l_deployment").val(select.l_deplayment);
                 $("#comaddrname1").val(select.commname);
                 $("#l_name1").val(select.l_name);
-                $("#l_code").val(select.l_code);
-                $("#hide_id").val(select.id);
+                $("#lid").val(select.lid);
+
                 $('#l_worktype1').combobox('setValue', select.l_worktype);
-                $("#l_groupe1").combobox('setValue', select.l_groupe);
                 if (select.l_deplayment == "1") {
                     $("#trworktype").show();
                     $('#l_worktype1').combobox('readonly', true);
+
                     // $("#l_groupe1").combobox('readonly', true);
                 } else if (select.l_deplayment == "0") {
                     $("#trworktype").hide();
                     $('#l_worktype1').combobox('readonly', false);
+
                     //$("#l_groupe1").combobox('readonly', false);
                 }
+
+                var o = $("#form2").serializeObject();
+                console.log(o);
 
                 $('#dialog-edit').dialog('open');
 
@@ -319,13 +331,13 @@
                             valign: 'middle'
                         }, {
                             field: 'commname',
-                            title: langs1[314][lang], //网关名称
+                            title: langs1[314][lang], //集控器名称
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'l_comaddr',
-                            title: langs1[25][lang], //网关地址
+                            title: langs1[25][lang], //集控器地址
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -431,6 +443,15 @@
                     var e = $(d).attr("id");
                     $(d).html(langs1[e][lang]);
                 }
+                $('#busu').combobox({
+                    formatter: function (row) {
+                        var langid = parseInt(row.value) + 318;
+                        console.log(langid);
+                        row.text = langs1[langid][lang];
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
+                    }
+                });
 
 
                 $('#comaddr').combobox({
@@ -507,8 +528,8 @@
                             align: 'center',
                             valign: 'middle'
                         }, {
-                            field: '网关地址',
-                            title: langs1[25][lang], //网关地址
+                            field: '集控器地址',
+                            title: langs1[25][lang], //集控器地址
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -572,7 +593,7 @@
                                 // break; // 如果只取第一张表，就取消注释这行
                             }
                         }
-                        var headStr = '序号,网关地址,回路名称,回路编号,回路组号,控制方式';
+                        var headStr = '序号,集控器地址,回路名称,回路编号,回路组号,控制方式';
                         for (var i = 0; i < persons.length; i++) {
                             if (Object.keys(persons[i]).join(',') !== headStr) {
                                 alert(langs1[366][lang]);   //导入文件格式不正确
@@ -780,7 +801,7 @@
                             <tr>
                                 <td>
                                     <span style="margin-left:10px;">
-                                        <span id="25" name="xxx">网关地址</span>
+                                        <span id="25" name="xxx">集控器地址</span>
                                         &nbsp;</span>
                                 </td>
                                 <td>
@@ -839,7 +860,7 @@
                 <span name="xxx" id="110">导出Excel</span>
             </button>
             <button class="btn btn-success ctrol" onclick="$('#loopmb').tableExport({type: 'excel', escape: 'false'})" id="addexcel" >
-               <span name="xxx" id="472">导出Excel模板</span>
+                <span name="xxx" id="472">导出Excel模板</span>
             </button>
         </div>
 
@@ -858,7 +879,7 @@
                     <tbody>
                         <tr>
                             <td>
-                                <span style="margin-left:20px;" name="xxx" id="25">网关地址</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="25">集控器地址</span>&nbsp;
                                 <span class="menuBox">
 
                                     <input id="comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 
@@ -868,8 +889,8 @@
 
                             <td></td>
                             <td>
-                                <span style="margin-left:10px;" name="xxx" id="314">网关名称</span>&nbsp;
-                                <input id="comaddrname" readonly="true"   class="form-control"  name="comaddrname" style="width:150px;display: inline;" placeholder="请输入网关名称" type="text"></td>
+                                <span style="margin-left:10px;" name="xxx" id="314">集控器名称</span>&nbsp;
+                                <input id="comaddrname" readonly="true"   class="form-control"  name="comaddrname" style="width:150px;display: inline;" placeholder="请输入集控器名称" type="text"></td>
 
                             </td>
                         </tr>
@@ -903,11 +924,13 @@
                             </td>
                             <td></td>
                             <td>
-                                <span style="margin-left:10px;" name="xxx" id="369">所属组号</span>&nbsp;
-                                <span class="menuBox">
-                                    <select class="easyui-combobox" id="l_groupe" name="l_groupe"  data-options='editable:false,valueField:"id", textField:"text"' style="width:150px; height: 30px">          
-                                    </select>
-                                </span>
+
+                                <input id="l_groupe" type="hidden" name="l_groupe" value="1"/>
+                                <!--                                <span style="margin-left:10px;" name="xxx" id="369">所属组号</span>&nbsp;
+                                                                <span class="menuBox">
+                                                                    <select class="easyui-combobox" id="l_groupe" name="l_groupe"  data-options='editable:false,valueField:"id", textField:"text"' style="width:150px; height: 30px">          
+                                                                    </select>
+                                                                </span>-->
                             </td>
                         </tr>                 
 
@@ -919,16 +942,16 @@
 
         <div id="dialog-edit"  class="bodycenter" style=" display: none"  title="回路修改">
             <form action="" method="POST" id="form2" onsubmit="return modifyLoopName()">  
-                <input type="hidden" id="hide_id" name="id" />
+
                 <input type="hidden" name="pid" value="${param.pid}"/>
-                <input type="hidden" name="l_code" id="l_code" value=""/>
                 <input type="hidden" id="l_deployment" name="l_deployment" />
+                <input type="hidden" id="lid" name="id" />
                 <table >
                     <tbody>
                         <tr>
                             <td>
 
-                                <span style="margin-left:20px;" name="xxx" id="25">网关地址</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="25">集控器地址</span>&nbsp;
                                 <span class="menuBox">
 
                                     <input id="l_comaddr1" readonly="true" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 
@@ -937,8 +960,8 @@
                             </td>
                             <td></td>
                             <td>
-                                <span style="margin-left:10px;" name="xxx" id="314">网关名称</span>&nbsp;
-                                <input id="comaddrname1" readonly="true"   class="form-control"  name="comaddrname" style="width:150px;display: inline;" placeholder="请输入网关名称" type="text">
+                                <span style="margin-left:10px;" name="xxx" id="314">集控器名称</span>&nbsp;
+                                <input id="comaddrname1" readonly="true"   class="form-control"  name="comaddrname" style="width:150px;display: inline;" placeholder="请输入集控器名称" type="text">
 
                             </td>
                         </tr>
@@ -971,13 +994,11 @@
 
                             </td>
                             <td>
-
-
-                                <span style="margin-left:10px;" name="xxx" id="369">所属组号</span>&nbsp;
-                                <span class="menuBox">
-                                    <select class="easyui-combobox" readonly="true" id="l_groupe1" name="l_groupe"  data-options='editable:false,valueField:"id", textField:"text"' style="width:150px; height: 30px">          
-                                    </select>
-                                </span>
+                                <!--                                <span style="margin-left:10px;" name="xxx" id="369">所属组号</span>&nbsp;
+                                                                <span class="menuBox">
+                                                                    <select class="easyui-combobox" readonly="true" id="l_groupe1" name="l_groupe"  data-options='editable:false,valueField:"id", textField:"text"' style="width:150px; height: 30px">          
+                                                                    </select>
+                                                                </span>-->
                             </td>
                         </tr>                 
                     </tbody>
@@ -998,7 +1019,7 @@
             <table id="loopmb" style=" border: 1px">
                 <tr>
                     <td>序号</td>
-                    <td>网关地址</td>
+                    <td>集控器地址</td>
                     <td>回路名称</td>
                     <td>回路编号</td>
                     <td>回路组号</td>
@@ -1006,9 +1027,9 @@
                 </tr>
                 <tr>
                     <td>如1、2、3</td>
-                    <td>网关地址必须是已存在</td>
+                    <td>集控器地址必须是已存在</td>
                     <td>回路名称</td>
-                    <td>回路编号是网关下唯一</td>
+                    <td>回路编号是集控器下唯一</td>
                     <td>回路组号</td>
                     <td>0代表时间、1代表经纬度;输入0或1即可</td>
                 </tr>

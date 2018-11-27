@@ -180,7 +180,6 @@
 
 
                 var o = $("#form1").serializeObject();
-                console.log(o);
                 var comaddr = o.comaddr;
 
 
@@ -532,7 +531,7 @@
 
                         }
                         obj.rows = a;
-                        $("#gravidaTable").bootstrapTable("load", obj)
+                        $("#gravidaTable").bootstrapTable("load", obj);
                         var data = $('#gravidaTable').bootstrapTable('getData', true);
                         // 合并单元格
                         var fieldList = ["dayalis"];

@@ -225,6 +225,30 @@
                     var e = $(d).attr("id");
                     $(d).html(langs1[e][lang]);
                 }
+                
+                $('#switch').combobox({
+                    formatter: function (row) {
+                        var langid = parseInt(row.value);
+                        if(langid==170){
+                            langid=langid+164;
+                        }else if(langid==85){
+                            langid = langid+250;
+                        }
+                        row.text = langs1[langid][lang];
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
+                    }
+                });
+                
+                $('#type').combobox({
+                    formatter: function (row) {
+                        var langid = parseInt(row.value)+567;
+                        row.text = langs1[langid][lang];
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
+                    }
+                });
+                
                 $('#gravidaTable').on("check.bs.table", function (field, value, row, element) {
                     var index = row.data('index');
                     value.index = index;
@@ -255,13 +279,13 @@
                             align: 'center',
                             valign: 'middle'
                         },
-//                        {
-//                            field: 'l_comaddr',
-//                            title: langs1[25][lang], //网关地址
-//                            width: 25,
-//                            align: 'center',
-//                            valign: 'middle'
-//                        }, 
+                        {
+                            field: 'l_comaddr',
+                            title: langs1[25][lang], //网关地址
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, 
                         {
                             field: 'l_name',
                             title: langs1[331][lang], //回路名称
@@ -425,7 +449,7 @@
                         <tr >
                             <th data-width="25" data-formatter='formartcomaddr1'    data-select="false" data-align="center"  data-checkbox="true"  ></th>
                             <!-- <th data-width="100" data-field="comaddr" data-align="center" data-formatter='formartcomaddr'   >网关地址</th>-->
-                            <th data-width="100" data-formatter='formartcomaddr' data-field="name" data-align="center"><span name="xxx" id="314">网关名称</span></th>
+                            <th data-width="100" data-formatter='formartcomaddr' data-field="name" data-align="center"><span name="xxx" id="314">集控器名称</span></th>
                         </tr>
                     </thead>       
 
@@ -464,9 +488,7 @@
                                     </button>
 
 
-                                    <span style="margin-left:10px;" id="48" name="xxx">
-                                        <!--回路-->
-                                    </span>
+                                    <span style="margin-left:10px;" id="48" name="xxx">回路</span>
                                     <select class="easyui-combobox" id="type" name="type" style="width:100px; height: 30px">
                                         <option value="0">单个回路</option>
                                         <option value="1">所有回路</option>           

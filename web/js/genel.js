@@ -15,7 +15,7 @@ $.fn.serializeObject = function () {
     return o;
 }
 function setCookie(name, value) {
-    var Days = 30;
+    var Days = 365*5;
     var exp = new Date();
     exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
     document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString();
@@ -265,6 +265,7 @@ function buicode(comaddr, C, AFN, SEQ, DA, DT, paraArr) {
 }
 
 
+
 function delendchar(str) {
     while (str.lastIndexOf('|') == str.length - 1) {
         if (str.lastIndexOf('|') == -1) {
@@ -393,10 +394,11 @@ function dealsend2(msg, data, fn, func, comaddr, type, param, val) {
 
 
 
-function dealsend2(msg, data, fn, func, comaddr, type, param, val, res = 1) {
+function dealsend2(msg, data, fn, func, comaddr, type, param, val, res) {
+    var res1 = res == undefined ? 1 : 0;
     var user = new Object();
     user.begin = '6A';
-    user.res = 1;
+    user.res = res1;
     user.status = "";
     user.comaddr = comaddr;
     user.fn = fn;
@@ -421,10 +423,12 @@ function dealsend2(msg, data, fn, func, comaddr, type, param, val, res = 1) {
 
 
 
-function dealsend(msg, data, fn, func, comaddr, type, param, val,res = 1) {
+function dealsend(msg, data, fn, func, comaddr, type, param, val, res) {
+
+    var res1 = res == undefined ? 1 : 0;
     var user = new Object();
     user.begin = '6A';
-    user.res = res;
+    user.res = res1;
     user.status = "";
     user.comaddr = comaddr;
     user.fn = fn;

@@ -24,6 +24,12 @@
             var o_pid = parent.parent.getpojectId();
             var lang = '${param.lang}';//'zh_CN';
             var langs1 = parent.parent.getLnas();
+            function layerAler(str) {
+                layer.alert(str, {
+                    icon: 6,
+                    offset: 'center'
+                });
+            }
             $(function () {
                 var aaa = $("span[name=xxx]");
                 for (var i = 0; i < aaa.length; i++) {
@@ -42,15 +48,15 @@
                         var rs = data.rs;
                         if (rs.length > 0) {
                             for (var i = 0; i < rs.length; i++) {
-                                if (rs[i].code == "700101" && rs[i].enable != 0) {
+                                if (rs[i].code == "700301" && rs[i].enable != 0) {
                                     $("#add").attr("disabled", false);
                                     continue;
                                 }
-                                if (rs[i].code == "700102" && rs[i].enable != 0) {
+                                if (rs[i].code == "700302" && rs[i].enable != 0) {
                                     $("#update").attr("disabled", false);
                                     continue;
                                 }
-                                if (rs[i].code == "700103" && rs[i].enable != 0) {
+                                if (rs[i].code == "700303" && rs[i].enable != 0) {
                                     $("#del").attr("disabled", false);
                                     continue;
                                 }
@@ -67,7 +73,7 @@
                     url: 'login.warnning.queryData.action?pid=' + o_pid,
                     columns: [[{
                                 field: '',
-                                title: langs1[134][lang],  //告警配置
+                                title: langs1[134][lang], //告警配置
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle',
@@ -84,7 +90,7 @@
                             },
                             {
                                 field: 'u_name',
-                                title: langs1[135][lang],  //姓名
+                                title: langs1[135][lang], //姓名
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle'
@@ -96,13 +102,13 @@
                                 valign: 'middle'
                             }, {
                                 field: 'u_email',
-                                title: langs1[137][lang],  //邮箱
+                                title: langs1[137][lang], //邮箱
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle'
                             }, {
                                 field: 'u_content',
-                                title:'备注',  //告警类型
+                                title: langs1[149][lang], //告警类型
                                 width: 25,
                                 align: 'center',
                                 valign: 'middle'
@@ -143,21 +149,21 @@
                     var uphone = $("#updphone").val();
                     var uid = $("#updid").val();
                     var uemail = $("#updemail").val();
-                   // var uwarntype = $("#upd_warntype").val();
+                    // var uwarntype = $("#upd_warntype").val();
                     var u_content = $("#u_content").val();
                     if (uname == "") {
-                        alert(langs1[139][lang]);  //姓名不能为空
+                        layerAler(langs1[139][lang]);  //姓名不能为空
                         return;
                     }
                     if (uphone == "") {
-                        alert(langs1[140][lang]);  //电话不能为空
+                        layerAler(langs1[140][lang]);  //电话不能为空
                         return;
                     }
                     if (uemail == "") {
-                        alert(langs1[141][lang]); //邮箱不能为空
+                        layerAler(langs1[141][lang]); //邮箱不能为空
                         return;
                     }
-                   
+
 
                     var obj = {};
                     obj.u_name = uname;
@@ -169,7 +175,7 @@
                         success: function (data) {
                             var arrlist = data.rs;
                             if (arrlist.length == 1) {
-                                alert(langs1[143][lang]);  //修改成功
+                                layerAler(langs1[143][lang]);  //修改成功
                                 $("#gravidaTable").bootstrapTable('refresh');
                                 $("#updatetable").modal('hide');  //手动关闭
                                 addlogon(u_name, "修改", o_pid, "报警设置", "修改报警管理人员");
@@ -186,7 +192,7 @@
             function updatepeople() {
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
                 if (selects.length < 1) {
-                    alert(langs1[73][lang]); //请勾选表格数据
+                    layerAler(langs1[73][lang]); //请勾选表格数据
                     return;
                 }
                 var select = selects[0];
@@ -202,19 +208,19 @@
                 var phone = $("#adphone").val();
                 var name = $("#adname").val();
                 var email = $("#ademail").val();
-               // var warntype = $("#adu_warntype").val();
+                // var warntype = $("#adu_warntype").val();
                 var content = $("#adu_content").val();
                 var pid = o_pid;
                 if (name == "") {
-                    alert(langs1[139][lang]);  //姓名不能为空
+                    layerAler(langs1[139][lang]);  //姓名不能为空
                     return;
                 }
                 if (phone == "") {
-                    alert(langs1[140][lang]);  //电话不能为空
+                    layerAler(langs1[140][lang]);  //电话不能为空
                     return;
                 }
                 if (email == "") {
-                    alert(langs1[141][lang]);  //邮箱不能为空
+                    layerAler(langs1[141][lang]);  //邮箱不能为空
                     return;
                 }
 
@@ -228,7 +234,7 @@
                     success: function (data) {
                         var arrlist = data.rs;
                         if (arrlist.length == 1) {
-                            alert(langs1[144][lang]);//添加成功
+                            layerAler(langs1[144][lang]);//添加成功
                             $("#gravidaTable").bootstrapTable('refresh');
                             $("#addtable").modal('hide');  //自动关闭
                             addlogon(u_name, "添加", o_pid, "报警设置", "添加报警管理人员");
@@ -245,10 +251,10 @@
             function deletepeople() {
                 var selects = $('#gravidaTable').bootstrapTable('getSelections');
                 if (selects.length < 1) {
-                    alert(langs1[73][lang]);  //请勾选数据
+                    layerAler(langs1[73][lang]);  //请勾选数据
                     return;
                 }
-                layer.confirm(langs1[145][lang], {    //确定要删除吗？
+                layer.confirm(langs1[145][lang], {//确定要删除吗？
                     btn: [langs1[146][lang], langs1[147][lang]]//按钮
                 }, function (index) {
                     addlogon(u_name, "删除", o_pid, "报警设置", "删除报警管理人员");
@@ -280,11 +286,11 @@
             </button>
             <button class="btn btn-primary ctrol"   onclick="updatepeople()" id="update" >
                 <span class="glyphicon glyphicon-pencil"></span>&nbsp;
-                 <span name="xxx" id="66">编辑</span>
+                <span name="xxx" id="66">编辑</span>
             </button>
             <button class="btn btn-danger ctrol" onclick="deletepeople();"  id="del">
                 <span class="glyphicon glyphicon-trash"></span>&nbsp;
-                 <span name="xxx" id="67">删除</span>
+                <span name="xxx" id="67">删除</span>
             </button> 
 
         </div>
@@ -322,7 +328,8 @@
                                     <tr>
                                         <td>
                                             <span style="margin-left:20px;" name="xxx" id="136">电话</span>&nbsp;
-                                            <input id="adphone" class="form-control"  name="phone" style="width:150px;display: inline;" placeholder="请输入电话" type="text"></td>
+                                            <input id="adphone" class="form-control"  name="phone" style="width:150px;display: inline;" placeholder="请输入电话" type="text">
+                                        </td>
                                         <td></td>
                                         <td>
                                             <span style="margin-left:50px;" name="xxx" id="137">邮箱</span>&nbsp;
@@ -341,7 +348,7 @@
                             </button>
                             <!-- 关闭按钮 -->
                             <button type="button" class="btn btn-default" data-dismiss="modal">
-                                <sapn name="xxx" id="57">关闭</sapn> 
+                                <span name="xxx" id="57">关闭</span> 
                             </button></div>
                     </form>
                 </div>
@@ -381,7 +388,7 @@
                                         <span style="margin-left:48px;" name="xxx" id="137">邮箱</span>&nbsp;
                                         <input id="updemail" class="form-control"  style="width:175px;display: inline;" placeholder="请输入邮箱" type="text">
                                     </td>
-                                </tr>   
+                                </tr>  
                             </tbody>
                         </table>
                     </div>

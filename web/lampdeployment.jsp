@@ -139,7 +139,7 @@
                         console.log(l_value);
                         //温度
                         z = z + 2;
-                        var temperature = v[z+1]==1?-v[z]:v[z];
+                        var temperature = v[z + 1] == 1 ? -v[z] : v[z];
                         console.log(temperature);
                         var o = {};
                         o.l_comaddr = obj.comaddr;
@@ -194,7 +194,7 @@
                 var data = buicode(comaddr, 0x04, 0xAC, num, 0, 40, vv);
 
                 dealsend2("AC", data, 40, "tourlampCB", comaddr, 0, 0, 0);
-                 $('#panemask').showLoading({
+                $('#panemask').showLoading({
                     'afterShow': function () {
                         setTimeout("$('#panemask').hideLoading()", 10000);
                     }
@@ -262,7 +262,7 @@
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(o.l_comaddr, 0x04, 0xAA, num, 0, 380, vv);
                 dealsend2("AA", data, 380, "readlampCB", comaddr, 0, 0, 0);
-                 $('#panemask').showLoading({
+                $('#panemask').showLoading({
                     'afterShow': function () {
                         setTimeout("$('#panemask').hideLoading()", 10000);
                     }
@@ -297,13 +297,13 @@
                         var err = data[20];
                         if (err == 2) {
                             var set1 = data[19] * 256 + data[18];
-                            var o = {l_code: set1, l_comaddr: obj.comaddr};
-                            $.ajax({async: false, url: "lamp.lampform.modifyDepaymentByset.action", type: "get", datatype: "JSON", data: o,
-                                success: function (data) {
-                                },
-                                error: function () {
-                                    alert("提交失败！");
-                                }});
+//                            var o = {l_code: set1, l_comaddr: obj.comaddr};
+//                            $.ajax({async: false, url: "lamp.lampform.modifyDepaymentByset.action", type: "get", datatype: "JSON", data: o,
+//                                success: function (data) {
+//                                },
+//                                error: function () {
+//                                    alert("提交失败！");
+//                                }});
                             var lang = "zh-CN";
                             var str = ErrInfo[err][lang] + "<br>" + "装置号:" + set1.toString();
                             layerAler(str);
@@ -320,7 +320,7 @@
                     layerAler(langs1[73][lang]);   //请勾选表格数据
                     return;
                 }
-                addlogon(u_name, "部署", o_pid, "灯具部署", "部署灯具",o.l_comaddr);
+                addlogon(u_name, "部署", o_pid, "灯具部署", "部署灯具", o.l_comaddr);
                 var len = selects.length;
                 var h = len >> 8 & 0x00FF;
                 var l = len & 0x00ff;
@@ -342,6 +342,14 @@
                     vv.push(b);//测量点号  2字节            
                     vv.push(a);//测量点号  2字节  
                     var factorycode = ele.l_factorycode;
+
+                    while (factorycode.length < 12) {
+                        factorycode = "0" + factorycode;
+                    }
+                    if (factorycode.length > 12) {
+                        layerAler("通信地址不能大于12");
+                        return;
+                    }
                     var factor = Str2BytesH(factorycode);
                     vv.push(factor[5]); //通信地址
                     vv.push(factor[4]); //通信地址
@@ -362,7 +370,7 @@
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(o.l_comaddr, 0x04, 0xA4, num, 0, 102, vv);
                 dealsend2("A4", data, 102, "deploylampCB", comaddr, 1, param, 1);
-                 $('#panemask').showLoading({
+                $('#panemask').showLoading({
                     'afterShow': function () {
                         setTimeout("$('#panemask').hideLoading()", 10000);
                     }
@@ -383,14 +391,14 @@
                 vv.push(l);
                 vv.push(h);
                 var param = [];
-                addlogon(u_name, "移除", o_pid, "灯具部署", "移除灯具",o.l_comaddr);
+                addlogon(u_name, "移除", o_pid, "灯具部署", "移除灯具", o.l_comaddr);
                 for (var i = 0; i < selects.length; i++) {
                     var ele = selects[i];
                     if (ele.l_comaddr != o.l_comaddr) {
                         layerAler(langs1[385][lang]);  //勾选列表的网关要和下拉的网关一致
                         return;
                     }
-                    
+
                     var setcode = ele.l_code;
                     var l_code = parseInt(setcode);
                     var a = l_code >> 8 & 0x00FF;
@@ -400,6 +408,13 @@
                     vv.push(0);//测量点号  2字节            
                     vv.push(0);//测量点号  2字节  
                     var factorycode = ele.l_factorycode;
+                    while (factorycode.length < 12) {
+                        factorycode = "0" + factorycode;
+                    }
+                    if (factorycode.length > 12) {
+                        layerAler("通信地址不能大于12");
+                        return;
+                    }
                     var factor = Str2BytesH(factorycode);
                     vv.push(factor[5]); //通信地址
                     vv.push(factor[4]); //通信地址
@@ -419,7 +434,7 @@
                 var data = buicode(o.l_comaddr, 0x04, 0xA4, num, 0, 102, vv);
                 var num = randnum(0, 9) + 0x70; //随机帧序列号
                 dealsend2("A4", data, 102, "deploylampCB", comaddr, 0, param, 0);
-                 $('#panemask').showLoading({
+                $('#panemask').showLoading({
                     'afterShow': function () {
                         setTimeout("$('#panemask').hideLoading()", 10000);
                     }
@@ -496,7 +511,7 @@
                             width: 25,
                             align: 'center',
                             valign: 'middle'
-                        }, 
+                        },
 //                        {
 //                            field: 'l_code',
 //                            title: langs1[315][lang], //装置序号
@@ -605,9 +620,9 @@
                                 <td>
                                     <button style="margin-left:10px;"  type="button" onclick="readlamp()" class="btn btn-success btn-sm"><span name="xxx" id="389">读取灯具信息</span></button>
                                 </td>
-<!--                                <td>
-                                    <button style="margin-left:10px;"  type="button" onclick="tourlamp()" class="btn btn-success btn-sm"><span name="xxxx" id="403">巡测灯具状态</span></button>
-                                </td>-->
+                                <!--                                <td>
+                                                                    <button style="margin-left:10px;"  type="button" onclick="tourlamp()" class="btn btn-success btn-sm"><span name="xxxx" id="403">巡测灯具状态</span></button>
+                                                                </td>-->
                             </tr>
                         </tbody>
                     </table>

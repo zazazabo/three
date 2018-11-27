@@ -9,6 +9,7 @@
 <html>
     <head>
         <%@include  file="js.jspf" %>
+        <%@include  file="jsmap.jspf" %>
         <script src="layer/layer.js"></script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
@@ -59,7 +60,10 @@
             } 
             .items li:hover {color: #FF00FF}
         </style>
-        <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=Uppxai1CT7jTHF9bjKFx0WGTs7nCyHMr"></script>
+        <!--<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=Uppxai1CT7jTHF9bjKFx0WGTs7nCyHMr"></script>-->
+
+        <!--<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=SFnIXQgXqMFnE4f9KaM6UQA16ra8l9Z2"></script>-->
+
         <script type="text/javascript" src="js/genel.js"></script>
         <script type="text/javascript" src="js/getdate.js"></script>
         <script type="text/javascript" src="bootstrap-table/dist/bootstrap-table.js"></script>
@@ -70,11 +74,11 @@
     <body>
         <div id="showdiv">
             <input type="text" id="showtext" >
-            <span style=" margin-left: 20px;" name="xxx" id="25">网关地址</span>：
+            <span style=" margin-left: 20px;" name="xxx" id="50">集控器</span>：
             <input id="lampcomaddrlist2" data-options="editable:true,valueField:'id', textField:'text'"  class="easyui-combobox"/>&nbsp;
             <span name="xxx" id="453">灯杆编号</span>：
             <input type="text" id="lampNumber">
-            <button onclick="wg()"><span name="xxx" id="50">网关</span></button>
+            <button onclick="wg()"><span name="xxx" id="50">集控器</span></button>
             <button onclick="dj()" id="dj"><span name="xxx" id="51">灯具</span></button>
             <button id="bzzt"><span name="xxx" id="52">标识状态</span></button>
             <button onclick="xcdj()"><span name="xxx" id="414">巡测灯具</span></button>
@@ -136,9 +140,9 @@
                                 </td>
                                 <td>
                                     <span style="margin-left:30px;">                                     
-                                        <span id="25" name="xxx">网关地址</span>
+                                        <span id="25" name="xxx">集控器地址</span>
                                         &nbsp;</span>
-                                    <input id="comaddrlist" data-options='editable:false,valueField:"id", textField:"text"' class="easyui-combobox"/>
+                                    <input id="comaddrlist" data-options='editable:false,valueField:"id", textField:"text"' class="easyui-combobox"  style=" width: 140px;"/>
                                 </td>
                                 <td>
                                     <!-- <input type="button" class="btn btn-sm btn-success" onclick="selectlamp()" value="搜索" style="margin-left:10px;">-->
@@ -167,12 +171,12 @@
                                         <span style="margin-left:30px;" id="54" name="xxx">
                                             灯具名称
                                         </span>&nbsp;
-                                        <input type='text' id='lampname'>
+                                        <input type='text' id='lampname' style="width:150px; height: 30px;">
                                     <td>
                                         <span style="margin-left:50px;">
                                             <span id="55" name="xxx">所属网关</span>
                                             &nbsp;</span>
-                                        <input id="lampcomaddrlist" data-options='editable:false,valueField:"id", textField:"text"' class="easyui-combobox"/>
+                                        <input id="lampcomaddrlist" data-options='editable:false,valueField:"id", textField:"text"' class="easyui-combobox" style=" width: 140px;"/>
                                     </td>
                                     <td>
                                         <!-- <input type="button" class="btn btn-sm btn-success" onclick="selectlamp()" value="搜索" style="margin-left:10px;">-->
@@ -605,11 +609,10 @@
                             valign: 'middle',
                             formatter: function (value, row, index) {
                                 if (value == 1) {
-                                    return "<img  src='img/online1.png'/>";
+                                    return "<img  src='img/online1.png'/>";  //onclick='hello()'
                                 } else {
-                                    return "<img  src='img/off.png'/>";
+                                    return "<img  src='img/off.png'/>";  //onclick='hello()'
                                 }
-
                             }
                         }],
                     method: "post",
@@ -688,7 +691,7 @@
                             align: 'center',
                             valign: 'middle'
                         }, {
-                            field: 'presence',
+                            field: 'online',
                             title: lans[61][lang], //在线状态
                             width: 25,
                             align: 'center',
@@ -1011,7 +1014,7 @@
                     }
                 },
                 {
-                    text: lans[58][lang], //添加网关
+                    text: lans[58][lang], //添加集控器
                     callback: function () {
 
                         var allOver = map.getOverlays(); //获取全部标注
@@ -1758,7 +1761,26 @@
                         if ((Longitude != "" && latitude != "") && (Longitude != null && latitude != null)) {
                             var point = new BMap.Point(Longitude, latitude);
                             var marker1;
+                            var lxfault = 0;  //是否离线故障
+                            var obj2 = {};
+                            obj2.f_comaddr = obj.l_comaddr;
+                            obj2.l_factorycode = obj.l_factorycode;
+                            $.ajax({async: false, url: "login.lightval.isfault.action", type: "get", datatype: "JSON", data: obj2,
+                                success: function (data) {
+                                    var list = data.rs;
+                                    if (list.length > 0) {
+                                        lxfault = 1;
+                                    }
+                                },
+                                error: function () {
+                                    alert("提交失败！");
+                                }
+                            });
                             if (isfault2 == 1) {
+                                marker1 = new BMap.Marker(point, {
+                                    icon: lred
+                                });
+                            }else if(lxfault==1){
                                 marker1 = new BMap.Marker(point, {
                                     icon: lred
                                 });

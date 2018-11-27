@@ -28,9 +28,9 @@
         
         <xhandle desc="查询灯具是否存" id="existlamp" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT * FROM  t_lamp tl WHERE    @CONDITION  " var="bootstrap">
-                <xflt id="CONDITION" nrp="" tpl="@l_factorycode AND @l_comaddr">
+                <xflt id="CONDITION" nrp="" tpl="@l_factorycode AND @pid">
                     <xfltpara id="l_factorycode" nrp="1=2" para="l_factorycode" sql="l_factorycode = :l_factorycode"></xfltpara>
-                    <xfltpara id="l_comaddr" nrp="1=1" para="l_comaddr" sql="l_comaddr = ':l_comaddr'"></xfltpara>
+                    <xfltpara id="pid" nrp="1=2" para="pid" sql="l_comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE  pid = ':pid')"></xfltpara>
                 </xflt>
             </xsql>
         </xhandle>

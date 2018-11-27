@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -81,7 +82,7 @@ public class ControlServlet extends HttpServlet {
             String lat = request.getParameter("wd");
             String str1 = SunRiseSet.getSunrise(new BigDecimal(lng), new BigDecimal(lat), new Date());
             String str2 = SunRiseSet.getSunset(new BigDecimal(lng), new BigDecimal(lat), new Date());
-            
+
             Map<String, List> list3 = new HashMap<String, List>();
             Map map = new HashMap();
             map.put("rc", str1);
@@ -101,8 +102,13 @@ public class ControlServlet extends HttpServlet {
             setJsonMap(map, request, response);
         } else if (info1.rtnype.equals("UPLOAD")) {
             try {
-                List aa = dealAttach(request, response, info1);
-                setJsonList(aa, request, response);
+                String jsonstr = null;
+                List bbb = dealAttach(request, response, info1);
+                jsonstr = JSONArray.fromObject(bbb).toString();
+                System.out.println("jsonstr");
+                response.setContentType("text/json; charset=UTF-8");
+                response.getOutputStream().write(jsonstr.getBytes("UTF-8"));
+
             } catch (FileUploadException ex) {
                 Logger.getLogger(ControlServlet.class.getName()).log(Level.SEVERE, null, ex);
             } catch (Exception ex) {
@@ -128,7 +134,7 @@ public class ControlServlet extends HttpServlet {
             }
         } else if (info1.rtnype.equals("JSON")) {
             Map<String, List> list3 = dealJson(request, response, info1);
-          
+
             String jsonstr = null;
             if ((info1.var != null) && (!info1.var.equals("") && list3.containsKey(info1.var))) {
                 if (info1.var.equals("bootstrap")) {
@@ -331,30 +337,17 @@ public class ControlServlet extends HttpServlet {
         for (int i = 0; i < li.size(); i++) {
             XsqlInfo aa = (XsqlInfo) li.get(i);
             String path = aa.sql;
-            String[] pathArray = path.split(":");
-            String filePath = "upload";
+
+            String filePath = "";
             String temPath = "temp";
-            if (pathArray.length >= 2) {
-                filePath = pathArray[0];
-                temPath = pathArray[1];
-            }
-            filePath = webPath + "//" + filePath;
             temPath = webPath + "//" + temPath;
-            File pathFile = new File(filePath);
-            File TempFile = new File(temPath);
-            if (!pathFile.exists()) {
-                pathFile.mkdirs();
-            }
-            if (!TempFile.exists()) {
-                TempFile.mkdirs();
-            }
             System.out.println("文件存放目录、临时文件目录准备完毕 ...");
-//            PrintWriter pw = response.getWriter();
+            //PrintWriter pw = response.getWriter();
             DiskFileItemFactory diskFactory = new DiskFileItemFactory();
             // threshold 极限、临界值，即硬盘缓存 1G 
-            diskFactory.setSizeThreshold(1000 * 1024 * 1024);
+            //diskFactory.setSizeThreshold(1000 * 1024 * 1024);
             // repository 贮藏室，即临时文件目录  
-            diskFactory.setRepository(new File(temPath));
+            //diskFactory.setRepository(new File(temPath));
             ServletFileUpload upload = new ServletFileUpload(diskFactory);
             upload.setHeaderEncoding("UTF-8");
             // 设置允许上传的最大文件大小 1G 
@@ -366,8 +359,28 @@ public class ControlServlet extends HttpServlet {
             while (iter.hasNext()) {
                 FileItem item = (FileItem) iter.next();
                 if (item.isFormField()) {
+                    System.out.println("处理表单内容 ...");
+                    String tagName = item.getFieldName();
+                    String fcontent = item.getString("utf-8");
+                    if (tagName.equals("fpath") == true) {
+                        filePath = webPath + "\\" + fcontent;
+
+                    }
+                    System.out.println(filePath);
+                }
+            }
+
+            iter = fileItems.iterator();
+            while (iter.hasNext()) {
+                FileItem item = (FileItem) iter.next();
+                if (item.isFormField()) {
 //                    System.out.println("处理表单内容 ...");
-//                    processFormField(item, pw);  
+//                    String tagName = item.getFieldName();
+//                    String fcontent = item.getString("utf-8");
+//                    if (tagName == "fpath") {
+//                        filePath = fcontent;
+//                    }
+//                    System.out.println(fcontent);
                 } else {
                     Map<String, String> mapbig = new HashMap<String, String>();
                     Logger.getLogger(InitServlet.class.getName()).log(Level.WARNING, "处理上传的文件 ...");
@@ -384,7 +397,6 @@ public class ControlServlet extends HttpServlet {
                     long fileSize = item.getSize();
                     if ("".equals(filename) && fileSize == 0) {
                         Logger.getLogger(InitServlet.class.getName()).log(Level.WARNING, "文件名为空....");
-
                     }
                     File uploadFile = new File(filePath + "/" + filename);
                     if (!uploadFile.exists()) {
@@ -545,4 +557,19 @@ public class ControlServlet extends HttpServlet {
         response.getOutputStream().write(jsonstr.getBytes("UTF-8"));
         response.setContentType("text/json; charset=UTF-8");
     }
+
+    /**
+     * 处理表单内容
+     *
+     * @param item
+     * @param pw
+     * @throws Exception
+     */
+    public void processFormField(FileItem item, PrintWriter pw)
+            throws Exception {
+        String tagName = item.getFieldName();
+        String fileName = item.getString("utf-8");
+        // pw.println(tagName + " : " + fileName + "\r\n");
+    }
+
 }

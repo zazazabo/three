@@ -178,10 +178,24 @@
                             valign: 'middle'
                         }, {
                             field: 'f_comaddr',
-                            title: langs1[120][lang], //设备名称 o[120][lang]
+                            title: langs1[50][lang], //集控器
                             width: 25,
                             align: 'center',
-                            valign: 'middle'
+                            valign: 'middle',
+                            formatter: function (value) {
+                                if (value != "" && value != null) {
+                                    var wgobj = {};
+                                    wgobj.comaddr = value;
+                                    var name = "";
+                                    $.ajax({url:"login.main.selectwgname.action", async: false, type: "get", datatype: "JSON", data:wgobj,
+                                        success: function (data) {
+                                            name = data.rs[0].name;
+                                            
+                                        }
+                                    });
+                                    return  name;
+                                }
+                            }
                         }, {
                             field: 'f_day',
                             title: langs1[82][lang], //时间 o[82][lang]
@@ -189,20 +203,19 @@
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value) {
-                                var date = new Date(value);
-                                var year = date.getFullYear();
-                                var month = date.getMonth() + 1; //月份是从0开始的 
-                                var day = date.getDate(), hour = date.getHours();
-                                var min = date.getMinutes(), sec = date.getSeconds();
-                                var preArr = Array.apply(null, Array(10)).map(function (elem, index) {
-                                    return '0' + index;
-                                });////开个长度为10的数组 格式为 00 01 02 03 
-                                var newTime = year + '-' + (preArr[month] || month) + '-' + (preArr[day] || day) + ' ' + (preArr[hour] || hour) + ':' + (preArr[min] || min) + ':' + (preArr[sec] || sec);
-                                return newTime;
+                                 if (value != "" && value != null) {
+                                    return  value.replace(".0", "");
+                                }
                             }
                         }, {
                             field: 'f_comment',
                             title: langs1[123][lang], //异常说明 o[123][lang]
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        },{
+                            field: 'f_name',
+                            title:langs1[54][lang], //灯具名称  o[292][lang]
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -212,10 +225,16 @@
                             width: 25,
                             align: 'center',
                             valign: 'middle'
+                        },{
+                            field: 'f_Lamppost',
+                            title:langs1[453][lang], //灯杆编号  o[292][lang]
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
                         },
                         {
                             field: 'f_detail',
-                            title:  langs1[402][lang], //详情
+                            title: langs1[402][lang], //详情
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -379,7 +398,7 @@
                     <tr>
                         <td>
                             <span style="margin-left:10px;">                                     
-                                <span id="25" name="xxx">网关地址</span>
+                                <span id="50" name="xxx">集控器</span>
                                 &nbsp;</span>
                             <input id="comaddrlist" data-options='editable:true,valueField:"id", textField:"text"' class="easyui-combobox"/>
                         </td>
@@ -391,6 +410,11 @@
                         </td>
                         <td>
                             <button class="btn btn-sm btn-success" onclick="select()" style="margin-left:10px;"><span id="34" name="xxx">搜索</span></button>
+                        </td>
+                        <td>
+                            <button style=" height: 30px; margin-left: 5px;" type="button" id="btn_download" class="btn btn-primary" onClick ="$('#fauttable').tableExport({type: 'excel', escape: 'false'})">
+                                <span id="110" name="xxx">导出Excel</span>
+                            </button>
                         </td>
                     </tr>
                 </tbody>

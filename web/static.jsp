@@ -36,9 +36,20 @@
                         $("#g1").hide();
                     }
 
-                }
+                },
+                formatter: function (row) {
+                        var langid = parseInt(row.id);
+                        if(langid==0){
+                            langid = 1;
+                        }else if(langid == 1){
+                           langid = 50; 
+                        }
+                        row.text = langs1[langid][lang];
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
+                    }
             });
-
+          
             $('#comaddr').combobox({
                 url: "gayway.GaywayForm.getComaddr.action?pid=${param.pid}",
                 onLoadSuccess: function (data) {
@@ -68,7 +79,13 @@
                     var v = parseInt(record.id);
                     switchDate(v);
 
-                }
+                },
+                 formatter: function (row) {
+                        var langid = parseInt(row.id)+568;
+                        row.text = langs1[langid][lang];
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
+                    }
             });
 
             $("#div1").hide();
@@ -94,6 +111,7 @@
                 showMeridian: 1,
                 autoclose: 1//选择后自动关闭
             });
+            
             $(".form_datetime3").datetimepicker({
                 language: 'zh-CN',
                 format: 'yyyy', //显示格式
@@ -183,7 +201,7 @@
                 url: "login.reportmanage.getyear.action?pid=${param.pid}",
                 columns: [[{
                             field: '',
-                            title: langs1[111][lang], //年消耗量
+                            title: langs1[111][lang], //年用电量
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -197,7 +215,7 @@
                             valign: 'middle'
                         }, {
                             field: 'val',
-                            title: langs1[112][lang]+'(KW·h)', //消耗量
+                            title: langs1[112][lang]+'(KW·h)', //用电量
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -238,7 +256,7 @@
             $('#getMotherTable').bootstrapTable({
                 columns: [[{
                             field: '',
-                            title: langs1[114][lang],  //月消耗量
+                            title: langs1[114][lang],  //月用电量
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -253,7 +271,7 @@
 
                         }, {
                             field: 'val',
-                            title: langs1[112][lang]+'(KW·h)', //消耗量
+                            title: langs1[112][lang]+'(KW·h)', //用电量
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -292,7 +310,7 @@
             $('#getdayTable').bootstrapTable({
                 columns: [[{
                             field: '',
-                            title: langs1[116][lang],  //日消耗量
+                            title: langs1[116][lang],  //日用电量
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -306,7 +324,7 @@
                             valign: 'middle'
                         }, {
                             field: 'val',
-                            title: langs1[112][lang]+'(KW·h)', //消耗量
+                            title: langs1[112][lang]+'(KW·h)', //用电量
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -430,7 +448,7 @@
                                 <td>
                                     <select class="easyui-combobox" id="project" name="project" data-options="editable:true,valueField:'id', textField:'text' " style="width:150px; height: 30px">
                                         <option value="0">项目</option>
-                                        <option value="1">网关</option>           
+                                        <option value="1">集控器</option>           
                                     </select>
                                     &nbsp;
                                 </td>

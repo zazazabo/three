@@ -7,12 +7,13 @@
 <%@page contentType="text/html;charset=utf-8" pageEncoding="UTF-8" language="java"%>
 <!DOCTYPE html>
 <html>
-    <head>
+    <head> 
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>登录系统平台</title>
         <link type="text/css" href="layer/layui.css" rel="stylesheet">
         <link type="text/css" href="layer/animate.css" rel="stylesheet">
         <link type="text/css" href="layer/indexNavigation.css" rel="stylesheet">
+        <script type="text/javascript" src="js/genel.js"></script>
         <style>
             *{margin:0;padding:0;}
             html,body{
@@ -69,7 +70,10 @@
                 .logo-animate img{  
 
                     height:410px;  
-                }  
+                } 
+                .loginBox{
+                    border: 1px solid red;
+                }
             } 
             @media screen and (min-width:1366px) and (max-width:1440px){  
                 .logo-animate{
@@ -304,7 +308,7 @@
                 color:#BFD4F8;
             }
 
-            @media screen and (min-width:0px) and (max-width:736px){  
+            @media screen and (min-width:450px) and (max-width:736px){  
                 .logo-animate{
                     top:30%;
                 }
@@ -333,8 +337,8 @@
                     -o-border-radius:15px;
                     /*                    background:rgba(2,8,25,0.49);*/
                     /*                    margin: 50px auto 0 auto; */
-                    margin-left: 50%;
-                    margin-top: 70%;
+                    margin-left: 20%;
+                    margin-top: 30%;
 
                     display:none;  
                 }
@@ -381,7 +385,86 @@
                     display: none;
                 }
             }
+            
+            @media screen and (min-width:0px) and (max-width:450px){  
+                .logo-animate{
+                    top:30%;
+                }
+                .logo-animate img{  
+                    display:none;
+                }  
+                .phoneTit{
+                    height:37px;
+                }
+                .loginBox{
+                    width: 305px;
+                    height: 325px;
+                    position: inherit;
+                    right: 12%;
+                    top: 28%;
+                    transform: translate(-50%,-50%);  	 			
+                    border-style:none;
+                    border:1px solid #022D7D;
+                    box-shadow:0 5px 15px rgba(0,0,0,.5);
+                    -moz-box-shadow:0 5px 15px rgba(0,0,0,.5);
+                    -webkit-box-shadow:0 5px 15px rgba(0,0,0,.5);
+                    border-radius:15px;
+                    -webkit-border-radius:15px;
+                    -moz-border-radius:15px; 
+                    -ms-border-radius:15px;  
+                    -o-border-radius:15px;
+                    /*                    background:rgba(2,8,25,0.49);*/
+                    /*                    margin: 50px auto 0 auto; */
+                    margin-left: 5%;
+                    margin-top: 30%;
+                    display:none;  
+                }
+                .inputText{
+                    width: 186px;
+                    height: 37px;
+                    padding-left:15px;
+                    box-sizing: border-box;
+                }
+                .register form {
+                    width: 249px;
+                    height: 215px;
+                    position: absolute;
+                    left: 50%;
+                    top: 114px;
+                    transform: translate(-50%,-50%);
+                }
+                .logion{
+                    width: 190px;
+                    height: 40px;
+                }
+                .loginBox .h3 {
+                    height: 40px;
+                    line-height: 40px;
+                    text-align: center;
+                    font-size: 24px;
+                    color: #BFD4F8;
+                }
+                .register {
+                    width: 100%;
+                    height: 224px;
+                    text-align: center;
+                    position: relative;
+                }		
+                .logo {
+                    padding-top: 125px;
+                    padding-left: 0;
+                    width: 300px;
+                    margin: 0 auto;
+                    text-align: center;
+                    position: relative;
+                }
+                #large-header{
+                    display: none;
+                }
+            }
+            
             @media screen and (min-width:736px) and (max-width:1024px){  
+                
                 .logo-animate{
                     top:30%;
                 }
@@ -408,10 +491,10 @@
                     -moz-border-radius:15px; 
                     -ms-border-radius:15px;  
                     -o-border-radius:15px;
-                    background:rgba(2,8,25,0.49);                  
+/*                    background:rgba(2,8,25,0.49);                  */
                     /*                    margin: 50px auto 0 auto;*/
-                    margin-left: 50%;
-                    margin-top: 60%;
+                    margin-left: 30%;
+                    margin-top: 30%;
                     display:none;  
                 }
                 .logion{
@@ -507,10 +590,11 @@
                 }
                 //登陆
                 $("#login").click(function () {
+                    
                     var pass = $("#password").val();
                     var name = $("#username").val();
                     var password = hex_md5(pass);
-                    var obj = $("#myfrom").serializeObject();
+                    var obj = {};
                     obj.password = password;
                     obj.name = name;
                     $.ajax({async: false, url: "login.loginform.loginhand.action", type: "POST", datatype: "JSON", data: obj,
@@ -536,7 +620,7 @@
                             alert("提交失败！");
                         }
                     });
-                })
+                });
 
                 //打勾记住密码
                 $("#cc").click(function () {
@@ -559,7 +643,7 @@
                         addCookie("username", "", -1);
                         addCookie("password", "", -1);
                     }
-                })
+                });
                 //添加ckooie 记住密码
                 function addCookie(username, value, days) {
                     var username = escape(username).trim();
@@ -599,18 +683,21 @@
                     $("#rememberPW").html("记住密码");
                     $("#login").val("登陆");
                     $("#top").html("账号登陆");
+                    setCookie("lang", "zh_CN");
                 });
                 //切换英文
                 $("#english").click(function () {
                     $("#rememberPW").html("remember password");
                     $("#login").val("Login");
                     $("#top").html("Account login");
+                    setCookie("lang", "en_US");
                 });
                 //切换俄文
                 $("#ew").click(function () {
                     $("#rememberPW").html("запомни пароль");
                     $("#login").val("высадка на землю");
                     $("#top").html("высадка на счет счета");
+                    setCookie("lang", "e_BY");
                 });
                 
                 

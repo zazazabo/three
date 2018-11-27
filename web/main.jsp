@@ -26,8 +26,17 @@
             }
         </style>
         <script>
+
+            function getCookie1(name) {
+                var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+                if (arr = document.cookie.match(reg))
+                    return unescape(arr[2]);
+                else
+                    return null;
+            }
+
             var o = {};
-            var lang = getCookie("lang");
+            var lang = getCookie1("lang");
             var eventobj = {
                 "ERC44": {
                     "status1": {
@@ -159,8 +168,9 @@
 
                 }
             };
+
             var websocket = null;
-            var conectstr = "ws://103.46.128.47:18414/";
+            var conectstr = "ws://47.99.78.186:24228/";
             var timestamp = 0;
             function sendData(obj) {
 
@@ -220,7 +230,14 @@
 
                 }
             }
-
+//            function getCookie(name)//取cookies函數       
+//            {
+//                var arr = document.cookie.match(new RegExp("(^| )" + name + "=([^;]*)(;|$)"));
+//                if (arr != null)
+//                    return unescape(arr[2]);
+//                return null;
+//
+//            }
             function  getuserId() {
                 var userid = $("#userid").val();
                 return  userid;
@@ -228,6 +245,9 @@
 
             function getpojectId() {
                 var pojectid = $("#pojects").val();
+//                if (pojectid == "" || pojectid == null) {
+//                    pojectid = "*";
+//                }
                 return  pojectid;
             }
 
@@ -242,7 +262,7 @@
             }
             //查询
             function select() {
-                var pid = $("#pojects").val();
+                var pid = getpojectId();
                 var obj2 = {};
                 obj2.pid = pid;
                 obj2.f_comaddr = $("#comaddrlist").val();
@@ -285,7 +305,7 @@
                     }
                 }
 
-                var pid = $("#pojects").val();
+                var pid = getpojectId();
                 var obj2 = {};
                 obj2.pid = pid;
                 var opt = {
@@ -305,7 +325,7 @@
 
             //退出
             function getout() {
-                layer.confirm(o[282][lang], {//确认要删除吗？
+                layer.confirm(o[282][lang], {//确认要退出吗？
                     btn: [o[146][lang], o[147][lang]]//确定、取消按钮
                 }, function (index) {
                     window.location = "${pageContext.request.contextPath }/login.jsp";
@@ -385,25 +405,28 @@
 
             //查看警异常信息总数
             function fualtCount() {
-                var pid = $("#pojects").val();
-                var obj = {};
-                obj.pid = pid;
-                //obj.f_day = d.toLocaleDateString();
-                $.ajax({url: "login.main.fualtCount.action", async: false, type: "get", datatype: "JSON", data: obj,
-                    success: function (data) {
-                        if (data.rs[0].number == 0) {
-                            $("#alarmNumber").html("0");
-                            $("#alarmNumber").css("color", "white");
-                        } else {
-                            $("#alarmNumber").html(data.rs[0].number);
-                            $("#alarmNumber").css("color", "red");
+                var pid = getpojectId();
+                if (pid != "" && pid != null) {
+                    var obj = {};
+                    obj.pid = pid;
+                    //obj.f_day = d.toLocaleDateString();
+                    $.ajax({url: "login.main.fualtCount.action", async: false, type: "get", datatype: "JSON", data: obj,
+                        success: function (data) {
+                            if (data.rs[0].number == 0) {
+                                $("#alarmNumber").html("0");
+                                $("#alarmNumber").css("color", "white");
+                            } else {
+                                $("#alarmNumber").html(data.rs[0].number);
+                                $("#alarmNumber").css("color", "red");
 
+                            }
+                        },
+                        error: function () {
+                            alert("出现异常！");
                         }
-                    },
-                    error: function () {
-                        alert("出现异常！");
-                    }
-                });
+                    });
+                }
+
             }
 
             function callback() {
@@ -418,6 +441,13 @@
             }
             //点击告警信息
             function imgM() {
+                $("#comaddrlist").combobox({
+                    url: "login.map.getallcomaddr.action?pid=" + getpojectId(),
+                    onLoadSuccess: function (data) {
+                        $(this).combobox("select", data[0].id);
+                        $(this).val(data[0].text);
+                    }
+                });
                 $("#fauttable").bootstrapTable('destroy');
                 var lang2 = getCookie("lang");
                 $('#fauttable').bootstrapTable({
@@ -433,10 +463,24 @@
                             valign: 'middle'
                         }, {
                             field: 'f_comaddr',
-                            title: o[120][lang2], //设备名称 o[120][lang]
+                            title: o[50][lang2], //集控器
                             width: 25,
                             align: 'center',
-                            valign: 'middle'
+                            valign: 'middle',
+                            formatter: function (value) {
+                                if (value != "" && value != null) {
+                                    var wgobj = {};
+                                    wgobj.comaddr = value;
+                                    var name = "";
+                                    $.ajax({url:"login.main.selectwgname.action", async: false, type: "get", datatype: "JSON", data:wgobj,
+                                        success: function (data) {
+                                            name = data.rs[0].name;
+                                            
+                                        }
+                                    });
+                                    return  name;
+                                }
+                            }
                         }, {
                             field: 'f_day',
                             title: o[82][lang2], //时间 o[82][lang]
@@ -444,16 +488,9 @@
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value) {
-                                var date = new Date(value);
-                                var year = date.getFullYear();
-                                var month = date.getMonth() + 1; //月份是从0开始的 
-                                var day = date.getDate(), hour = date.getHours();
-                                var min = date.getMinutes(), sec = date.getSeconds();
-                                var preArr = Array.apply(null, Array(10)).map(function (elem, index) {
-                                    return '0' + index;
-                                });////开个长度为10的数组 格式为 00 01 02 03 
-                                var newTime = year + '-' + (preArr[month] || month) + '-' + (preArr[day] || day) + ' ' + (preArr[hour] || hour) + ':' + (preArr[min] || min) + ':' + (preArr[sec] || sec);
-                                return newTime;
+                                if (value != "" && value != null) {
+                                    return  value.replace(".0", "");
+                                }
                             }
                         },
                         {
@@ -462,9 +499,21 @@
                             width: 25,
                             align: 'center',
                             valign: 'middle'
-                        }, {
+                        },{
+                            field: 'f_name',
+                            title: o[54][lang2], //灯具名称  o[292][lang]
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        },{
                             field: 'l_factorycode',
                             title: o[292][lang2], //灯具编号  o[292][lang]
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: 'f_Lamppost',
+                            title: o[453][lang2], //灯杆编号  o[292][lang]
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -536,15 +585,14 @@
                             pageSize: params.limit,
                             f_comaddr: "", // = $("#comaddrlist").val();
                             l_factorycode: "", // = $("#l_factorycode").val();
-                            pid: $("#pojects").val()
+                            pid: getpojectId()
                         };      
                         return temp;  
                     }
                 });
                 $('#faultDiv').dialog('open');
-                var pid = $("#pojects").val();
                 var obj = {};
-                obj.pid = pid;
+                obj.pid = getpojectId();
                 var opt = {
                     method: "post",
                     contentType: "application/x-www-form-urlencoded",
@@ -554,13 +602,6 @@
                 };
                 $("#fauttable").bootstrapTable('refresh', opt);
 
-                $("#comaddrlist").combobox({
-                    url: "login.map.getallcomaddr.action?pid=" + pid,
-                    onLoadSuccess: function (data) {
-                        $(this).combobox("select", data[0].id);
-                        $(this).val(data[0].text);
-                    }
-                });
             }
 
             //获取语言
@@ -601,6 +642,10 @@
                 websocket.close();
             }
             $(function () {
+                if (lang == "" || lang == null) {
+                    lang = "zh_CN";
+                    changeLanguage(lang);
+                }
             <c:forEach items="${lans}" var="t" varStatus="i">
                 var id =${t.id};
                 var zh_CN1 = "${empty t.zh_CN?"":t.zh_CN}";
@@ -804,9 +849,9 @@
                     <tr>
                         <td>
                             <span style="margin-left:10px;">                                     
-                                <label id="25" name="xxx">网关地址</label>
+                                <label id="50" name="xxx">集控器</label>
                                 &nbsp;</span>
-                            <input id="comaddrlist" data-options='editable:true,valueField:"id", textField:"text"' class="easyui-combobox"/>
+                            <input id="comaddrlist" data-options='editable:true,valueField:"id", textField:"text"' class="easyui-combobox" style=" width: 140px;"/>
                         </td>
                         <td>
                             <label style="margin-left:20px;" id="292" name="xxx">
@@ -815,7 +860,12 @@
                             <input type="text" id ="l_factorycode" style="width:150px; height: 30px;">
                         </td>
                         <td>
-                            <button class="btn btn-sm btn-success" onclick="select()" style="margin-left:10px;"><label id="34" name="xxx">搜索</label></button>
+                            <button style=" height: 30px;" class="btn btn-sm btn-success" onclick="select()" style="margin-left:10px;"><label id="34" name="xxx">搜索</label></button>
+                        </td>
+                        <td>
+                            <button style=" height: 30px; margin-left: 5px;" type="button" id="btn_download" class="btn btn-primary" onClick ="$('#fauttable').tableExport({type: 'excel', escape: 'false'})">
+                                <label id="110" name="xxx">导出Excel</label>
+                            </button>
                         </td>
                     </tr>
                 </tbody>
@@ -840,6 +890,7 @@
 
             function changeLanguage(language) {
                 setCookie("lang", language);
+                var lang = getCookie1("lang");
                 $(".MenuBox").children().remove();
                 var lang = language;
             <c:forEach items="${menulist}" var="t" varStatus="i">
@@ -887,22 +938,25 @@
             </c:forEach>
                 $(".MenuBox .list:eq(0)").click();
             }
-            $(function () {
-                var pid = '${rs[0].pid}';
-                var pids = pid.split(",");   //项目编号
-                // $("#pojects").val(pids[0]);
-                var pname = [];   //项目名称
-                for (var i = 0; i < pids.length; i++) {
-                    var obj = {};
-                    obj.code = pids[i];
-                    $.ajax({url: "login.main.getpojcetname.action", async: false, type: "get", datatype: "JSON", data: obj,
-                        success: function (data) {
-                            pname.push(data.rs[0].name);
-                        },
-                        error: function () {
-                            alert("出现异常！");
-                        }
-                    });
+            //获取项目
+            function  porject(pid) {
+                var pids = {};
+                if (pid != "" && pid != null) {
+                    pids = pid.split(",");   //项目编号
+                    // $("#pojects").val(pids[0]);
+                    var pname = [];   //项目名称
+                    for (var i = 0; i < pids.length; i++) {
+                        var obj = {};
+                        obj.code = pids[i];
+                        $.ajax({url: "login.main.getpojcetname.action", async: false, type: "get", datatype: "JSON", data: obj,
+                            success: function (data) {
+                                pname.push(data.rs[0].name);
+                            },
+                            error: function () {
+                                alert("出现异常！");
+                            }
+                        });
+                    }
                 }
 
                 for (var i = 0; i < pids.length; i++) {
@@ -910,6 +964,12 @@
                     options += "<option value=\"" + pids[i] + "\">" + pname[i] + "</option>";
                     $("#pojects").html(options);
                 }
+            }
+
+            $(function () {
+                var pid = '${rs[0].pid}';
+                porject(pid);
+                // $('#iframe').attr('src','formuser.mainsub.home.action?pid='+pid2+'&lang=${empty cookie.lang.value?"zh_CN":cookie.lang.value}');
                 //查看警异常信息总数
                 fualtCount();
 
@@ -958,25 +1018,8 @@
                     size();
                 };
 
-                /*  登录注销   */
-                /*	CCIOT
-                 **针对于地球仪首页点击返回的逻辑
-                 */
-                $(".Home").click(function () {
-                    $("#iframe").attr("src", "abc/homeIntelligent.action");
-                    changeColor("#071519");
-                });
 
-                /* 登录注销 */
-                $(".twoL li:eq(0)").click(function () {
-                    doPostRequest({}, "user/userLogout.action", function (retult) {
-                        layer.alert('注销成功!', {icon: 4, offset: 'center'});
-                        window.top.location.href = "forward.jsp";
-                    },
-                            function (error) {
-                                alert(error.message);
-                            });
-                });
+
 
                 $(".language li:eq(0)").click(function () {
                     var language = $(this).attr("language");
@@ -989,6 +1032,7 @@
                         var e = $(d).attr("id");
                         $(d).html(o[e][language]);
                     }
+                    lang = getCookie("lang");
                 });
                 $(".language li:eq(1)").click(function () {
                     var language = $(this).attr("language");
@@ -1001,6 +1045,7 @@
                         var e = $(d).attr("id");
                         $(d).html(o[e][language]);
                     }
+                    lang = getCookie("lang");
                 });
                 $(".language li:eq(2)").click(function () {
                     var language = $(this).attr("language");
@@ -1013,6 +1058,7 @@
                         var e = $(d).attr("id");
                         $(d).html(o[e][language]);
                     }
+                    lang = getCookie("lang");
                 });
 
                 //语言切换

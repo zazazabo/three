@@ -31,6 +31,22 @@
                     var e = $(d).attr("id");
                     $(d).html(langs1[e][lang]);
                 }
+                $('#lang').combobox({
+                    formatter: function (row) {
+                        var langid = parseInt(row.value) + 267;
+                        row.text = langs1[langid][lang];
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
+                    }
+                });
+                $('#lang2').combobox({
+                    formatter: function (row) {
+                        var langid = parseInt(row.value) + 267;
+                        row.text = langs1[langid][lang];
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
+                    }
+                });
                 //var pinfo = [];
                 $("#add").attr("disabled", true);
                 $("#del").attr("disabled", true);
@@ -84,16 +100,33 @@
                             valign: 'middle'
                         }, {
                             field: 'code',
-                            title: langs1[257][lang],  //项目编号
+                            title: langs1[257][lang], //项目编号
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'area',
-                            title: langs1[258][lang],   //项目地址
+                            title: langs1[258][lang], //项目地址
                             width: 25,
                             align: 'center',
                             valign: 'middle'
+                        }, {
+                            field: 'lang',
+                            title: langs1[575][lang], //项目语言
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle',
+                            formatter: function (value) {
+                                if (value == 1) {
+                                    return  langs1[268][lang];
+                                } else if (value == 2) {
+                                    return  langs1[269][lang];
+                                } else if (value == 3) {
+                                    return  langs1[270][lang];
+                                } else {
+                                    return  langs1[268][lang];
+                                }
+                            }
                         }],
                     singleSelect: false,
                     locale: 'zh-CN', //中文支持,
@@ -126,7 +159,10 @@
             //获取项目信息
             function getprojectInfo(pid) {
                 var pinfo = [];
-                var pids = pid.split(",");
+                var pids = {};
+                if (pid != "" && pid != null) {
+                    pids = pid.split(",");
+                }
                 for (var i = 0; i < pids.length; i++) {
                     $.ajax({async: false, url: 'login.project.queryProject.action', type: "get", datatype: "JSON", data: {pid: pids[i]},
                         success: function (data) {
@@ -168,20 +204,35 @@
                                             success: function (data) {
                                                 var newcode;
                                                 var code = data.codes;
-
                                                 if (code.length == 1) {
                                                     newcode = code[0].code;
-                                                    var pidobj = {};
-                                                    pidobj.id = uid;
-                                                    pidobj.npid = "," + newcode;
-                                                    $.ajax({async: false, url: "login.project.addpid.action", type: "get", datatype: "JSON", data: pidobj,
-                                                        success: function (data) {
+                                                    var s = getuserporject(uid);
+                                                    if (s == null || s == "") {
+                                                        var pidobj1 = {};
+                                                        pidobj1.id = uid;
+                                                        pidobj1.npid = newcode;
+                                                        $.ajax({async: false, url: "login.project.addpid1.action", type: "get", datatype: "JSON", data: pidobj1,
+                                                            success: function (data) {
 
-                                                        },
-                                                        error: function () {
-                                                            alert("提交失败！");
-                                                        }
-                                                    });
+                                                            },
+                                                            error: function () {
+                                                                alert("提交失败！");
+                                                            }
+                                                        });
+                                                    } else {
+                                                        var pidobj = {};
+                                                        pidobj.id = uid;
+                                                        pidobj.npid = "," + newcode;
+                                                        $.ajax({async: false, url: "login.project.addpid.action", type: "get", datatype: "JSON", data: pidobj,
+                                                            success: function (data) {
+
+                                                            },
+                                                            error: function () {
+                                                                alert("提交失败！");
+                                                            }
+                                                        });
+                                                    }
+
                                                     var pobj = {};
                                                     pobj.id = uid;
                                                     var parentid = 0;
@@ -192,21 +243,41 @@
                                                                 var parentid = data.ups;
                                                                 parentid = parentid[0].u_parent_id;
                                                                 if (parentid != 0) {
-                                                                    var ppobj = {};
-                                                                    ppobj.id = parentid;
-                                                                    ppobj.npid = "," + newcode;
-                                                                    $.ajax({async: false, url: "login.project.addpid.action", type: "get", datatype: "JSON", data: ppobj,
-                                                                        success: function (data) {
+                                                                    var pid = getuserporject(parentid);
+                                                                    if (pid == null || pid == "") {
+                                                                        var ppobj = {};
+                                                                        ppobj.id = parentid;
+                                                                        ppobj.npid = newcode;
+                                                                        $.ajax({async: false, url: "login.project.addpid1.action", type: "get", datatype: "JSON", data: ppobj,
+                                                                            success: function (data) {
 
-                                                                        },
-                                                                        error: function () {
-                                                                            alert("提交失败！");
-                                                                        }
-                                                                    });
+                                                                            },
+                                                                            error: function () {
+                                                                                alert("提交失败！");
+                                                                            }
+                                                                        });
+                                                                    } else {
+                                                                        var ppobj2 = {};
+                                                                        ppobj2.id = parentid;
+                                                                        ppobj2.npid = "," + newcode;
+                                                                        $.ajax({async: false, url: "login.project.addpid.action", type: "get", datatype: "JSON", data: ppobj2,
+                                                                            success: function (data) {
+
+                                                                            },
+                                                                            error: function () {
+                                                                                alert("提交失败！");
+                                                                            }
+                                                                        });
+                                                                    }
+
                                                                 }
                                                             }
                                                         });
                                                     } while (parentid != 0);
+
+                                                    var pid = getuserporject(uid);
+                                                    parent.parent.porject(pid);  //首页刷新项目列表
+
                                                 }
 
                                             },
@@ -224,11 +295,10 @@
 
 
 
-                        } else if (data.total > 0) {
+                        } else if (data.rs.length > 0) {
                             layerAler(langs1[260][lang]);  //此项目已存在
                         }
                         return  false;
-//             
                     },
                     error: function () {
                         alert("提交添加失败！");
@@ -249,6 +319,7 @@
                 $("#parea").val(selects[0].area);
                 $("#code").val(selects[0].code);
                 $("#p_id").val(selects[0].id);
+                $("#lang2").combobox('setValue',selects[0].lang);
                 $("#pjj2").modal();
             }
 
@@ -263,12 +334,15 @@
                 obj.area = $("#parea").val();
                 obj.name = pname;
                 obj.id = $("#p_id").val();
+                obj.lang = $("#lang2").val();
                 $.ajax({async: false, url: "login.project.updProject.action", type: "get", datatype: "JSON", data: obj,
                     success: function (data) {
                         var arrlist = data.rs;
                         if (arrlist.length == 1) {
                             var pid = getuserporject(uid);
                             var pinfo = getprojectInfo(pid);
+                            var pid = getuserporject(uid);
+                            parent.parent.porject(pid);  //首页刷新项目列表
                             $('#gravidaTable').bootstrapTable('load', pinfo);
                             $("#pjj2").modal('hide'); //手动关闭
                         }
@@ -287,8 +361,8 @@
                     layerAler(langs1[263][lang]);  //请选择您要删除的记录
                     return;
                 }
-                layer.confirm(langs1[145][lang], {  //确认要删除吗？
-                    btn: [langs1[146][lang],langs1[147][lang]]//确定、取消按钮
+                layer.confirm(langs1[145][lang], {//确认要删除吗？
+                    btn: [langs1[146][lang], langs1[147][lang]]//确定、取消按钮
                 }, function (index) {
                     $.ajax({async: false, url: "login.project.getbase.action", type: "POST", datatype: "JSON", data: {pid: selects[0].code},
                         success: function (data) {
@@ -340,6 +414,8 @@
                                                                     $.ajax({async: false, url: "login.project.upduserpid.action", type: "get", datatype: "JSON", data: uobj,
                                                                         success: function (data) {
                                                                             // var arrlist = data.rs;
+                                                                            var pid = getuserporject(uid);
+                                                                            parent.parent.porject(pid);  //首页刷新项目列表
                                                                         },
                                                                         error: function () {
                                                                             alert("提交失败！");
@@ -437,6 +513,20 @@
 
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>
+                                        <span style="margin-left:20px;" name="xxx" id="575">项目语言</span>&nbsp;
+                                        <select class="easyui-combobox" id="lang" name="lang" data-options='editable:false' style="width:150px; height: 30px">
+                                            <option value="1" >中文</option>
+                                            <option value="2" >英文</option>
+                                            <option value="3">俄文</option>           
+                                        </select>
+                                    </td>
+                                    <td></td>
+                                    <td>
+
+                                    </td>
+                                </tr>
 
                             </tbody>
                         </table>
@@ -493,6 +583,20 @@
                                 </td>
                             </tr>
 
+                            <tr>
+                                <td>
+                                    <span style="margin-left:20px;" name="xxx" id="575">项目语言</span>&nbsp;
+                                    <select class="easyui-combobox" id="lang2" data-options='editable:false' style="width:150px; height: 30px">
+                                        <option value="1" >中文</option>
+                                        <option value="2" >英文</option>
+                                        <option value="3">俄文</option>           
+                                    </select>
+                                </td>
+                                <td></td>
+                                <td>
+
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

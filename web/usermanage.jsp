@@ -79,7 +79,10 @@
                         alert("出现异常！");
                     }
                 });
-                var pids = pid.split(",");   //项目编号
+                var pids = [];
+                if (pid != "" && pid != null) {
+                    pids = pid.split(",");   //项目编号
+                }
                 // $("#pojects").val(pids[0]);
                 var pname = [];   //项目名称
                 for (var i = 0; i < pids.length; i++) {
@@ -165,7 +168,10 @@
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
-                                var pids = value.split(",");   //项目编号
+                                var pids = [];
+                                if (value != "") {
+                                    pids = value.split(",");   //项目编号 
+                                }
                                 // $("#pojects").val(pids[0]);
                                 var pname = "";   //项目名称
                                 for (var i = 0; i < pids.length; i++) {
@@ -173,10 +179,10 @@
                                     obj.code = pids[i];
                                     $.ajax({url: "login.main.getpojcetname.action", async: false, type: "get", datatype: "JSON", data: obj,
                                         success: function (data) {
-                                            if(i==pids.length-1){
+                                            if (i == pids.length - 1) {
                                                 pname += data.rs[0].name;
-                                            }else{
-                                               pname = pname + data.rs[0].name+"、"; 
+                                            } else {
+                                                pname = pname + data.rs[0].name + "、";
                                             }
                                         },
                                         error: function () {
@@ -233,6 +239,10 @@
                         layerAler(langs1[227][lang]); // 用户名不能为空
                         return false;
                     }
+                    if(obj.m_code ==""){
+                        layerAler(langs1[506][lang]); // 请分配角色
+                        return false;
+                    }
                     var nobj = {};
                     nobj.name = obj.name;
                     var isok = true;
@@ -251,13 +261,15 @@
                     if (isok) {
                         var pid = $("#sel_menu2").val(); //项目
                         var pids = "";
-                        for (var i = 0; i < pid.length; i++) {
-                            if (i == pid.length - 1) {
-                                pids += pid[i];
-                            } else {
-                                pids += pid[i] + ",";
-                            }
+                        if (pid != "" && pid != null) {
+                            for (var i = 0; i < pid.length; i++) {
+                                if (i == pid.length - 1) {
+                                    pids += pid[i];
+                                } else {
+                                    pids += pid[i] + ",";
+                                }
 
+                            }
                         }
 
                         obj.pid = pids;
@@ -323,15 +335,22 @@
 
                 var pid = $("#sel_menu1").val(); //项目
                 var pids = "";
-                for (var i = 0; i < pid.length; i++) {
-                    if (i == pid.length - 1) {
-                        pids += pid[i];
-                    } else {
-                        pids += pid[i] + ",";
-                    }
+                console.log("pid:" + pid);
+                if (pid != null && pid != "") {
+                    for (var i = 0; i < pid.length; i++) {
+                        if (i == pid.length - 1) {
+                            pids += pid[i];
+                        } else {
+                            pids += pid[i] + ",";
+                        }
 
+                    }
                 }
                 var formobj = $("#Form_Edit").serializeObject();
+                if(formobj.up_role==""){
+                    layerAler(langs1[506][lang]);  //请分配权限
+                    return ;
+                }
                 formobj.email = formobj.email_edit;
                 formobj.department = formobj.department_edit;
                 formobj.name = formobj.name_edit;

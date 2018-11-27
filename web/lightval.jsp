@@ -614,6 +614,40 @@
                     var e = $(d).attr("id");
                     $(d).html(langs1[e][lang]);
                 }
+                
+                 $('#groupetype').combobox({
+                    formatter: function (row) {
+                        var langid = parseInt(row.value);
+                        if(langid !=2){
+                            langid = langid +29;
+                        }else{
+                            langid = langid +334;
+                        }
+                        row.text = langs1[langid][lang];
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
+                    }
+                });
+                
+                 $('#scenetype').combobox({
+                    formatter: function (row) {
+                        var langid = parseInt(row.value)+32;
+                        row.text = langs1[langid][lang];
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
+                    }
+                });
+                
+                 $('#type').combobox({
+                    formatter: function (row) {
+                        var langid = parseInt(row.value)+37;
+                        row.text = langs1[langid][lang];
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
+                    }
+                });
+                
+                
                 $('#lamptable').on('click-cell.bs.table', function (field, value, row, element)
                 {
                     if (value == "l_plan") {
@@ -723,7 +757,7 @@
                                 row.index = index;
                                 return  value;
                             }
-                        }
+                        },
 //                        ,
 //                        {
 //                            field: 'name',
@@ -732,14 +766,13 @@
 //                            align: 'center',
 //                            valign: 'middle'
 //                        }
-//                        , {
-//                            field: 'l_comaddr',
-//                            title: langs1[25][lang], //网关地址
-//                            width: 25,
-//                            align: 'center',
-//                            valign: 'middle'
-//                        }
-                        ,
+                        {
+                            field: 'l_comaddr',
+                            title: langs1[25][lang], //网关地址
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        },
                         {
                             field: 'l_name',
                             title: langs1[54][lang], //灯具名称
@@ -852,9 +885,26 @@
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
-                                console.log(row);
+                                var lxfault = 0;  //是否离线故障
+                                var obj = {};
+                                obj.f_comaddr = row.l_comaddr;
+                                obj.l_factorycode = row.l_factorycode;
+                                $.ajax({async: false, url: "login.lightval.isfault.action", type: "get", datatype: "JSON", data: obj,
+                                    success: function (data) {
+                                          var list = data.rs;
+                                          if(list.length>0){
+                                              lxfault = 1;
+                                          }
+                                    },
+                                    error: function () {
+                                        alert("提交失败！");
+                                    }
+                                });
                                 if (row.l_fault == 1) {
                                     var str = '<img data-toggle="tooltip"  src="img/lred3.png" onclick="tourlamp(' + row.l_comaddr + ',' + row.l_code + ')" />';
+                                    return  str;
+                                }else if(lxfault==1){
+                                     var str = '<img data-toggle="tooltip"  src="img/lred3.png" onclick="tourlamp(' + row.l_comaddr + ',' + row.l_code + ')" />';
                                     return  str;
                                 } else if (value == 1 && row.l_value > 0) {
                                     var str = '<img data-toggle="tooltip"  src="img/lyello.png" onclick="tourlamp(' + row.l_comaddr + ',' + row.l_code + ')" />';
@@ -1004,7 +1054,7 @@
                        data-url="gayway.GaywayForm.getComaddrList.action?pid=${param.pid}&page=ALL" style="width:200px;" >
                     <thead >
                         <tr >
-                            <th data-width="25"   data-visible="true" data-formatter='formartcomaddr1'   data-select="false" data-align="center"  data-checkbox="true"  ></th>
+                            <th data-width="10"   data-visible="true" data-formatter='formartcomaddr1'   data-select="false" data-align="center"  data-checkbox="true"  ></th>
                             <!--<th data-width="100" data-align="center" data-field="comaddr"  data-formatter='formartcomaddr'   >网关地址</th>-->
                             <th data-width="100"  data-formatter='formartcomaddr'   data-field="name" data-align="center"    ><span name="xxx" id="314"></span></th>
                         </tr>

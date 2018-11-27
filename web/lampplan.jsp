@@ -375,6 +375,46 @@
                     var e = $(d).attr("id");
                     $(d).html(langs1[e][lang]);
                 }
+                
+                 $('#p_type').combobox({
+                    formatter: function (row) {
+                        var langid = parseInt(row.value);
+                        if(langid==0){
+                            langid = langid +82;
+                        }else if(langid==1){
+                            langid = langid +535;
+                        }
+                        row.text = langs1[langid][lang];
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
+                    }
+                });
+                 $('#p_type1').combobox({
+                    formatter: function (row) {
+                        var langid = parseInt(row.value);
+                        if(langid==0){
+                            langid = 82;
+                        }else if(langid==1){
+                            langid = 536;
+                        }
+                        row.text = langs1[langid][lang];
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
+                    }
+                });
+                 $('#p_type2').combobox({
+                    formatter: function (row) {
+                        var langid = parseInt(row.value);
+                        if(langid==0){
+                            langid = 82;
+                        }else if(langid==1){
+                            langid = 536;
+                        }
+                        row.text = langs1[langid][lang];
+                        var opts = $(this).combobox('options');
+                        return row[opts.textField];
+                    }
+                });
                 $("#dialog-add").dialog({
                     autoOpen: false,
                     modal: true,
