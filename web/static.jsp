@@ -15,6 +15,9 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css" href="bootstrap-datetimepicker/bootstrap-datetimepicker.css">
         <script src="bootstrap-datetimepicker/bootstrap-datetimepicker.js"></script>
+        <c:if test="${param.lang=='zh_CN'}">
+            <script src="bootstrap-datetimepicker/bootstrap-datetimepicker.zh-CN.js"></script>
+        </c:if>
 
 
     </head>

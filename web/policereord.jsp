@@ -15,6 +15,9 @@
         <link rel="stylesheet" type="text/css" href="bootstrap-datetimepicker/bootstrap-datetimepicker.css">
         <link rel="stylesheet" type="text/css" href="bootstrap-3.3.7-dist/css/bootstrap.css">
         <script src="bootstrap-datetimepicker/bootstrap-datetimepicker.js"></script>
+        <c:if test="${param.lang=='zh_CN'}">
+            <script src="bootstrap-datetimepicker/bootstrap-datetimepicker.zh-CN.js"></script>
+        </c:if>
         <script type="text/javascript" src="js/genel.js"></script>
         <script>
 
