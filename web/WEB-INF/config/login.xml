@@ -222,7 +222,7 @@
     <xform desc="统计数据" id="reportmanage">
                          
         <xhandle desc="按日查询数据" id="getday" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select CONVERT(varchar(100),day, 23) as d,SUM( (CONVERT(decimal (18, 2), power45)-  CONVERT(decimal (18, 2), power00))) AS val  from t_power where  @CONDITION   GROUP BY day order by day desc" var="bootstrap">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select CONVERT(varchar(100),day, 23) as d,SUM( (CONVERT(decimal (18, 2), power45)-  CONVERT(decimal (18, 2), power00))) AS val  from t_power where  @CONDITION   GROUP BY day order by day desc" var="hnrs">
                 <xflt id="CONDITION" nrp="" tpl="@comaddr AND @star AND @end AND @pid">
                     <xfltpara id="comaddr" nrp="1=1" para="comaddr" sql="comaddr = ':comaddr'"> 
                     </xfltpara> 
@@ -230,14 +230,26 @@
                     </xfltpara> 
                     <xfltpara id="end" nrp="1=1" para="end" sql="day &lt;= ':end'"> 
                     </xfltpara> 
-                    <xfltpara id="pid" nrp="1=2" para="pid" sql="comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE  pid = ':pid')">
+                    <xfltpara id="pid" nrp="1=1" para="pid" sql="comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE  pid = ':pid')">
+                    </xfltpara>          
+                </xflt>
+            </xsql>
+            <xsql id="a2" list="true" page="true" tpe="SQL" tpl="select CONVERT(varchar(100),time, 23) as time,comaddr,lampsum,bugsum,Lamppost from t_equipmentS where  @CONDITION  order by time desc" var="sbrs">
+                <xflt id="CONDITION" nrp="" tpl="@comaddr AND @star AND @end AND @pid">
+                    <xfltpara id="comaddr" nrp="1=1" para="comaddr" sql="comaddr = ':comaddr'"> 
+                    </xfltpara> 
+                    <xfltpara id="star" nrp="1=1" para="star" sql="time &gt;= ':star'"> 
+                    </xfltpara> 
+                    <xfltpara id="end" nrp="1=1" para="end" sql="time &lt;= ':end'"> 
+                    </xfltpara> 
+                    <xfltpara id="pid" nrp="1=1" para="pid" sql="comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE  pid = ':pid')">
                     </xfltpara>          
                 </xflt>
             </xsql>
         </xhandle> 
         
         <xhandle desc="按月查询数据" id="getmother" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select CONVERT(varchar(7), day, 120) as mother,SUM( (CONVERT(decimal (18, 2), power45)-  CONVERT(decimal (18, 2), power00))) AS val from t_power where @CONDITION  group by CONVERT(varchar(7), day, 120)  order by CONVERT(varchar(7), day, 120) desc" var="bootstrap">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select CONVERT(varchar(7), day, 120) as mother,SUM( (CONVERT(decimal (18, 2), power45)-  CONVERT(decimal (18, 2), power00))) AS val from t_power where @CONDITION  group by CONVERT(varchar(7), day, 120)  order by CONVERT(varchar(7), day, 120) desc" var="yhnrs">
                 <xflt id="CONDITION" nrp="" tpl="@comaddr AND @star AND @end AND @pid">
                     <xfltpara id="comaddr" nrp="1=1" para="comaddr" sql="comaddr = ':comaddr'"> 
                     </xfltpara> 
@@ -245,14 +257,26 @@
                     </xfltpara> 
                     <xfltpara id="end" nrp="1=1" para="end" sql="CONVERT(varchar(7), day, 120) &lt;= ':end'"> 
                     </xfltpara> 
-                    <xfltpara id="pid" nrp="1=2" para="pid" sql="comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE  pid = ':pid')">
+                    <xfltpara id="pid" nrp="1=1" para="pid" sql="comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE  pid = ':pid')">
+                    </xfltpara>          
+                </xflt>
+            </xsql>                                         
+            <xsql id="a2" list="true" page="true" tpe="SQL" tpl="select  CONVERT(varchar(7), time, 120) as time,avg(lampsum) as lampsum,avg(bugsum) as bugsum,avg(Lamppost) as Lamppost  from t_equipmentS where @CONDITION group by CONVERT(varchar(7), time, 120)  order by CONVERT(varchar(7), time, 120) desc" var="ysbrs">
+                <xflt id="CONDITION" nrp="" tpl="@comaddr AND @star AND @end AND @pid">
+                    <xfltpara id="comaddr" nrp="1=1" para="comaddr" sql="comaddr = ':comaddr'"> 
+                    </xfltpara> 
+                    <xfltpara id="star" nrp="1=1" para="star" sql="CONVERT(varchar(7), day, 120) &gt;= ':star'"> 
+                    </xfltpara> 
+                    <xfltpara id="end" nrp="1=1" para="end" sql="CONVERT(varchar(7), day, 120) &lt;= ':end'"> 
+                    </xfltpara> 
+                    <xfltpara id="pid" nrp="1=1" para="pid" sql="comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE  pid = ':pid')">
                     </xfltpara>          
                 </xflt>
             </xsql>
         </xhandle> 
         
         <xhandle desc="按年查询数据" id="getyear" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select datename(yyyy,day) as years,SUM( (CONVERT(decimal (18, 2), power45)-  CONVERT(decimal (18, 2), power00))) AS val from t_power where @CONDITION  group by datename(yyyy,day)  order by datename(yyyy,day) desc" var="bootstrap">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select datename(yyyy,day) as years,SUM( (CONVERT(decimal (18, 2), power45)-  CONVERT(decimal (18, 2), power00))) AS val from t_power where @CONDITION  group by datename(yyyy,day)  order by datename(yyyy,day) desc" var="nhnrs">
                 <xflt id="CONDITION" nrp="" tpl="@comaddr AND @star AND @end AND @pid">
                     <xfltpara id="comaddr" nrp="1=1" para="comaddr" sql="comaddr = ':comaddr'"> 
                     </xfltpara> 
@@ -260,7 +284,19 @@
                     </xfltpara> 
                     <xfltpara id="end" nrp="1=1" para="end" sql="datename(yyyy,day) &lt;= ':end'"> 
                     </xfltpara> 
-                    <xfltpara id="pid" nrp="1=2" para="pid" sql="comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE  pid = ':pid')">
+                    <xfltpara id="pid" nrp="1=1" para="pid" sql="comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE  pid = ':pid')">
+                    </xfltpara>          
+                </xflt>
+            </xsql>
+            <xsql id="a2" list="true" page="true" tpe="SQL" tpl="select datename(yyyy,time) as time,avg(lampsum) as lampsum,avg(bugsum) as bugsum,avg(Lamppost) as Lamppost from t_equipmentS where @CONDITION  group by datename(yyyy,time)  order by datename(yyyy,time) desc" var="nsbrs">
+                <xflt id="CONDITION" nrp="" tpl="@comaddr AND @star AND @end AND @pid">
+                    <xfltpara id="comaddr" nrp="1=1" para="comaddr" sql="comaddr = ':comaddr'"> 
+                    </xfltpara> 
+                    <xfltpara id="star" nrp="1=1" para="star" sql="datename(yyyy,time) &gt;= ':star'"> 
+                    </xfltpara> 
+                    <xfltpara id="end" nrp="1=1" para="end" sql="datename(yyyy,time) &lt;= ':end'"> 
+                    </xfltpara> 
+                    <xfltpara id="pid" nrp="1=1" para="pid" sql="comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE  pid = ':pid')">
                     </xfltpara>          
                 </xflt>
             </xsql>

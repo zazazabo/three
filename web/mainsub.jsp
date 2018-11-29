@@ -1236,7 +1236,7 @@
                         <div class="panel-body" style=" height: 360px;" align="center">
                             <form id="forminfo">
                                 <input type="hidden" id="l_comaddr" name="l_comaddr" />
-                                <table class="hovertable" >
+                                <table class="hovertable" style=" text-align: center;" >
                                     <tr>
                                         <th colspan="2"><span name="xxx" id="495">有功功率</span>(W)</th>
                                         <th colspan="2"><span name="xxx" id="496">无功功率</span>(W)</th>
