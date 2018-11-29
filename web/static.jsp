@@ -179,7 +179,6 @@
             var switchYear = $("#switchYear");
             clearDate();
             $("#timeType").val(num);
-            alert(num);
 //            switch (num) {
 //                case 1:
 //                    switchDay.css("background-color", "#cccccc");
@@ -248,27 +247,27 @@
                             valign: 'middle'
                         }, {
                             field: 'lampsum',
-                            title: '灯具总数(盏)', //灯具总数
+                            title:  langs1[576][lang], //灯具总数
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'bugsum',
-                            title: '灯具异常数(盏)', //灯具异常数
+                            title:langs1[576][lang], //灯具异常数
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         },
                         {
                             field: 'Lamppost',
-                            title: '灯杆总数(杆)', //灯杆总数
+                            title: langs1[578][lang], //灯杆总数
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         },
                         {
                             field: 'bugsum',
-                            title: '亮灯率（%）', //量灯率
+                            title: langs1[6][lang]+ '（%）', //量灯率
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -350,27 +349,27 @@
                             valign: 'middle'
                         }, {
                             field: 'lampsum',
-                            title: '灯具总数(盏)', //灯具总数
+                            title:  langs1[576][lang], //灯具总数
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'bugsum',
-                            title: '灯具异常数(盏)', //灯具异常数
+                            title: langs1[576][lang], //灯具异常数
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         },
                         {
                             field: 'Lamppost',
-                            title: '灯杆总数(杆)', //灯杆总数
+                            title: langs1[578][lang], //灯杆总数
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         },
                         {
                             field: 'bugsum',
-                            title: '亮灯率（%）', //量灯率
+                            title: langs1[6][lang]+ '（%）', //量灯率
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -416,27 +415,27 @@
                             valign: 'middle'
                         }, {
                             field: 'lampsum',
-                            title: '灯具总数(盏)', //灯具总数
+                            title: langs1[576][lang], //灯具总数
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'bugsum',
-                            title: '灯具异常数(盏)', //灯具异常数
+                            title:langs1[576][lang], //灯具异常数
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         },
                         {
                             field: 'Lamppost',
-                            title: '灯杆总数(杆)', //灯杆总数
+                            title: langs1[578][lang], //灯杆总数
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         },
                         {
                             field: 'bugsum',
-                            title: '亮灯率（%）', //量灯率
+                            title: langs1[6][lang]+ '（%）', //量灯率
                             width: 25,
                             align: 'center',
                             valign: 'middle',
