@@ -761,7 +761,7 @@
 
                         <li class="one" style="width:85px;">
 
-                            <i class="layui-icon  indexIcon"></i>   
+                            <!-- <i class="layui-icon  indexIcon"></i>   -->
                             <!--                            <span class="glyphicon glyphicon-tags indexIcon"/>-->
                             <span class="Till" style="width: 74px; text-align: center; color: rgb(255, 255, 255);" name="xxx" id="2">语言</span>
 
@@ -777,7 +777,7 @@
                             </ul>
                         </li>
                         <li class="one" style=" margin-right: 10px;">
-                            <i class="layui-icon indexIcon"></i>  
+                            <!--  <i class="layui-icon indexIcon"></i>  -->
                             <!--<span class="glyphicon glyphicon-user"></span>-->
                             <span class="Till" style=" padding-left: 24px; box-sizing: border-box; color: rgb(255, 255, 255);">
                                 <span id="u_name" class="admin" style="color: rgb(255, 255, 255);">${rs[0].name}</span>
