@@ -281,7 +281,9 @@
                 $("#comaddrname1").val(select.commname);
                 $("#l_name1").val(select.l_name);
                 $("#lid").val(select.lid);
-
+                $("#l_specifications1").val(select.l_specifications);
+                $("#cableLength1").val(select.cableLength);
+                $("#remarks1").val(select.remarks);
                 $('#l_worktype1').combobox('setValue', select.l_worktype);
                 if (select.l_deplayment == "1") {
                     $("#trworktype").show();
@@ -359,7 +361,26 @@
                             width: 25,
                             align: 'center',
                             valign: 'middle'
-                        }, {
+                        },{
+                            field: 'l_specifications',
+                            title: "电缆规格", //电缆规格
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        },{
+                            field: 'cableLength',
+                            title: "电缆长度", //电缆长度
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        },{
+                            field: 'remarks',
+                            title: "备注", //备注
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        },
+                        {
                             field: 'l_groupe',
                             title: langs1[365][lang], //回路组号
                             width: 25,
@@ -903,10 +924,20 @@
                             <td></td>
                             <td>
                                 <span style="margin-left:10px;" name="xxx" id="331">回路名称</span>&nbsp;
-                                <input id="l_name" class="form-control"  name="l_name" style="width:150px;display: inline;" placeholder="请输入回路名称" type="text"></td>
-                            </td>
+                                <input id="l_name" class="form-control"  name="l_name" style="width:150px;display: inline;" placeholder="请输入回路名称" type="text">
                             </td>
                         </tr> 
+                        <tr>
+                            <td>
+                                <span style="margin-left:20px;">电缆规格</span>&nbsp;
+                                <input id="l_specifications" class="form-control" name="l_specifications" style="width:150px;display: inline;" placeholder="请输入电缆规格" type="text">
+
+                            <td></td>
+                            <td>
+                                <span style="margin-left:10px;">电缆长度</span>&nbsp;
+                                <input id="cableLength" class="form-control"  name="cableLength" style="width:150px;display: inline;" placeholder="请输入电缆长度" type="text">
+                            </td>
+                        </tr>
 
                         <tr>
                             <td>
@@ -918,19 +949,12 @@
                                         <option value="1">走经纬度</option>           
                                     </select>
                                 </span>
-
-
-
                             </td>
                             <td></td>
                             <td>
-
+                                <span style="margin-left:10px;">备注</span>&nbsp;
+                                <input id="remarks" class="form-control"  name="remarks" style="width:150px;display: inline;" placeholder="请输入备注" type="text">
                                 <input id="l_groupe" type="hidden" name="l_groupe" value="1"/>
-                                <!--                                <span style="margin-left:10px;" name="xxx" id="369">所属组号</span>&nbsp;
-                                                                <span class="menuBox">
-                                                                    <select class="easyui-combobox" id="l_groupe" name="l_groupe"  data-options='editable:false,valueField:"id", textField:"text"' style="width:150px; height: 30px">          
-                                                                    </select>
-                                                                </span>-->
                             </td>
                         </tr>                 
 
@@ -977,7 +1001,18 @@
                                 <input id="l_name1" class="form-control"   name="l_name" style="width:150px;display: inline;" placeholder="请输入回路名称" type="text"></td>
                             </td>
                             </td>
-                        </tr>                                   
+                        </tr>  
+                        <tr>
+                            <td>
+                                <span style="margin-left:20px;">电缆规格</span>&nbsp;
+                                <input id="l_specifications1" class="form-control" name="l_specifications" style="width:150px;display: inline;" placeholder="请输入电缆规格" type="text">
+
+                            <td></td>
+                            <td>
+                                <span style="margin-left:10px;">电缆长度</span>&nbsp;
+                                <input id="cableLength1" class="form-control"  name="cableLength" style="width:150px;display: inline;" placeholder="请输入电缆长度" type="text">
+                            </td>
+                        </tr>
                         <tr>
                             <td>
 
@@ -994,6 +1029,8 @@
 
                             </td>
                             <td>
+                                <span style="margin-left:10px;">备注</span>&nbsp;
+                                <input id="remarks1" class="form-control"  name="remarks" style="width:150px;display: inline;" placeholder="请输入备注" type="text">
                                 <!--                                <span style="margin-left:10px;" name="xxx" id="369">所属组号</span>&nbsp;
                                                                 <span class="menuBox">
                                                                     <select class="easyui-combobox" readonly="true" id="l_groupe1" name="l_groupe"  data-options='editable:false,valueField:"id", textField:"text"' style="width:150px; height: 30px">          
