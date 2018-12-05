@@ -250,27 +250,36 @@
                             valign: 'middle'
                         }, {
                             field: 'lampsum',
-                            title:  langs1[576][lang], //灯具总数
+                            title: langs1[576][lang], //灯具总数
                             width: 25,
                             align: 'center',
-                            valign: 'middle'
+                            valign: 'middle',
+                            formatter: function (value, row, index, field) {
+                                return  value / row.days;
+                            }
                         }, {
                             field: 'bugsum',
-                            title:langs1[576][lang], //灯具异常数
+                            title: langs1[577][lang], //灯具异常数
                             width: 25,
                             align: 'center',
-                            valign: 'middle'
+                            valign: 'middle',
+                            formatter: function (value, row, index, field) {
+                                return  value / row.days;
+                            }
                         },
                         {
                             field: 'Lamppost',
                             title: langs1[578][lang], //灯杆总数
                             width: 25,
                             align: 'center',
-                            valign: 'middle'
+                            valign: 'middle',
+                            formatter: function (value, row, index, field) {
+                                return  value / row.days;
+                            }
                         },
                         {
                             field: 'bugsum',
-                            title: langs1[6][lang]+ '（%）', //量灯率
+                            title: langs1[6][lang] + '（%）', //量灯率
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -297,6 +306,7 @@
                 success: function (data) {
                     var nhnrs = data.nhnrs;   //耗能集合
                     var nsbrs = data.nsbrs;   //设备 统计
+                    var daysrs = data.daysrs; //统计天数
                     var pent = [];
                     for (var i = 0; i < nhnrs.length; i++) {
                         var obj = {};
@@ -305,11 +315,17 @@
                         obj.lampsum = 0;
                         obj.bugsum = 0;
                         obj.Lamppost = 0;
+                        obj.days = 1;
                         for (var j = 0; j < nsbrs.length; j++) {
                             if (nhnrs[i].years == nsbrs[j].time) {
                                 obj.lampsum = nsbrs[j].lampsum;
                                 obj.bugsum = nsbrs[j].bugsum;
                                 obj.Lamppost = nsbrs[j].Lamppost;
+                            }
+                            for (var k = 0; k < daysrs.length; k++) {
+                                if (nsbrs[j].time == daysrs[k].times) {
+                                    obj.days = daysrs[k].days;
+                                }
                             }
                         }
                         pent.push(obj);
@@ -352,27 +368,36 @@
                             valign: 'middle'
                         }, {
                             field: 'lampsum',
-                            title:  langs1[576][lang], //灯具总数
+                            title: langs1[576][lang], //灯具总数
                             width: 25,
                             align: 'center',
-                            valign: 'middle'
+                            valign: 'middle',
+                            formatter: function (value, row, index, field) {
+                                return  value / row.days;
+                            }
                         }, {
                             field: 'bugsum',
-                            title: langs1[576][lang], //灯具异常数
+                            title: langs1[577][lang], //灯具异常数
                             width: 25,
                             align: 'center',
-                            valign: 'middle'
+                            valign: 'middle',
+                            formatter: function (value, row, index, field) {
+                                return  value / row.days;
+                            }
                         },
                         {
                             field: 'Lamppost',
                             title: langs1[578][lang], //灯杆总数
                             width: 25,
                             align: 'center',
-                            valign: 'middle'
+                            valign: 'middle',
+                            formatter: function (value, row, index, field) {
+                                return  value / row.days;
+                            }
                         },
                         {
                             field: 'bugsum',
-                            title: langs1[6][lang]+ '（%）', //量灯率
+                            title: langs1[6][lang] + '（%）', //量灯率
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -424,7 +449,7 @@
                             valign: 'middle'
                         }, {
                             field: 'bugsum',
-                            title:langs1[576][lang], //灯具异常数
+                            title: langs1[577][lang], //灯具异常数
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -438,7 +463,7 @@
                         },
                         {
                             field: 'bugsum',
-                            title: langs1[6][lang]+ '（%）', //量灯率
+                            title: langs1[6][lang] + '（%）', //量灯率
                             width: 25,
                             align: 'center',
                             valign: 'middle',
@@ -485,6 +510,7 @@
                             success: function (data) {
                                 var nhnrs = data.nhnrs;   //耗能集合
                                 var nsbrs = data.nsbrs;   //设备 统计
+                                var daysrs = data.daysrs; //统计天数
                                 for (var i = 0; i < nhnrs.length; i++) {
                                     var obj = {};
                                     obj.years = nhnrs[i].years;
@@ -492,11 +518,17 @@
                                     obj.lampsum = 0;
                                     obj.bugsum = 0;
                                     obj.Lamppost = 0;
+                                    obj.days = 1;
                                     for (var j = 0; j < nsbrs.length; j++) {
                                         if (nhnrs[i].years == nsbrs[j].time) {
                                             obj.lampsum = nsbrs[j].lampsum;
                                             obj.bugsum = nsbrs[j].bugsum;
                                             obj.Lamppost = nsbrs[j].Lamppost;
+                                        }
+                                        for (var k = 0; k < daysrs.length; k++) {
+                                            if (nsbrs[j].time == daysrs[k].times) {
+                                                obj.days = daysrs[k].days;
+                                            }
                                         }
                                     }
                                     pent.push(obj);
@@ -517,17 +549,12 @@
                     {
                         obj.star = timeobj.m1;
                         obj.end = timeobj.m2;
-                        //加载所有网关信息
-//                        var opt = {
-//                            url: "login.reportmanage.getmother.action",
-//                            silent: false,
-//                            query: obj
-//                        };
                         var pent = [];
                         $.ajax({async: false, url: "login.reportmanage.getmother.action", type: "get", datatype: "JSON", data: obj,
                             success: function (data) {
                                 var yhnrs = data.yhnrs;   //耗能集合
                                 var ysbrs = data.ysbrs;   //设备 统计
+                                var daysrs = data.daysrs; //统计天数
                                 for (var i = 0; i < yhnrs.length; i++) {
                                     var obj = {};
                                     obj.mother = yhnrs[i].mother;
@@ -535,11 +562,17 @@
                                     obj.lampsum = 0;
                                     obj.bugsum = 0;
                                     obj.Lamppost = 0;
+                                    obj.days = 1;
                                     for (var j = 0; j < ysbrs.length; j++) {
                                         if (yhnrs[i].mother == ysbrs[j].time) {
                                             obj.lampsum = ysbrs[j].lampsum;
                                             obj.bugsum = ysbrs[j].bugsum;
                                             obj.Lamppost = ysbrs[j].Lamppost;
+                                        }
+                                        for (var k = 0; k < daysrs.length; k++) {
+                                            if (ysbrs[j].time == daysrs[k].times) {
+                                                obj.days = daysrs[k].days;
+                                            }
                                         }
                                     }
                                     pent.push(obj);
@@ -549,13 +582,11 @@
                                 alert("提交失败！");
                             }
                         });
-                        // $("#getdayTable").bootstrapTable('refresh', opt);
                         $("#getMotherTable").bootstrapTable('load', []);
                         if (pent.length > 0) {
                             $('#getMotherTable').bootstrapTable('load', pent);
 
                         }
-                        //  $("#getMotherTable").bootstrapTable('refresh', opt);
                     }
                     break;
                 case 3:
