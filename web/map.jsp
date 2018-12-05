@@ -516,11 +516,12 @@
                 var day = d.toLocaleDateString();
                 var lobj = {};
                 lobj.pid = pid;
+                lobj.type = "ALL";
                 if ($("#lampcomaddrlist2").val() != "") {
                     lobj.comaddr = $("#lampcomaddrlist2").val();
                 }
                 if ($("#lampNumber").val() != "") {
-                    lobj.l_lampnumber = $("#lampNumber").val();
+                    lobj.l_lampnumber = encodeURI($("#lampNumber").val());
                 }
                 $.ajax({async: false, url: "login.map.queryLamp.action", type: "get", datatype: "JSON", data: lobj,
                     success: function (data) {

@@ -373,7 +373,7 @@
                 if ((${ybsdj[0].num-djgzs[0].num} - djlxs) <= 0) {
                     $("#ldl").html("0%");
                 } else {
-                    var ldl = ((${ybsdj[0].num} - djlxs-gzdj) /${ybsdj[0].num}) * 100;
+                    var ldl = ((${ybsdj[0].num}-gzdj) /${ybsdj[0].num}) * 100;
                     $("#ldl").html(ldl.toFixed(2) + "%");
                 }
                 //计划能耗
@@ -549,9 +549,9 @@
                         if (rs.length > 0) {
                             var info = rs[0];
                             var worktype = info.l_worktype;
-                            if (worktype == 0) {
+                            if (worktype == 0) {   //时间表
                                 $("#headtime").html(langs1[428][lang] + ":" + info.l_outtime + "&nbsp;" + langs1[429][lang] + ":" + info.l_intime);
-                            } else if (worktype == 1) {
+                            } else if (worktype == 1) {  //经纬度
                                 var o1 = {jd: info.longitude, wd: info.latitude};
 
                                 console.log(o1);
@@ -1057,7 +1057,7 @@
                     <span class="redius" style="background:#fdd237;">
                         <img src="img/dp.png"></span>
                     <div class="Mess lightingRate">
-                        <span id="ldl">100%</span>
+                        <span id="ldl">0.00%</span>
                         <span name="xxx" id="6"> 亮灯率</span>
                     </div>
                 </div>
@@ -1236,7 +1236,7 @@
                         <div class="panel-body" style=" height: 360px;" align="center">
                             <form id="forminfo">
                                 <input type="hidden" id="l_comaddr" name="l_comaddr" />
-                                <table class="hovertable" >
+                                <table class="hovertable" style=" text-align: center;" >
                                     <tr>
                                         <th colspan="2"><span name="xxx" id="495">有功功率</span>(W)</th>
                                         <th colspan="2"><span name="xxx" id="496">无功功率</span>(W)</th>

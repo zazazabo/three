@@ -179,6 +179,10 @@ Author     : admin
                 $("#l_worktype1").combobox('setValue', s.l_worktype);
                 $("#l_groupe1").combobox('setValue', s.l_groupe);
                 $("#l_lampnumber1").val(s.l_lampnumber);
+                $("#l_brand1").val(s.l_brand);
+                $("#l_Warranty1").val(s.l_Warranty);
+                $("#l_remarks1").val(s.l_remarks);
+                
                 if (s.l_deplayment == "1") {    //判断是否部署
                     $("#trlamp").show();
                     $("#trlamp1").show();
@@ -419,6 +423,26 @@ Author     : admin
                             align: 'center',
                             valign: 'middle'
                         }, {
+                            field: 'l_brand',
+                            title: "灯具品牌", //灯具品牌
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        },
+                        {
+                            field: 'l_Warranty',
+                            title: "质保期", //质保期
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        },
+                        {
+                            field: 'l_remarks',
+                            title: "备注", //备注
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        },{
                             field: 'l_groupe',
                             title: langs1[332][lang], //组号
                             width: 25,
@@ -746,7 +770,7 @@ Author     : admin
                     autoOpen: false,
                     modal: true,
                     width: 700,
-                    height: 300,
+                    height: 350,
                     position: ["top", "top"],
                     buttons: {
                         添加: function () {
@@ -1102,7 +1126,6 @@ Author     : admin
                                 <input id="l_name" class="form-control"  name="l_name" style="width:150px;display: inline;" placeholder="请输入灯具名称" type="text">
 
                             </td>
-                            </td>
                         </tr>                                   
 
                         <tr>
@@ -1133,6 +1156,25 @@ Author     : admin
                                 <span style="margin-left:20px;" name="xxx" id="453">灯杆编号</span>&nbsp;
                                 <input id="l_lampnumber" class="form-control"  name="l_lampnumber" style="width:150px;display: inline;" placeholder="请输入灯杆编号" type="text">
                                 </span> 
+                            </td>
+                            <td></td>
+                            <td>
+                                <span style="margin-left:10px;">灯具品牌</span>&nbsp;
+                                <input id="l_brand" class="form-control"  name="l_brand" style="width:150px;display: inline;" placeholder="请输入灯具品牌" type="text">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span style="margin-left:20px;">质保期</span>&nbsp;
+                                <input id="l_Warranty" class="form-control"  name="l_Warranty" style="width:150px;display: inline;" placeholder="请输入质保期" type="text">
+                                </span> 
+                            </td>
+                             <td></td>
+                            <td>
+                                <span style="margin-left:10px;">灯具品牌</span>&nbsp;
+                                <input id="l_remarks" class="form-control"  name="l_remarks" style="width:150px;display: inline;" placeholder="请输入备注" type="text">
+
                             </td>
                         </tr>
 
@@ -1233,7 +1275,26 @@ Author     : admin
                                 <span style="margin-left:20px;" name="xxx" id="453">灯杆编号</span>&nbsp;
                                 <input id="l_lampnumber1" class="form-control" name="l_lampnumber" style="width:150px;display: inline;" placeholder="灯具编号" type="text">
                             </td>
+                            <td></td>
+                            <td>
+                                <span style="margin-left:10px;">灯具品牌</span>&nbsp;
+                                <input id="l_brand1" class="form-control"  name="l_brand" style="width:150px;display: inline;" placeholder="请输入灯具品牌" type="text">
+
+                            </td>
                         </tr> 
+                        <tr>
+                            <td>
+                                <span style="margin-left:20px;">质保期</span>&nbsp;
+                                <input id="l_Warranty1" class="form-control"  name="l_Warranty" style="width:150px;display: inline;" placeholder="请输入质保期" type="text">
+                                </span> 
+                            </td>
+                             <td></td>
+                            <td>
+                                <span style="margin-left:10px;">灯具品牌</span>&nbsp;
+                                <input id="l_remarks1" class="form-control"  name="l_remarks" style="width:150px;display: inline;" placeholder="请输入备注" type="text">
+
+                            </td>
+                        </tr>
                         <tr id="trlamp1">
                         </tr> 
 

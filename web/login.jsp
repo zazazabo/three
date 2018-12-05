@@ -386,7 +386,7 @@
                 }
             }
             
-            @media screen and (min-width:0px) and (max-width:450px){  
+            @media screen and (min-width:0px) and (max-width:450px){
                 .logo-animate{
                     top:30%;
                 }
@@ -461,6 +461,7 @@
                 #large-header{
                     display: none;
                 }
+              
             }
             
             @media screen and (min-width:736px) and (max-width:1024px){  
@@ -719,13 +720,11 @@
             };
         </script>
     </head>
-    <body>
+    <body style=" background:url(./img/hm2.jpg) no-repeat;background-size: 100% 100%;">
         <div id="large-header" class="large-header" style="height: 914px;">
             <canvas id="demo-canvas" width="1398" height="914"></canvas>
         </div>
-
-        <img src="./img/hm2.jpg" style="position:absolute;top:0;left:0;z-index:-1;width:100%;height:100%;">
-
+<!--        <img src="./img/hm2.jpg" style="position:absolute;top:0;left:0;z-index:-1;width:100%;height:100%;">-->
         <div class="changeLanguage" id="changeLanguage">
             <!--            <div language="zh_CN" class="Zh" id="chinese">中文</div>
                         <div class="line">|</div>

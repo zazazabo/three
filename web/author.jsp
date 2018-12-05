@@ -287,7 +287,7 @@
                                 $.ajax({async: false, url: "login.rolemanage.deleterole.action", type: "POST", datatype: "JSON", data: obj2,
                                     success: function (data) {
                                         var list = data.rs;
-                                        if(list.length>0){
+                                        if (list.length > 0) {
                                             getcombox();
                                             layerAler("删除成功");  //删除成功！
                                         }
@@ -363,8 +363,8 @@
                 });
             }
             //获取角色
-            function  getcombox(){
-                  $("#role").combobox({
+            function  getcombox() {
+                $("#role").combobox({
                     url: "login.usermanage.rolemenu.action?parent_id=${param.role}"
 //                    onLoadSuccess: function (data) {
 //                        $(this).combobox("select", data[0].id);
@@ -394,8 +394,8 @@
                         });
                     }
                 });
-                
-                
+
+
             });
             //修改权限后刷新权限树形图
             function  freshenTree(roleid) {
@@ -431,25 +431,24 @@
                         <div class="" style="width:20%;float: left;">
                             <ul id="treeDemo" class="ztree"></ul>
                         </div>
-                        <div class="" style="align-items: center;width:10%; float: left;">
+                        <div class="" style=" width: 50%; margin-left: 5%; float: left; margin-top: 2%;">
                             <div id="btnauthor" style=" display: none;" >
 
-                                <button class="btn btn-success" onclick="addauthor()" style="  margin-top: 20px"><span name="xxx" id="244">分配权限</span></button>
+                                <button class="btn btn-success" onclick="addauthor()" style=" margin-left: 30%;"><span name="xxx" id="244">分配权限</span></button>
 
                             </div>
-
-                        </div>
-
-                        <div class="" style=" width: 35%; float: left; margin-top: 2%; margin-left: 2%;">
-                            <span style=" width: 20%;" name="xxx" id="245">角色列表</span>
+                            <div style=" margin-top: 3%;">
+                                <span style=" width: 20%;" name="xxx" id="245">角色列表</span>
 <!--                            <input id="role" class="easyui-combobox" name="role" style="width:40%; height: 34px;" data-options="editable:true,valueField:'id', textField:'text',url:'login.usermanage.rolemenu.action?parent_id=${param.role}'" />-->
-                            <input id="role" data-options='editable:false,valueField:"id", textField:"text"' style="width:40%; height: 34px;" class="easyui-combobox"/>
-                            <button class="btn btn-success" style=" width:23%;" onclick="delrole()" ><span name="xxx" id="504">删除角色</span></button>
-                        </div>
-                        <div class="" style=" width: 25%; margin-left: 5%; float: left; margin-top: 2%;">
-                            <span style=" width: 30%;" name="xxx" id="246">角色名称</span>&nbsp;
-                            <input id="rolename" class="form-control" name="rolename" style="width:40%;display: inline;" placeholder="请输入角色名称" type="text">
-                            <button id="btnrole" onclick="addrole()" class="btn btn-success" style=" width: 30%;"><span name="xxx" id="247">生成角色</span></button>
+                                <input id="role" data-options='editable:false,valueField:"id", textField:"text"' style="width:35%; height: 34px;" class="easyui-combobox"/>
+                                <button class="btn btn-success" style=" width:18%;" onclick="delrole()" ><span name="xxx" id="504">删除角色</span></button>
+                            </div>
+                            <div style=" margin-top: 3%;">
+                                <span style=" width: 20%;" name="xxx" id="246">角色名称</span>&nbsp;
+                                <input id="rolename" class="form-control" name="rolename" style="width:35%;display: inline;" placeholder="请输入角色名称" type="text">
+                                <button id="btnrole" onclick="addrole()" class="btn btn-success" style=" width: 18%;"><span name="xxx" id="247">生成角色</span></button>
+                            </div>
+
                         </div>
                     </div>
                 </div>

@@ -2,7 +2,7 @@
 <xforms>
     <xform desc="灯具" id="lampform">
         <xhandle desc="查询灯具表" id="getlampList" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT tb.name AS commname,*FROM  t_lamp tl,t_baseinfo AS tb WHERE tl.l_comaddr = tb.comaddr AND    @CONDITION  " var="bootstrap">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT tb.name AS commname,*FROM  t_lamp tl,t_baseinfo AS tb WHERE tl.l_comaddr = tb.comaddr AND    @CONDITION order by l_groupe  " var="bootstrap">
                 <xflt id="CONDITION" nrp="" tpl="@l_comaddr AND @l_factorycode AND @l_groupe AND @l_deplayment AND @pid">
                     <xfltpara id="l_comaddr" nrp="1=1" para="l_comaddr" sql="l_comaddr = ':l_comaddr'"></xfltpara>
                     <xfltpara id="l_factorycode" nrp="1=1" para="l_factorycode" sql="l_factorycode = :l_factorycode"></xfltpara>
@@ -60,7 +60,7 @@
             </xsql>
         </xhandle>
         <xhandle desc="修改灯具基本信息" id="modifylamp" rtnype="JSON">
-            <xsql id="a1" para="l_name,l_groupe,l_worktype,l_lampnumber" tpe="DDL" tpl="update t_lamp set l_name=':l_name',l_groupe=:l_groupe,l_worktype=:l_worktype,l_lampnumber=':l_lampnumber' where @CONDITION " var="rs">
+            <xsql id="a1" para="l_name,l_groupe,l_worktype,l_lampnumber,l_brand,l_Warranty,l_remarks" tpe="DDL" tpl="update t_lamp set l_name=':l_name',l_groupe=:l_groupe,l_worktype=:l_worktype,l_lampnumber=':l_lampnumber',l_brand=':l_brand',l_Warranty=':l_Warranty',l_remarks=':l_remarks' where @CONDITION " var="rs">
                 <xflt id="CONDITION" tpl="@id ">
                     <xfltpara id="id" nrp="1=1" para="id" sql="id=':id'"></xfltpara>
                 </xflt>
@@ -119,7 +119,7 @@
             </xsql>
         </xhandle>
         <xhandle desc="添加灯具" id="addlamp" rtn="rs" rtnype="JSON">
-            <xsql id="a1" para="name,l_worktype,l_groupe,l_name,l_factorycode,l_comaddr,l_lampnumber" tpe="DDL" tpl="insert into t_lamp(name,l_worktype,l_groupe,l_name,l_factorycode,l_comaddr,l_deplayment,l_lampnumber) values(':name',:l_worktype,:l_groupe,':l_name',':l_factorycode',':l_comaddr',0,':l_lampnumber') " var="rs"></xsql>
+            <xsql id="a1" para="name,l_worktype,l_groupe,l_name,l_factorycode,l_comaddr,l_lampnumber,l_brand,l_Warranty,l_remarks" tpe="DDL" tpl="insert into t_lamp(name,l_worktype,l_groupe,l_name,l_factorycode,l_comaddr,l_deplayment,l_lampnumber,l_brand,l_Warranty,l_remarks) values(':name',:l_worktype,:l_groupe,':l_name',':l_factorycode',':l_comaddr',0,':l_lampnumber',':l_brand',':l_Warranty',':l_remarks') " var="rs"></xsql>
         </xhandle>
         <xhandle desc="修改灯具工作方式" id="modifyworktype" rtnype="JSON">
             <xsql id="a1" para="l_worktype" tpe="DDL" tpl="update t_lamp set l_worktype=:l_worktype where l_deplayment=1 AND @CONDITION " var="rs">
