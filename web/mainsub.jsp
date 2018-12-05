@@ -549,9 +549,9 @@
                         if (rs.length > 0) {
                             var info = rs[0];
                             var worktype = info.l_worktype;
-                            if (worktype == 0) {
+                            if (worktype == 0) {   //时间表
                                 $("#headtime").html(langs1[428][lang] + ":" + info.l_outtime + "&nbsp;" + langs1[429][lang] + ":" + info.l_intime);
-                            } else if (worktype == 1) {
+                            } else if (worktype == 1) {  //经纬度
                                 var o1 = {jd: info.longitude, wd: info.latitude};
 
                                 console.log(o1);
