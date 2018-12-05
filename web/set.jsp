@@ -659,8 +659,21 @@
                 addlogon(u_name, "设置", o_pid, "网关参数设置", "设置网关经纬度", o.l_comaddr);
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xff, num, 0, 10, vv); //01 03 F24   
-
+                
                 dealsend2("FF", data, 10, "allCallBack", comaddr, 0, 0, oo);
+                //修改网关参数
+                var uobj = {};
+                uobj.comaddr = o.l_comaddr;
+                uobj.Longitude = obj.Longitude;
+                uobj.latitude = obj.latitude;
+                uobj.outoffset = obj.outoffset;
+                uobj.inoffset = obj.inoffset;
+                $.ajax({async: false, url: "login.set.updatewg.action", type: "get", datatype: "JSON", data: uobj,
+                    success: function (data) {
+                        //var arrlist = data.rs;
+                        
+                    }
+                });
             }
 
             function setGroupe() {
@@ -1234,19 +1247,93 @@
                     return;
                 }
                 var outoffset = $("#outoffset").val(); //日出偏移
-                var  inoffset = $("#inoffset").val();  //日落偏移
+                var inoffset = $("#inoffset").val();  //日落偏移
                 //parseFloat
-                console.log(parseInt(outoffset).toString());
-//                if(parseInt(outoffset).toString()=="NaN" || parseInt(inoffset).toString()=="NaN"){
-//                    layerAler("偏移量为数字类型");
-//                    return;
-//                }
+                if (parseInt(outoffset).toString() == "NaN" || parseInt(inoffset).toString() == "NaN") {
+                    layerAler("偏移量为数字类型");
+                    return;
+                }
                 $.ajax({async: false, url: "login.rc.r.action", type: "get", datatype: "JSON", data: obj,
                     success: function (data) {
                         var list = data.cl[0];
+//                        var lgindex = arrlist[0].Longitude.indexOf(".");
+//                        var lglength = arrlist[0].Longitude.substring(0, lgindex);
+                        var rcindex = list.rc.indexOf(":");
+                        var rcs = list.rc.substring(0, rcindex); //日出时
+                        var rcf = list.rc.substring(rcindex + 1, list.rc.length); //日出分
+                        var rlindex = list.rl.indexOf(":");
+                        var rls = list.rl.substring(0, rlindex); //日落时
+                        var rlf = list.rl.substring(rlindex + 1, list.rl.length); //日落分
+                        //日落
+                        if (parseInt(inoffset) > 0) {
+                            rlf =parseInt(rlf) + parseInt(inoffset);
+                            if (rlf >= 60) {
+                                rlf = rlf - 60;
+                                rls = parseInt(rls) + 1;
+                            }
+                            if (rls >= 24) {
+                                rls = rls - 24;
+                            }
+                            if (rlf < 10) {
+                                rlf = "0" + rlf.toString();
+                            }
 
-                        $("#sunrise").val(list.rc);  //日出
-                        $("#sunset").val(list.rl);  //日落
+                            if (rls < 10) {
+                                rls = "0" + rls.toString();
+                            }
+                        } else if (parseInt(inoffset) < 0) {
+                            rlf = parseInt(rlf) - Math.abs(parseInt(inoffset));
+                            if (rlf < 0) {
+                                rls = parseInt(rls) - 1;
+                                rlf = rlf + 60;
+                            }
+                            if (rls < 0) {
+                                rls = rls + 24;
+                            }
+                            if (rlf < 10) {
+                                rlf = "0" + rlf.toString();
+                            }
+
+                            if (rls < 10) {
+                                rls = "0" + rls.toString();
+                            }
+                        }
+                         //日出
+                        if (parseInt(outoffset) > 0) {
+                            rcf =parseInt(rcf) + parseInt(outoffset);
+                            if (rcf >= 60) {
+                                rcf = rcf - 60;
+                                rcs = parseInt(rcs) + 1;
+                            }
+                            if (rcs >= 24) {
+                                rcs = rcs - 24;
+                            }
+                            if (rcf < 10) {
+                                rcf = "0" + rcf.toString();
+                            }
+
+                            if (rcs < 10) {
+                                rcs = "0" + rcs.toString();
+                            }
+                        } else if (parseInt(outoffset) < 0) {
+                            rcf = parseInt(rcf) - Math.abs(parseInt(outoffset));
+                            if (rcf < 0) {
+                                rcs = parseInt(rcs) - 1;
+                                rcf = rcf + 60;
+                            }
+                            if (rcs < 0) {
+                                rcs = rcs + 24;
+                            }
+                            if (rcf < 10) {
+                                rcf = "0" + rcf.toString();
+                            }
+
+                            if (rcs < 10) {
+                                rcs = "0" + rcs.toString();
+                            }
+                        }
+                        $("#sunrise").val(rcs + ":" + rcf);  //日出
+                        $("#sunset").val(rls + ":" + rlf);  //日落
                         $("#sunriseSunset").show();
                         console.log(data);
 
@@ -1325,11 +1412,27 @@
                                         $("#latitude").val(lastr);
                                         var out = arrlist[0].outoffset;  //日出偏移
                                         var inoffset = arrlist[0].inoffset; //日落偏移
-                                        if(out == null || out ==""){
+                                        if (out == null || out == "") {
                                             out = 0;
                                         }
-                                        if(inoffset==null || inoffset == ""){
+                                        if (inoffset == null || inoffset == "") {
                                             inoffset = 0;
+                                        }
+                                        if(parseInt(arrlist[0].Longitude)>0){
+                                            $('#areazone').combobox('setValue', 0);
+                                            var num = (parseInt(arrlist[0].Longitude)/15).toFixed();
+                                            if(num<10){
+                                                num = "0"+num;
+                                            }
+                                            $("#timezone").val(num);
+                                            
+                                        }else{
+                                            $('#areazone').combobox('setValue', 1);
+                                             var num = (parseInt(arrlist[0].Longitude)/15).toFixed();
+                                              if(num<10){
+                                                num = "0"+num;
+                                            }
+                                             $("#timezone").val(num);
                                         }
                                         $("#outoffset").val(out);
                                         $("#inoffset").val(inoffset);
