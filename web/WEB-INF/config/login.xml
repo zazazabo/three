@@ -234,7 +234,7 @@
                     </xfltpara>          
                 </xflt>
             </xsql>
-            <xsql id="a2" list="true" page="true" tpe="SQL" tpl="select CONVERT(varchar(100),time, 23) as time,comaddr,lampsum,bugsum,Lamppost from t_equipmentS where  @CONDITION  order by time desc" var="sbrs">
+            <xsql id="a2" list="true" page="true" tpe="SQL" tpl="select CONVERT(varchar(100),time, 23) as time,sum(lampsum) as lampsum,sum(bugsum) as bugsum,sum(Lamppost) as Lamppost from t_equipmentS where  @CONDITION group by time order by time desc" var="sbrs">
                 <xflt id="CONDITION" nrp="" tpl="@comaddr AND @star AND @end AND @pid">
                     <xfltpara id="comaddr" nrp="1=1" para="comaddr" sql="comaddr = ':comaddr'"> 
                     </xfltpara> 
@@ -246,6 +246,7 @@
                     </xfltpara>          
                 </xflt>
             </xsql>
+            
         </xhandle> 
         
         <xhandle desc="按月查询数据" id="getmother" rtnype="JSON">
@@ -261,13 +262,25 @@
                     </xfltpara>          
                 </xflt>
             </xsql>                                         
-            <xsql id="a2" list="true" page="true" tpe="SQL" tpl="select  CONVERT(varchar(7), time, 120) as time,avg(lampsum) as lampsum,avg(bugsum) as bugsum,avg(Lamppost) as Lamppost  from t_equipmentS where @CONDITION group by CONVERT(varchar(7), time, 120)  order by CONVERT(varchar(7), time, 120) desc" var="ysbrs">
+            <xsql id="a2" list="true" page="true" tpe="SQL" tpl="select  CONVERT(varchar(7), time, 120) as time,sum(lampsum) as lampsum,sum(bugsum) as bugsum,sum(Lamppost) as Lamppost  from t_equipmentS where @CONDITION group by CONVERT(varchar(7), time, 120)  order by CONVERT(varchar(7), time, 120) desc" var="ysbrs">
                 <xflt id="CONDITION" nrp="" tpl="@comaddr AND @star AND @end AND @pid">
                     <xfltpara id="comaddr" nrp="1=1" para="comaddr" sql="comaddr = ':comaddr'"> 
                     </xfltpara> 
-                    <xfltpara id="star" nrp="1=1" para="star" sql="CONVERT(varchar(7), day, 120) &gt;= ':star'"> 
+                    <xfltpara id="star" nrp="1=1" para="star" sql="CONVERT(varchar(7), time, 120) &gt;= ':star'"> 
                     </xfltpara> 
-                    <xfltpara id="end" nrp="1=1" para="end" sql="CONVERT(varchar(7), day, 120) &lt;= ':end'"> 
+                    <xfltpara id="end" nrp="1=1" para="end" sql="CONVERT(varchar(7), time, 120) &lt;= ':end'"> 
+                    </xfltpara> 
+                    <xfltpara id="pid" nrp="1=1" para="pid" sql="comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE  pid = ':pid')">
+                    </xfltpara>          
+                </xflt>
+            </xsql>
+            <xsql id="a3" list="true" page="true" tpe="SQL" tpl="select CONVERT(varchar(7), time, 120) as times, count(distinct time) as days  from t_equipmentS where @CONDITION group by CONVERT(varchar(7), time, 120)" var="daysrs">
+                <xflt id="CONDITION" nrp="" tpl="@comaddr AND @star AND @end AND @pid">
+                    <xfltpara id="comaddr" nrp="1=1" para="comaddr" sql="comaddr = ':comaddr'"> 
+                    </xfltpara> 
+                    <xfltpara id="star" nrp="1=1" para="star" sql="CONVERT(varchar(7), time, 120) &gt;= ':star'"> 
+                    </xfltpara> 
+                    <xfltpara id="end" nrp="1=1" para="end" sql="CONVERT(varchar(7), time, 120) &lt;= ':end'"> 
                     </xfltpara> 
                     <xfltpara id="pid" nrp="1=1" para="pid" sql="comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE  pid = ':pid')">
                     </xfltpara>          
@@ -288,7 +301,19 @@
                     </xfltpara>          
                 </xflt>
             </xsql>
-            <xsql id="a2" list="true" page="true" tpe="SQL" tpl="select datename(yyyy,time) as time,avg(lampsum) as lampsum,avg(bugsum) as bugsum,avg(Lamppost) as Lamppost from t_equipmentS where @CONDITION  group by datename(yyyy,time)  order by datename(yyyy,time) desc" var="nsbrs">
+            <xsql id="a2" list="true" page="true" tpe="SQL" tpl="select datename(yyyy,time) as time,sum(lampsum) as lampsum,sum(bugsum) as bugsum,sum(Lamppost) as Lamppost from t_equipmentS where @CONDITION  group by datename(yyyy,time)  order by datename(yyyy,time) desc" var="nsbrs">
+                <xflt id="CONDITION" nrp="" tpl="@comaddr AND @star AND @end AND @pid">
+                    <xfltpara id="comaddr" nrp="1=1" para="comaddr" sql="comaddr = ':comaddr'"> 
+                    </xfltpara> 
+                    <xfltpara id="star" nrp="1=1" para="star" sql="datename(yyyy,time) &gt;= ':star'"> 
+                    </xfltpara> 
+                    <xfltpara id="end" nrp="1=1" para="end" sql="datename(yyyy,time) &lt;= ':end'"> 
+                    </xfltpara> 
+                    <xfltpara id="pid" nrp="1=1" para="pid" sql="comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE  pid = ':pid')">
+                    </xfltpara>          
+                </xflt>
+            </xsql>
+           <xsql id="a3" list="true" page="true" tpe="SQL" tpl="select datename(yyyy,time) as times, count(distinct time) as days  from t_equipmentS where @CONDITION group by datename(yyyy,time)" var="daysrs">
                 <xflt id="CONDITION" nrp="" tpl="@comaddr AND @star AND @end AND @pid">
                     <xfltpara id="comaddr" nrp="1=1" para="comaddr" sql="comaddr = ':comaddr'"> 
                     </xfltpara> 
@@ -802,6 +827,17 @@
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_lamp where @CONDITION " var="rs">
                 <xflt id="CONDITION" nrp="" tpl="@pid">
                    <xfltpara id="pid" nrp="1=2" para="pid" sql="l_comaddr IN (SELECT comaddr AS l_comaddr FROM t_baseinfo   WHERE  pid = ':pid')">
+                    </xfltpara>               
+                </xflt>
+            </xsql> 
+        </xhandle>   
+    </xform>
+    
+     <xform desc="集控器参数设置" id="set">
+        <xhandle desc="是否离线异常" id="readTrueTime" rtn="rs" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_baseinfo where @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@comaddr">
+                   <xfltpara id="comaddr" nrp="1=2" para="comaddr" sql="comaddr=':comaddr'">
                     </xfltpara>               
                 </xflt>
             </xsql> 

@@ -373,7 +373,7 @@
                 if ((${ybsdj[0].num-djgzs[0].num} - djlxs) <= 0) {
                     $("#ldl").html("0%");
                 } else {
-                    var ldl = ((${ybsdj[0].num} - djlxs-gzdj) /${ybsdj[0].num}) * 100;
+                    var ldl = ((${ybsdj[0].num}-gzdj) /${ybsdj[0].num}) * 100;
                     $("#ldl").html(ldl.toFixed(2) + "%");
                 }
                 //计划能耗
@@ -1057,7 +1057,7 @@
                     <span class="redius" style="background:#fdd237;">
                         <img src="img/dp.png"></span>
                     <div class="Mess lightingRate">
-                        <span id="ldl">100%</span>
+                        <span id="ldl">0.00%</span>
                         <span name="xxx" id="6"> 亮灯率</span>
                     </div>
                 </div>
