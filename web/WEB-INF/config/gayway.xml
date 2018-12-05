@@ -68,6 +68,14 @@
                 </xflt>
             </xsql>
         </xhandle>
+        <xhandle desc="" id="modifyMutilpower" rtn="rs" rtnype="JSON">
+            <xsql id="a1" para="multpower" tpe="DDL" tpl="update t_baseinfo set multpower=:multpower where @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@comaddr">
+                    <xfltpara id="comaddr" nrp="1=2" para="comaddr" sql="comaddr=':comaddr'">
+                    </xfltpara>
+                </xflt>
+            </xsql>
+        </xhandle>
         <xhandle desc="" id="deleteGateway" rtn="rs" rtnype="JSON">
             <xsql id="a1" tpe="DDL" tpl="delete from t_baseinfo where @CONDITION " var="rs">
                 <xflt id="CONDITION" tpl="@ID ">

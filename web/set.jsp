@@ -32,6 +32,19 @@
             function setPowerCB(obj) {
                 if (obj.status == "success") {
                     layerAler(langs1[377][lang]);   //设置成功
+                    var oo = {comaddr: obj.comaddr, multpower: obj.val};
+
+                    $.ajax({async: false, url: "gayway.GaywayForm.modifyMutilpower.action", type: "get", datatype: "JSON", data: oo,
+                        success: function (data) {
+                        },
+                        error: function () {
+                            alert("提交失败！");
+                        }
+                    });
+
+
+
+
                 }
             }
             function setPower() {
@@ -91,7 +104,7 @@
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xFF, num, 0, 8, vv); //01 03 F24   
 
-                dealsend2("FF", data, 8, "setPowerCB", comaddr, 0, 0, 0, 0);
+                dealsend2("FF", data, 8, "setPowerCB", comaddr, 0, 0, 0, obj.power);
 
 
             }
@@ -173,10 +186,20 @@
                         $("#powerfactor").val(powerfactor);
                         //电流互感变比
                         z = z + 2;
-                        var power = sprintf("%02x", data[z]);
+                        var power = sprintf("%02d", data[z]);
                         $("#power").val(power);
                         var vv1 = data[z];
                         console.log('变比:', vv1);
+                        var oo = {comaddr: obj.comaddr, multpower: power};
+
+                        $.ajax({async: false, url: "gayway.GaywayForm.modifyMutilpower.action", type: "get", datatype: "JSON", data: oo,
+                            success: function (data) {
+
+                            },
+                            error: function () {
+                                alert("提交失败！");
+                            }
+                        });
                     }
                 }
 
@@ -1683,47 +1706,54 @@
                                 <table style="border-collapse:separate; border-spacing:0px 10px;border: 1px solid #16645629;">
                                     <tbody>
                                         <tr>
-                                            <td>
-                                                <span style=" float: right; " name="xxx" id="421">电压超限值</span>&nbsp;
-                                            </td>
-                                            <td>
-                                                <input id="voltage" name="voltage"  value="" style="width:80px;" placeholder="电压超限值" type="text">
-                                            </td>
-                                            <td style=" padding-left: 10px;">
-                                                <span style="float: right; " name="xxx" id="422">电流超限值</span>&nbsp;
-                                            </td>
-                                            <td>
-                                                <input id="electric" name="electric"  value="" style="width:80px;" placeholder="电流超限值" type="text"> &nbsp;
-                                            </td>
-                                            <td style=" padding-left: 5px;">
-                                                <span style="float: right; " name="xxx" id="424">功率因数</span>&nbsp;
-                                            </td>
-                                            <td>
-                                                <input id="powerfactor" name="powerfactor"  value="" style="width:80px;" placeholder="功率因数限值" type="text">
-                                            </td>
+                                    <input type="hidden" id="voltage" value="260.0" name="voltage" />
+                                    <input type="hidden" id="electric" value="100.000" name="electric" />
+                                    <input type="hidden" id="powerfactor"  value="1.000" name="powerfactor" />
 
-                                            <td style=" padding-left: 10px;">
-                                                <span style="float: right; " name="xxx" id="423">互感器变比</span>&nbsp;
-                                            </td>
-                                            <td>
-                                                <input id="power" name="power"  value="" style="width:80px;" placeholder="互感器变比" type="text"> &nbsp;
-                                            </td>
-                                            <td colspan="2" style=" padding-left: 5px;">       
-                                                <button  type="button" onclick="readpower()" class="btn btn-success btn-sm"><span id="205" name="xxx">读取</span></button>&nbsp;
+                                    <!--                                             <input  tyipe="hidden" id="voltage" name="voltage"  value="260.0" type="text">
+                                                                                  <input  tyipe="hidden" id="electric" name="electric"  value="100.000" type="text">
+                                                                                   <input  tyipe="hidden" id="powerfactor" name="powerfactor"  value="1.000" type="text">-->
+                                    <!--                                            <td>
+                                                                                    <span style=" float: right; " name="xxx" id="421">电压超限值</span>&nbsp;
+                                                                                </td>
+                                                                                <td>
+                                                                                    <input id="voltage" name="voltage"  value="" style="width:80px;" placeholder="电压超限值" type="text">
+                                                                                </td>
+                                                                                <td style=" padding-left: 10px;">
+                                                                                    <span style="float: right; " name="xxx" id="422">电流超限值</span>&nbsp;
+                                                                                </td>
+                                                                                <td>
+                                                                                    <input id="electric" name="electric"  value="" style="width:80px;" placeholder="电流超限值" type="text"> &nbsp;
+                                                                                </td>
+                                                                                <td style=" padding-left: 5px;">
+                                                                                    <span style="float: right; " name="xxx" id="424">功率因数</span>&nbsp;
+                                                                                </td>
+                                                                                <td>
+                                                                                    <input id="powerfactor" name="powerfactor"  value="" style="width:80px;" placeholder="功率因数限值" type="text">
+                                                                                </td>-->
+
+                                    <td style=" padding-left: 10px;">
+                                        <span style="float: right; " name="xxx" id="423">互感器变比</span>&nbsp;
+                                    </td>
+                                    <td>
+                                        <input id="power" name="power"  value="" style="width:80px;" placeholder="互感器变比" type="text"> &nbsp;
+                                    </td>
+                                    <td colspan="2" style=" padding-left: 5px;">       
+                                        <button  type="button" onclick="readpower()" class="btn btn-success btn-sm"><span id="205" name="xxx">读取</span></button>&nbsp;
 
 
-                                            </td>
-                                            <td colspan="2" style=" padding-left: 5px;">    
-                                                <button  type="button" onclick="setPower()" class="btn btn-success btn-sm"><span id="49" name="xxx">设置</span></button>&nbsp;
-                                            </td>
-                                        </tr>
-                                        <tr>
+                                    </td>
+                                    <td colspan="2" style=" padding-left: 5px;">    
+                                        <button  type="button" onclick="setPower()" class="btn btn-success btn-sm"><span id="49" name="xxx">设置</span></button>&nbsp;
+                                    </td>
+                                    </tr>
+                                    <tr>
 
 
-                                        </tr>
-                                        <tr>
+                                    </tr>
+                                    <tr>
 
-                                        </tr>
+                                    </tr>
                                     </tbody>
                                 </table>
 
