@@ -255,7 +255,7 @@
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
-                                return  value / row.days;
+                                return  (value / row.days).toFixed(1);
                             }
                         }, {
                             field: 'bugsum',
@@ -264,7 +264,7 @@
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
-                                return  value / row.days;
+                               return  (value / row.days).toFixed(1);
                             }
                         },
                         {
@@ -274,7 +274,7 @@
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
-                                return  value / row.days;
+                               return  (value / row.days).toFixed(1);
                             }
                         },
                         {
@@ -373,7 +373,7 @@
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
-                                return  value / row.days;
+                                return  (value / row.days).toFixed(1);
                             }
                         }, {
                             field: 'bugsum',
@@ -382,7 +382,7 @@
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
-                                return  value / row.days;
+                                return  (value / row.days).toFixed(1);
                             }
                         },
                         {
@@ -392,7 +392,7 @@
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
-                                return  value / row.days;
+                                return  (value / row.days).toFixed(1);
                             }
                         },
                         {
@@ -669,7 +669,7 @@
                                 </td>
                                 <td id="g1"  style=" display: none">
 
-                                    <span style="margin-left:10px;" name="xxx" id="25">网关地址</span>&nbsp;
+                                    <span style="margin-left:10px;" name="xxx" id="50">集控器</span>&nbsp;
 
                                     <span class="menuBox">
                                         <input id="comaddr" class="easyui-combobox" name="comaddr" style="width:150px; height: 30px" 

@@ -385,7 +385,7 @@
                     display: none;
                 }
             }
-            
+
             @media screen and (min-width:0px) and (max-width:450px){
                 .logo-animate{
                     top:30%;
@@ -461,11 +461,11 @@
                 #large-header{
                     display: none;
                 }
-              
+
             }
-            
+
             @media screen and (min-width:736px) and (max-width:1024px){  
-                
+
                 .logo-animate{
                     top:30%;
                 }
@@ -492,7 +492,7 @@
                     -moz-border-radius:15px; 
                     -ms-border-radius:15px;  
                     -o-border-radius:15px;
-/*                    background:rgba(2,8,25,0.49);                  */
+                    /*                    background:rgba(2,8,25,0.49);                  */
                     /*                    margin: 50px auto 0 auto;*/
                     margin-left: 30%;
                     margin-top: 30%;
@@ -541,7 +541,7 @@
                     display: none;
                 }
             } 
-            
+
             ul li:hover {color: #FC3;};	
         </style>
 
@@ -576,6 +576,7 @@
                     offset: 'center'
                 });
             }
+
             $(function () {
                 //获取cookie的值
                 var username = getCookieValue("username");
@@ -591,7 +592,7 @@
                 }
                 //登陆
                 $("#login").click(function () {
-                    
+
                     var pass = $("#password").val();
                     var name = $("#username").val();
                     var password = hex_md5(pass);
@@ -700,14 +701,15 @@
                     $("#top").html("высадка на счет счета");
                     setCookie("lang", "e_BY");
                 });
-                
-                
-                $("#changeLanguage").mousemove(function (){
+
+
+                $("#changeLanguage").mousemove(function () {
                     $("#languages").show();
                 });
-                $("#changeLanguage").mouseout(function (){
+                $("#changeLanguage").mouseout(function () {
                     $("#languages").hide();
                 });
+                $("#username").focus();
 
             });
             //回车登录
@@ -724,7 +726,7 @@
         <div id="large-header" class="large-header" style="height: 914px;">
             <canvas id="demo-canvas" width="1398" height="914"></canvas>
         </div>
-<!--        <img src="./img/hm2.jpg" style="position:absolute;top:0;left:0;z-index:-1;width:100%;height:100%;">-->
+        <!--        <img src="./img/hm2.jpg" style="position:absolute;top:0;left:0;z-index:-1;width:100%;height:100%;">-->
         <div class="changeLanguage" id="changeLanguage">
             <!--            <div language="zh_CN" class="Zh" id="chinese">中文</div>
                         <div class="line">|</div>

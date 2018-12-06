@@ -579,10 +579,21 @@
 
                                         var h2 = parseInt(min2 / 60);
                                         var m2 = min2 % 60;
-
+                                        if(h1<10){
+                                            h1 = "0"+h1;
+                                        }
+                                        if(m1<10){
+                                            m1 = "0"+m1;
+                                        }
+                                        if(h2<10){
+                                            h2 = "0"+h2;
+                                        }
+                                        if(m2<10){
+                                            m2 = "0"+m2;
+                                        }
                                         var outtime = h1.toString() + ":" + m1.toString();
                                         var intime = h2.toString() + ":" + m2.toString();
-
+                                        
 
                                         $("#headtime").html(langs1[428][lang] + ":" + intime + "&nbsp;" + langs1[429][lang] + ":" + outtime);
                                     },

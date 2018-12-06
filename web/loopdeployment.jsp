@@ -640,7 +640,7 @@
                     }, onLoadSuccess: function (data) {
                         if (Array.isArray(data) && data.length > 0) {
                             for (var i = 0; i < data.length; i++) {
-                                data[i].text = data[i].id;
+                                data[i].text = data[i].name;
                             }
 
                             $(this).combobox('select', data[0].id);
@@ -718,7 +718,7 @@
                     <table style="border-collapse:separate;  border-spacing:0px 10px;border: 1px solid #16645629;">
                         <tbody>
                             <tr>
-                                <td> <span style="margin-left:40px;" name="xxx" id="25">网关地址</span>&nbsp;</td>
+                                <td> <span style="margin-left:40px;" name="xxx" id="50">集控器</span>&nbsp;</td>
                                 <td>        <input id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 
                                                    data-options='editable:false,valueField:"id", textField:"text" ' /></td>
                                 <td>

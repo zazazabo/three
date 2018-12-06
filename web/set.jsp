@@ -1586,7 +1586,7 @@
                                         <tr>
 
                                             <td>
-                                                <span style="margin-left:10px;" name="xxx" id="25">网关地址</span>&nbsp;
+                                                <span style="margin-left:10px;" name="xxx" id="50">集控器</span>&nbsp;
 
                                                 <span class="menuBox">
                                                     <input id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 

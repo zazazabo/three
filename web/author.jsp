@@ -220,37 +220,36 @@
 
 
             function addauthor() {
-                var zTreeOjb = $.fn.zTree.getZTreeObj("treeDemo");
-                var nodes = zTreeOjb.getCheckedNodes();
+               var zTreeOjb = $.fn.zTree.getZTreeObj("treeDemo");
+                var pnode = zTreeOjb.getNodes(); //可以获取所有的父节点
+                var allnodes = zTreeOjb.transformToArray(pnode);  //获取所有节点
+               // var nodes = zTreeOjb.getCheckedNodes();
                 var roletype = $("#role").combobox('getValue');
                 var name = $("#role").combobox('getText');
-
                 if ($("#role").val() == "") {
                     layerAler(langs1[239][lang]);   //请选择要分配权限的角色
                     return;
                 }
-                if (nodes.length == 0) {
-                    layerAler(langs1[240][lang]);  //请勾选菜单列表
-                    return;
-                }
-
-                //console.log(nodes);
+//                if (nodes.length == 0) {
+//                    layerAler(langs1[240][lang]);  //请勾选菜单列表
+//                    return;
+//                }
                 layer.confirm(langs1[241][lang], {//确认要分配权限吗？
                     btn: [langs1[146][lang], langs1[147][lang]]//确定、取消按钮
                 }, function (index) {
 
-                    addlogon(u_name, "分配权限权限", o_pid, "角色权限管理", "分配权限");
-                    for (var i = 0; i < nodes.length; i++) {
-                        if (nodes[i].id == "0") {
+                    addlogon(u_name, "分配权限权限", o_pid, "角色权限管理", "修改权限");
+                    var obj1 = {};
+                    obj1.name = name;
+                    obj1.roletype = roletype;
+                    for (var i = 0; i < allnodes.length; i++) {
+                        obj1.code = allnodes[i].id;
+                         if (allnodes[i].id == "0") {
                             continue;
                         }
-                        var obj1 = {};
-                        obj1.enable = 1;
-                        obj1.name = name;
-                        obj1.code = nodes[i].id;
-                        obj1.roletype = roletype;
-                        //console.log(obj1);
-                        $.ajax({async: false, url: "login.rolemanage.getpower.action", type: "POST", datatype: "JSON", data: obj1,
+                        if (allnodes[i].checked == true) {
+                            obj1.enable = 1;
+                             $.ajax({async: false, url: "login.rolemanage.getpower.action", type: "POST", datatype: "JSON", data: obj1,
                             success: function (data) {
                                 //console.log(data);
                             },
@@ -258,6 +257,18 @@
                                 alert("提交失败！");
                             }
                         });
+                        } else {
+                            obj1.enable = 0;
+                             $.ajax({async: false, url: "login.rolemanage.getpower.action", type: "POST", datatype: "JSON", data: obj1,
+                            success: function (data) {
+                                //console.log(data);
+                            },
+                            error: function () {
+                                alert("提交失败！");
+                            }
+                        });
+                        }
+
                     }
                     layerAler(langs1[242][lang]);  //权限分配成功！
                     layer.close(index);
@@ -337,7 +348,7 @@
                 });
                 var setting = {
                     callback: {
-                        onRightClick: OnRightClick
+                      //  onRightClick: OnRightClick
                     },
                     check: {
                         enable: true
@@ -434,7 +445,7 @@
                         <div class="" style=" width: 50%; margin-left: 5%; float: left; margin-top: 2%;">
                             <div id="btnauthor" style=" display: none;" >
 
-                                <button class="btn btn-success" onclick="addauthor()" style=" margin-left: 30%;"><span name="xxx" id="244">分配权限</span></button>
+                                <button class="btn btn-success" onclick="addauthor()" style=" margin-left: 30%;"><span name="xxx" id="244">修改权限</span></button>
 
                             </div>
                             <div style=" margin-top: 3%;">

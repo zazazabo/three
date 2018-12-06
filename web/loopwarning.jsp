@@ -182,7 +182,7 @@
                                     <tr>
 
                                         <td>
-                                            <span style="margin-left:10px;"><span id="25" name="xxx">网关地址</span>&nbsp;</span>
+                                            <span style="margin-left:10px;"><span id="50" name="xxx">集控器</span>&nbsp;</span>
                                             <span class="menuBox">
                                                 <input id="l_comaddr" class="easyui-combobox" name="l_comaddr" style="width:150px; height: 30px" 
                                                        data-options="editable:true,valueField:'id', textField:'text' " />

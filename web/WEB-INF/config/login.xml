@@ -329,6 +329,14 @@
     </xform>
     
     <xform desc="用户管理" id="usermanage">
+        <xhandle desc="修改用户基本信息" id="editUinfo" rtn="rs" rtnype="JSON">
+            <xsql id="a1" para="department,email,phone" tpe="DDL" tpl="update t_user set department=':department',email=':email',phone=':phone' where @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@name ">
+                    <xfltpara id="name" nrp="1=2" para="name" sql="name=':name'">
+                    </xfltpara>
+                </xflt>
+            </xsql>
+        </xhandle>
         <xhandle desc="查看用户名是否存在" id="isusername" rtnype="JSON">
             <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select name from t_user where @CONDITION " var="rs">
                 <xflt id="CONDITION" nrp="" tpl="@name">

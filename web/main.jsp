@@ -24,6 +24,11 @@
             .menuMessage{
                 padding-left: 5px;
             }
+             table td { line-height: 40px; } 
+            .menuBox { position: relative; background: skyblue; } 
+            .a-upload { padding: 4px 10px; height: 30px; line-height: 20px; position: relative; cursor: pointer; color: #888; background: #fafafa; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; display: inline-block; *display: inline; *zoom: 1 } 
+            .a-upload input { position: absolute; font-size: 100px; right: 0; top: 0; opacity: 0; filter: alpha(opacity = 0); cursor: pointer } 
+            .a-upload:hover { color: #444; background: #eee; border-color: #ccc; text-decoration: none } 
         </style>
         <script>
 
@@ -352,6 +357,34 @@
 
 
             }
+            
+             //弹出修改个人信息框
+            function  updshow() {
+                $("#uname").val($("#u_name").val());
+                $("#email").val($("#e1").text());
+                $("#phone").val($("#p1").text());
+                $("#department").val($("#d1").text());
+                $('#updinfo').modal("show");
+            }
+            //修改个人信息
+            function updateinfo() {
+                var obj = {};
+                 obj.type = "ALL";
+                obj.name = encodeURI($("#uname").val());
+                obj.email = $("#email").val();
+                obj.phone = $("#phone").val();
+                obj.department = $("#department").val();
+                $.ajax({async: false, url: "login.usermanage.editUinfo.action", type: "get", datatype: "JSON", data: obj,
+                    success: function (data) {
+                        var arrlist = data.rs;
+                        if (arrlist.length > 0) {
+                            layerAler("修改成功！");
+                            $('#updinfo').modal("hide");
+                        }
+                    }
+                });
+
+            }
 
             //修改密码
             function  updatepwd() {
@@ -646,6 +679,13 @@
                     lang = "zh_CN";
                     changeLanguage(lang);
                 }
+                if(lang=="zh_CN"){
+                    $("#langtext").html(":中文");
+                }else if(lang=="en_US"){
+                    $("#langtext").html(":English");
+                }else{
+                    $("#langtext").html(":Русский");
+                }
             <c:forEach items="${lans}" var="t" varStatus="i">
                 var id =${t.id};
                 var zh_CN1 = "${empty t.zh_CN?"":t.zh_CN}";
@@ -754,23 +794,22 @@
 
                             </select>
                         </li>
-                        <li class="one imgM" id ="imgM" onclick="imgM()" title="告警信息">
+                        <li class="one imgM" id ="imgM" onclick="imgM()" title="告警信息"  style=" margin-right: 10px;">
                             <img src="img/xx.png" class="alarmLi" style="">
                             <div class="alarmNub alarmLi" id="alarmNumber" style=" width: 25px; height: 25px; font-size: 16px;">0</div>
                         </li>
 
-                        <li class="one" style="width:85px;">
+                        <li class="one" >
 
                             <!-- <i class="layui-icon  indexIcon"></i>   -->
                             <!--                            <span class="glyphicon glyphicon-tags indexIcon"/>-->
-                            <span class="Till" style="width: 74px; text-align: center; color: rgb(255, 255, 255);" name="xxx" id="2">语言</span>
+                            <span class="Till" style=" text-align: center; color: rgb(255, 255, 255);" name="xxx" id="2">语言</span>
+                            <span id="langtext">:中文</span>
 
 
 
-                            <ul class="two animated fadeInDown language" style="background: rgb(57, 61, 73) none repeat scroll 0% 0%; color: rgb(255, 255, 255);">
-                                <!--                                <li language="zh_CN"><label name="xxx" id="268">中文</label></li>
-                                                                <li language="en_US"><label name="xxx" id="269">英文</label></li>
-                                                                <li language="e_BY"><label  name="xxx" id="270">俄文</label></li>-->
+                            <ul class="two animated fadeInDown language" style="background: rgb(92, 183, 92) none repeat scroll 0% 0%; color: rgb(255, 255, 255); width: 130px;">
+             
                                 <li language="zh_CN">中文</li>
                                 <li language="en_US">English</li>
                                 <li language="e_BY">Русский</li>
@@ -780,15 +819,31 @@
                             <!--  <i class="layui-icon indexIcon"></i>  -->
                             <!--<span class="glyphicon glyphicon-user"></span>-->
                             <span class="Till" style=" padding-left: 24px; box-sizing: border-box; color: rgb(255, 255, 255);">
-                                <span id="u_name" class="admin" style="color: rgb(255, 255, 255);">${rs[0].name}</span>
+                                <span  class="admin" style="color: rgb(255, 255, 255);"><img src="./img/user.jpg" style=" height: 40px; width: 40px;vertical-align: middle; border-radius: 16px;"></span>
                                 <input id="m_code" type="hidden" value="${rs[0].m_code}"/>
                                 <input id="pwd" type="hidden" value="${rs[0].password}"/>
                                 <input id="userid" type="hidden" value="${rs[0].id}"/>
                                 <input id="upid" type="hidden" value="${rs[0].pid}"/>
+                                <input id ="u_name" type="hidden" value="${rs[0].name}"/>
                             </span>
-                            <ul class="two animated fadeInDown twoL" style="background: rgb(57, 61, 73) none repeat scroll 0% 0%; color: rgb(255, 255, 255);">
-                                <li id="out" onclick="getout()"><label name="xxx" id="3">退出</label></li>
-                                <li data-toggle="modal" data-target="#updpwdDiv" ><label name="xxx" id="4">修改密码</label></li>
+                            <ul class="two animated fadeInDown twoL" style="background:rgb(92, 183, 92) none repeat scroll 0% 0%; color: rgb(255, 255, 255); width: 230px; margin-top:0px;">
+                                <li style=" height: 40px;"><img src="./img/user.jpg" style=" height: 25px; width: 25px;vertical-align: middle; border-radius: 16px;"><span style=" margin-left: 20px;">${rs[0].name}</span></li>
+                                <li style=" height: 40px;">
+                                    <span>邮箱：</span><span style=" margin-left: 20px;" id="e1">${rs[0].email}</span>
+                                </li>
+                                <li style=" height: 40px;">
+                                    <span>电话：</span><span style=" margin-left: 20px;" id="p1">${rs[0].phone}</span>
+                                </li>
+                                <li style=" height: 40px;">
+                                    <span>部门：</span><span style=" margin-left: 20px;" id="d1">${rs[0].department}</span>
+                                </li>
+                                <li style=" height: 40px;" data-toggle="modal" data-target="#updpwdDiv">
+                                    <span>修改密码</span>
+                                </li>
+                                <li style=" height: 40px;" onclick="updshow()" >
+                                    <span>修改个人信息</span>
+                                </li>
+                                <li onclick="getout()">退出</li>
                             </ul>
                         </li>
                     </ul> 
@@ -835,6 +890,56 @@
                     <div class="modal-footer" id="modal_footer_edit" >
                         <!-- 添加按钮 -->
                         <button id="xiugai" type="button" onclick="updatepwd()" class="btn btn-primary"><label name="xxx" id="151">修改</label></button>
+                        <!-- 关闭按钮 -->
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><label name="xxx" id="57">关闭</label></button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+                   
+        <div class="modal" id="updinfo" data-backdrop="static">
+            <div class="modal-dialog">
+                <div class="modal-content" style="min-width:700px;">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span style="font-size:20px ">×</span></button>
+                        <span class="glyphicon glyphicon-floppy-disk" style="font-size: 20px"></span>
+                        <h4 class="modal-title" style="display: inline;"><label>修改个人信息</label></h4></div>    
+                    <div class="modal-body">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <span style="margin-left:35px;"><label>用户名</label>：</span>&nbsp;
+                                        <input id="uname" class="form-control" style="width:150px;display: inline;" readonly="true"  type="text">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span style="margin-left:48px;"><label>邮箱</label>：</span>&nbsp;
+                                        <input id="email" class="form-control" style="width:150px;display: inline;" placeholder="请输入邮箱" type="text">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span style="margin-left:48px;"><label>电话</label>：</span>&nbsp;
+                                        <input id="phone" class="form-control" style="width:150px;display: inline;" placeholder="请输入联系方式" type="text">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span style="margin-left:48px;"><label>部门</label>：</span>&nbsp;
+                                        <input id="department" class="form-control" style="width:150px;display: inline;" placeholder="请输入部门" type="text">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- 注脚 -->
+                    <div class="modal-footer" id="modal_footer_edit" >
+                        <!-- 添加按钮 -->
+                        <button id="xiugai" type="button" onclick="updateinfo()" class="btn btn-primary"><label name="xxx" id="151">修改</label></button>
                         <!-- 关闭按钮 -->
                         <button type="button" class="btn btn-default" data-dismiss="modal"><label name="xxx" id="57">关闭</label></button>
                     </div>
@@ -1032,6 +1137,7 @@
                         var e = $(d).attr("id");
                         $(d).html(o[e][language]);
                     }
+                    $("#langtext").html(":中文");
                     lang = getCookie("lang");
                 });
                 $(".language li:eq(1)").click(function () {
@@ -1045,6 +1151,7 @@
                         var e = $(d).attr("id");
                         $(d).html(o[e][language]);
                     }
+                    $("#langtext").html(":English");
                     lang = getCookie("lang");
                 });
                 $(".language li:eq(2)").click(function () {
@@ -1058,6 +1165,7 @@
                         var e = $(d).attr("id");
                         $(d).html(o[e][language]);
                     }
+                    $("#langtext").html(":Русский");
                     lang = getCookie("lang");
                 });
 
