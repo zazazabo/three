@@ -170,7 +170,7 @@
             };
 
             var websocket = null;
-            var conectstr = "ws://103.46.128.43:56130/";
+            var conectstr = "ws://47.99.78.186:24228/";
             var timestamp = 0;
             function sendData(obj) {
 

@@ -367,13 +367,13 @@
                 $("#lonlin").html(langs1[284][lang] + ":" + djzxs);//灯具在线数
                 $("#llin").html(langs1[285][lang] + ":" + djlxs);  //灯具离线
                 $("#lyc").html(langs1[286][lang] + ":" + gzdj);  //异常灯具
-                if(gzdj>0){
-                   $("#lyc").css("color","red");
+                if (gzdj > 0) {
+                    $("#lyc").css("color", "red");
                 }
                 if ((${ybsdj[0].num-djgzs[0].num} - djlxs) <= 0) {
                     $("#ldl").html("0%");
                 } else {
-                    var ldl = ((${ybsdj[0].num}-gzdj) /${ybsdj[0].num}) * 100;
+                    var ldl = ((${ybsdj[0].num} - gzdj) /${ybsdj[0].num}) * 100;
                     $("#ldl").html(ldl.toFixed(2) + "%");
                 }
                 //计划能耗
@@ -549,29 +549,52 @@
                         if (rs.length > 0) {
                             var info = rs[0];
                             var worktype = info.l_worktype;
+
                             if (worktype == 0) {   //时间表
                                 $("#headtime").html(langs1[428][lang] + ":" + info.l_outtime + "&nbsp;" + langs1[429][lang] + ":" + info.l_intime);
                             } else if (worktype == 1) {  //经纬度
                                 var o1 = {jd: info.longitude, wd: info.latitude};
-
-                                console.log(o1);
+                                var outoffset = parseInt(info.outoffset);
+                                console.log(outoffset);
+                                var inoffset = parseInt(info.inoffset);
+                                console.log(inoffset);
                                 if (o1.jd == "" || o1.wd == "" || o1.jd == null || o1.wd == null) {
                                     return;
                                 }
                                 $.ajax({async: false, url: "login.rc.r.action", type: "get", datatype: "JSON", data: o1,
                                     success: function (data) {
                                         var list = data.cl[0];
-                                        $("#headtime").html(langs1[428][lang] + ":" + list.rl + "&nbsp;" + langs1[429][lang] + ":" + list.rc);
+                                        var rcarr = list.rc.split(":");
+                                        console.log(rcarr);
+                                        //var min1 = rcarr[0] * 60 + rcarr[1] + outoffset;
+                                        var min1 = parseInt(rcarr[0]) * 60 + parseInt(rcarr[1]) + outoffset;
+
+                                        var h1 = parseInt(min1 / 60);
+                                        var m1 = min1 % 60;
+
+
+                                        var rlarr = list.rl.split(":");
+                                        console.log(rlarr);
+                                        var min2 = parseInt(rlarr[0]) * 60 + parseInt(rlarr[1]) + inoffset;
+
+                                        var h2 = parseInt(min2 / 60);
+                                        var m2 = min2 % 60;
+
+                                        var outtime = h1.toString() + ":" + m1.toString();
+                                        var intime = h2.toString() + ":" + m2.toString();
+
+
+                                        $("#headtime").html(langs1[428][lang] + ":" + intime + "&nbsp;" + langs1[429][lang] + ":" + outtime);
                                     },
                                     error: function () {
-                                      //  alert("提交失败！2");
+                                        //  alert("提交失败！2");
                                     }
                                 });
                             }
                         }
                     },
                     error: function () {
-                      //  alert("提交失败！3");
+                        //  alert("提交失败！3");
                     }
                 });
             }
@@ -614,18 +637,18 @@
                                         var temp = attr.replace("*", "");
                                         var p = (o[temp] * 1000).toFixed(2);
                                         $(str).val(p);
-                                    }else if(attr.charAt(attr.length - 1) == "#"){
+                                    } else if (attr.charAt(attr.length - 1) == "#") {
                                         //计算有功功率和无功功率
                                         var multpower = rs[0].multpower;
-                                        if(multpower =="" || multpower == null || multpower ==0){
+                                        if (multpower == "" || multpower == null || multpower == 0) {
                                             multpower = 1;
                                         }
                                         var temp = attr.replace("#", "");
                                         var p = (o[temp] * 1000 * multpower).toFixed(2);
                                         $(str).val(p);
-                                    }else if(attr.charAt(attr.length - 1) == "@"){
+                                    } else if (attr.charAt(attr.length - 1) == "@") {
                                         var multpower = rs[0].multpower;
-                                        if(multpower =="" || multpower == null || multpower ==0){
+                                        if (multpower == "" || multpower == null || multpower == 0) {
                                             multpower = 1;
                                         }
                                         var temp = attr.replace("@", "");

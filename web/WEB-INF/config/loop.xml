@@ -27,7 +27,7 @@
         </xhandle>
         
         <xhandle desc="获取第一个已经部署回路的工作方式" id="getloopway" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_loop where l_deplayment=1 and l_flag=1 and @CONDITION" var="rs">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_loop tl,t_baseinfo AS tb WHERE tl.l_comaddr=tb.comaddr AND  tl.l_deplayment=1 and l_flag=1 and @CONDITION" var="rs">
                 <xflt id="CONDITION" nrp="" tpl="@l_comaddr">
                     <xfltpara id="l_comaddr" nrp="1=2" para="l_comaddr" sql="l_comaddr = ':l_comaddr' ">
                     </xfltpara>

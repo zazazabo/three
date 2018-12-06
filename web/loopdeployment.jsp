@@ -330,9 +330,28 @@
             function setLoopPlanCB(obj) {
                 $('#panemask').hideLoading();
                 var param = obj.param;
+
+
+
+
                 console.log(param);
                 if (obj.status == "success") {
                     layerAler(langs1[377][lang]);  //设置成功
+
+
+                    var intime1 = param.p_intime;
+                    var outtime1 = param.p_outtime;
+                    var id=param.lid;
+                    var o = {id: id, intime: intime1, outtime: outtime1, l_comaddr: obj.comaddr};
+                    $.ajax({async: false, url: "loop.loopForm.editlooptime.action", type: "get", datatype: "JSON", data: o,
+                        success: function (data) {
+                            layerAler("设置成功");
+                        },
+                        error: function () {
+                            alert("提交失败！");
+                        }
+                    });
+
                     $.ajax({async: false, url: "loop.planForm.editlooptimeA.action", type: "get", datatype: "JSON", data: param,
                         success: function (data) {
                             //console.log(data);
@@ -399,7 +418,7 @@
 
                 var comaddr = s.l_comaddr;
                 addlogon(u_name, "部署", o_pid, "回路部署", "部署回路方案", comaddr);
-                var param = {p_intime: obj.intime, p_outtime: obj.outtime, p_code: obj.p_plan};
+                var param = {p_intime: obj.intime, p_outtime: obj.outtime, p_code: obj.p_plan,lid:s.id};
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA4, num, 0, 401, vv); //01 03 F24    
                 dealsend2("A4", data, 401, "setLoopPlanCB", comaddr, obj.p_type, param, 0);
