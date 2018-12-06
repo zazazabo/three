@@ -170,6 +170,89 @@ public class ControlServlet extends HttpServlet {
                     }
                     jsonstr = JSONObject.fromObject(docType).toString();
 
+                } else if (info1.var.equals("bootstrap1")) {
+                    List aa = list3.get(info1.var);
+                    Map docType = new HashMap();
+
+                    List listpage = new ArrayList();
+                    List listret = new ArrayList();
+                    String limit = request.getParameter("limit");
+                    String skip = request.getParameter("skip");
+                    String type = request.getParameter("page");
+                    if (type != null && type.equals("ALL")) {
+                        docType.put("total", aa.size());
+                        docType.put("rows", aa);
+
+                    } else {
+                        int ilimit = 0;
+                        int iskip = 0;
+                        if (limit != null && !limit.equals("")) {
+                            if (skip != null && !skip.equals("")) {
+                                ilimit = Integer.parseInt(limit);
+                                iskip = Integer.parseInt(skip);
+                            }
+                        }
+
+                        int subend = iskip + ilimit;
+                        if (subend > aa.size()) {
+                            subend = aa.size();
+                        }
+                        listpage = aa.subList(iskip, subend);
+
+                       
+                        for (int i = 0; i < listpage.size(); i++) {
+                            HashMap<String, String> hm1 = (HashMap<String, String>) listpage.get(i);
+                            String dayalise =   hm1.get("dayalis");
+                            String day =   hm1.get("day");
+                            String voltage =   hm1.get("voltage");
+                            String electric =   hm1.get("electric");
+                            String power =   hm1.get("power");
+                            String activepower =   hm1.get("activepower");
+                            
+                            Iterator iter = hm1.entrySet().iterator();
+                            while (iter.hasNext()) {
+                                Map.Entry entry = (Map.Entry) iter.next();
+                                Object key = entry.getKey();
+                                Object val = entry.getValue();
+                                System.out.print(key);
+                                System.out.print(val);
+                    
+                                if (key.toString().equals("voltage")) {
+                                    JSONObject o2 = JSONObject.fromObject(val.toString());
+                                    String Astr = o2.getString("A");
+                                    String Bstr = o2.getString("B");
+                                    String Cstr = o2.getString("C");
+                                    int len = o2.getInt("len");
+                                    if (len == 96) {
+                                        String[] AstrArr = Astr.split("\\|");
+                                        String[] BstrArr = Bstr.split("\\|");
+                                        String[] CstrArr = Cstr.split("\\|");
+                                        int time1=0;
+                                        for(int j=0;j<len;j++){
+                                            String Aval=AstrArr[j];
+                                            String Bval=AstrArr[j];
+                                            String Cval=AstrArr[j];
+//                                         Map map3 = new HashMap();
+//                                         map3.put("time", time1);
+//                                         map3.push("dayalis",);
+                                            time1+=15;
+                                        }
+
+                                    }
+
+                                    System.out.print(Astr);
+                                }
+
+                            }
+
+                            System.out.print(hm1);
+
+                        }
+//                        docType.put("total", aa.size());
+//                        docType.put("rows", listpage);
+                    }
+                    jsonstr = JSONObject.fromObject(docType).toString();
+
                 } else if (info1.var.equals("list")) {
                     List aa = list3.get(info1.var);
                     jsonstr = JSONArray.fromObject(aa).toString();
