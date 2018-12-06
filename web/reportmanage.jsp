@@ -346,194 +346,194 @@
                     // 设置默认分页为 50
                     pageList: [1, 2],
                     onLoadSuccess: function (data) {  //加载成功时执行  表格加载完成时 获取集中器在线状态
-//                        console.log(data);
-//                        var obj = new Object();
-//                        var rows = data.rows;
-//                        var a = new Array();
-//                        obj.total = 0;
-//                        obj.rows = new Array();
-//                        for (var i = 0; i < rows.length; i++) {
-//
-//                            var row = rows[i];
-//                            var v = row.voltage;
-//                            var e = row.electric;
-//                            var pf = row.powerfactor;
-//
-//                            var pa = row.activepower;
-//                            var p = row.power;
-//
-//                            var josonv = null;
-//                            var josone = null;
-//                            var josonpf = null;
-//                            var josonpa = null;
-//                            var josonp = null;
-//                            if (v != null) {
-//                                josonv = eval('(' + v + ')');
-//                            }
-//                            if (e != null) {
-//                                josone = eval('(' + e + ')');
-//                            }
-//
-//                            if (pa != null) {
-//                                josonpa = eval('(' + pa + ')');
-//                            }
-//
-//                            if (pf != null) {
-//                                josonpf = eval('(' + pf + ')');
-//                            }
-//
-//                            if (p != null) {
-//                                josonp = eval('(' + p + ')');
-//                            }
-//
-//
-//                            if (josonv != null) {
-//                                var voltageArrA = josonv.A.split("|");
-//                                var voltageArrB = josonv.B.split("|");
-//                                var voltageArrC = josonv.C.split("|");
-//                                var z = 0;
-//                                for (var j = 0; j < josonv.len; j++) {
-//
-//                                    var o = new Object();
-//                                    // var o={"VAField":voltageArr[j],"dayalis":row.dayalis};
-//                                    o.VAField = voltageArrA[j];
-//                                    o.VBField = voltageArrB[j];
-//                                    o.VCField = voltageArrC[j];
-//                                    o.dayalis = row.dayalis;
-//                                    var a1 = z * 15 % 60;
-//                                    var a2 = z * 15 / 60;
-//                                    var time = sprintf("%02d:%02d", a2, a1);
-//                                    o.time = time;
-//                                    a.push(o);
-//                                    z++;
-//
-//                                }
-//
-//                            }
-//
-//                            if (josone != null) {
-//                                var electricArrA = josone.A.split("|");
-//                                var electricArrB = josone.B.split("|");
-//                                var electricArrC = josone.C.split("|");
-//                                var len1 = a.length >= josone.len ? a.length : josone.len;
-//                                z = 0;
-//                                for (var j = 0; j < len1; j++) {
-//                                    if (a.length > j) {
-//                                        a[j].EAField = electricArrA[j];
-//                                        a[j].EBField = electricArrB[j];
-//                                        a[j].ECField = electricArrC[j];
-//                                    } else {
-//                                        var o = new Object();
-//                                        o.EAField = electricArrA[j];
-//                                        o.EBField = electricArrB[j];
-//                                        o.ECField = electricArrC[j];
-//                                        o.dayalis = row.dayalis;
-//                                        var a1 = z * 15 % 60;
-//                                        var a2 = z * 15 / 60;
-//                                        var time = sprintf("%02d:%02d", a2, a1);
-//                                        o.time = time;
-//                                        a.push(o);
-//
-//                                    }
-//                                    z++;
-//
-//                                }
-//                            }
-//
-//                            if (josonpa != null) {
-//                                var activeArrA = josonpa.A.split("|");
-//                                var activeArrB = josonpa.B.split("|");
-//                                var activeArrC = josonpa.C.split("|");
-//                                var len1 = a.length >= josonpa.len ? a.length : josonpa.len;
-//                                z = 0;
-//                                for (var j = 0; j < len1; j++) {
-//                                    if (a.length >= j) {
-//                                        a[j].ACTIVEAField = activeArrA[j];
-//                                        a[j].ACTIVEBField = activeArrB[j];
-//                                        a[j].ACTIVECField = activeArrC[j];
-//                                    } else {
-//                                        var o = new Object();
-//                                        o.ACTIVEAField = activeArrA[j];
-//                                        o.ACTIVEBField = activeArrB[j];
-//                                        o.ACTIVECField = activeArrC[j];
-//                                        o.dayalis = row.dayalis;
-//                                        var a1 = z * 15 % 60;
-//                                        var a2 = z * 15 / 60;
-//                                        var time = sprintf("%02d:%02d", a2, a1);
-//                                        o.time = time;
-//                                        a.push(o);
-//
-//                                    }
-//                                    z++;
-//
-//                                }
-//                            }
-//
-//                            if (josonpf != null) {
-//                                var factorArrA = josonpf.A.split("|");
-//                                var factorArrB = josonpf.B.split("|");
-//                                var factorArrC = josonpf.C.split("|");
-//                                var factorArrD = josonpf.D.split("|");
-//                                var len1 = a.length >= josonpf.len ? a.length : josonpf.len;
-//                                z = 0;
-//
-//
-//                                for (var j = 0; j < len1; j++) {
-//                                    if (a.length >= j) {
-//                                        a[j].FACTORAField = factorArrA[j];
-//                                        a[j].FACTORBField = factorArrB[j];
-//                                        a[j].FACTORCField = factorArrC[j];
-//                                        a[j].FACTORDField = factorArrD[j];
-//
-//                                    } else {
-//                                        var o = new Object();
-//                                        o.FACTORAField = factorArrA[j];
-//                                        o.FACTORBField = factorArrB[j];
-//                                        o.FACTORCField = factorArrC[j];
-//                                        o.FACTORDField = factorArrD[j];
-//                                        o.dayalis = row.dayalis;
-//                                        var a1 = z * 15 % 60;
-//                                        var a2 = z * 15 / 60;
-//                                        var time = sprintf("%02d:%02d", a2, a1);
-//                                        o.time = time;
-//                                        a.push(o);
-//                                    }
-//                                    z++;
-//                                }
-//
-//                            }
-//
-//                            if (josonp != null) {
-//                                var powerArrA = josonp.A.split("|");
-//                                console.log(powerArrA);
-//                                var len1 = a.length >= josonp.len ? a.length : josonp.len;
-//                                z = 0;
-//                                for (var j = 0; j < len1; j++) {
-//                                    if (a.length > j) {
-//                                        a[j].power = powerArrA[j];
-//                                    } else {
-//                                        var o = new Object();
-//                                        o.power = powerArrA[j];
-//                                        o.dayalis = row.dayalis;
-//                                        var a1 = z * 15 % 60;
-//                                        var a2 = z * 15 / 60;
-//                                        var time = sprintf("%02d:%02d", a2, a1);
-//                                        o.time = time;
-//                                        a.push(o);
-//                                    }
-//                                    z++;
-//                                }
-//                            }
-//
-//                        }
-//                        obj.rows = a;
-//                        obj.total=a.length;
-//                        console.log(obj);
-//                        $("#gravidaTable").bootstrapTable("load", obj);
-//                        var data = $('#gravidaTable').bootstrapTable('getData', true);
-//                        // 合并单元格
-//                        var fieldList = ["dayalis"];
-//                        mergeCells(data, "dayalis", 1, $('#gravidaTable'), fieldList);
+                        console.log(data);
+                        var obj = new Object();
+                        var rows = data.rows;
+                        var a = new Array();
+                        obj.total = 0;
+                        obj.rows = new Array();
+                        for (var i = 0; i < rows.length; i++) {
+
+                            var row = rows[i];
+                            var v = row.voltage;
+                            var e = row.electric;
+                            var pf = row.powerfactor;
+
+                            var pa = row.activepower;
+                            var p = row.power;
+
+                            var josonv = null;
+                            var josone = null;
+                            var josonpf = null;
+                            var josonpa = null;
+                            var josonp = null;
+                            if (v != null) {
+                                josonv = eval('(' + v + ')');
+                            }
+                            if (e != null) {
+                                josone = eval('(' + e + ')');
+                            }
+
+                            if (pa != null) {
+                                josonpa = eval('(' + pa + ')');
+                            }
+
+                            if (pf != null) {
+                                josonpf = eval('(' + pf + ')');
+                            }
+
+                            if (p != null) {
+                                josonp = eval('(' + p + ')');
+                            }
+
+
+                            if (josonv != null) {
+                                var voltageArrA = josonv.A.split("|");
+                                var voltageArrB = josonv.B.split("|");
+                                var voltageArrC = josonv.C.split("|");
+                                var z = 0;
+                                for (var j = 0; j < josonv.len; j++) {
+
+                                    var o = new Object();
+                                    // var o={"VAField":voltageArr[j],"dayalis":row.dayalis};
+                                    o.VAField = voltageArrA[j];
+                                    o.VBField = voltageArrB[j];
+                                    o.VCField = voltageArrC[j];
+                                    o.dayalis = row.dayalis;
+                                    var a1 = z * 15 % 60;
+                                    var a2 = z * 15 / 60;
+                                    var time = sprintf("%02d:%02d", a2, a1);
+                                    o.time = time;
+                                    a.push(o);
+                                    z++;
+
+                                }
+
+                            }
+
+                            if (josone != null) {
+                                var electricArrA = josone.A.split("|");
+                                var electricArrB = josone.B.split("|");
+                                var electricArrC = josone.C.split("|");
+                                var len1 = a.length >= josone.len ? a.length : josone.len;
+                                z = 0;
+                                for (var j = 0; j < len1; j++) {
+                                    if (a.length > j) {
+                                        a[j].EAField = electricArrA[j];
+                                        a[j].EBField = electricArrB[j];
+                                        a[j].ECField = electricArrC[j];
+                                    } else {
+                                        var o = new Object();
+                                        o.EAField = electricArrA[j];
+                                        o.EBField = electricArrB[j];
+                                        o.ECField = electricArrC[j];
+                                        o.dayalis = row.dayalis;
+                                        var a1 = z * 15 % 60;
+                                        var a2 = z * 15 / 60;
+                                        var time = sprintf("%02d:%02d", a2, a1);
+                                        o.time = time;
+                                        a.push(o);
+
+                                    }
+                                    z++;
+
+                                }
+                            }
+
+                            if (josonpa != null) {
+                                var activeArrA = josonpa.A.split("|");
+                                var activeArrB = josonpa.B.split("|");
+                                var activeArrC = josonpa.C.split("|");
+                                var len1 = a.length >= josonpa.len ? a.length : josonpa.len;
+                                z = 0;
+                                for (var j = 0; j < len1; j++) {
+                                    if (a.length >= j) {
+                                        a[j].ACTIVEAField = activeArrA[j];
+                                        a[j].ACTIVEBField = activeArrB[j];
+                                        a[j].ACTIVECField = activeArrC[j];
+                                    } else {
+                                        var o = new Object();
+                                        o.ACTIVEAField = activeArrA[j];
+                                        o.ACTIVEBField = activeArrB[j];
+                                        o.ACTIVECField = activeArrC[j];
+                                        o.dayalis = row.dayalis;
+                                        var a1 = z * 15 % 60;
+                                        var a2 = z * 15 / 60;
+                                        var time = sprintf("%02d:%02d", a2, a1);
+                                        o.time = time;
+                                        a.push(o);
+
+                                    }
+                                    z++;
+
+                                }
+                            }
+
+                            if (josonpf != null) {
+                                var factorArrA = josonpf.A.split("|");
+                                var factorArrB = josonpf.B.split("|");
+                                var factorArrC = josonpf.C.split("|");
+                                var factorArrD = josonpf.D.split("|");
+                                var len1 = a.length >= josonpf.len ? a.length : josonpf.len;
+                                z = 0;
+
+
+                                for (var j = 0; j < len1; j++) {
+                                    if (a.length >= j) {
+                                        a[j].FACTORAField = factorArrA[j];
+                                        a[j].FACTORBField = factorArrB[j];
+                                        a[j].FACTORCField = factorArrC[j];
+                                        a[j].FACTORDField = factorArrD[j];
+
+                                    } else {
+                                        var o = new Object();
+                                        o.FACTORAField = factorArrA[j];
+                                        o.FACTORBField = factorArrB[j];
+                                        o.FACTORCField = factorArrC[j];
+                                        o.FACTORDField = factorArrD[j];
+                                        o.dayalis = row.dayalis;
+                                        var a1 = z * 15 % 60;
+                                        var a2 = z * 15 / 60;
+                                        var time = sprintf("%02d:%02d", a2, a1);
+                                        o.time = time;
+                                        a.push(o);
+                                    }
+                                    z++;
+                                }
+
+                            }
+
+                            if (josonp != null) {
+                                var powerArrA = josonp.A.split("|");
+                                console.log(powerArrA);
+                                var len1 = a.length >= josonp.len ? a.length : josonp.len;
+                                z = 0;
+                                for (var j = 0; j < len1; j++) {
+                                    if (a.length > j) {
+                                        a[j].power = powerArrA[j];
+                                    } else {
+                                        var o = new Object();
+                                        o.power = powerArrA[j];
+                                        o.dayalis = row.dayalis;
+                                        var a1 = z * 15 % 60;
+                                        var a2 = z * 15 / 60;
+                                        var time = sprintf("%02d:%02d", a2, a1);
+                                        o.time = time;
+                                        a.push(o);
+                                    }
+                                    z++;
+                                }
+                            }
+
+                        }
+                        obj.rows = a;
+                        obj.total=a.length;
+                        console.log(obj);
+                        $("#gravidaTable").bootstrapTable("load", obj);
+                        var data = $('#gravidaTable').bootstrapTable('getData', true);
+                        // 合并单元格
+                        var fieldList = ["dayalis"];
+                        mergeCells(data, "dayalis", 1, $('#gravidaTable'), fieldList);
                     },
 
                     //服务器url
