@@ -173,7 +173,7 @@ public class ControlServlet extends HttpServlet {
                 } else if (info1.var.equals("bootstrap1")) {
                     List aa = list3.get(info1.var);
                     Map docType = new HashMap();
-
+                   
                     List listpage = new ArrayList();
                     List listret = new ArrayList();
                     String limit = request.getParameter("limit");
@@ -199,57 +199,186 @@ public class ControlServlet extends HttpServlet {
                         }
                         listpage = aa.subList(iskip, subend);
 
-                       
                         for (int i = 0; i < listpage.size(); i++) {
                             HashMap<String, String> hm1 = (HashMap<String, String>) listpage.get(i);
-                            String dayalise =   hm1.get("dayalis");
-                            String day =   hm1.get("day");
-                            String voltage =   hm1.get("voltage");
-                            String electric =   hm1.get("electric");
-                            String power =   hm1.get("power");
-                            String activepower =   hm1.get("activepower");
-                            
-                            Iterator iter = hm1.entrySet().iterator();
-                            while (iter.hasNext()) {
-                                Map.Entry entry = (Map.Entry) iter.next();
-                                Object key = entry.getKey();
-                                Object val = entry.getValue();
-                                System.out.print(key);
-                                System.out.print(val);
-                    
-                                if (key.toString().equals("voltage")) {
-                                    JSONObject o2 = JSONObject.fromObject(val.toString());
-                                    String Astr = o2.getString("A");
-                                    String Bstr = o2.getString("B");
-                                    String Cstr = o2.getString("C");
-                                    int len = o2.getInt("len");
-                                    if (len == 96) {
-                                        String[] AstrArr = Astr.split("\\|");
-                                        String[] BstrArr = Bstr.split("\\|");
-                                        String[] CstrArr = Cstr.split("\\|");
-                                        int time1=0;
-                                        for(int j=0;j<len;j++){
-                                            String Aval=AstrArr[j];
-                                            String Bval=AstrArr[j];
-                                            String Cval=AstrArr[j];
-//                                         Map map3 = new HashMap();
-//                                         map3.put("time", time1);
-//                                         map3.push("dayalis",);
-                                            time1+=15;
-                                        }
+                            String dayalise = hm1.get("dayalis");
+                            String day = hm1.get("day");
+                            String voltage = hm1.get("voltage"); //电压
+                            String electric = hm1.get("electric");//电流
+                            String power = hm1.get("power");//电能量
+                            String activepower = hm1.get("activepower"); //有功功率
+                            String powerfactor = hm1.get("powerfactor"); //功率因数
+                            System.out.println("dayalise:" + dayalise);
 
+                            JSONObject v = null;
+                            JSONObject e = null;
+                            JSONObject p = null;
+                            JSONObject a = null;
+                            JSONObject pf = null;
+                            if (voltage != null) {
+                                v = JSONObject.fromObject(voltage.toString());  //电压
+                            }
+
+                            if (electric != null) {
+                                e = JSONObject.fromObject(electric.toString());  //电流
+                            }
+
+                            if (power != null) {
+                                p = JSONObject.fromObject(power.toString());  //功率因数
+                            }
+
+                            if (activepower != null) {
+                                a = JSONObject.fromObject(activepower.toString()); //有功功率 
+                            }
+
+                            if (powerfactor != null) {
+                                pf = JSONObject.fromObject(powerfactor.toString());
+                            }
+
+                            int time1 = 0;
+
+                            int len1 = 0;
+                            int len2 = 0;
+                            int len3 = 0;
+                            int len4 = 0;
+                            if (v != null) {
+                                len1 = v.getInt("len");
+                            }
+
+                            if (e != null) {
+                                len1 = v.getInt("len");
+                            }
+                            if (p != null) {
+                                len1 = v.getInt("len");
+                            }
+                            if (a != null) {
+                                len1 = v.getInt("len");
+                            }
+
+                            if (len1 == 96 || len2 == 96 || len3 == 96 || len4 == 96) {
+                                String APFstr = "";
+                                String BPFstr = "";
+                                String CPFstr = "";
+                                String DPFstr = "";
+                                if (pf != null) {
+                                    APFstr = pf.getString("A");
+                                    BPFstr = pf.getString("B");
+                                    CPFstr = pf.getString("C");
+                                    DPFstr = pf.getString("D");
+                                }
+
+                                String AVstr = "";
+                                String BVstr = "";
+                                String CVstr = "";
+                                if (v != null) {
+                                    AVstr = v.getString("A");
+                                    BVstr = v.getString("B");
+                                    CVstr = v.getString("C");
+                                }
+
+                                String AEstr = "";
+                                String BEstr = "";
+                                String CEstr = "";
+                                if (e != null) {
+                                    AEstr = e.getString("A");
+                                    BEstr = e.getString("B");
+                                    CEstr = e.getString("C");
+                                }
+
+                                String AAstr = "";
+                                String BAstr = "";
+                                String CAstr = "";
+                                if (a != null) {
+                                    AAstr = a.getString("A");
+                                    BAstr = a.getString("B");
+                                    CAstr = a.getString("C");
+                                }
+
+                                String APstr = "";
+                                if (p != null) {
+                                    APstr = p.getString("A");
+                                }
+
+//                                String APstr = p.getString("A");
+                                String[] PAstrArr = APstr.split("\\|");
+
+                                String[] AVstrArr = AVstr.split("\\|");
+                                String[] BVstrArr = BVstr.split("\\|");
+                                String[] CVstrArr = CVstr.split("\\|");
+
+                                String[] AEstrArr = AEstr.split("\\|");
+                                String[] BEstrArr = BEstr.split("\\|");
+                                String[] CEstrArr = CEstr.split("\\|");
+
+                                String[] AAstrArr = AAstr.split("\\|");
+                                String[] BAstrArr = BAstr.split("\\|");
+                                String[] CAstrArr = CAstr.split("\\|");
+
+                                String[] APFstrArr = APFstr.split("\\|");
+                                String[] BPFstrArr = BPFstr.split("\\|");
+                                String[] CPFstrArr = CPFstr.split("\\|");
+                                String[] DPFstrArr = DPFstr.split("\\|");
+
+                                for (int j = 0; j < len1; j++) {
+                                    Map map33 = new HashMap();
+                                    int f = time1 % 60;
+                                    int s = time1 / 60;
+                                    String a3 = "0";
+                                    String t1 = "";
+                                    String t2 = "";
+
+                                    if (f < 10) {
+                                        t1 = a3 + String.valueOf(f);
+                                    } else {
+                                        t1 = String.valueOf(f);
+                                    }
+                                    if (s < 10) {
+                                        t2 = a3 + String.valueOf(s);
+                                    } else {
+                                        t2 = String.valueOf(s);
                                     }
 
-                                    System.out.print(Astr);
+                                    String time2 = t2 + ":" + t1;
+                                    map33.put("time", time2);
+                                    if (AVstrArr.length > 1) {
+                                        map33.put("VAField", AVstrArr[j]);
+                                        map33.put("VBField", BVstrArr[j]);
+                                        map33.put("VCField", CVstrArr[j]);
+                                    }
+
+                                    if (AEstrArr.length > 1) {
+                                        map33.put("EAField", AEstrArr[j]);
+                                        map33.put("EBField", BEstrArr[j]);
+                                        map33.put("ECField", CEstrArr[j]);
+                                    }
+
+                                    if (AAstrArr.length > 1) {
+                                        map33.put("ACTIVEAField", AAstrArr[j]);
+                                        map33.put("ACTIVEBField", BAstrArr[j]);
+                                        map33.put("ACTIVECField", CAstrArr[j]);
+                                    }
+
+                                    if (APFstrArr.length > 1) {
+                                        map33.put("FACTORAField", APFstrArr[j]);
+                                        map33.put("FACTORBField", BPFstrArr[j]);
+                                        map33.put("FACTORCField", CPFstrArr[j]);
+                                        map33.put("FACTORDField", DPFstrArr[j]);
+                                    }
+                                    if (PAstrArr.length > 1) {
+                                        map33.put("power", PAstrArr[j]);
+                                    }
+
+                                    map33.put("day", day);
+                                    map33.put("dayalise", dayalise);
+                                    listret.add(map33);
+                                    time1 += 15;
                                 }
 
                             }
-
-                            System.out.print(hm1);
-
                         }
-//                        docType.put("total", aa.size());
-//                        docType.put("rows", listpage);
+                        docType.put("total", listret.size());
+                        docType.put("rows", listret);
+                        System.out.println("l:"+listret.size());
                     }
                     jsonstr = JSONObject.fromObject(docType).toString();
 
