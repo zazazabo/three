@@ -551,7 +551,7 @@
                             var worktype = info.l_worktype;
 
                             if (worktype == 0) {   //时间表
-                                $("#headtime").html(langs1[428][lang] + ":" + info.l_outtime + "&nbsp;" + langs1[429][lang] + ":" + info.l_intime);
+                                $("#headtime").html(langs1[428][lang] + ":" + info.l_intime  + "&nbsp;" + langs1[429][lang] + ":" + info.l_outtime );
                             } else if (worktype == 1) {  //经纬度
                                 var o1 = {jd: info.longitude, wd: info.latitude};
                                 var outoffset = parseInt(info.outoffset);
