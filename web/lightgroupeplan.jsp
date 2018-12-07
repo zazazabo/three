@@ -477,8 +477,7 @@
                         return row[opts.textField];
                     }
                 });
-
-
+ 
                 $('#l_comaddr').combobox({
                     url: "gayway.GaywayForm.getComaddr.action?pid=${param.pid}",
                     formatter: function (row) {

@@ -491,13 +491,13 @@
                             field: 'select',
                             //复选框
                             checkbox: true,
-                            width: 25,
+                            width: 20,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'f_comaddr',
                             title: o[50][lang2], //集控器
-                            width: 25,
+                            width: 20,
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value) {
@@ -517,7 +517,7 @@
                         }, {
                             field: 'f_day',
                             title: o[82][lang2], //时间 o[82][lang]
-                            width: 25,
+                            width: 20,
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value) {
@@ -529,32 +529,32 @@
                         {
                             field: 'f_comment',
                             title: o[123][lang2], //异常说明 o[123][lang]
-                            width: 25,
+                            width: 20,
                             align: 'center',
                             valign: 'middle'
                         },{
                             field: 'f_name',
                             title: o[54][lang2], //灯具名称  o[292][lang]
-                            width: 25,
+                            width: 20,
                             align: 'center',
                             valign: 'middle'
                         },{
                             field: 'l_factorycode',
                             title: o[292][lang2], //灯具编号  o[292][lang]
-                            width: 25,
+                            width: 20,
                             align: 'center',
                             valign: 'middle'
                         }, {
                             field: 'f_Lamppost',
                             title: o[453][lang2], //灯杆编号  o[292][lang]
-                            width: 25,
+                            width: 20,
                             align: 'center',
                             valign: 'middle'
                         },
                         {
                             field: 'f_detail',
                             title: o[402][lang2], //详情
-                            width: 25,
+                            width: 35,
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
@@ -585,7 +585,61 @@
                                     }
 
                                     return str.substr(0, str.length - 1);
+                                }else if (row.f_type == "ERC50") {
+                                var s1 = parseInt(row.f_status1);
+                                var s2 = parseInt(row.f_status2);
+                                var a1 = s1 & 0x1;
+                                if (a1 == 1) {
+                                    a1 = "手动";
                                 } else {
+                                    a1 = "自动";
+                                }
+                                var a2 = s1 >> 1 & 0x1;
+                                var aa2 = 0x1;
+                                if (a2 == aa2) {
+                                    a2 = "经纬度";
+                                } else {
+                                    a2 = "时间表";
+                                }
+                                var a3 = s1 >> 2 & 0x1;
+                                if (a3 == 1) {
+                                    a3 = "闭合";
+                                } else {
+                                    a3 = "断开";
+                                }
+
+                                var b1 = s2 & 0x1;
+                                if (b1 == 1) {
+                                    b1 = "闭合";
+                                } else {
+                                    b1 = "断开";
+                                }
+                                var b2 = s2 >> 1 & 0x1;
+                                var bb2 = 0x1;
+                                if (b2 == bb2) {
+                                    b2 = "未校时";
+                                } else {
+                                    b2 = "校时";
+                                }
+                                var l_names = "";
+                                var obj = {};
+                                obj.l_comaddr = row.f_comaddr;
+                                obj.l_factorycode = row.f_setcode;
+                                $.ajax({async: false, url: "login.policereord.getlname.action", type: "POST", datatype: "JSON", data: obj,
+                                    success: function (data) {
+                                       var rs = data.rs;
+                                       l_names = rs[0].l_name;
+                                    }
+                                });
+                                //  var a2= s1>>1&0x1==0x1?"经纬度":"时间表";
+                                //  var a3= s1>>2&0x1==1?"闭合":"断开";
+                                // var str1="运行方式" + () + "运行模式:"  + (s1>>1&0x1==0x1?"经纬度":"时间表") + "回路继电器状态:" +（s1>>2&0x1==1?"闭合":"断开")
+
+                                //    var str2="回路交流接触器状态:" + (s2&0x1?==1:"闭合":"断开") + "回路校时状态:"  + (s2>>1&0x1==0x1?"末校时":"校时");
+                                var str1 = "运行方式：" + a1 +"运行模式：" + a2 + "回路继电器状态：" + a3;
+                                var str2 = "回路交流接触器状态：" + b1 + "回路校时状态：" + b2;
+                                return str1 + str2+"回路名称："+ l_names;
+                            }  else {
                                     return  value;
                                 }
                             }
@@ -956,7 +1010,7 @@
                             <span style="margin-left:10px;">                                     
                                 <label id="50" name="xxx">集控器</label>
                                 &nbsp;</span>
-                            <input id="comaddrlist" data-options='editable:true,valueField:"id", textField:"text"' class="easyui-combobox" style=" width: 140px;"/>
+                            <input id="comaddrlist" data-options='editable:true,valueField:"id", textField:"text"' class="easyui-combobox" style=" width: 140px; height: 30px;" />
                         </td>
                         <td>
                             <label style="margin-left:20px;" id="292" name="xxx">
@@ -1241,8 +1295,8 @@
                 $("#faultDiv").dialog({
                     autoOpen: false,
                     modal: true,
-                    width: 700,
-//                    height: 350,
+                    width: 800,
+                    height: 700,
                     position: ["top", "top"],
                     buttons: {
                         处理报警: function () {

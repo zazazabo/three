@@ -568,7 +568,18 @@
                     </xfltpara>
                 </xflt>
             </xsql> 
-        </xhandle>               
+        </xhandle>  
+         <xhandle desc="根据回路编号和网关地址查询回路名称" id="getlname" rtn="rs" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select l_name from t_loop where  @CONDITION" var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@l_factorycode AND @l_comaddr">
+                    <xfltpara id="l_factorycode" nrp="1=2" para="l_factorycode" sql="l_factorycode=  ':l_factorycode' ">
+                    </xfltpara>
+                    <xfltpara id="l_comaddr" nrp="1=1" para="l_comaddr" sql="l_comaddr= ':l_comaddr'">
+                    </xfltpara>
+                </xflt>
+            </xsql> 
+        </xhandle> 
+                     
     </xform>
     
     <xform desc="操作日志" id="oplog">
