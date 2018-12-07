@@ -340,13 +340,13 @@
                     pagination: true,
                     sidePagination: 'server',
                     pageNumber: 1,
-                    pageSize: 192,
+                    pageSize: 96,
                     showRefresh: true,
                     showToggle: true,
                     // 设置默认分页为 50
-                    pageList: [192,384],
+                    pageList: [96,192,384],
                     onLoadSuccess: function (data) {  //加载成功时执行  表格加载完成时 获取集中器在线状态
-//                        console.log(data);
+                        console.log(data);
 //                        var obj = new Object();
 //                        var rows = data.rows;
 //                        var a = new Array();
