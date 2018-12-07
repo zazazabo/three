@@ -464,7 +464,14 @@
                         $(rowdiv[v]).show();
 
                     }, formatter: function (row) {
-                        var langid = parseInt(row.id)+571;
+                        var langid = 0;
+                        if(row.id ==1){
+                            langid = 573;
+                        }else if(row.id ==2){
+                            langid = 574;
+                        }else if(row.id==3){
+                            langid = 572;
+                        }
                         row.text = langs1[langid][lang];
                         var opts = $(this).combobox('options');
                         return row[opts.textField];
@@ -619,8 +626,8 @@
                                 <span class="menuBox">
                                     <select class="easyui-combobox" id="type" name="type" data-options="editable:false,valueField:'id', textField:'text'" style="width:200px; height: 30px">
                                         <option value="3">部署分组方案</option>
-                                        <option value="1" selected="true">更换分组</option>
-                                        <option value="2">按组更换工作方式 </option>
+                                        <option value="1" selected="true"> 更换分组</option>
+                                        <option value="2"> 按组更换工作方式 </option>
 
                                     </select>
                                 </span>
