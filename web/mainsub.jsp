@@ -160,7 +160,7 @@
             }
             .nenghao {
                 width: 100%;
-/*                height: 20%;*/
+                /*                height: 20%;*/
                 line-height: 30px;
                 color: gray;
             }
@@ -407,7 +407,7 @@
 //                var echarts4DataX = [data[0].date1, data[0].date2, data[0].date3];
 //                var echarts4DataY = [data[0].thisYear1, data[0].thisYear2, data[0].thisYear3];
                 //var sjqs = $("#16").html();
-               // ech4('echarts4', langs1[16][lang], langs1[302][lang], echarts4DataX, echarts4DataY, 'bar', 'kW·h', "#337dd7"); //数据趋势、能耗
+                // ech4('echarts4', langs1[16][lang], langs1[302][lang], echarts4DataX, echarts4DataY, 'bar', 'kW·h', "#337dd7"); //数据趋势、能耗
 
 
                 var date = new Date();
@@ -440,11 +440,11 @@
             });
             window.onresize = function () {
 
-                    myChart.resize();
+                myChart.resize();
 
-                    myChart2.resize();
+                myChart2.resize();
 
-                };
+            };
             function ech(id, title, titleY, signXAxis, signYAxis, type, danwei, bg) {
 
                 myChart = echarts.init(document.getElementById(id));
@@ -771,7 +771,11 @@
                 $('#online').html(str);
             }
 
-
+            function  formartcomaddr(value, row, index, field) {
+//                var val = value;
+                var v1 = row.online == 1 ? "&nbsp;<img src='img/online1.png'>" : "&nbsp;<img src='img/off.png'>";
+                return   v1;
+            }
         </script>
 
 
@@ -874,11 +878,11 @@
             <div class="topTitle" style="position:absolute;top:2%;left:60%;color:#000;font-size:20px;font-weight:600;">
                 <span >能耗分析</span>
             </div>
-                    <!--
-            <div class="echarts3" id="echarts3" style="height: 430px;">
-            </div>-->
-<!--            <div class="topTitle" style="position:absolute;top:2%;left:60%;color:#000;font-size:20px;font-weight:600;">
-                <span id="17" name="xxx">分析</span>-->
+            <!--
+    <div class="echarts3" id="echarts3" style="height: 430px;">
+    </div>-->
+            <!--            <div class="topTitle" style="position:absolute;top:2%;left:60%;color:#000;font-size:20px;font-weight:600;">
+                            <span id="17" name="xxx">分析</span>-->
             <div class="topCenter1" id="echarts1" style="width: 27%; height: 85%; float: left;">
 
             </div>
@@ -907,7 +911,7 @@
                         <span id="qunian" class="paraValue">0</span>kW  
                     </div>
                     <div class="nenghao1">
-                         <span>
+                        <span>
                             <span id="22" name="xxx">同比</span>
                             ：</span><br>
                         <span class="tongbi" id="lastYearSameMonth" style=" font-size: 16px;"></span>
@@ -919,54 +923,98 @@
 
 
         <div class="bottom1">
-            <div style="width: 20%; height: 100%; border: 1px solid red; float: left;">
-                
+            
+                    <div class="row "   >
+                        <div class="col-xs-2 " style="width:200px" >
+                <table id="gayway" style="width:100%;"   data-toggle="table" 
+                       data-height="400"
+                       data-single-select="true"
+                       data-striped="true"
+                       data-click-to-select="true"
+                       data-search="false"
+                       data-checkbox-header="true"
+                       data-show-header='false'
+                       data-search-align='right'
+                       data-silent-sort='true'
+                       data-url="gayway.GaywayForm.getComaddrList.action?pid=${param.pid}&page=ALL"  >
+                    <thead >
+                        <tr >
+                            <th data-width="5" data-field="online"  data-formatter='formartcomaddr'   >在线状态</th>
+                            <th data-width="60" data-align="center"  data-field="comaddr"   >网关地址</th>
+             
+                                           <!--<th data-width="25"  data-visible="true"   data-select="false" data-align="center"  data-checkbox="true"  ></th>-->
+                            <!--<th data-width="100" data-field="name" data-align="center"    >网关名称</th>-->
+                        </tr>
+                    </thead>       
+
+                </table>
+                <!--                    </div>
+                                </div>    -->
+
+            </div>
+            <div class="col-xs-10">
+
+            </div>
+        </div>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+<!--            <div style="width: 20%; height: 100%; border: 1px solid red; float: left;">
+
             </div>
             <div style="width: 80%; height: 100%; border: 1px solid yellow;float: left;">
-                
-            </div>
-<!--            <span name="xxx" id="16" style=" display: none" >数据趋势</span>
-            <div class="echarts4" id="echarts4" style="width: 35%; height: 85%; float: left; margin: 20px 0px 20px 30px;">
-
 
             </div>-->
-<!--            <span name="xxx" id="17" style=" display: none" >能耗分析</span>
-            <div class="topCenter4" style="width:10%;height:85%;float:right;">
-                <div class="topCenter2Mess">	
-                    <div class="nenghao">
-                        <span class="subPara">
-                            <span name="xxx" id="18">本月耗能</span>
-                            :</span><br>
-                        <span id="benyue" class="paraValue"></span>kW·h</div>
-                    <div class="nenghao1">
-                        <span class="subPara">
-                            <span id="19" name="xxx">上月耗能</span>
-                            :</span><br>
-                        <span id="shangyue" class="paraValue"></span>kW·h<br>
-                        <span><span id="20" name="xxx"></span>：</span>
-                        <span class="tongbi" id="lastMonth"></span>
-                        kW·h
-                    </div>
-                    <div class="nenghao1">
-
-                        <span class="subPara">
-                            <span id="21" name="xxx">去年同期</span>
-                            :</span><br>
-                        <span id="qunian" class="paraValue"></span>
-                        <span>
-                            <span id="22" name="xxx">同比</span>
-                            ：</span>
-                        <span class="tongbi" id="lastYearSameMonth"></span>
-                        kW·h
-                    </div>
-
-                </div>
-            </div> 
-
-
-            <div class="topCenter1" id="echarts1" style="width: 45%; height: 85%; float: left;">
-
-            </div>-->
+            <!--            <span name="xxx" id="16" style=" display: none" >数据趋势</span>
+                        <div class="echarts4" id="echarts4" style="width: 35%; height: 85%; float: left; margin: 20px 0px 20px 30px;">
+            
+            
+                        </div>-->
+            <!--            <span name="xxx" id="17" style=" display: none" >能耗分析</span>
+                        <div class="topCenter4" style="width:10%;height:85%;float:right;">
+                            <div class="topCenter2Mess">	
+                                <div class="nenghao">
+                                    <span class="subPara">
+                                        <span name="xxx" id="18">本月耗能</span>
+                                        :</span><br>
+                                    <span id="benyue" class="paraValue"></span>kW·h</div>
+                                <div class="nenghao1">
+                                    <span class="subPara">
+                                        <span id="19" name="xxx">上月耗能</span>
+                                        :</span><br>
+                                    <span id="shangyue" class="paraValue"></span>kW·h<br>
+                                    <span><span id="20" name="xxx"></span>：</span>
+                                    <span class="tongbi" id="lastMonth"></span>
+                                    kW·h
+                                </div>
+                                <div class="nenghao1">
+            
+                                    <span class="subPara">
+                                        <span id="21" name="xxx">去年同期</span>
+                                        :</span><br>
+                                    <span id="qunian" class="paraValue"></span>
+                                    <span>
+                                        <span id="22" name="xxx">同比</span>
+                                        ：</span>
+                                    <span class="tongbi" id="lastYearSameMonth"></span>
+                                    kW·h
+                                </div>
+            
+                            </div>
+                        </div> 
+            
+            
+                        <div class="topCenter1" id="echarts1" style="width: 45%; height: 85%; float: left;">
+            
+                        </div>-->
         </div>			
     </body>
 </html>
