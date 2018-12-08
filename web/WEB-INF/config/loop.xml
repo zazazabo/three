@@ -15,9 +15,18 @@
                 </xflt>
             </xsql>
         </xhandle> 
+        <xhandle desc="回路编号是否唯一" id="getloopCode" rtnype="JSON">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_loop where @CONDITION" var="rs">
+                <xflt id="CONDITION" nrp="" tpl="@l_comaddr AND @l_factorycode">
+                    <xfltpara id="l_comaddr" nrp="1=1" para="l_comaddr" sql="l_comaddr = ':l_comaddr' ">
+                    </xfltpara>
+                    <xfltpara id="l_factorycode" nrp="1=1" para="l_factorycode" sql="l_factorycode = :l_factorycode ">
+                    </xfltpara>
+                </xflt>
+            </xsql>
+        </xhandle>
         <xhandle desc="回路的网关" id="getComaddr" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT DISTINCT  tl.l_comaddr as id,tl.l_comaddr as text FROM t_loop tl where @CONDITION 
-             " var="list">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="SELECT DISTINCT  tl.l_comaddr as id,tl.l_comaddr as text FROM t_loop tl where @CONDITION " var="list">
                 <xflt id="CONDITION" nrp="" tpl="@l_comaddr AND @l_deplayment AND @pid ">
                     <xfltpara id="l_comaddr" nrp="1=1" para="l_comaddr" sql="l_comaddr = ':l_comaddr' ">
                     </xfltpara>

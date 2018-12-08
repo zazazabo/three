@@ -320,7 +320,7 @@
                     layerAler(langs1[73][lang]);   //请勾选表格数据
                     return;
                 }
-                addlogon(u_name, "部署", o_pid, "灯具部署", "部署灯具");
+                addlogon(u_name, "部署", o_pid, "灯具部署", "部署灯具",o.l_comaddr);
                 var len = selects.length;
                 var h = len >> 8 & 0x00FF;
                 var l = len & 0x00ff;
@@ -377,19 +377,20 @@
                     layerAler(langs1[73][lang]);   //请勾选表格数据
                     return;
                 }
-                addlogon(u_name, "移除", o_pid, "灯具部署", "移除灯具");
                 var len = selects.length;
                 var h = len >> 8 & 0x00FF;
                 var l = len & 0x00ff;
                 vv.push(l);
                 vv.push(h);
                 var param = [];
+                addlogon(u_name, "移除", o_pid, "灯具部署", "移除灯具",o.l_comaddr);
                 for (var i = 0; i < selects.length; i++) {
                     var ele = selects[i];
                     if (ele.l_comaddr != o.l_comaddr) {
                         layerAler(langs1[385][lang]);  //勾选列表的网关要和下拉的网关一致
                         return;
                     }
+                    
                     var setcode = ele.l_code;
                     var l_code = parseInt(setcode);
                     var a = l_code >> 8 & 0x00FF;

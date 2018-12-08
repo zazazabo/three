@@ -478,7 +478,7 @@
             </xsql> 
         </xhandle>  
         <xhandle desc="添加操作日志" id="addoplog" rtn="rs" rtnype="JSON">
-            <xsql id="a1" para="name,time,comment,type,pid,page,l_comaddr" tpe="DDL" tpl="insert into t_oplog(o_name,o_time,o_comment,o_type,o_pid,o_page,o_comaddr) values(':name',':time',':comment',':type',':pid',':page',':l_comaddr') " var="rs">
+            <xsql id="a1" para="name,comment,type,pid,page,l_comaddr" tpe="DDL" tpl="insert into t_oplog(o_name,o_time,o_comment,o_type,o_pid,o_page,o_comaddr) values(':name',getdate(),':comment',':type',':pid',':page',':l_comaddr') " var="rs">
             </xsql>
         </xhandle>              
     </xform>
@@ -632,7 +632,7 @@
         </xhandle> 
             
         <xhandle desc="添加网关" id="addbase" rtn="rs" rtnype="JSON">
-            <xsql id="a1" para="model,comaddr,name,Longitude,latitude,area,pid,multpower,presence,connecttype" tpe="DDL" tpl="insert into t_baseinfo(model,comaddr,name,Longitude,latitude,area,pid,multpower,presence,connecttype) values(':model',':comaddr',':name',':Longitude',':latitude',':area',':pid',':multpower',':presence',':connecttype') " var="rs">
+            <xsql id="a1" para="model,comaddr,name,Longitude,latitude,area,pid,presence,connecttype" tpe="DDL" tpl="insert into t_baseinfo(model,comaddr,name,Longitude,latitude,area,pid,presence,connecttype) values(':model',':comaddr',':name',':Longitude',':latitude',':area',':pid',':presence',':connecttype') " var="rs">
             </xsql>
         </xhandle>    
     </xform>

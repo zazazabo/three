@@ -22,6 +22,7 @@
 
         <script src="bootstrap-datetimepicker/bootstrap-datetimepicker.js"></script>
         <script type="text/javascript" src="js/genel.js"></script>
+        <script type="text/javascript" src="js/getdate.js"></script>
         <style>
             select{
                 border-style:none;
@@ -39,6 +40,8 @@
         <script>
             var lang = '${param.lang}';//'zh_CN';
             var langs1 = parent.parent.getLnas();
+            var u_name = parent.parent.getusername();
+            var o_pid = parent.parent.getpojectId();
             function layerAler(str) {
                 layer.alert(str, {
                     icon: 6,
@@ -69,7 +72,7 @@
                     layerAler(langs1[152][lang]); //请选择年
                     return;
                 }
-
+                addlogon(u_name, "保存配置", o_pid, "节能分析设置", "修改计划值");
                 for (var k in f1) {
                     var len1 = "plan_value".length;
                     var t = k.indexOf("plan_value");

@@ -37,6 +37,7 @@
                 vv.push(1);
                 vv.push(parseInt(obj.l_groupe)); //新组号  1字节            
                 var comaddr = o.l_comaddr;
+                addlogon(u_name, "巡测", o_pid, "网关参数设置", "启动巡测任务",o.l_comaddr);
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA5, num, 0, 1, vv); //01 03 F24   
                 dealsend2("A5", data, 1, "allCallBack", comaddr, 0, 0, 0, 0);
@@ -50,6 +51,7 @@
                 vv.push(1);
                 vv.push(parseInt(obj.l_groupe)); //新组号  1字节            
                 var comaddr = o.l_comaddr;
+                addlogon(u_name, "巡测", o_pid, "网关参数设置", "结束巡测任务",o.l_comaddr);
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA5, num, 0, 2, vv); //01 03 F24   
                 dealsend2("A5", data, 2, "allCallBack", comaddr, 0, 0, 0, 0);
@@ -166,7 +168,7 @@
                                 alert("提交失败！");
                             }
                         });
-                        layerAler(langs1[165][lang]); //更换工作方式
+                        layerAler("更换工作方式成功"); //更换工作方式
                     } else if (obj.msg == "A4" && obj.fn == 108) {
                         //删除所有灯配置
                         var o = {l_comaddr: obj.comaddr, l_deplayment: 0};
@@ -326,6 +328,7 @@
                 vv.push(parseInt(obj.timezone));
 
                 var comaddr = o.l_comaddr;
+                addlogon(u_name, "设置", o_pid, "网关参数设置", "设置网关经纬度",o.l_comaddr);
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xff, num, 0, 10, vv); //01 03 F24   
                 dealsend2("FF", data, 10, "allCallBack", comaddr, 0, 0, obj.l_groupe);
@@ -340,7 +343,8 @@
                 vv.push(parseInt(obj.l_groupe)); //新组号  1字节            
                 var comaddr = o.l_comaddr;
                 var num = randnum(0, 9) + 0x70;
-                var data = buicode(comaddr, 0x04, 0xA4, num, 0, 110, vv); //01 03 F24    
+                var data = buicode(comaddr, 0x04, 0xA4, num, 0, 110, vv); //01 03 F24   
+                addlogon(u_name, "跟换", o_pid, "网关参数设置", "更换组号",comaddr);
                 dealsend2("A4", data, 110, "allCallBack", comaddr, 0, 0, obj.l_groupe);
             }
 
@@ -348,6 +352,7 @@
                 var o = $("#form1").serializeObject();
                 var vv = [];
                 var comaddr = o.l_comaddr;
+                addlogon(u_name, "删除", o_pid, "网关参数设置", "删除所有灯具时间表",o.l_comaddr);
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA4, num, 0, 180, vv); //01 03 F24    
                 dealsend2("A4", data, 180, "allCallBack", comaddr, 0, 0, 0);
@@ -355,6 +360,7 @@
             function delAllLoopPlan() {
                 var o = $("#form1").serializeObject();
                 var vv = [];
+                addlogon(u_name, "删除", o_pid, "网关参数设置", "删除所有回路时间表",o.l_comaddr);
                 var comaddr = o.l_comaddr;
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA4, num, 0, 402, vv); //01 03 F24    
@@ -363,6 +369,7 @@
             function delAllLoop() {
                 var o = $("#form1").serializeObject();
                 var vv = [];
+                addlogon(u_name, "删除", o_pid, "网关参数设置", "删除所有回路开关信息",o.l_comaddr);
                 var comaddr = o.l_comaddr;
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA4, num, 0, 340, vv); //01 03 F24    
@@ -376,7 +383,7 @@
                 var comaddr = o.l_comaddr;
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA4, num, 0, 108, vv); //01 03 F24    
-
+                addlogon(u_name, "删除", o_pid, "网关参数设置", "删除全部灯具信息",comaddr);
                 dealsend2("A4", data, 108, "allCallBack", comaddr, 0, 0, 0);
             }
             function setWowktype() {
@@ -389,7 +396,7 @@
                 var comaddr = o.l_comaddr;
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA4, num, 0, 120, vv); //01 03 F24    
-
+                addlogon(u_name, "更换", o_pid, "网关参数设置", "跟换工作方式",comaddr);
                 dealsend2("A4", data, 120, "allCallBack", comaddr, 0, 0, obj.l_worktype);
             }
 
@@ -587,7 +594,7 @@
                 var hexport = parseInt(obj.port);
                 var u1 = hexport >> 8 & 0x00ff;
                 var u2 = hexport & 0x000ff;
-                addlogon(u_name, "设置", o_pid, "网关参数设置", "设置主站信息");
+                addlogon(u_name, "设置", o_pid, "网关参数设置", "设置主站信息",obj1.l_comaddr);
                 var vv = [];
                 if (obj.sitetype == "1") {
                     if (isValidIP(obj.ip) == false) {
@@ -707,6 +714,7 @@
                 vv.push(h2);
                 vv.push(m2);
                 var comaddr = o.l_comaddr;
+                addlogon(u_name, "设置", o_pid, "网关参数设置", "设置换日时间和冻结时间",comaddr);
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA4, num, 0, 4, vv); //01 03 F24    
                 dealsend2("A4", data, 4, "setChgTimeCB", comaddr, 0, oo, 0);
@@ -730,7 +738,7 @@
                     layerAler(langs1[176][lang]);
                     return;
                 }
-                addlogon(u_name, "设置", o_pid, "网关参数设置", "设置运营商APN");
+                addlogon(u_name, "设置", o_pid, "网关参数设置", "设置运营商APN",o.l_comaddr);
                 var vv = [];
                 for (var i = 0; i < 16; i++) {
                     var apn = obj.apn;
@@ -832,6 +840,7 @@
                 }
             }
             function setArea() {
+                addlogon(u_name, "设置", o_pid, "网关参数设置", "设置行政参数划码");
                 var vv = [];
                 var obj = $("#form1").serializeObject();
                 var obj1 = $("#form2").serializeObject();

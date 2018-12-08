@@ -448,7 +448,7 @@
                 var param = [];
                 param.push(l_groupe);
                 var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 302, vv); //01 03 F24    
-                addlogon(u_name, "灯具调光", o_pid, "灯具调光", "按组立即调光", comaddr);
+                addlogon(u_name, "灯具调光", o_pid, "灯具调光", "按组立即调光", l_comaddr);
                 dealsend2("A5", data, 302, "lightCB", l_comaddr, obj.groupetype, param, groupeval);
                 $('#panemask').showLoading({
                     'afterShow': function () {
@@ -888,17 +888,23 @@
                             }
                         }, {
                             field: 'presence',
-                            title: langs1[61][lang], //在线状态
+                            title: '状态', //在线状态
                             width: 25,
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index, field) {
-                                if (value == 1) { //data-toggle="tooltip"
-                                    var str = '<img data-toggle="tooltip"  src="img/online1.png" onclick="tourlamp(' + row.l_comaddr + ',' + row.l_code + ')" />';
-//                                    var str = '<a href="#"  class="tooltip-show" data-toggle="tooltip" title="show">' + str1 + '</a>';
+                                console.log(row);
+                                if(row.l_fault==1){
+                                    var str = '<img data-toggle="tooltip"  src="img/lred3.png" onclick="tourlamp(' + row.l_comaddr + ',' + row.l_code + ')" />';
+                                    return  str;
+                                }else if(value==1&&row.l_value>0){
+                                    var str = '<img data-toggle="tooltip"  src="img/lyello.png" onclick="tourlamp(' + row.l_comaddr + ',' + row.l_code + ')" />';
+                                    return  str;
+                                }else if (value == 1) {
+                                    var str = '<img data-toggle="tooltip"  src="img/yl.png" onclick="tourlamp(' + row.l_comaddr + ',' + row.l_code + ')" />';
                                     return  str;
                                 } else {
-                                    var str = '<img data-toggle="tooltip"  src="img/off.png" onclick="tourlamp(' + row.l_comaddr + ',' + row.l_code + ')" />';
+                                    var str = '<img data-toggle="tooltip"  src="img/lhui.png" onclick="tourlamp(' + row.l_comaddr + ',' + row.l_code + ')" />';
                                     return str;
                                 }
                             }

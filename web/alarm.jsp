@@ -357,7 +357,7 @@
                     query: obj2
                 };
                 $("#fauttable").bootstrapTable('refresh', opt);
-                addlogon(username, "处理异常", pid, "首页", "处理异常");
+                addlogon(username, "处理报警信息", pid, "报警处理", "处理异常");
                 fualtCount();
             }
         </script>
