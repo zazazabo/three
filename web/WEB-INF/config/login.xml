@@ -831,7 +831,7 @@
     
     <xform desc="灯具调光判断灯具是否离线异常" id="lightval">
         <xhandle desc="是否离线异常" id="isfault" rtn="rs" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_fault where f_Isfault is null AND @CONDITION " var="rs">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_fault where f_Isfault is null AND f_type !='ERC52' AND @CONDITION " var="rs">
                 <xflt id="CONDITION" nrp="" tpl="@f_comaddr AND @l_factorycode">
                     <xfltpara id="f_comaddr" nrp="1=1" para="f_comaddr" sql="f_comaddr=':f_comaddr'">
                     </xfltpara>
