@@ -3,7 +3,7 @@
 
     <xform desc="login" id="loginform">
         <xhandle desc="登陆" id="loginhand" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_user WHERE   @CONDITION " var="rs">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_user WHERE   @CONDITION AND prohibit = 0 " var="rs">
                 <xflt id="CONDITION" nrp="" tpl="@name AND @password ">
                     <xfltpara id="name" nrp="1=1" para="name" sql="name = ':name' collate Chinese_PRC_CS_AI_WS">
                     </xfltpara>
@@ -128,7 +128,7 @@
             </xsql>
         </xhandle>
         <xhandle desc="查询所有灯具信息" id="lamp" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_lamp where @CONDITION " var="bootstrap">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_lamp where @CONDITION  order by l_lampnumber " var="bootstrap">
                 <xflt id="CONDITION" nrp="" tpl="@l_comaddr AND @l_name AND @pid">
                     <xfltpara id="l_comaddr" nrp="1=1" para="l_comaddr" sql="l_comaddr = ':l_comaddr'">
                     </xfltpara>
@@ -331,14 +331,14 @@
     <xform desc="用户管理" id="usermanage">
         <xhandle desc="修改用户基本信息" id="editUinfo" rtn="rs" rtnype="JSON">
             <xsql id="a1" para="department,email,phone" tpe="DDL" tpl="update t_user set department=':department',email=':email',phone=':phone' where @CONDITION " var="rs">
-                <xflt id="CONDITION" nrp="" tpl="@name ">
-                    <xfltpara id="name" nrp="1=2" para="name" sql="name=':name'">
+                <xflt id="CONDITION" nrp="" tpl="@id ">
+                    <xfltpara id="id" nrp="1=2" para="id" sql="id=':id'">
                     </xfltpara>
                 </xflt>
             </xsql>
         </xhandle>
         <xhandle desc="查看用户名是否存在" id="isusername" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select name from t_user where @CONDITION " var="rs">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select name from t_user where @CONDITION and prohibit = 0 " var="rs">
                 <xflt id="CONDITION" nrp="" tpl="@name">
                     <xfltpara id="name" nrp="1=1" para="name" sql="name = ':name'collate Chinese_PRC_CS_AI_WS"> 
                     </xfltpara>           
@@ -346,7 +346,7 @@
             </xsql>
         </xhandle> 
         <xhandle desc="获取人员列表" id="query" rtnype="JSON">
-            <xsql desc="查询该用户的子用户" id="a1" list="true" page="true" tpe="SQL" tpl="select * from  t_user    WHERE   @CONDITION   " var="bootstrap">
+            <xsql desc="查询该用户的子用户" id="a1" list="true" page="true" tpe="SQL" tpl="select * from  t_user  WHERE   @CONDITION  and prohibit = 0  " var="bootstrap">
                 <xflt id="CONDITION" nrp="" tpl="@u_parent_id">
                     <xfltpara id="u_parent_id" nrp="1=1" para="u_parent_id" sql="u_parent_id = ':u_parent_id'"> 
                     </xfltpara>           
@@ -372,7 +372,7 @@
             </xsql>
         </xhandle> 
         <xhandle desc="添加用户" id="addUser" rtn="rs" rtnype="JSON">
-            <xsql id="a1" para="name,sex,phone,department,email,password,pid,m_code,u_parent_id" tpe="DDL" tpl="insert into t_user(name,sex,phone,department,email,password,m_code,u_parent_id,pid) values(':name',':sex',':phone',':department',':email',':password',':m_code',':u_parent_id',':pid') " var="rs">
+            <xsql id="a1" para="name,sex,phone,department,email,password,pid,m_code,u_parent_id" tpe="DDL" tpl="insert into t_user(name,sex,phone,department,email,password,m_code,u_parent_id,pid,prohibit) values(':name',':sex',':phone',':department',':email',':password',':m_code',':u_parent_id',':pid',0) " var="rs">
             </xsql>
         </xhandle>
         <xhandle desc="修改用户" id="editUser" rtn="rs" rtnype="JSON">
@@ -416,7 +416,7 @@
             </xsql>
         </xhandle>   
         <xhandle desc="删除用户表" id="deleteUser" rtn="rs" rtnype="JSON">
-            <xsql id="a1" tpe="DDL" tpl="delete from t_user where @CONDITION " var="rs">
+            <xsql id="a1" tpe="DDL" tpl="update t_user set prohibit= 1 where @CONDITION   " var="rs">
                 <xflt id="CONDITION" tpl="@id ">
                     <xfltpara id="id" nrp="1=2" para="id" sql="id =  :id ">
                     </xfltpara>
@@ -874,7 +874,7 @@
             </xsql> 
         </xhandle>  
         <xhandle desc="修改网关信息" id="updatewg" rtn="rs" rtnype="JSON">
-            <xsql id="a1" para="Longitude,latitude,outoffset,inoffset"  tpe="DDL" tpl=" update t_baseinfo set Longitude = ':Longitude' ,latitude = ':latitude',outoffset = ':outoffset',inoffset = ':inoffset' where  @CONDITION " var="rs">
+            <xsql id="a1" para="outoffset,inoffset"  tpe="DDL" tpl=" update t_baseinfo set outoffset = ':outoffset',inoffset = ':inoffset' where  @CONDITION " var="rs">
                 <xflt id="CONDITION" nrp="" tpl="@comaddr">
                     <xfltpara id="comaddr" nrp="1=2" para="comaddr" sql="comaddr=:comaddr">
                     </xfltpara>

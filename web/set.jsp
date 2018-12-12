@@ -664,8 +664,6 @@
                 //修改网关参数
                 var uobj = {};
                 uobj.comaddr = o.l_comaddr;
-                uobj.Longitude = obj.Longitude;
-                uobj.latitude = obj.latitude;
                 uobj.outoffset = obj.outoffset;
                 uobj.inoffset = obj.inoffset;
                 $.ajax({async: false, url: "login.set.updatewg.action", type: "get", datatype: "JSON", data: uobj,

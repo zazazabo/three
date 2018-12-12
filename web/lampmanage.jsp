@@ -1159,20 +1159,20 @@ Author     : admin
                             </td>
                             <td></td>
                             <td>
-                                <span style="margin-left:10px;">灯具品牌</span>&nbsp;
+                                <span style="margin-left:10px;" name="xxx" id="579">灯具品牌</span>&nbsp;
                                 <input id="l_brand" class="form-control"  name="l_brand" style="width:150px;display: inline;" placeholder="请输入灯具品牌" type="text">
 
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">质保期</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="580">质保期</span>&nbsp;
                                 <input id="l_Warranty" class="form-control"  name="l_Warranty" style="width:150px;display: inline;" placeholder="请输入质保期" type="text">
                                 </span> 
                             </td>
                              <td></td>
                             <td>
-                                <span style="margin-left:10px;">灯具品牌</span>&nbsp;
+                                <span style="margin-left:10px;"  name="xxx" id="149">备注</span>&nbsp;
                                 <input id="l_remarks" class="form-control"  name="l_remarks" style="width:150px;display: inline;" placeholder="请输入备注" type="text">
 
                             </td>
@@ -1277,20 +1277,20 @@ Author     : admin
                             </td>
                             <td></td>
                             <td>
-                                <span style="margin-left:10px;">灯具品牌</span>&nbsp;
+                                <span style="margin-left:10px;" name="xxx" id="579">灯具品牌</span>&nbsp;
                                 <input id="l_brand1" class="form-control"  name="l_brand" style="width:150px;display: inline;" placeholder="请输入灯具品牌" type="text">
 
                             </td>
                         </tr> 
                         <tr>
                             <td>
-                                <span style="margin-left:20px;">质保期</span>&nbsp;
+                                <span style="margin-left:20px;" name="xxx" id="580">质保期</span>&nbsp;
                                 <input id="l_Warranty1" class="form-control"  name="l_Warranty" style="width:150px;display: inline;" placeholder="请输入质保期" type="text">
                                 </span> 
                             </td>
                              <td></td>
                             <td>
-                                <span style="margin-left:10px;">灯具品牌</span>&nbsp;
+                                <span style="margin-left:10px;" name="xxx" id="149">备注</span>&nbsp;
                                 <input id="l_remarks1" class="form-control"  name="l_remarks" style="width:150px;display: inline;" placeholder="请输入备注" type="text">
 
                             </td>

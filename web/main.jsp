@@ -374,6 +374,7 @@
                 obj.email = $("#email").val();
                 obj.phone = $("#phone").val();
                 obj.department = $("#department").val();
+                obj.id = getpojectId();
                 $.ajax({async: false, url: "login.usermanage.editUinfo.action", type: "get", datatype: "JSON", data: obj,
                     success: function (data) {
                         var arrlist = data.rs;

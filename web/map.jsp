@@ -583,6 +583,12 @@
                             width: 25,
                             align: 'center',
                             valign: 'middle'
+                        },{
+                            field: 'l_lampnumber',
+                            title: lans[453][lang], //灯杆编号
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
                         }, {
                             field: 'l_comaddr',
                             title: lans[55][lang], //所属网关
@@ -670,7 +676,7 @@
                         }, {
                             field: 'name',
                             title: lans[63][lang], //名称
-                            width: 25,
+                            width: 150,
                             align: 'center',
                             valign: 'middle'
                         }, {
@@ -1567,8 +1573,9 @@
                 for (var i = 0; i < arrlist.length; i++) {
                     (function (x) {
                         var obj = arrlist[i];
-                        var Longitude = obj.Longitude;
-                        var latitude = obj.latitude;
+                        var Longitude =parseFloat(obj.Longitude);
+                        var latitude = parseFloat(obj.latitude);
+                        console.log(Longitude +"|||"+latitude);
                         var Iszx = lans[285][lang];   //离线    
                         if (obj.online == 1) {
                             Iszx = lans[284][lang];   //在线    
