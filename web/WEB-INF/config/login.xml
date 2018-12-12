@@ -408,7 +408,7 @@
             </xsql>
         </xhandle>  
         <xhandle desc="查看用户是否存在子用户" id="loopsunuser" rtn="rs" rtnype="JSON">
-            <xsql id="a1" tpe="SQL" tpl="select * from t_user where  @CONDITION " var="rs">
+            <xsql id="a1" tpe="SQL" tpl="select * from t_user where  @CONDITION  and prohibit = 0 " var="rs">
                 <xflt id="CONDITION" tpl="@u_parent_id ">
                     <xfltpara id="u_parent_id" nrp="1=1" para="id" sql="u_parent_id =  :id ">
                     </xfltpara>
