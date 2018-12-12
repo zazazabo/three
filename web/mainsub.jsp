@@ -352,7 +352,7 @@
                 var date = new Date;
                 var year = date.getFullYear();
                 var month = date.getMonth() + 1;
-
+                var ldNumber = ${ldNumber[0].num};  //亮灯数
                 var wgsum = ${rs[0].num}; //网关总数
                 var wgzx = ${onlineNumber[0].num};  //网关在线数
                 var wglx = wgsum - wgzx;  //网关不在线数
@@ -370,10 +370,12 @@
                 if (gzdj > 0) {
                     $("#lyc").css("color", "red");
                 }
-                if ((${ybsdj[0].num-djgzs[0].num} - djlxs) <= 0) {
-                    $("#ldl").html("0%");
+                
+                //(${ybsdj[0].num-djgzs[0].num} - djlxs) <= 0
+                if (ldNumber <= 0) {
+                    $("#ldl").html("0.00%");
                 } else {
-                    var ldl = ((${ybsdj[0].num} - gzdj) /${ybsdj[0].num}) * 100;
+                    var ldl = (ldNumber /${ybsdj[0].num}) * 100;
                     $("#ldl").html(ldl.toFixed(2) + "%");
                 }
                 //计划能耗

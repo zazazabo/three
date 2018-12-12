@@ -358,10 +358,12 @@
                         align: 'center',
                         valign: 'middle',
                         formatter: function (value, row, index, field) {
-                            if (value == 0) {
+                           if(row.f_type =="ERC52" || row.f_type =="ERC50"){
+                                 return null;
+                            }else  if (value == 0) {
                                 var str = "<span class='label label-success'>" + langs1[127][lang] + "</span>";  //已处理
                                 return  str;
-                            } else {
+                            }   else {
                                 var str = "<span class='label label-warning'>" + langs1[128][lang] + "</span>";  //未处理
                                 return  str;
                             }

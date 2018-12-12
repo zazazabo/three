@@ -1418,22 +1418,7 @@
                                         if (inoffset == null || inoffset == "") {
                                             inoffset = 0;
                                         }
-                                        if(parseInt(arrlist[0].Longitude)>0){
-                                            $('#areazone').combobox('setValue', 0);
-                                            var num = (parseInt(arrlist[0].Longitude)/15).toFixed();
-                                            if(num<10){
-                                                num = "0"+num;
-                                            }
-                                            $("#timezone").val(num);
-                                            
-                                        }else{
-                                            $('#areazone').combobox('setValue', 1);
-                                             var num = (parseInt(arrlist[0].Longitude)/15).toFixed();
-                                              if(num<10){
-                                                num = "0"+num;
-                                            }
-                                             $("#timezone").val(num);
-                                        }
+                                        $("#timezone").val("08");
                                         $("#outoffset").val(out);
                                         $("#inoffset").val(inoffset);
                                     }

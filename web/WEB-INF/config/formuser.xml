@@ -53,6 +53,13 @@
                    
                 </xflt>
             </xsql>
+            <xsql desc="亮灯总数" id="ld" list="true" page="true" tpe="SQL" tpl="select count(id) as num from t_lamp where l_fault != 1 and presence = 1 and l_value != 0 and @CONDITION" var="ldNumber">
+                <xflt id="CONDITION" nrp="" tpl="@pid">
+                    <xfltpara id="pid" nrp="1=2" para="pid" sql="l_comaddr in(select comaddr from t_baseinfo where  pid = ':pid' )">
+                    </xfltpara>
+                   
+                </xflt>
+            </xsql>
             <xsql desc="灯具在线数" id="a9" list="true" page="true" tpe="SQL" tpl="select count(id) as num from t_lamp where  @CONDITION" var="djzxs">
                 <xflt id="CONDITION" nrp="" tpl="@pid">
                     <xfltpara id="pid" nrp="1=2" para="pid" sql="l_comaddr in(select comaddr from t_baseinfo where  pid = ':pid' ) and presence=1 and l_fault != 1 ">

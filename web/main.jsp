@@ -1109,7 +1109,9 @@
                         obj.code = pids[i];
                         $.ajax({url: "login.main.getpojcetname.action", async: false, type: "get", datatype: "JSON", data: obj,
                             success: function (data) {
-                                pname.push(data.rs[0].name);
+                                if(data.rs.length>0){
+                                    pname.push(data.rs[0].name);
+                                }
                             },
                             error: function () {
                                 alert("出现异常！");

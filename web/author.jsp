@@ -43,6 +43,12 @@
                     layerAler(langs1[249][lang]);  //角色名不能为空
                     return;
                 }
+                $('#panemask').showLoading({
+                    'afterShow': function () {
+                        setTimeout("$('#panemask').hideLoading()", 2000);
+                    }
+
+                });
                 $.ajax({async: false, url: "login.rolemanage.getrole.action", type: "POST", datatype: "JSON", data: {roletype: ${param.role}, name: name, enable: 1},
                     success: function (data) {
                         console.log(data);
@@ -220,16 +226,17 @@
 
 
             function addauthor() {
-               var zTreeOjb = $.fn.zTree.getZTreeObj("treeDemo");
+                var zTreeOjb = $.fn.zTree.getZTreeObj("treeDemo");
                 var pnode = zTreeOjb.getNodes(); //可以获取所有的父节点
                 var allnodes = zTreeOjb.transformToArray(pnode);  //获取所有节点
-               // var nodes = zTreeOjb.getCheckedNodes();
+                // var nodes = zTreeOjb.getCheckedNodes();
                 var roletype = $("#role").combobox('getValue');
                 var name = $("#role").combobox('getText');
                 if ($("#role").val() == "") {
                     layerAler(langs1[239][lang]);   //请选择要分配权限的角色
                     return;
                 }
+
 //                if (nodes.length == 0) {
 //                    layerAler(langs1[240][lang]);  //请勾选菜单列表
 //                    return;
@@ -237,36 +244,41 @@
                 layer.confirm(langs1[241][lang], {//确认要分配权限吗？
                     btn: [langs1[146][lang], langs1[147][lang]]//确定、取消按钮
                 }, function (index) {
+                    $('#panemask').showLoading({
+                        'afterShow': function () {
+                            setTimeout("$('#panemask').hideLoading()", 2000);
+                        }
 
+                    });
                     addlogon(u_name, "分配权限权限", o_pid, "角色权限管理", "修改权限");
                     var obj1 = {};
                     obj1.name = name;
                     obj1.roletype = roletype;
                     for (var i = 0; i < allnodes.length; i++) {
                         obj1.code = allnodes[i].id;
-                         if (allnodes[i].id == "0") {
+                        if (allnodes[i].id == "0") {
                             continue;
                         }
                         if (allnodes[i].checked == true) {
                             obj1.enable = 1;
-                             $.ajax({async: false, url: "login.rolemanage.getpower.action", type: "POST", datatype: "JSON", data: obj1,
-                            success: function (data) {
-                                //console.log(data);
-                            },
-                            error: function () {
-                                alert("提交失败！");
-                            }
-                        });
+                            $.ajax({async: false, url: "login.rolemanage.getpower.action", type: "POST", datatype: "JSON", data: obj1,
+                                success: function (data) {
+                                    //console.log(data);
+                                },
+                                error: function () {
+                                    alert("提交失败！");
+                                }
+                            });
                         } else {
                             obj1.enable = 0;
-                             $.ajax({async: false, url: "login.rolemanage.getpower.action", type: "POST", datatype: "JSON", data: obj1,
-                            success: function (data) {
-                                //console.log(data);
-                            },
-                            error: function () {
-                                alert("提交失败！");
-                            }
-                        });
+                            $.ajax({async: false, url: "login.rolemanage.getpower.action", type: "POST", datatype: "JSON", data: obj1,
+                                success: function (data) {
+                                    //console.log(data);
+                                },
+                                error: function () {
+                                    alert("提交失败！");
+                                }
+                            });
                         }
 
                     }
@@ -280,6 +292,7 @@
                     layerAler(langs1[505][lang]);   //请选择要删除的角色
                     return;
                 }
+
                 var obj = {};
                 obj.m_code = $("#role").val();
                 //查看角色是否已分配给用户
@@ -292,6 +305,12 @@
                             layer.confirm(langs1[145][lang], {//确认删除吗？
                                 btn: [langs1[146][lang], langs1[147][lang]]//确定、取消按钮
                             }, function (index) {
+                                $('#panemask').showLoading({
+                                    'afterShow': function () {
+                                        setTimeout("$('#panemask').hideLoading()", 2000);
+                                    }
+
+                                });
                                 addlogon(u_name, "删除角色", o_pid, "权限管理", "删除角色");
                                 var obj2 = {};
                                 obj2.roletype = $("#role").val();
@@ -348,7 +367,7 @@
                 });
                 var setting = {
                     callback: {
-                      //  onRightClick: OnRightClick
+                        //  onRightClick: OnRightClick
                     },
                     check: {
                         enable: true
@@ -430,7 +449,7 @@
         </script>
 
     </head>
-    <body>
+    <body id="panemask">
 
         <div class="panel panel-success">
             <div class="panel-heading">
