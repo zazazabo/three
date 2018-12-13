@@ -279,7 +279,7 @@
             function  resetCB(obj) {
                 console.log(obj);
                 if (obj.status = "success") {
-                    layerAler("复位成功");
+                    layerAler(langs1[582][lang]);  // 复位成功
                 }
             }
             function resetGayway() {
@@ -302,7 +302,7 @@
                             alert("提交失败！");
                         }
                     });
-                    layerAler("初始化成功");
+                    layerAler(langs1[583][lang]); //初始化成功
                 }
 
             }
@@ -455,7 +455,7 @@
                                 alert("提交失败！");
                             }
                         });
-                        layerAler("更换工作方式成功"); //更换工作方式
+                        layerAler(langs1[391][lang]); //更换工作方式成功
                     } else if (obj.msg == "A4" && obj.fn == 108) {
                         //删除所有灯配置
                         var o = {l_comaddr: obj.comaddr, l_deplayment: 0};
@@ -1620,7 +1620,7 @@
 
                                                 <select class="easyui-combobox" id="sitetype" name="sitetype" data-options="editable:true,valueField:'id', textField:'text' " style="width:150px; height: 30px">
                                                     <option value="0">域名</option>
-                                                    <option value="1">ip</option>            
+                                                    <option value="1">IP</option>            
                                                 </select>   
 
                                             </td>
@@ -1630,7 +1630,7 @@
                                                 <span  style=" float: right; margin-right: 2px;" name="xxx" id="189">主站ip或域名</span>
                                             </td>
                                             <td>
-                                                <input id="ip"  class="form-control" name="ip"  style="width:150px; " placeholder="输入主站域名" type="text">
+                                                <input id="ip"  class="form-control" name="ip"  style="width:150px; " placeholder="输入IP地址" type="text">
                                             </td>
                                         </tr>
 
