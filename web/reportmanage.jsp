@@ -346,7 +346,7 @@
                     // 设置默认分页为 50
                     pageList: [96,192,384],
                     onLoadSuccess: function (data) {  //加载成功时执行  表格加载完成时 获取集中器在线状态
-                        console.log(data);
+//                        console.log(data);
 //                        var obj = new Object();
 //                        var rows = data.rows;
 //                        var a = new Array();
@@ -530,10 +530,10 @@
 //                        obj.total=a.length;
 //                        console.log(obj);
 //                        $("#gravidaTable").bootstrapTable("load", obj);
-//                        var data = $('#gravidaTable').bootstrapTable('getData', true);
-//                        // 合并单元格
-//                        var fieldList = ["dayalis"];
-//                        mergeCells(data, "dayalis", 1, $('#gravidaTable'), fieldList);
+                        var data = $('#gravidaTable').bootstrapTable('getData', true);
+                        // 合并单元格
+                        var fieldList = ["dayalis"];
+                        mergeCells(data, "dayalis", 1, $('#gravidaTable'), fieldList);
                     },
 
                     //服务器url

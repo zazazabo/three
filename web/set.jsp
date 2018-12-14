@@ -293,10 +293,12 @@
                 dealsend2("01", data, 1, "resetCB", comaddr, 0, 0, 0, 0);
             }
             function initdataCB(obj) {
+                console.log(obj);
                 if (obj.status == "success") {
-                    $.ajax({async: false, url: "gayway.GaywayForm.ClearData.action", type: "get", datatype: "JSON", data: {},
+                    var o = {comaddr: obj.comaddr, l_deplayment: 0};
+                    $.ajax({async: false, url: "gayway.GaywayForm.ClearData.action", type: "get", datatype: "JSON", data: o,
                         success: function (data) {
-
+                            console.log(data);
                         },
                         error: function () {
                             alert("提交失败！");
@@ -659,7 +661,7 @@
                 addlogon(u_name, "设置", o_pid, "网关参数设置", "设置网关经纬度", o.l_comaddr);
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xff, num, 0, 10, vv); //01 03 F24   
-                
+
                 dealsend2("FF", data, 10, "allCallBack", comaddr, 0, 0, oo);
                 //修改网关参数
                 var uobj = {};
@@ -669,7 +671,7 @@
                 $.ajax({async: false, url: "login.set.updatewg.action", type: "get", datatype: "JSON", data: uobj,
                     success: function (data) {
                         //var arrlist = data.rs;
-                        
+
                     }
                 });
             }
@@ -1264,7 +1266,7 @@
                         var rlf = list.rl.substring(rlindex + 1, list.rl.length); //日落分
                         //日落
                         if (parseInt(inoffset) > 0) {
-                            rlf =parseInt(rlf) + parseInt(inoffset);
+                            rlf = parseInt(rlf) + parseInt(inoffset);
                             if (rlf >= 60) {
                                 rlf = rlf - 60;
                                 rls = parseInt(rls) + 1;
@@ -1296,9 +1298,9 @@
                                 rls = "0" + rls.toString();
                             }
                         }
-                         //日出
+                        //日出
                         if (parseInt(outoffset) > 0) {
-                            rcf =parseInt(rcf) + parseInt(outoffset);
+                            rcf = parseInt(rcf) + parseInt(outoffset);
                             if (rcf >= 60) {
                                 rcf = rcf - 60;
                                 rcs = parseInt(rcs) + 1;

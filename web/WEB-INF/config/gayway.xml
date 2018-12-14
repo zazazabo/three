@@ -11,11 +11,34 @@
         </xhandle>
         
         <xhandle desc="" id="ClearData" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="update t_lamp set l_deplayment=0" var="list">
+            
+            <xsql id="a1" para="l_deplayment" tpe="DDL" tpl="update t_lamp set l_deplayment=:l_deplayment where @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="1=2" tpl="@comaddr">
+                    <xfltpara id="comaddr" nrp="1=2" para="comaddr" sql="l_comaddr=':comaddr'">
+                    </xfltpara>
+                </xflt>
             </xsql>
-            <xsql id="a2" list="true" page="true" tpe="SQL" tpl="update t_loop set l_deplayment=0" var="list">
-            </xsql>
+            
+            <xsql id="a1" para="l_deplayment" tpe="DDL" tpl="update t_loop set l_deplayment=:l_deplayment where @CONDITION " var="rs">
+                <xflt id="CONDITION" nrp="1=2" tpl="@comaddr">
+                    <xfltpara id="comaddr" nrp="1=2" para="comaddr" sql="l_comaddr=':comaddr'">
+                    </xfltpara>
+                </xflt>
+            </xsql> 
+            
+            <!--            <xsql id="a1"   list="true" page="true" tpe="SQL" tpl="update t_lamp set l_deplayment=0 where 1=1" var="rs">
+            </xsql> -->
+            
+            <!--            <xsql id="a2" list="true" page="true" tpe="SQL" tpl="update t_loop set l_deplayment=0  where   @CONDITION " var="list">
+                <xflt id="CONDITION" nrp="" tpl="@l_comaddr ">
+                    <xfltpara id="l_comaddr" nrp="1=2"  sql="l_comaddr=':l_comaddr'">
+                    </xfltpara>
+                </xflt>
+            </xsql>-->
         </xhandle>    
+        
+ 
+        
         
         
         <xhandle desc="" id="List" rtnype="JSON">
