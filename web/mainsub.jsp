@@ -360,6 +360,11 @@
                 var djzxs = ${djzxs[0].num}; //灯具在线数
                 var lampNumber = ${lampNumber[0].num};  //灯具总数
                 var djlxs = lampNumber - gzdj - djzxs;  //灯具离线数
+                if(lampNumber<=0){
+                    djlxs = 0;
+                    gzdj = 0;
+                    djzxs = 0;
+                }
                 $("#wsum").html(langs1[494][lang] + ":" + wgsum);  //网关总数
                 $("#wonlin").html(langs1[284][lang] + ":" + wgzx);  //网关在线
                 $("#wlin").html(langs1[285][lang] + ":" + wglx);   //网关离线

@@ -139,13 +139,13 @@
 
                 var namesss = false;
 
-                addlogon(u_name, "添加", o_pid, "回路管理", "添加回路", o.l_comaddr);
                 $.ajax({async: false, cache: false, url: "loop.loopForm.getloopCode.action", type: "GET", data: o,
                     success: function (data) {
                         if (data.rs.length > 0) {
                             layerAler(langs1[360][lang]); //此回路已存在
                             return false;
                         }
+                        addlogon(u_name, "添加", o_pid, "回路管理", "添加【"+o.l_name+"】回路", o.l_comaddr);
                         $.ajax({async: false, cache: false, url: "loop.loopForm.addloop.action", type: "GET", data: o,
                             success: function (data) {
                                 if (data.rs.length > 0) {
@@ -237,7 +237,7 @@
             function modifyLoopName() {
                 var o = $("#form2").serializeObject();
                 o.l_code = o.l_factorycode;
-                addlogon(u_name, "修改", o_pid, "回路管理", "修改回路", $("#l_comaddr1").val());
+                addlogon(u_name, "修改", o_pid, "回路管理", "修改回路【"+o.l_name+"】", $("#l_comaddr1").val());
                 $.ajax({async: false, url: "loop.loopForm.modifyname.action", type: "get", datatype: "JSON", data: o,
                     success: function (data) {
                         var arrlist = data.rs;
@@ -744,7 +744,7 @@
                         offset: 'center',
                         title: langs1[174][lang]  //提示
                     }, function (index) {
-                        addlogon(u_name, "删除", o_pid, "回路管理", "删除回路");
+                       
                         for (var i = 0; i < selects.length; i++) {
                             var select = selects[i];
                             var l_deployment = select.l_deplayment;
@@ -752,6 +752,7 @@
                                 layerAler(langs1[368][lang]);  //已部署不能删除
                                 continue;
                             } else {
+                                addlogon(u_name, "删除", o_pid, "回路管理", "删除回路【"+select.l_name+"】");
                                 $.ajax({url: "loop.loopForm.deleteLoop.action", type: "POST", datatype: "JSON", data: {id: select.id},
                                     success: function (data) {
                                         var arrlist = data.rs;

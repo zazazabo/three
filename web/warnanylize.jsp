@@ -72,7 +72,7 @@
                     layerAler(langs1[152][lang]); //请选择年
                     return;
                 }
-                addlogon(u_name, "保存配置", o_pid, "节能分析设置", "修改计划值");
+                addlogon(u_name, "保存配置", o_pid, "节能分析设置", "修改【"+vday.day+"】年计划值");
                 for (var k in f1) {
                     var len1 = "plan_value".length;
                     var t = k.indexOf("plan_value");

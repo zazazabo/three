@@ -55,8 +55,8 @@
             function checkPlanLampAdd() {
 
                 var a = $("#formadd").serializeObject();
-                addlogon(u_name, "添加", o_pid, "灯具策略", "添加灯具方案");
                 if (a.p_type == "0") {
+                    addlogon(u_name, "添加", o_pid, "灯具策略", "添加时间灯具方案【"+a.p_name+"】");
                     var val1 = 0;
                     var val2 = 0;
                     var val3 = 0;
@@ -112,6 +112,7 @@
                 }
                 if (a.p_type == "1") {
                     console.log("场景方案");
+                    addlogon(u_name, "添加", o_pid, "灯具策略", "添加场景灯具方案【"+a.p_name+"】");
                     var o = {};
                     for (var i = 0; i < 8; i++) {
                         var f = "p_scene" + (i + 1).toString();
@@ -153,7 +154,7 @@
 
             function editlampplan_finish() {
                 var a = $("#form2").serializeObject();
-                addlogon(u_name, "修改", o_pid, "灯具策略", "修改灯具方案");
+                addlogon(u_name, "修改", o_pid, "灯具策略", "修改【"+a.p_name+"】灯具方案");
                 if (a.p_type == "0") {
                     var val1 = 0;
                     var val2 = 0;
@@ -346,9 +347,9 @@
                     offset: 'center',
                     title: langs1[174][lang]   //提示
                 }, function (index) {
-                    addlogon(u_name, "删除", o_pid, "灯具策略", "删除灯具方案");
                     for (var i = 0; i < selects.length; i++) {
                         var select = selects[i];
+                        addlogon(u_name, "删除", o_pid, "灯具策略", "删除【"+select.p_name+"】灯具方案");
                         $.ajax({async: false, url: "loop.planForm.deleteloop.action", type: "get", datatype: "JSON", data: {id: select.id},
                             success: function (data) {
                                 var arrlist = data.rs;

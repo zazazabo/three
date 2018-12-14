@@ -413,7 +413,7 @@
                     var obj = {};
                     obj.id = checks[i].id;
                     obj.f_handlep = username;  //处理人
-                    obj.f_handletime = getNowFormatDate2();//处理时间
+                   // obj.f_handletime = getNowFormatDate2();//处理时间
                     $.ajax({async: false, url: "login.main.updfualt.action", type: "get", datatype: "JSON", data: obj,
                         success: function (data) {
                         }

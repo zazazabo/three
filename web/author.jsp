@@ -78,7 +78,7 @@
                             }
                             alert(langs1[144][lang]); //添加成功
                             getcombox();
-                            addlogon(u_name, "添加", o_pid, "角色权限管理", "添加角色");
+                            addlogon(u_name, "添加", o_pid, "角色权限管理", "添加角色[【"+name+"】");
                         }
                     },
                     error: function () {
@@ -250,7 +250,7 @@
                         }
 
                     });
-                    addlogon(u_name, "分配权限权限", o_pid, "角色权限管理", "修改权限");
+                    addlogon(u_name, "分配权限权限", o_pid, "角色权限管理", "修改【"+name+"】权限");
                     var obj1 = {};
                     obj1.name = name;
                     obj1.roletype = roletype;
@@ -292,7 +292,7 @@
                     layerAler(langs1[505][lang]);   //请选择要删除的角色
                     return;
                 }
-
+                var name = $("#role").combobox('getText');
                 var obj = {};
                 obj.m_code = $("#role").val();
                 //查看角色是否已分配给用户
@@ -300,7 +300,7 @@
                     success: function (data) {
                         var rs = data.rs;
                         if (rs.length > 0) {
-                            layerAler("该角色已分配给用户不可删除");
+                            layerAler(langs1[587][lang]);  //该角色已分配给用户不可删除
                         } else {
                             layer.confirm(langs1[145][lang], {//确认删除吗？
                                 btn: [langs1[146][lang], langs1[147][lang]]//确定、取消按钮
@@ -311,7 +311,7 @@
                                     }
 
                                 });
-                                addlogon(u_name, "删除角色", o_pid, "权限管理", "删除角色");
+                                addlogon(u_name, "删除角色", o_pid, "权限管理", "删除角色【"+name+"】");
                                 var obj2 = {};
                                 obj2.roletype = $("#role").val();
                                 $.ajax({async: false, url: "login.rolemanage.deleterole.action", type: "POST", datatype: "JSON", data: obj2,

@@ -128,7 +128,7 @@
                                 }
                             }
                         }],
-                    singleSelect: false,
+                    singleSelect: true,
                     locale: 'zh-CN', //中文支持,
                     pagination: true,
                     pageNumber: 1,
@@ -198,7 +198,7 @@
 
                 });
                 obj.uid = uid;
-                addlogon(u_name, "添加", o_pid, "项目管理", "添加项目");
+                addlogon(u_name, "添加", o_pid, "项目管理", "添加【"+obj.name+"】项目");
                 var isflesh = false;
                 $.ajax({url: "login.project.queryProject.action", async: false, type: "POST", datatype: "JSON", data: obj,
                     success: function (data) {
@@ -336,7 +336,7 @@
                     layerAler(langs1[262][lang]);  //项目名不能为空
                     return;
                 }
-                addlogon(u_name, "修改", o_pid, "项目管理", "修改项目信息");
+                addlogon(u_name, "修改", o_pid, "项目管理", "修改项目【"+pname+"】信息");
                 var obj = {};
                 obj.area = $("#parea").val();
                 obj.name = pname;
@@ -384,7 +384,7 @@
                                 layerAler(langs1[264][lang]);  //该项目下存在网关，不可删除
                             } else {
                                 if (uid == selects[0].uid) {
-                                    addlogon(u_name, "删除", o_pid, "项目管理", "删除项目");
+                                    addlogon(u_name, "删除", o_pid, "项目管理", "删除项目【"+selects[0].name+"】");
                                     $.ajax({async: false, url: "login.project.delete.action", type: "POST", datatype: "JSON", data: {id: selects[0].id},
                                         success: function (data) {
                                             var arrlist = data.rs;
@@ -456,7 +456,7 @@
                                                     pobj.id = parentid;
                                                     if (parentid != 0) {
                                                         if (uid == parentid) {
-                                                            addlogon(u_name, "删除", o_pid, "项目管理", "删除项目");
+                                                            addlogon(u_name, "删除", o_pid, "项目管理", "删除项目【"+selects[0].name+"】");
                                                             $.ajax({async: false, url: "login.project.delete.action", type: "POST", datatype: "JSON", data: {id: selects[0].id},
                                                                 success: function (data) {
                                                                     var arrlist = data.rs;

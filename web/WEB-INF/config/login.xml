@@ -53,7 +53,7 @@
         </xhandle>
         
         <xhandle desc="修改故障信息为已读" id="updfualt" rtnype="JSON">
-            <xsql id="a1" para="f_handletime,f_handlep" tpe="DDL" tpl="update t_fault set f_Isfault = 0,f_handletime=':f_handletime',f_handlep=':f_handlep'  where  @CONDITION " var="rs">
+            <xsql id="a1" para="f_handlep" tpe="DDL" tpl="update t_fault set f_Isfault = 0,f_handletime= GETDATE(),f_handlep=':f_handlep'  where  @CONDITION " var="rs">
                 <xflt id="CONDITION" nrp="" tpl="@id">
                     <xfltpara id="id" nrp="1=2" para="id" sql="id=:id">
                     </xfltpara>

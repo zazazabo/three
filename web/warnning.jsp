@@ -178,7 +178,7 @@
                                 layerAler(langs1[143][lang]);  //修改成功
                                 $("#gravidaTable").bootstrapTable('refresh');
                                 $("#updatetable").modal('hide');  //手动关闭
-                                addlogon(u_name, "修改", o_pid, "报警设置", "修改报警管理人员");
+                                addlogon(u_name, "修改", o_pid, "报警设置", "修改【"+uname+"】报警管理人员");
                             }
                         },
                         error: function () {
@@ -237,7 +237,7 @@
                             layerAler(langs1[144][lang]);//添加成功
                             $("#gravidaTable").bootstrapTable('refresh');
                             $("#addtable").modal('hide');  //自动关闭
-                            addlogon(u_name, "添加", o_pid, "报警设置", "添加报警管理人员");
+                            addlogon(u_name, "添加", o_pid, "报警设置", "添加【"+name+"】报警管理人员");
                         }
                     },
                     error: function () {
@@ -257,8 +257,8 @@
                 layer.confirm(langs1[145][lang], {//确定要删除吗？
                     btn: [langs1[146][lang], langs1[147][lang]]//按钮
                 }, function (index) {
-                    addlogon(u_name, "删除", o_pid, "报警设置", "删除报警管理人员");
                     var select = selects[0];
+                    addlogon(u_name, "删除", o_pid, "报警设置", "删除报警管理人员【"+select.u_name+"】");
                     $.ajax({async: false, url: "login.warnning.deletepeople.action", type: "POST", datatype: "JSON", data: {u_id: select.u_id},
                         success: function (data) {
                             var arrlist = data.rs;

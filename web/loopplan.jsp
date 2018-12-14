@@ -62,7 +62,7 @@
                     success: function (data) {
                         var arrlist = data.rs;
                         if (arrlist.length == 1) {
-                            addlogon(u_name, "修改", o_pid, "回路策略", "修改回路方案");
+                            addlogon(u_name, "修改", o_pid, "回路策略", "修改【"+obj.p_name+"】回路方案");
                             var url = "loop.planForm.getLoopPlan.action";
                             var obj1 = {p_type: obj.p_type, pid: "${param.pid}"};
                             var opt = {url: url, silent: true, query: obj1};
@@ -133,7 +133,7 @@
                         success: function (data) {
                             var arrlist = data.rs;
                             if (arrlist.length == 1) {
-                                addlogon(u_name, "删除", o_pid, "回路策略", "删除回路方案");
+                                addlogon(u_name, "删除", o_pid, "回路策略", "删除【"+select.p_name+"】回路方案");
                                 $('#table_loop').bootstrapTable('refresh');
                             }
 
@@ -172,7 +172,7 @@
                 }
                 console.log("表单对象", obj);
                 var ret = false;
-                addlogon(u_name, "添加", o_pid, "回路策略", "添加回路方案");
+                addlogon(u_name, "添加", o_pid, "回路策略", "添加【"+obj.p_name+"】回路方案");
                 $.ajax({async: false, url: url, type: "get", datatype: "JSON", data: obj,
                     success: function (data) {
                         var arrlist = data.rs;

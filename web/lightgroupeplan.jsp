@@ -52,7 +52,7 @@
                             var arrlist = data.rs;
                             if (arrlist.length == 1) {
                                 layerAler(langs1[391][lang]);  //更换工作方式成功
-                                addlogon(u_name, "更换工作方式", o_pid, "灯具分组管理", "更换工作方式",obj.comaddr);
+                                addlogon(u_name, "更换工作方式", o_pid, "灯具分组管理", "更换组号【"+obj.param+"】灯具工作方式",obj.comaddr);
                             }
                         },
                         error: function () {
@@ -255,7 +255,7 @@
                                 if (arrlist.length == 1) {
                                     // $('#p_plan').combobox('reload');
                                     layerAler(langs1[394][lang]);   //部署灯具时间方案成功
-                                    addlogon(u_name, "部署", o_pid, "灯具分组管理", "部署灯具方案",obj.comaddr);
+                                    addlogon(u_name, "部署", o_pid, "灯具分组管理", "组号【"+a.l_groupe+"】部署灯具方案",obj.comaddr);
                                     // $('#p_plan').combobox('setValue', a.p_code);
                                 }
                             },
