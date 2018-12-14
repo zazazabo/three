@@ -99,7 +99,7 @@
                     console.log(o);
                     $.ajax({async: false, url: "loop.loopForm.editlooptime.action", type: "get", datatype: "JSON", data: o,
                         success: function (data) {
-                            layerAler("设置成功");
+                            layerAler(langs1[377][lang]);  //设置成功
                         },
                         error: function () {
                             alert("提交失败！");
@@ -245,7 +245,7 @@
 
                     var ele = selects[i];
                     var comaddr = ele.l_comaddr;
-                    addlogon(u_name, "部署", o_pid, "回路部署", "部署回路", comaddr);
+                    addlogon(u_name, "部署", o_pid, "回路部署", "部署回路【"+ele.l_name+"】", comaddr);
                     if (o1.l_comaddr != comaddr) {
                         layerAler(langs1[376][lang]);  //只能在同一网关下操作
                         return;
@@ -293,7 +293,7 @@
                 for (var i = 0; i < selects.length; i++) {
                     var ele = selects[i];
                     var comaddr = ele.l_comaddr;
-                    addlogon(u_name, "移除", o_pid, "回路部署", "移除回路", comaddr);
+                    addlogon(u_name, "移除", o_pid, "回路部署", "移除回路【"+ele.l_name+"】", comaddr);
                     if (o1.l_comaddr != comaddr) {
                         layerAler(langs1[376][lang]);  //只能在同一网关下操作
                         return;
@@ -417,7 +417,7 @@
                 }
 
                 var comaddr = s.l_comaddr;
-                addlogon(u_name, "部署", o_pid, "回路部署", "部署回路方案", comaddr);
+                addlogon(u_name, "部署", o_pid, "回路部署", "【"+s.l_name+"】部署回路方案", comaddr);
                 var param = {p_intime: obj.intime, p_outtime: obj.outtime, p_code: obj.p_plan,lid:s.id};
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(comaddr, 0x04, 0xA4, num, 0, 401, vv); //01 03 F24    

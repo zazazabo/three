@@ -282,7 +282,7 @@
                                     layerAler(langs1[144][lang]); //添加成功
                                     $("#gravidaTable").bootstrapTable('refresh');
                                     $("#pjj").modal('hide'); //手动关闭
-                                    addlogon(u_name, "添加", o_pid, "用户管理", "添加用户");
+                                    addlogon(u_name, "添加", o_pid, "用户管理", "添加用户【"+obj.name+"】");
                                 }
                             },
                             error: function () {
@@ -365,7 +365,7 @@
                             layerAler(langs1[143][lang]); //修改成功
                             $("#gravidaTable").bootstrapTable('refresh');
                             $("#pjj2").modal('hide'); //手动关闭
-                            addlogon(u_name, "修改", o_pid, "用户管理", "修改用户信息");
+                            addlogon(u_name, "修改", o_pid, "用户管理", "修改用户【"+formobj.name+"】信息");
                         }
                     },
                     error: function () {
@@ -396,7 +396,7 @@
                                         var arrlist = data.rs;
                                         if (arrlist.length == 1) {
                                             $("#gravidaTable").bootstrapTable('refresh');
-                                            addlogon(u_name, "删除", o_pid, "用户管理", "删除用户");
+                                            addlogon(u_name, "删除", o_pid, "用户管理", "删除用户【"+select.name+"】");
                                         }
                                     },
                                     error: function () {
@@ -427,7 +427,7 @@
                         var arrlist = data.rs;
                         if (arrlist.length == 1) {
                             layerAler(langs1[230][lang]);  //重置成功
-                            addlogon(u_name, "重置密码", o_pid, "用户管理>编辑", "重置用户密码");
+                            addlogon(u_name, "重置密码", o_pid, "用户管理>编辑", "重置用户【"+select.name+"】密码");
                         } else {
                             layerAler(langs1[231][lang]);  //重置失败
                         }

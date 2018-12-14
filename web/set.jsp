@@ -116,6 +116,8 @@
                 }
             }
             function setTimeNow() {
+                var o = $("#form1").serializeObject();
+                addlogon(u_name, "设置", o_pid, "网关参数设置", "设置集控器时间", o.l_comaddr);
                 var time = $('#nowtime').datetimebox('getValue');
                 var myDate = new Date(time);
 
@@ -1195,7 +1197,8 @@
                 }
             }
             function setArea() {
-                addlogon(u_name, "设置", o_pid, "网关参数设置", "设置行政参数划码");
+                var o = $("#form1").serializeObject();
+                addlogon(u_name, "设置", o_pid, "网关参数设置", "设置行政参数划码",o.l_comaddr);
                 var vv = [];
                 var obj = $("#form1").serializeObject();
                 var obj1 = $("#form2").serializeObject();
@@ -1243,14 +1246,14 @@
                 obj.jd = $("#Longitude").val();
                 obj.wd = $("#latitude").val();
                 if (obj.jd == "" || obj.wd == "") {
-                    layerAler("请读取集控器经纬度");
+                    layerAler(langs1[585][lang]);  //请读取集控器经纬度
                     return;
                 }
                 var outoffset = $("#outoffset").val(); //日出偏移
                 var inoffset = $("#inoffset").val();  //日落偏移
                 //parseFloat
                 if (parseInt(outoffset).toString() == "NaN" || parseInt(inoffset).toString() == "NaN") {
-                    layerAler("偏移量为数字类型");
+                    layerAler(langs1[586][lang]);  //偏移量为数字类型
                     return;
                 }
                 $.ajax({async: false, url: "login.rc.r.action", type: "get", datatype: "JSON", data: obj,

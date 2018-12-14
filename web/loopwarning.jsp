@@ -106,11 +106,12 @@
 
 
         function LoopWarningCb(obj) {
+            var obj = $("#form1").serializeObject();
             if (obj.status == "success") {
 
                 if (obj.msg == "A4" && obj.fn == 610) {
                     layerAler(langs1[218][lang]);  //报警参数设置成功
-                    addlogon(u_name, "设置", o_pid, "回路预报警", "设置回路预报警参数");
+                    addlogon(u_name, "设置", o_pid, "回路预报警", "设置回路预报警参数",obj.l_comaddr);
                 }
             }
         }

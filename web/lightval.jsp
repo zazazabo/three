@@ -202,7 +202,7 @@
                     vv.push(h); //装置序号  2字节
                     var num = randnum(0, 9) + 0x70;
                     var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 140, vv); //01 03
-                    addlogon(u_name, "灯具调光", o_pid, "灯具调光", "单灯恢复自动运行", l_comaddr);
+                    addlogon(u_name, "灯具调光", o_pid, "灯具调光", "恢复灯具【"+select.l_name+"】自动运行", l_comaddr);
                     dealsend2("A5", data, 180, "restoreCB", l_comaddr, o.type, 0, select.l_code);
                 }
                 $('#panemask').showLoading({
@@ -326,7 +326,7 @@
                 param.row = select.index;
                 var num = randnum(0, 9) + 0x70;
                 var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 304, vv); //01 03
-                addlogon(u_name, "灯具调光", o_pid, "灯具调光", "单灯场景立即调光", l_comaddr);
+                addlogon(u_name, "灯具调光", o_pid, "灯具调光", "灯具【"+select.l_name+"】场景立即调光", l_comaddr);
                 dealsend2("A5", data, 304, "sceneCB", l_comaddr, obj.lighttype, param, scenenum);
                 $('#panemask').showLoading({
                     'afterShow': function () {
@@ -415,7 +415,7 @@
                 param.id = select.id;
                 param.row = select.index;
                 var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 301, vv); //01 03
-                addlogon(u_name, "灯具调光", o_pid, "灯具调光", "单灯立即调光", l_comaddr);
+                addlogon(u_name, "灯具调光", o_pid, "灯具调光", "【"+select.l_name+"】立即调光", l_comaddr);
                 dealsend2("A5", data, 301, "lightCB", l_comaddr, o.groupetype, param, lampval);
                 $('#panemask').showLoading({
                     'afterShow': function () {

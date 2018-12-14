@@ -37,7 +37,6 @@ Author     : admin
                     layerAler(langs1[350][lang]); //请选择您要保存的数据
                     return;
                 }
-                addlogon(u_name, "添加", o_pid, "灯具管理", "导入Excel添加灯具");
                 var pid = parent.parent.getpojectId();
                 for (var i = 0; i <= selects.length - 1; i++) {
                     var comaddr = selects[i].网关地址;
@@ -77,6 +76,7 @@ Author     : admin
                                                     var arrlist = data.rs;
                                                     console.log("L:" + arrlist.length);
                                                     if (arrlist.length == 1) {
+                                                        addlogon(u_name, "添加", o_pid, "灯具管理", "导入Excel添加灯具【"+lampname+"】");
                                                         var ids = []; //定义一个数组
                                                         var xh = selects[i].序号;
                                                         console.log("xh:" + xh);
@@ -132,10 +132,13 @@ Author     : admin
                         }
                     }
                     for (var i = 0; i < selects.length; i++) {
-                        addlogon(u_name, "删除", o_pid, "灯具管理", "删除灯具", selects[i].l_comaddr);
+                        
                         $.ajax({url: "lamp.lampform.deleteLamp.action", type: "POST", datatype: "JSON", data: {id: selects[i].id},
                             success: function (data) {
-
+                                var rs = data.rs;
+                               if(rs.length){
+                                   addlogon(u_name, "删除", o_pid, "灯具管理", "删除灯具【"+selects[i].l_name+"】", selects[i].l_comaddr);
+                               }
                             },
                             error: function () {
                                 layerAler("提交失败");
@@ -152,7 +155,7 @@ Author     : admin
 
             function  editlamp() {
                 var o = $("#form2").serializeObject();
-                addlogon(u_name, "修改", o_pid, "灯具管理", "修改灯具", o.l_comaddr);
+                addlogon(u_name, "修改", o_pid, "灯具管理", "修改灯具【"+o.l_name+"】", o.l_comaddr);
                 $.ajax({async: false, url: "lamp.lampform.modifylamp.action", type: "get", datatype: "JSON", data: o,
                     success: function (data) {
                         var a = data.rs;
@@ -230,7 +233,7 @@ Author     : admin
                                     var arrlist = data.rs;
                                     if (arrlist.length == 1) {
                                         isflesh = true;
-                                        addlogon(u_name, "添加", o_pid, "灯具管理", "添加灯具", o.l_comaddr);
+                                        addlogon(u_name, "添加", o_pid, "灯具管理", "添加灯具【"+o.l_name+"】", o.l_comaddr);
                                         $("#gravidaTable").bootstrapTable('refresh');
                                     }
                                 },

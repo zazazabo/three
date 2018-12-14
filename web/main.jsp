@@ -24,7 +24,7 @@
             .menuMessage{
                 padding-left: 5px;
             }
-             table td { line-height: 40px; } 
+            table td { line-height: 40px; } 
             .menuBox { position: relative; background: skyblue; } 
             .a-upload { padding: 4px 10px; height: 30px; line-height: 20px; position: relative; cursor: pointer; color: #888; background: #fafafa; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; display: inline-block; *display: inline; *zoom: 1 } 
             .a-upload input { position: absolute; font-size: 100px; right: 0; top: 0; opacity: 0; filter: alpha(opacity = 0); cursor: pointer } 
@@ -257,7 +257,7 @@
             }
 
             function  getusername() {
-                var name = $("#u_name").text();
+                var name = $("#u_name").val();
                 return name;
             }
 
@@ -293,7 +293,7 @@
                     //console.log(checks[i].id);
                     var obj = {};
                     obj.id = checks[i].id;
-                    obj.f_handlep = $("#u_name").text();  //处理人
+                    obj.f_handlep = $("#u_name").val();  //处理人
                     obj.f_handletime = getNowFormatDate2();//处理时间
                     $.ajax({async: false, url: "login.main.updfualt.action", type: "get", datatype: "JSON", data: obj,
                         success: function (data) {
@@ -321,7 +321,7 @@
                     query: obj2
                 };
                 $("#fauttable").bootstrapTable('refresh', opt);
-                var name = $("#u_name").text();
+                var name = $("#u_name").val();
                 addlogon(name, "处理异常", pid, "首页", "处理异常");
                 fualtCount();
 
@@ -335,7 +335,7 @@
                 }, function (index) {
                     window.location = "${pageContext.request.contextPath }/login.jsp";
                     var nobj = {};
-                    var name = $("#u_name").text();
+                    var name = $("#u_name").val();
                     nobj.name = name;
                     var day = getNowFormatDate2();
                     nobj.time = day;
@@ -357,8 +357,8 @@
 
 
             }
-            
-             //弹出修改个人信息框
+
+            //弹出修改个人信息框
             function  updshow() {
                 $("#uname").val($("#u_name").val());
                 $("#email").val($("#e1").text());
@@ -369,7 +369,7 @@
             //修改个人信息
             function updateinfo() {
                 var obj = {};
-                 obj.type = "ALL";
+                obj.type = "ALL";
                 obj.name = encodeURI($("#uname").val());
                 obj.email = $("#email").val();
                 obj.phone = $("#phone").val();
@@ -379,7 +379,7 @@
                     success: function (data) {
                         var arrlist = data.rs;
                         if (arrlist.length > 0) {
-                            layerAler("修改成功！");
+                            layerAler(o[143][lang]); //修改成功
                             $('#updinfo').modal("hide");
                         }
                     }
@@ -506,10 +506,10 @@
                                     var wgobj = {};
                                     wgobj.comaddr = value;
                                     var name = "";
-                                    $.ajax({url:"login.main.selectwgname.action", async: false, type: "get", datatype: "JSON", data:wgobj,
+                                    $.ajax({url: "login.main.selectwgname.action", async: false, type: "get", datatype: "JSON", data: wgobj,
                                         success: function (data) {
                                             name = data.rs[0].name;
-                                            
+
                                         }
                                     });
                                     return  name;
@@ -533,13 +533,13 @@
                             width: 20,
                             align: 'center',
                             valign: 'middle'
-                        },{
+                        }, {
                             field: 'f_name',
                             title: o[54][lang2], //灯具名称  o[292][lang]
                             width: 20,
                             align: 'center',
                             valign: 'middle'
-                        },{
+                        }, {
                             field: 'l_factorycode',
                             title: o[292][lang2], //灯具编号  o[292][lang]
                             width: 20,
@@ -586,61 +586,61 @@
                                     }
 
                                     return str.substr(0, str.length - 1);
-                                }else if (row.f_type == "ERC50") {
-                                var s1 = parseInt(row.f_status1);
-                                var s2 = parseInt(row.f_status2);
-                                var a1 = s1 & 0x1;
-                                if (a1 == 1) {
-                                    a1 = "手动";
-                                } else {
-                                    a1 = "自动";
-                                }
-                                var a2 = s1 >> 1 & 0x1;
-                                var aa2 = 0x1;
-                                if (a2 == aa2) {
-                                    a2 = "经纬度";
-                                } else {
-                                    a2 = "时间表";
-                                }
-                                var a3 = s1 >> 2 & 0x1;
-                                if (a3 == 1) {
-                                    a3 = "闭合";
-                                } else {
-                                    a3 = "断开";
-                                }
-
-                                var b1 = s2 & 0x1;
-                                if (b1 == 1) {
-                                    b1 = "闭合";
-                                } else {
-                                    b1 = "断开";
-                                }
-                                var b2 = s2 >> 1 & 0x1;
-                                var bb2 = 0x1;
-                                if (b2 == bb2) {
-                                    b2 = "未校时";
-                                } else {
-                                    b2 = "校时";
-                                }
-                                var l_names = "";
-                                var obj = {};
-                                obj.l_comaddr = row.f_comaddr;
-                                obj.l_factorycode = row.f_setcode;
-                                $.ajax({async: false, url: "login.policereord.getlname.action", type: "POST", datatype: "JSON", data: obj,
-                                    success: function (data) {
-                                       var rs = data.rs;
-                                       l_names = rs[0].l_name;
+                                } else if (row.f_type == "ERC50") {
+                                    var s1 = parseInt(row.f_status1);
+                                    var s2 = parseInt(row.f_status2);
+                                    var a1 = s1 & 0x1;
+                                    if (a1 == 1) {
+                                        a1 = "手动";
+                                    } else {
+                                        a1 = "自动";
                                     }
-                                });
-                                //  var a2= s1>>1&0x1==0x1?"经纬度":"时间表";
-                                //  var a3= s1>>2&0x1==1?"闭合":"断开";
-                                // var str1="运行方式" + () + "运行模式:"  + (s1>>1&0x1==0x1?"经纬度":"时间表") + "回路继电器状态:" +（s1>>2&0x1==1?"闭合":"断开")
+                                    var a2 = s1 >> 1 & 0x1;
+                                    var aa2 = 0x1;
+                                    if (a2 == aa2) {
+                                        a2 = "经纬度";
+                                    } else {
+                                        a2 = "时间表";
+                                    }
+                                    var a3 = s1 >> 2 & 0x1;
+                                    if (a3 == 1) {
+                                        a3 = "闭合";
+                                    } else {
+                                        a3 = "断开";
+                                    }
 
-                                //    var str2="回路交流接触器状态:" + (s2&0x1?==1:"闭合":"断开") + "回路校时状态:"  + (s2>>1&0x1==0x1?"末校时":"校时");
-                                var str1 = "运行方式：" + a1 +"运行模式：" + a2 + "回路继电器状态：" + a3;
-                                var str2 = "回路交流接触器状态：" + b1 + "回路校时状态：" + b2;
-                                return str1 + str2+"回路名称："+ l_names;
-                            }  else {
+                                    var b1 = s2 & 0x1;
+                                    if (b1 == 1) {
+                                        b1 = "闭合";
+                                    } else {
+                                        b1 = "断开";
+                                    }
+                                    var b2 = s2 >> 1 & 0x1;
+                                    var bb2 = 0x1;
+                                    if (b2 == bb2) {
+                                        b2 = "未校时";
+                                    } else {
+                                        b2 = "校时";
+                                    }
+                                    var l_names = "";
+                                    var obj = {};
+                                    obj.l_comaddr = row.f_comaddr;
+                                    obj.l_factorycode = row.f_setcode;
+                                    $.ajax({async: false, url: "login.policereord.getlname.action", type: "POST", datatype: "JSON", data: obj,
+                                        success: function (data) {
+                                            var rs = data.rs;
+                                            l_names = rs[0].l_name;
+                                        }
+                                    });
+                                    //  var a2= s1>>1&0x1==0x1?"经纬度":"时间表";
+                                    //  var a3= s1>>2&0x1==1?"闭合":"断开";
+                                    // var str1="运行方式" + () + "运行模式:"  + (s1>>1&0x1==0x1?"经纬度":"时间表") + "回路继电器状态:" +（s1>>2&0x1==1?"闭合":"断开")
+
+                                    //    var str2="回路交流接触器状态:" + (s2&0x1?==1:"闭合":"断开") + "回路校时状态:"  + (s2>>1&0x1==0x1?"末校时":"校时");
+                                    var str1 = "运行方式：" + a1 + "运行模式：" + a2 + "回路继电器状态：" + a3;
+                                    var str2 = "回路交流接触器状态：" + b1 + "回路校时状态：" + b2;
+                                    return str1 + str2 + "回路名称：" + l_names;
+                                } else {
                                     return  value;
                                 }
                             }
@@ -734,11 +734,11 @@
                     lang = "zh_CN";
                     changeLanguage(lang);
                 }
-                if(lang=="zh_CN"){
+                if (lang == "zh_CN") {
                     $("#langtext").html(":中文");
-                }else if(lang=="en_US"){
+                } else if (lang == "en_US") {
                     $("#langtext").html(":English");
-                }else{
+                } else {
                     $("#langtext").html(":Русский");
                 }
             <c:forEach items="${lans}" var="t" varStatus="i">
@@ -864,7 +864,7 @@
 
 
                             <ul class="two animated fadeInDown language" style="background: rgb(92, 183, 92) none repeat scroll 0% 0%; color: rgb(255, 255, 255); width: 130px;">
-             
+
                                 <li language="zh_CN">中文</li>
                                 <li language="en_US">English</li>
                                 <li language="e_BY">Русский</li>
@@ -874,7 +874,7 @@
                             <!--  <i class="layui-icon indexIcon"></i>  -->
                             <!--<span class="glyphicon glyphicon-user"></span>-->
                             <span class="Till" style=" padding-left: 24px; box-sizing: border-box; color: rgb(255, 255, 255);">
-                                <span  class="admin" style="color: rgb(255, 255, 255);"><img src="./img/user.jpg" style=" height: 40px; width: 40px;vertical-align: middle; border-radius: 16px;"></span>
+                                <span  class="admin" style="color: rgb(255, 255, 255); margin-top: -6px;"><img src="./img/user.jpg" style=" height: 40px; width: 40px;vertical-align: middle; border-radius: 16px;"></span>
                                 <input id="m_code" type="hidden" value="${rs[0].m_code}"/>
                                 <input id="pwd" type="hidden" value="${rs[0].password}"/>
                                 <input id="userid" type="hidden" value="${rs[0].id}"/>
@@ -884,21 +884,21 @@
                             <ul class="two animated fadeInDown twoL" style="background:rgb(92, 183, 92) none repeat scroll 0% 0%; color: rgb(255, 255, 255); width: 230px; margin-top:0px;">
                                 <li style=" height: 40px;"><img src="./img/user.jpg" style=" height: 25px; width: 25px;vertical-align: middle; border-radius: 16px;"><span style=" margin-left: 20px;">${rs[0].name}</span></li>
                                 <li style=" height: 40px;">
-                                    <span>邮箱：</span><span style=" margin-left: 20px;" id="e1">${rs[0].email}</span>
+                                    <span name="xxx" id="137">邮箱</span><span>:</span><span style=" margin-left: 20px;" id="e1">${rs[0].email}</span>
                                 </li>
                                 <li style=" height: 40px;">
-                                    <span>电话：</span><span style=" margin-left: 20px;" id="p1">${rs[0].phone}</span>
+                                    <span name="xxx" id="136">电话</span><span>:</span><span style=" margin-left: 20px;" id="p1">${rs[0].phone}</span>
                                 </li>
                                 <li style=" height: 40px;">
-                                    <span>部门：</span><span style=" margin-left: 20px;" id="d1">${rs[0].department}</span>
+                                    <span name="xxx" id="224">部门</span><span>:</span><span style=" margin-left: 20px;" id="d1">${rs[0].department}</span>
                                 </li>
                                 <li style=" height: 40px;" data-toggle="modal" data-target="#updpwdDiv">
-                                    <span>修改密码</span>
+                                    <span name="xxx" id="4">修改密码</span>
                                 </li>
                                 <li style=" height: 40px;" onclick="updshow()" >
-                                    <span>修改个人信息</span>
+                                    <span name="xxx" id="584">修改用户信息</span>
                                 </li>
-                                <li onclick="getout()">退出</li>
+                                <li onclick="getout()" id="out" style=' height: 40px;'><span name='xxx' id="3" style=' margin-left: 80px;'>退出</span></li>
                             </ul>
                         </li>
                     </ul> 
@@ -952,7 +952,7 @@
                 </div>
             </div>
         </div>
-                   
+
         <div class="modal" id="updinfo" data-backdrop="static">
             <div class="modal-dialog">
                 <div class="modal-content" style="min-width:700px;">
@@ -960,31 +960,31 @@
                         <button type="button" class="close" data-dismiss="modal">
                             <span style="font-size:20px ">×</span></button>
                         <span class="glyphicon glyphicon-floppy-disk" style="font-size: 20px"></span>
-                        <h4 class="modal-title" style="display: inline;"><label>修改个人信息</label></h4></div>    
+                        <h4 class="modal-title" style="display: inline;"><span name='xxx' id="584">修改用户信息</span></h4></div>    
                     <div class="modal-body">
                         <table>
                             <tbody>
                                 <tr>
                                     <td>
-                                        <span style="margin-left:35px;"><label>用户名</label>：</span>&nbsp;
+                                        <span style="margin-left:35px;"><span name='xxx' id="223">用户名</span>：</span>&nbsp;
                                         <input id="uname" class="form-control" style="width:150px;display: inline;" readonly="true"  type="text">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <span style="margin-left:48px;"><label>邮箱</label>：</span>&nbsp;
+                                        <span style="margin-left:48px;"><span name='xxx' id="137">邮箱</span>：</span>&nbsp;
                                         <input id="email" class="form-control" style="width:150px;display: inline;" placeholder="请输入邮箱" type="text">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <span style="margin-left:48px;"><label>电话</label>：</span>&nbsp;
+                                        <span style="margin-left:48px;"><span name='xxx' id="136">电话</span>：</span>&nbsp;
                                         <input id="phone" class="form-control" style="width:150px;display: inline;" placeholder="请输入联系方式" type="text">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <span style="margin-left:48px;"><label>部门</label>：</span>&nbsp;
+                                        <span style="margin-left:48px;"><span name='xxx' id="224">部门</span>：</span>&nbsp;
                                         <input id="department" class="form-control" style="width:150px;display: inline;" placeholder="请输入部门" type="text">
                                     </td>
                                 </tr>
@@ -1110,7 +1110,7 @@
                         obj.code = pids[i];
                         $.ajax({url: "login.main.getpojcetname.action", async: false, type: "get", datatype: "JSON", data: obj,
                             success: function (data) {
-                                if(data.rs.length>0){
+                                if (data.rs.length > 0) {
                                     pname.push(data.rs[0].name);
                                 }
                             },
@@ -1194,8 +1194,15 @@
                         var e = $(d).attr("id");
                         $(d).html(o[e][language]);
                     }
+
                     $("#langtext").html(":中文");
                     lang = getCookie("lang");
+                    var aaa = $("span[name=xxx]");
+                    for (var i = 0; i < aaa.length; i++) {
+                        var d = aaa[i];
+                        var e = $(d).attr("id");
+                        $(d).html(o[e][lang]);
+                    }
                 });
                 $(".language li:eq(1)").click(function () {
                     var language = $(this).attr("language");
@@ -1208,8 +1215,15 @@
                         var e = $(d).attr("id");
                         $(d).html(o[e][language]);
                     }
+                    var aaa = $("span[name=xxx]");
+
                     $("#langtext").html(":English");
                     lang = getCookie("lang");
+                    for (var i = 0; i < aaa.length; i++) {
+                        var d = aaa[i];
+                        var e = $(d).attr("id");
+                        $(d).html(o[e][lang]);
+                    }
                 });
                 $(".language li:eq(2)").click(function () {
                     var language = $(this).attr("language");
@@ -1222,8 +1236,15 @@
                         var e = $(d).attr("id");
                         $(d).html(o[e][language]);
                     }
+                    
                     $("#langtext").html(":Русский");
                     lang = getCookie("lang");
+                    var aaa = $("span[name=xxx]");
+                    for (var i = 0; i < aaa.length; i++) {
+                        var d = aaa[i];
+                        var e = $(d).attr("id");
+                        $(d).html(o[e][lang]);
+                    }
                 });
 
                 //语言切换

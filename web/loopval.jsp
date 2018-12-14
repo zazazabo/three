@@ -45,11 +45,6 @@
                             var ele = selects[0];
                             console.log(ele);
                             $("#gravidaTable").bootstrapTable('updateCell', {index: ele.index, field: "l_switch", value: l_switch});
-
-
-
-
-
                         }
                     },
                     error: function () {
@@ -145,7 +140,7 @@
                 param.id = select.id;
 
                 var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 208, vv); //01 03 F24     
-                addlogon(u_name, "合闸开关", o_pid, "回路断合闸", "回路断合闸", l_comaddr);
+                addlogon(u_name, "合闸开关", o_pid, "回路断合闸", "回路【"+select.l_name+"】合闸设置", l_comaddr);
                 dealsend2("A5", data, 208, "switchloopCB", l_comaddr, o1.type, param, switchval);
                 $('#panemask').showLoading({
                     'afterShow': function () {
@@ -185,7 +180,7 @@
                     vv.push(h); //装置序号  2字节
                     var num = randnum(0, 9) + 0x70;
                     var data = buicode(l_comaddr, 0x04, 0xA5, num, 0, 280, vv); //01 03 F24     
-                    addlogon(u_name, "恢复自动运行", o_pid, "回路断合闸", "恢复单个回路自动运行", l_comaddr);
+                    addlogon(u_name, "恢复自动运行", o_pid, "回路断合闸", "恢复回路【"+select.l_name+"】自动运行", l_comaddr);
                     dealsend2("A5", data, 280, "restoreloopCB", l_comaddr, o1.type, 0, 0);
                     $('#panemask').showLoading({
                         'afterShow': function () {
@@ -484,7 +479,7 @@
 
                                     <button type="button" id="btnswitch" onclick="switchloop()" class="btn btn-success btn-sm">
                                         <!--合闸开关-->
-                                        <span id="49" name="xxx"></span>
+                                        <span id="49" name="xxx">设置</span>
                                     </button>
 
 
