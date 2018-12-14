@@ -559,7 +559,7 @@
     
     <xform desc="报警记录" id="policereord">
         <xhandle desc="查看报警记录信息" id="reordInfo" rtn="rs" rtnype="JSON">
-            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_fault where @CONDITION order by f_day desc " var="bootstrap">
+            <xsql id="a1" list="true" page="true" tpe="SQL" tpl="select * from t_fault where @CONDITION and f_type !='ERC52' and f_type !='ERC50' order by f_day desc " var="bootstrap">
                 <xflt id="CONDITION" nrp="" tpl="@f_day1 AND @f_day2 AND @pid">
                     <xfltpara id="f_day1" nrp="1=1" para="statr" sql="f_day &gt;=  ':statr' ">
                     </xfltpara>
