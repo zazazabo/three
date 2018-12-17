@@ -60,6 +60,9 @@ Author     : admin
                                             var zh = selects[i].组号;
                                             var kzfs = selects[i].控制方式;
                                             var l_lampnumber = selects[i].灯杆编号;
+                                            var l_brand = selects[i].灯具品牌;
+                                            var l_Warranty = selects[i].质保期;
+                                            var l_remarks = selects[i].备注;
                                             var adobj = {};
                                             adobj.l_name = lampname;
                                             adobj.l_worktype = parseInt(kzfs);
@@ -70,6 +73,9 @@ Author     : admin
                                             // adobj.lng = lng;
                                             //  adobj.lat = lat;
                                             adobj.l_lampnumber = l_lampnumber;
+                                            adobj.l_brand = l_brand;
+                                            adobj.l_Warranty = l_Warranty;
+                                            adobj.l_remarks = l_remarks;
                                             // adobj.wname = comname;
                                             $.ajax({url: "login.lampmanage.addlamp.action", async: false, type: "get", datatype: "JSON", data: adobj,
                                                 success: function (data) {
@@ -132,12 +138,12 @@ Author     : admin
                         }
                     }
                     for (var i = 0; i < selects.length; i++) {
-                        
-                        $.ajax({url: "lamp.lampform.deleteLamp.action", type: "POST", datatype: "JSON", data: {id: selects[i].id},
+                        var selsect = selects[i];
+                        $.ajax({url: "lamp.lampform.deleteLamp.action", type: "POST", datatype: "JSON", data: {id: selsect.id},
                             success: function (data) {
                                 var rs = data.rs;
-                               if(rs.length){
-                                   addlogon(u_name, "删除", o_pid, "灯具管理", "删除灯具【"+selects[i].l_name+"】", selects[i].l_comaddr);
+                               if(rs.length>0){
+                                   addlogon(u_name, "删除", o_pid, "灯具管理", "删除灯具【"+selsect.l_name+"】", selsect.l_comaddr);
                                }
                             },
                             error: function () {
@@ -703,6 +709,26 @@ Author     : admin
                             width: 25,
                             align: 'center',
                             valign: 'middle'
+                        },{
+                            field: '灯具品牌',
+                            title: langs1[579][lang], //控制方式
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        } ,
+                        {
+                            field: '质保期',
+                            title: langs1[580][lang], //控制方式
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        } ,
+                        {
+                            field: '备注',
+                            title: langs1[149][lang], //控制方式
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
                         }
                         //{
 //                            field: '经度',
@@ -752,9 +778,10 @@ Author     : admin
                                 // break; // 如果只取第一张表，就取消注释这行
                             }
                         }
-                        var headStr = '序号,网关地址,灯具名称,灯具编号,组号,灯杆编号,控制方式';
+                        var headStr = '序号,网关地址,灯具名称,灯具编号,组号,灯杆编号,控制方式,灯具品牌,质保期,备注';
+                        var headStr2 = '序号,网关地址,灯具名称,灯具编号,组号,灯杆编号,控制方式,灯具品牌,质保期';
                         for (var i = 0; i < persons.length; i++) {
-                            if (Object.keys(persons[i]).join(',') !== headStr) {
+                            if (Object.keys(persons[i]).join(',') !== headStr && Object.keys(persons[i]).join(',') !== headStr2) {
                                 alert(langs1[366][lang]);  //导入文件格式不正确
                                 persons = [];
                             }
@@ -1072,6 +1099,9 @@ Author     : admin
                     <td>组号</td>
                     <td>灯杆编号</td>
                     <td>控制方式</td>
+                    <td>灯具品牌</td>
+                    <td>质保期</td>
+                    <td>备注</td>
                 </tr>
                 <tr>
                     <td>如1、2、3</td>
@@ -1081,6 +1111,9 @@ Author     : admin
                     <td>组号</td>
                     <td>灯杆编号</td>
                     <td>0代表时间控制、1代表经纬度、2代表场景;输入0或1或2 即可</td>
+                    <td>灯具品牌</td>
+                    <td>质保期</td>
+                    <td>备注可以为空</td>
                 </tr>
             </table>
         </div>

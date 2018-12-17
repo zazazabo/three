@@ -1101,10 +1101,10 @@
             //获取项目
             function  porject(pid) {
                 var pids = {};
+                var pname = [];   //项目名称
                 if (pid != "" && pid != null) {
                     pids = pid.split(",");   //项目编号
                     // $("#pojects").val(pids[0]);
-                    var pname = [];   //项目名称
                     for (var i = 0; i < pids.length; i++) {
                         var obj = {};
                         obj.code = pids[i];
@@ -1119,12 +1119,14 @@
                             }
                         });
                     }
-                }
+                    for (var i = 0; i < pids.length; i++) {
+                        var options;
+                        options += "<option value=\"" + pids[i] + "\">" + pname[i] + "</option>";
+                        $("#pojects").html(options);
+                    }
 
-                for (var i = 0; i < pids.length; i++) {
-                    var options;
-                    options += "<option value=\"" + pids[i] + "\">" + pname[i] + "</option>";
-                    $("#pojects").html(options);
+                }else{
+                     $("#pojects").html("");
                 }
             }
 
@@ -1236,7 +1238,7 @@
                         var e = $(d).attr("id");
                         $(d).html(o[e][language]);
                     }
-                    
+
                     $("#langtext").html(":Русский");
                     lang = getCookie("lang");
                     var aaa = $("span[name=xxx]");
