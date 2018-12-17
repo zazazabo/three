@@ -67,14 +67,19 @@
                                             var lname = selects[i].回路名称;
                                             var groupe = selects[i].回路组号;
                                             var l_worktype = selects[i].控制方式;
+                                            var l_specifications = selects[i].线缆规格;
+                                            var cableLength = selects[i].线缆长度;
+                                            var remarks = selects[i].备注;
                                             var adobj = {};
                                             adobj.l_name = lname;
                                             adobj.l_factorycode = l_code;
-                                            adobj.l_worktype = 0;
                                             adobj.l_comaddr = comaddr;
                                             adobj.l_deplayment = 0;
                                             adobj.l_groupe = parseInt(groupe);
                                             adobj.l_worktype = parseInt(l_worktype);
+                                            adobj.l_specifications = l_specifications;
+                                            adobj.cableLength = cableLength;
+                                            adobj.remarks = remarks;
                                             //adobj.name = cmdname;
                                             $.ajax({url: "login.loop.addloop.action", async: false, type: "get", datatype: "JSON", data: adobj,
                                                 success: function (data) {
@@ -363,19 +368,19 @@
                             valign: 'middle'
                         },{
                             field: 'l_specifications',
-                            title: "电缆规格", //电缆规格
+                            title:  langs1[588][lang], //线缆规格
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         },{
                             field: 'cableLength',
-                            title: "电缆长度", //电缆长度
+                            title:  langs1[589][lang], //线缆长度
                             width: 25,
                             align: 'center',
                             valign: 'middle'
                         },{
                             field: 'remarks',
-                            title: "备注", //备注
+                            title: langs1[149][lang], //备注
                             width: 25,
                             align: 'center',
                             valign: 'middle'
@@ -578,6 +583,24 @@
                             width: 25,
                             align: 'center',
                             valign: 'middle'
+                        }, {
+                            field: '线缆规格',
+                            title: langs1[588][lang], //线缆规格
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: '线缆长度',
+                            title: langs1[589][lang], //线缆长度
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
+                        }, {
+                            field: '备注',
+                            title: langs1[149][lang], //备注
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
                         }
                     ],
                     singleSelect: false,
@@ -614,9 +637,11 @@
                                 // break; // 如果只取第一张表，就取消注释这行
                             }
                         }
-                        var headStr = '序号,集控器地址,回路名称,回路编号,回路组号,控制方式';
+                        var headStr = '序号,集控器地址,回路名称,回路编号,回路组号,控制方式,线缆规格,线缆长度,备注';
+                        var headStr2 = '序号,集控器地址,回路名称,回路编号,回路组号,控制方式,线缆规格,线缆长度';
                         for (var i = 0; i < persons.length; i++) {
-                            if (Object.keys(persons[i]).join(',') !== headStr) {
+                            if (Object.keys(persons[i]).join(',') !== headStr && Object.keys(persons[i]).join(',') !== headStr2 ) {
+                                console.log(Object.keys(persons[i]).join(','));
                                 alert(langs1[366][lang]);   //导入文件格式不正确
                                 persons = [];
                             }
@@ -1062,6 +1087,9 @@
                     <td>回路编号</td>
                     <td>回路组号</td>
                     <td>控制方式</td>
+                    <td>线缆规格</td>
+                    <td>线缆长度</td>
+                    <td>备注</td>
                 </tr>
                 <tr>
                     <td>如1、2、3</td>
@@ -1070,6 +1098,9 @@
                     <td>回路编号是集控器下唯一</td>
                     <td>回路组号</td>
                     <td>0代表时间、1代表经纬度;输入0或1即可</td>
+                    <td>线缆规格</td>
+                    <td>长度</td>
+                    <td>备注可以为空</td>
                 </tr>
             </table>
         </div>

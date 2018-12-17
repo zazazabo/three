@@ -754,7 +754,7 @@
         </xhandle>  
         
         <xhandle desc="添加灯具" id="addlamp" rtn="rs" rtnype="JSON">
-            <xsql id="a1" para="l_name,l_worktype,l_comaddr,l_deplayment,l_factorycode,l_lampnumber,l_groupe" tpe="DDL" tpl="insert into t_lamp(l_name,l_worktype,l_comaddr,l_deplayment,l_factorycode,l_groupe,l_lampnumber) values(':l_name',':l_worktype',':l_comaddr',':l_deplayment',':l_factorycode',':l_groupe',':l_lampnumber') " var="rs">
+            <xsql id="a1" para="l_name,l_worktype,l_comaddr,l_deplayment,l_factorycode,l_lampnumber,l_groupe,l_brand,l_Warranty,l_remarks" tpe="DDL" tpl="insert into t_lamp(l_name,l_worktype,l_comaddr,l_deplayment,l_factorycode,l_groupe,l_lampnumber,l_brand,l_Warranty,l_remarks) values(':l_name',':l_worktype',':l_comaddr',':l_deplayment',':l_factorycode',':l_groupe',':l_lampnumber',':l_brand',':l_Warranty',':l_remarks') " var="rs">
             </xsql>
         </xhandle>    
     </xform>
@@ -800,7 +800,7 @@
         </xhandle> 
             
         <xhandle desc="添加回路" id="addloop" rtn="rs" rtnype="JSON">
-            <xsql id="a1" para="l_name,l_factorycode,l_worktype,l_comaddr,l_deplayment,l_groupe" tpe="DDL" tpl="insert into t_loop(l_name,l_factorycode,l_worktype,l_comaddr,l_deplayment,l_groupe) values(':l_name',':l_factorycode',':l_worktype',':l_comaddr',':l_deplayment',':l_groupe') " var="rs">
+            <xsql id="a1" para="l_name,l_factorycode,l_worktype,l_comaddr,l_deplayment,l_groupe,l_specifications,cableLength,remarks" tpe="DDL" tpl="insert into t_loop(l_name,l_factorycode,l_worktype,l_comaddr,l_deplayment,l_groupe,l_specifications,cableLength,remarks) values(':l_name',':l_factorycode',':l_worktype',':l_comaddr',':l_deplayment',':l_groupe',':l_specifications',':cableLength',':remarks') " var="rs">
             </xsql>
         </xhandle>    
     </xform>
