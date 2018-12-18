@@ -770,7 +770,7 @@
         </xhandle> 
             
         <xhandle desc="添加网关" id="addbase" rtn="rs" rtnype="JSON">
-            <xsql id="a1" para="model,comaddr,name,Longitude,latitude,area,pid,presence,connecttype" tpe="DDL" tpl="insert into t_baseinfo(model,comaddr,name,Longitude,latitude,area,pid,presence,connecttype) values(':model',':comaddr',':name',':Longitude',':latitude',':area',':pid',':presence',':connecttype') " var="rs">
+            <xsql id="a1" para="model,comaddr,name,Longitude,latitude,area,pid,presence,connecttype,bz" tpe="DDL" tpl="insert into t_baseinfo(model,comaddr,name,Longitude,latitude,area,pid,presence,connecttype,bz) values(':model',':comaddr',':name',':Longitude',':latitude',':area',':pid',':presence',':connecttype',':bz') " var="rs">
             </xsql>
         </xhandle>    
     </xform>
