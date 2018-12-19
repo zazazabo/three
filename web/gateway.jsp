@@ -133,7 +133,7 @@
                     $("#model_").combobox('setValue', s.model);
                     $("#connecttype_").combobox('setValue', s.connecttype);
                     $("#setupaddr_").val(s.setupaddr);
-                    
+                    $("#bz1").val(s.bz);
                     $("#id_").val(s.id);
                     $("#comaddr_").val(s.comaddr);
 //                    $("#multpower_").val(s.multpower);
@@ -233,6 +233,12 @@
                             width: 25,
                             align: 'center',
                             valign: 'middle'
+                        },{
+                            field: '备注',
+                            title: langs1[149][lang], //安装位置
+                            width: 25,
+                            align: 'center',
+                            valign: 'middle'
                         }
                     ],
                     singleSelect: false,
@@ -268,10 +274,12 @@
                                 // break; // 如果只取第一张表，就取消注释这行
                             }
                         }
-                        var headStr = '序号,名称,网关地址,经度,纬度,安装位置';
-                        var headStr2 = '序号,名称,网关地址,安装位置';
+                        var headStr = '序号,名称,网关地址,经度,纬度,安装位置,备注';
+                        var headStr2 = '序号,名称,网关地址,安装位置,备注';
+                        var headStr3 = '序号,名称,网关地址,经度,纬度,安装位置';
+                        var headStr4 = '序号,名称,网关地址,安装位置';
                         for (var i = 0; i < persons.length; i++) {
-                            if (Object.keys(persons[i]).join(',') !== headStr && Object.keys(persons[i]).join(',') !== headStr2) {
+                            if (Object.keys(persons[i]).join(',') !== headStr && Object.keys(persons[i]).join(',') !== headStr2 && Object.keys(persons[i]).join(',') !== headStr3 && Object.keys(persons[i]).join(',') !== headStr4) {
                                 alert(langs1[366][lang]); //导入文件格式不正确
                                 persons = [];
                             }
@@ -428,7 +436,7 @@
                         }, {
                             field: 'online',
                             title: langs1[61][lang], //在线状态
-                            width: 25,
+                            width: 50,
                             align: 'center',
                             valign: 'middle',
                             formatter: function (value, row, index) {
@@ -440,6 +448,12 @@
                                 }
                                 
                             },
+                        },{
+                            field: 'bz',
+                            title: langs1[149][lang], //备注
+                            width: 100,
+                            align: 'center',
+                            valign: 'middle'
                         }],
                     showExport: true, //是否显示导出
                     singleSelect: true,
@@ -501,6 +515,7 @@
                                 adobj.latitude = selects[i].纬度;
                                 adobj.area = selects[i].安装位置;
                                 adobj.pid = pid;
+                                adobj.bz = selects[i].备注;
                                 //adobj.multpower = selects[i].倍率;
                                 adobj.presence = 0;
                                 adobj.connecttype = 0;
@@ -635,7 +650,7 @@
                     <tbody>
                         <tr>
                             <td>
-                                <span style="margin-left:20px;" name="xxx" id="354">项目列表</span>&nbsp;
+                                <span style="margin-left:10px;" name="xxx" id="354">项目列表</span>&nbsp;
                                 <input id="pid" class="easyui-combobox" name="pid" style="width:150px; height: 30px" data-options="editable:false,valueField:'id', textField:'text' " />
                             </td>
                             <td>
@@ -658,8 +673,8 @@
                         </tr>
                         <tr>
                             <td>
-                                <span style="margin-left:20px;" name="xxx" id="314">网关名称</span>&nbsp;
-                                <input id="name" class="form-control" name="name" style="width:150px;display: inline;" placeholder="请输入网关名称" type="text">
+                                <span style="margin-left:0px;" name="xxx" id="314">网关名称</span>&nbsp;
+                                <input id="name" class="form-control" name="name" style="width:150px;display: inline;" placeholder="请输入集控器名称" type="text">
                             </td>
                             <td></td>
                             <td>
@@ -677,7 +692,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <span style="margin-left:20px;" name="xxx" id="356">安装位置</span>&nbsp;
+                                <span style="margin-left:10px;" name="xxx" id="356">安装位置</span>&nbsp;
                                 <input id="setupaddr" class="form-control" name="setupaddr" style="width:150px;display: inline;" placeholder="请输入网关位置" type="text">
                             </td>
 
@@ -688,8 +703,19 @@
                             </td>
                         </tr>
                         <tr>
+                             <td>
+                                <span style="margin-left:35px;" name="xxx" id="149">备注</span>&nbsp;
+                                <input id="bz" class="form-control" name="bz" style="width:150px;display: inline;" placeholder="请输入备注信息" type="text">
+                            </td>
+
+                            <td></td>
                             <td>
-                                <span style="margin-left:20px;"name="xxx" id="59">经度</span>&nbsp;
+                               
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span style="margin-left:35px;"name="xxx" id="59">经度</span>&nbsp;
                                 <input id="longitudem26d" class="form-control" name="longitudem26d" style="width:51px;display: inline;" type="text">&nbsp;°
                                 <input id="longitudem26m" class="form-control" name="longitudem26m" style="width:45px;display: inline;" type="text">&nbsp;'
                                 <input id="longitudem26s" class="form-control" name="longitudem26s" style="width:45px;display: inline;" type="text">&nbsp;"</td>
@@ -722,7 +748,7 @@
 
                             </td>
                             <td>
-                                <span style="margin-left:10px;" name="xxx" id="355">网关型号</span>&nbsp;
+                                <span style="margin-left:25px;" name="xxx" id="355">网关型号</span>&nbsp;
 
 
                                 <span class="menuBox">
@@ -736,7 +762,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <span style="margin-left:20px;" name="xxx" id="356">安装位置</span>&nbsp;
+                                <span style="margin-left:30px;" name="xxx" id="356">安装位置</span>&nbsp;
                                 <input id="setupaddr_" class="form-control" name="setupaddr" style="width:150px;display: inline;" placeholder="请输入网关位置" type="text">
                             </td>
 
@@ -747,7 +773,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <span style="margin-left:20px;" name="xxx" id="357">通信方式</span>&nbsp;
+                                <span style="margin-left:30px;" name="xxx" id="357">通信方式</span>&nbsp;
 
 
                                 <span class="menuBox">
@@ -761,13 +787,14 @@
                             </td>
 
                             <td></td>
-                            <!--                            <td>
-                                                            <span style="margin-left:35px;" nane="xxx" id="346">倍率</span>&nbsp;
-                                                            <input id="multpower_" class="form-control" name="multpower" style="width:150px;display: inline;" placeholder="请输入倍率" type="text"></td>-->
+                            <td>
+                                <span style="margin-left:50px;" nane="xxx" id="149">备注</span>&nbsp;
+                                <input id="bz1" class="form-control" name="bz" style="width:150px;display: inline;" placeholder="请输入备注" type="text">
+                            </td>
                         </tr>
                         <tr>
                             <td>
-                                <span style="margin-left:20px;"name="xxx" id="59">经度</span>&nbsp;
+                                <span style="margin-left:50px;"name="xxx" id="59">经度</span>&nbsp;
                                 <input id="longitudem26d_" class="form-control" name="longitudem26d" style="width:51px;display: inline;" type="text">&nbsp;°
                                 <input id="longitudem26m_" class="form-control" name="longitudem26m" style="width:45px;display: inline;" type="text">&nbsp;'
                                 <input id="longitudem26s_" class="form-control" name="longitudem26s" style="width:45px;display: inline;" type="text">&nbsp;"</td>
@@ -799,6 +826,7 @@
                     <td>经度</td>
                     <td>纬度</td>
                     <td>安装位置</td>
+                    <td>备注</td>
                 </tr>
                 <tr>
                     <td>如1、2、3</td>
@@ -807,6 +835,7 @@
                     <td>可以不输入</td>
                     <td>可以不输入</td>
                     <td>安装位置</td>
+                    <td>可以不输入</td>
                 </tr>
             </table>
         </div>
