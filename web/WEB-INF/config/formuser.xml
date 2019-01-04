@@ -33,7 +33,7 @@
         </xhandle>
     </xform>
     <xform desc="主页" id="mainsub">
-        <xhand id="home" rtn="mainsub1.jsp" rtnype="PGE">
+        <xhand id="home" rtn="mainsub.jsp" rtnype="PGE">
             <xsql desc="所有已经部署的灯具" id="a1" list="true" page="true" tpe="SQL" tpl="select count(id) as num from t_lamp  where l_deplayment=1 and  @CONDITION" var="ybsdj">
                 <xflt id="CONDITION" nrp="" tpl="@pid ">
                     <xfltpara id="pid" nrp="1=2" para="pid" sql="l_comaddr in(select comaddr from t_baseinfo where  pid = ':pid' )">

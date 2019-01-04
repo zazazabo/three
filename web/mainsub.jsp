@@ -359,7 +359,7 @@
                 // var gzdj = ${djgzs[0].num};  //灯具异常数
                 var djzxs = ${djzxs[0].num}; //灯具在线数
                 var lampNumber = ${lampNumber[0].num};  //灯具总数
-                var djlxs = lampNumber - gzdj - djzxs;  //灯具离线数
+                var djlxs = lampNumber - djzxs;  //灯具离线数
                 if(lampNumber<=0){
                     djlxs = 0;
                     gzdj = 0;
@@ -1231,7 +1231,7 @@
 
             <div class="row "   >
                 <div class="col-xs-2 "  >
-                    <table id="gayway" style="width:100%;"   data-toggle="table" 
+                    <table id="gayway" style="width:100%; cursor:pointer"   data-toggle="table" 
                            data-height="400"
                            data-single-select="true"
                            data-striped="true"
