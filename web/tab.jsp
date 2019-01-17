@@ -45,6 +45,13 @@
                     }
                 });
             }
+            function size() {
+                var iframeHeight = $(window).height() - 90;
+                $("#myiframe").css("height", iframeHeight);
+            }
+            window.onresize = function () {
+                size();
+            };
         </script>
     </head>
 
@@ -64,8 +71,8 @@
                 </ul>
             </div>
 
-            <div  id="content-main" style="height: 878px;">
-                <iframe class="J_iframe" name="iframe0" src="#"  seamless="" width="100%" height="100%" frameborder="0"></iframe>
+            <div  id="content-main">
+                <iframe class="J_iframe" name="iframe0" id ="myiframe" src="#"  seamless="" width="100%"  frameborder="0"></iframe>
             </div>
         </div>
 
@@ -78,6 +85,7 @@
 
 
             $(function () {
+                size();
                 $(".secondMenu").children('li').remove();
                 var objrole = {role: ${param.role}, m_parent:${param.m_parent}};
 
@@ -125,16 +133,9 @@
                     var html = $(this).attr('name');
                     console.log(html);
                     $(".J_iframe").attr('src', html);
-                })
-                function size() {
-                    var height = $(document.body).height() - 60;
-                    $(".J_mainContent").height(height);
-                }
-                size();
-                window.onresize = function () {
-                    size();
-                }
-            })
+                });
+                
+            });
 
         </script>
     </body>

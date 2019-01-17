@@ -1042,7 +1042,6 @@
         <div class="row "   >
             <div class="col-xs-2 "    >
                 <table id="gayway" style="width:100%;"   data-toggle="table" 
-                       data-height="800"
                        data-single-select="true"
                        data-striped="true"
                        data-click-to-select="true"

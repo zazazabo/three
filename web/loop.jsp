@@ -150,7 +150,7 @@
                             layerAler(langs1[360][lang]); //此回路已存在
                             return false;
                         }
-                        addlogon(u_name, "添加", o_pid, "回路管理", "添加【"+o.l_name+"】回路", o.l_comaddr);
+                        addlogon(u_name, "添加", o_pid, "回路管理", "添加【" + o.l_name + "】回路", o.l_comaddr);
                         $.ajax({async: false, cache: false, url: "loop.loopForm.addloop.action", type: "GET", data: o,
                             success: function (data) {
                                 if (data.rs.length > 0) {
@@ -242,7 +242,7 @@
             function modifyLoopName() {
                 var o = $("#form2").serializeObject();
                 o.l_code = o.l_factorycode;
-                addlogon(u_name, "修改", o_pid, "回路管理", "修改回路【"+o.l_name+"】", $("#l_comaddr1").val());
+                addlogon(u_name, "修改", o_pid, "回路管理", "修改回路【" + o.l_name + "】", $("#l_comaddr1").val());
                 $.ajax({async: false, url: "loop.loopForm.modifyname.action", type: "get", datatype: "JSON", data: o,
                     success: function (data) {
                         var arrlist = data.rs;
@@ -366,19 +366,19 @@
                             width: 25,
                             align: 'center',
                             valign: 'middle'
-                        },{
+                        }, {
                             field: 'l_specifications',
-                            title:  langs1[588][lang], //线缆规格
+                            title: langs1[588][lang], //线缆规格
                             width: 25,
                             align: 'center',
                             valign: 'middle'
-                        },{
+                        }, {
                             field: 'cableLength',
-                            title:  langs1[589][lang], //线缆长度
+                            title: langs1[589][lang], //线缆长度
                             width: 25,
                             align: 'center',
                             valign: 'middle'
-                        },{
+                        }, {
                             field: 'remarks',
                             title: langs1[149][lang], //备注
                             width: 25,
@@ -438,22 +438,24 @@
                     exportDataType: "basic", //basic', 'a
                     sidePagination: 'server',
                     pageNumber: 1,
-                    pageSize: 5,
+                    pageSize: 10,
                     showRefresh: true,
                     showToggle: true,
                     // 设置默认分页为 50
-                    pageList: [5, 10, 15, 20, 25],
+                    pageList: [10, 15, 20, 25],
                     onLoadSuccess: function () {  //加载成功时执行  表格加载完成时 获取集中器在线状态
 //                        console.info("加载成功");
                     },
-                    queryParams: function (params)  {   //配置参数     
+                    queryParams: function (params)  {   //配置参数  
+                //   
                         var temp  =   {    //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的 
                             search: params.search,
                             skip: params.offset,
                             limit: params.limit,
                             type_id: "1",
-                            pid: "${param.pid}"   
-                        };      
+                            pid: "${param.pid}",
+                            l_comaddr:$("#l_comaddr").combobox('getValue')
+                        };     
                         return temp;  
                     },
                 });
@@ -506,31 +508,50 @@
 
                 $("#l_comaddr").combobox({
                     url: "gayway.GaywayForm.getComaddr.action?pid=${param.pid}",
+                    loadFilter: function (data) {
+                        var obj = {};
+                        obj.id = '';
+                        obj.text = '-请选择-';
+                        data.splice(0, 0, obj);//在数组0位置插入obj,不删除原来的元素
+                        return  data;
+                    },
                     formatter: function (row) {
-                        var v1 = row.online == 1 ? "&nbsp;<img src='img/online1.png'>" : "&nbsp;<img src='img/off.png'>";
-                        var v = row.text + v1;
-                        row.id = row.id;
-                        row.text = v;
+                        if (row.id !="") {
+                            var v1 = row.online == 1 ? "&nbsp;<img src='img/online1.png'>" : "&nbsp;<img src='img/off.png'>";
+                            var v = row.text + v1;
+                            row.id = row.id;
+                            row.text = v;
+                        }
                         var opts = $(this).combobox('options');
                         return row[opts.textField];
                     },
                     onLoadSuccess: function (data) {
                         if (Array.isArray(data) && data.length > 0) {
                             for (var i = 0; i < data.length; i++) {
-                                data[i].text = data[i].name;
+                                if (data[i].id == "") {
+                                    continue;
+                                } else {
+                                    data[i].text = data[i].name;
+                                }
+
                             }
-                            $(this).combobox('select', data[0].id);
+                            $(this).combobox('select', "");
                         }
 
                     },
                     onSelect: function (record) {
                         var obj = {};
-                        obj.l_comaddr = record.id;
-                        obj.pid = "${param.pid}";
+                        if (record.id != "") {
+                            obj.pid = "${param.pid}";
+                            obj.l_comaddr = record.id;
+                        } else {
+                            obj.pid = "${param.pid}";
+                            obj.l_comaddr="";
+                        }
                         var opt = {
                             url: "loop.loopForm.getLoopList.action",
                             query: obj,
-                            silent: false
+                            silent: true
                         };
                         $("#gravidaTable").bootstrapTable('refresh', opt);
                     }
@@ -640,7 +661,7 @@
                         var headStr = '序号,集控器地址,回路名称,回路编号,回路组号,控制方式,线缆规格,线缆长度,备注';
                         var headStr2 = '序号,集控器地址,回路名称,回路编号,回路组号,控制方式,线缆规格,线缆长度';
                         for (var i = 0; i < persons.length; i++) {
-                            if (Object.keys(persons[i]).join(',') !== headStr && Object.keys(persons[i]).join(',') !== headStr2 ) {
+                            if (Object.keys(persons[i]).join(',') !== headStr && Object.keys(persons[i]).join(',') !== headStr2) {
                                 console.log(Object.keys(persons[i]).join(','));
                                 alert(langs1[366][lang]);   //导入文件格式不正确
                                 persons = [];
@@ -769,7 +790,7 @@
                         offset: 'center',
                         title: langs1[174][lang]  //提示
                     }, function (index) {
-                       
+
                         for (var i = 0; i < selects.length; i++) {
                             var select = selects[i];
                             var l_deployment = select.l_deplayment;
@@ -777,7 +798,7 @@
                                 layerAler(langs1[368][lang]);  //已部署不能删除
                                 continue;
                             } else {
-                                addlogon(u_name, "删除", o_pid, "回路管理", "删除回路【"+select.l_name+"】");
+                                addlogon(u_name, "删除", o_pid, "回路管理", "删除回路【" + select.l_name + "】");
                                 $.ajax({url: "loop.loopForm.deleteLoop.action", type: "POST", datatype: "JSON", data: {id: select.id},
                                     success: function (data) {
                                         var arrlist = data.rs;

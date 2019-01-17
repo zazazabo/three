@@ -722,6 +722,7 @@
                 websocket.close();
             }
             $(function () {
+                size();
                 if (lang == "" || lang == null) {
                     lang = "zh_CN";
                     changeLanguage(lang);
@@ -778,6 +779,14 @@
                 //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
                 window.onbeforeunload = onbeforeunload;
             });
+            
+             function size() {
+                    var iframeHeight = $(window).height();
+                    $("#iframe").css("height", iframeHeight);
+                }
+                window.onresize = function () {
+                    size();
+                };
         </script>
     </head>
     <body id="panemask">
@@ -897,7 +906,7 @@
                 </div>
                 <input  id="names" value="" type="hidden">
                 <!--<input id="configurations" value="[{&quot;title&quot;:&quot;参数配置&quot;,&quot;action&quot;:&quot;config/paramConfig.action&quot;,&quot;icon&quot;:&quot;imgs/manager/paramConfiguration.png&quot;},{&quot;title&quot;:&quot;网关配置&quot;,&quot;action&quot;:&quot;config/gateway.action&quot;,&quot;icon&quot;:&quot;imgs/manager/gatewayConfiguration.png&quot;},{&quot;title&quot;:&quot;项目配置&quot;,&quot;action&quot;:&quot;config/alarmConfig.action&quot;,&quot;icon&quot;:&quot;imgs/manager/alarmConfiguration.png&quot;}]" type="hidden">-->
-                <iframe id="iframe" name="iframe" src="formuser.mainsub.home.action?pid=${fn:split(param.pid,",")[0]}&lang=${empty cookie.lang.value?"zh_CN":cookie.lang.value}" seamless="" style="height: 886px;" width="100%" frameborder="0">
+                <iframe id="iframe" name="iframe" src="formuser.mainsub.home.action?pid=${fn:split(param.pid,",")[0]}&lang=${empty cookie.lang.value?"zh_CN":cookie.lang.value}" seamless="" width="100%" frameborder="0">
                 </iframe>
             </div>
         </div>
@@ -1164,17 +1173,6 @@
 
                     }
                 });
-
-                function size() {
-                    var iframeHeight = $(window).height() - 57;
-                    $("#iframe").css("height", iframeHeight);
-                }
-                size();
-                window.onresize = function () {
-                    size();
-                };
-
-
 
 
                 $(".language li:eq(0)").click(function () {

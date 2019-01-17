@@ -433,7 +433,6 @@
                                     </div>
                                     <div class="panel-body">-->
                 <table id="gayway" style="width:100%; cursor:pointer"    data-toggle="table" 
-                       data-height="800"
                        data-single-select="true"
                        data-striped="true"
                        data-click-to-select="true"

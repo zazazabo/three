@@ -78,7 +78,7 @@
                             }
                             alert(langs1[144][lang]); //添加成功
                             getcombox();
-                            addlogon(u_name, "添加", o_pid, "角色权限管理", "添加角色[【"+name+"】");
+                            addlogon(u_name, "添加", o_pid, "角色权限管理", "添加角色[【" + name + "】");
                         }
                     },
                     error: function () {
@@ -250,25 +250,56 @@
                         }
 
                     });
-                    addlogon(u_name, "分配权限权限", o_pid, "角色权限管理", "修改【"+name+"】权限");
+                    addlogon(u_name, "分配权限权限", o_pid, "角色权限管理", "修改【" + name + "】权限");
                     var obj1 = {};
                     obj1.name = name;
                     obj1.roletype = roletype;
+                   
                     for (var i = 0; i < allnodes.length; i++) {
                         obj1.code = allnodes[i].id;
+                        var code = allnodes[i].id;  //节点编号
                         if (allnodes[i].id == "0") {
                             continue;
                         }
                         if (allnodes[i].checked == true) {
-                            obj1.enable = 1;
-                            $.ajax({async: false, url: "login.rolemanage.getpower.action", type: "POST", datatype: "JSON", data: obj1,
+                            $.ajax({async: false, url: "login.rolemanage.havecode.action", type: "POST", datatype: "JSON", data: obj1,
                                 success: function (data) {
-                                    //console.log(data);
+                                    var rs = data.rs;
+                                    var prs = data.prs;
+                                    if (rs.length > 0) {
+                                        obj1.enable = 1;
+                                        $.ajax({async: false, url: "login.rolemanage.getpower.action", type: "POST", datatype: "JSON", data: obj1,
+                                            success: function (data) {
+                                                //console.log(data);
+                                            },
+                                            error: function () {
+                                                alert("提交失败1！");
+                                            }
+                                        });
+                                    } else {
+                                        //添加一行数据
+                                        //name,roletype,code,enable,parent_id
+                                        var obj = {};
+                                        obj.name = name;
+                                        obj.roletype = roletype;
+                                        obj.code = code;
+                                        obj.enable = 1;
+                                        obj.parent_id = prs[0].parent_id;
+                                        $.ajax({async: false, url: "login.rolemanage.addrole.action", type: "get", datatype: "JSON", data: obj,
+                                            success: function (data) {
+                                                //console.log(data);
+                                            },
+                                            error: function () {
+                                                alert("提交失败2！");
+                                            }
+                                        });
+                                    }
                                 },
                                 error: function () {
-                                    alert("提交失败！");
+                                    //alert("提交失败3！");
                                 }
                             });
+
                         } else {
                             obj1.enable = 0;
                             $.ajax({async: false, url: "login.rolemanage.getpower.action", type: "POST", datatype: "JSON", data: obj1,
@@ -279,6 +310,8 @@
                                     alert("提交失败！");
                                 }
                             });
+                            var rtype = roletype;  //角色编号
+                            uprole(rtype, code);
                         }
 
                     }
@@ -311,7 +344,7 @@
                                     }
 
                                 });
-                                addlogon(u_name, "删除角色", o_pid, "权限管理", "删除角色【"+name+"】");
+                                addlogon(u_name, "删除角色", o_pid, "权限管理", "删除角色【" + name + "】");
                                 var obj2 = {};
                                 obj2.roletype = $("#role").val();
                                 $.ajax({async: false, url: "login.rolemanage.deleterole.action", type: "POST", datatype: "JSON", data: obj2,
@@ -442,6 +475,45 @@
                             zTreeOjb.checkNode(node, true, false);
                             zTreeOjb.updateNode(node);
                         });
+                    }
+                });
+            }
+
+            function uprole(rtype, code) {
+                var robj = {};
+                var roletype = rtype;
+                robj.roletype = roletype;
+                $.ajax({async: false, url: "login.rolemanage.zirole.action", type: "POST", datatype: "JSON", data: robj,
+                    success: function (data) {
+                        var rs = data.rs;
+                        var rolers = data.rolers;  //子角色列表
+                        if (rolers.length > 0) {
+                            for (var k = 0; k < rolers.length; k++) {
+                                roletype = rs[k].roletype;
+                                for (var j = 0; j < rs.length; j++) {
+                                    if (code == rs[j].code) {
+                                        var uobj = {};
+                                        uobj.roletype = roletype;
+                                        uobj.code = code;
+                                        uobj.enable = 0;
+                                        $.ajax({async: false, url: "login.rolemanage.getpower.action", type: "POST", datatype: "JSON", data: uobj,
+                                            success: function (data) {
+                                                //console.log(data);
+                                            },
+                                            error: function () {
+                                                alert("提交失败！");
+                                            }
+                                        });
+                                        break;
+                                    }
+                                }
+                                uprole(roletype, code);
+                            }
+
+                        }
+                    },
+                    error: function () {
+                        alert("提交失败！");
                     }
                 });
             }

@@ -82,7 +82,7 @@ Author     : admin
                                                     var arrlist = data.rs;
                                                     console.log("L:" + arrlist.length);
                                                     if (arrlist.length == 1) {
-                                                        addlogon(u_name, "添加", o_pid, "灯具管理", "导入Excel添加灯具【"+lampname+"】");
+                                                        addlogon(u_name, "添加", o_pid, "灯具管理", "导入Excel添加灯具【" + lampname + "】");
                                                         var ids = []; //定义一个数组
                                                         var xh = selects[i].序号;
                                                         console.log("xh:" + xh);
@@ -142,9 +142,9 @@ Author     : admin
                         $.ajax({url: "lamp.lampform.deleteLamp.action", type: "POST", datatype: "JSON", data: {id: selsect.id},
                             success: function (data) {
                                 var rs = data.rs;
-                               if(rs.length>0){
-                                   addlogon(u_name, "删除", o_pid, "灯具管理", "删除灯具【"+selsect.l_name+"】", selsect.l_comaddr);
-                               }
+                                if (rs.length > 0) {
+                                    addlogon(u_name, "删除", o_pid, "灯具管理", "删除灯具【" + selsect.l_name + "】", selsect.l_comaddr);
+                                }
                             },
                             error: function () {
                                 layerAler("提交失败");
@@ -161,7 +161,7 @@ Author     : admin
 
             function  editlamp() {
                 var o = $("#form2").serializeObject();
-                addlogon(u_name, "修改", o_pid, "灯具管理", "修改灯具【"+o.l_name+"】", o.l_comaddr);
+                addlogon(u_name, "修改", o_pid, "灯具管理", "修改灯具【" + o.l_name + "】", o.l_comaddr);
                 $.ajax({async: false, url: "lamp.lampform.modifylamp.action", type: "get", datatype: "JSON", data: o,
                     success: function (data) {
                         var a = data.rs;
@@ -191,7 +191,7 @@ Author     : admin
                 $("#l_brand1").val(s.l_brand);
                 $("#l_Warranty1").val(s.l_Warranty);
                 $("#l_remarks1").val(s.l_remarks);
-                
+
                 if (s.l_deplayment == "1") {    //判断是否部署
                     $("#trlamp").show();
                     $("#trlamp1").show();
@@ -239,7 +239,7 @@ Author     : admin
                                     var arrlist = data.rs;
                                     if (arrlist.length == 1) {
                                         isflesh = true;
-                                        addlogon(u_name, "添加", o_pid, "灯具管理", "添加灯具【"+o.l_name+"】", o.l_comaddr);
+                                        addlogon(u_name, "添加", o_pid, "灯具管理", "添加灯具【" + o.l_name + "】", o.l_comaddr);
                                         $("#gravidaTable").bootstrapTable('refresh');
                                     }
                                 },
@@ -451,7 +451,7 @@ Author     : admin
                             width: 25,
                             align: 'center',
                             valign: 'middle'
-                        },{
+                        }, {
                             field: 'l_groupe',
                             title: langs1[332][lang], //组号
                             width: 25,
@@ -562,8 +562,8 @@ Author     : admin
                             limit: params.limit,
                             type_id: "1",
                             pid: "${param.pid}",
-                        };
-                         l_comaddr:'';    
+                            l_comaddr: $("#l_comaddr2").combobox('getValue')
+                        };   
                         return temp;  
                     },
                 });
@@ -573,24 +573,24 @@ Author     : admin
                     var e = $(d).attr("id");
                     $(d).html(langs1[e][lang]);
                 }
-                 $('#busu').combobox({
+                $('#busu').combobox({
                     formatter: function (row) {
-                        var langid = parseInt(row.value)+318;
+                        var langid = parseInt(row.value) + 318;
                         console.log(langid);
                         row.text = langs1[langid][lang];
                         var opts = $(this).combobox('options');
                         return row[opts.textField];
                     }
                 });
-                
-                 $('#l_worktype1').combobox({
+
+                $('#l_worktype1').combobox({
                     formatter: function (row) {
                         var langid = parseInt(row.value);
-                        if(langid ==0){
-                            langid =82;
-                        }else if(langid ==1){
+                        if (langid == 0) {
+                            langid = 82;
+                        } else if (langid == 1) {
                             langid = 535;
-                        }else if(langid == 2){
+                        } else if (langid == 2) {
                             langid = 536;
                         }
                         console.log(langid);
@@ -599,15 +599,15 @@ Author     : admin
                         return row[opts.textField];
                     }
                 });
-                
-                 $('#l_worktype').combobox({
+
+                $('#l_worktype').combobox({
                     formatter: function (row) {
                         var langid = parseInt(row.value);
-                        if(langid ==0){
-                            langid =82;
-                        }else if(langid ==1){
+                        if (langid == 0) {
+                            langid = 82;
+                        } else if (langid == 1) {
                             langid = 535;
-                        }else if(langid == 2){
+                        } else if (langid == 2) {
                             langid = 536;
                         }
                         row.text = langs1[langid][lang];
@@ -617,18 +617,31 @@ Author     : admin
                 });
                 $("#l_comaddr2").combobox({
                     url: "gayway.GaywayForm.getComaddr.action?pid=${param.pid}",
+                    loadFilter: function (data) {
+                        var obj = {};
+                        obj.id = '';
+                        obj.text = '-请选择-';
+                        data.splice(0, 0, obj);//在数组0位置插入obj,不删除原来的元素
+                        return  data;
+                    },
                     formatter: function (row) {
-                        var v1 = row.online == 1 ? "&nbsp;<img src='img/online1.png'>" : "&nbsp;<img src='img/off.png'>";
-                        var v = row.text + v1;
-                        row.id = row.id;
-                        row.text = v;
+                        if (row.id != "") {
+                            var v1 = row.online == 1 ? "&nbsp;<img src='img/online1.png'>" : "&nbsp;<img src='img/off.png'>";
+                            var v = row.text + v1;
+                            row.id = row.id;
+                            row.text = v;
+                        }
                         var opts = $(this).combobox('options');
                         return row[opts.textField];
                     },
                     onLoadSuccess: function (data) {
                         if (Array.isArray(data) && data.length > 0) {
                             for (var i = 0; i < data.length; i++) {
-                                data[i].text = data[i].name;
+                                if (data[i].id == "") {
+                                    continue;
+                                } else {
+                                    data[i].text = data[i].name;
+                                }
                             }
                             $(this).combobox('select', data[0].id);
                         }
@@ -636,8 +649,13 @@ Author     : admin
                     },
                     onSelect: function (record) {
                         var obj = {};
-                        obj.l_comaddr = record.id;
-                        obj.pid = "${param.pid}";
+                        if (record.id != "") {
+                            obj.pid = "${param.pid}";
+                            obj.l_comaddr = record.id;
+                        } else {
+                            obj.pid = "${param.pid}";
+                            obj.l_comaddr = "";
+                        }
                         var opt = {
                             url: "lamp.lampform.getlampList.action",
                             query: obj,
@@ -709,20 +727,20 @@ Author     : admin
                             width: 25,
                             align: 'center',
                             valign: 'middle'
-                        },{
+                        }, {
                             field: '灯具品牌',
                             title: langs1[579][lang], //控制方式
                             width: 25,
                             align: 'center',
                             valign: 'middle'
-                        } ,
+                        },
                         {
                             field: '质保期',
                             title: langs1[580][lang], //控制方式
                             width: 25,
                             align: 'center',
                             valign: 'middle'
-                        } ,
+                        },
                         {
                             field: '备注',
                             title: langs1[149][lang], //控制方式
@@ -1206,7 +1224,7 @@ Author     : admin
                                 <input id="l_Warranty" class="form-control"  name="l_Warranty" style="width:150px;display: inline;" placeholder="请输入质保期" type="text">
                                 </span> 
                             </td>
-                             <td></td>
+                            <td></td>
                             <td>
                                 <span style="margin-left:10px;"  name="xxx" id="149">备注</span>&nbsp;
                                 <input id="l_remarks" class="form-control"  name="l_remarks" style="width:150px;display: inline;" placeholder="请输入备注" type="text">
@@ -1324,7 +1342,7 @@ Author     : admin
                                 <input id="l_Warranty1" class="form-control"  name="l_Warranty" style="width:150px;display: inline;" placeholder="请输入质保期" type="text">
                                 </span> 
                             </td>
-                             <td></td>
+                            <td></td>
                             <td>
                                 <span style="margin-left:10px;" name="xxx" id="149">备注</span>&nbsp;
                                 <input id="l_remarks1" class="form-control"  name="l_remarks" style="width:150px;display: inline;" placeholder="请输入备注" type="text">
